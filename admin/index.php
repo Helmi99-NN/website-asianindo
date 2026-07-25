@@ -290,7 +290,7 @@ $is_admin = isset($_SESSION['is_admin']) ? true : false;
     <script>
         function adminApp() {
             return {
-                isLoggedIn: <?= $is_admin ? 'true' : 'false' ?>,
+                isLoggedIn: <?php echo $is_admin ? 'true' : 'false'; ?>,
                 loginForm: { username: '', password: '' },
                 loginError: '',
                 isLoading: false,
