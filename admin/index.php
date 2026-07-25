@@ -299,7 +299,7 @@ $is_admin = isset($_SESSION['is_admin']) ? true : false;
                 products: [],
                 searchQuery: '',
                 editingId: null,
-                form: this.getEmptyForm(),
+                form: { id: '', name: '', category: 'Mesin Industri', subCategory: '', price: '', priceRange: '', description: '', features: [''], specs: [{key: '', val: ''}], existing_image: '', existing_video: '' },
                 imagePreview: null,
                 videoPreview: null,
                 imageFile: null,
