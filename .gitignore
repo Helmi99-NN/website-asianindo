@@ -1,0 +1,10 @@
+node_modules/
+.DS_Store
+Thumbs.db
+*.zip
+test_zip/
+format_all.js
+add_favicon.js
+update_socials.js
+update_socials2.js
+update_socials3.js

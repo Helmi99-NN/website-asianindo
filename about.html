@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+    <link rel="icon" type="image/png" href="images/logo_asianindo.png" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tentang Kami - CV Asianindo | Distributor Mesin Industri</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4A2C91",
+                        "primary-container": "#6D4CBA",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#f0eaff",
+                        "secondary": "#E65100",
+                        "secondary-container": "#FF8A65",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#ffe8e0",
+                        "surface": "#fcfcfc",
+                        "on-surface": "#1a1c1e",
+                        "surface-variant": "#e1e2e4",
+                        "on-surface-variant": "#444749",
+                        "outline": "#747779",
+                        "outline-variant": "#c4c6c8",
+                        "surface-container-low": "#f6f6f6",
+                        "surface-container": "#f1f1f1",
+                        "surface-container-high": "#ebebeb",
+                        "inverse-surface": "#2e3132",
+                        "inverse-on-surface": "#f0f1f2",
+                        "inverse-primary": "#cbb2ff",
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "sans-serif"],
+                        "heading": ["Outfit", "sans-serif"]
+                    },
+                    spacing: {
+                        "gutter": "1.5rem",
+                        "xs": "0.5rem",
+                        "sm": "1rem",
+                        "md": "1.5rem",
+                        "lg": "2rem",
+                        "xl": "3rem"
+                    },
+                    borderRadius: {
+                        "xl": "1rem",
+                        "2xl": "1.5rem",
+                        "3xl": "2rem"
+                    },
+                    boxShadow: {
+                        "soft": "0 4px 20px rgba(0,0,0,0.05)",
+                        "glow": "0 0 20px rgba(74, 44, 145, 0.3)",
+                        "ambient": "0 8px 30px rgba(74, 44, 145, 0.08)"
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .font-headline-lg { font-family: 'Outfit', sans-serif; font-size: 2.5rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
+        .font-headline-md { font-family: 'Outfit', sans-serif; font-size: 2rem; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; }
+        .font-headline-sm { font-family: 'Outfit', sans-serif; font-size: 1.5rem; line-height: 1.3; font-weight: 600; }
+        .font-title-lg { font-family: 'Outfit', sans-serif; font-size: 1.25rem; line-height: 1.4; font-weight: 600; }
+        .font-body-lg { font-family: 'Inter', sans-serif; font-size: 1.125rem; line-height: 1.6; }
+        .font-body-md { font-family: 'Inter', sans-serif; font-size: 1rem; line-height: 1.6; }
+        .font-label-lg { font-family: 'Inter', sans-serif; font-size: 1rem; line-height: 1.4; font-weight: 500; }
+        .font-label-md { font-family: 'Inter', sans-serif; font-size: 0.875rem; line-height: 1.4; font-weight: 500; }
+
+        .max-w-container-max { max-width: 1200px; }
+        
+        .bg-gradient-purple { background: linear-gradient(135deg, #2D2354 0%, #4A2C91 100%); }
+        .text-gradient-purple {
+            background: linear-gradient(135deg, #4A2C91 0%, #6D4CBA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(to right, #4A2C91, #6D4CBA);
+            background-size: 200% auto;
+            transition: 0.5s;
+        }
+        .btn-gradient:hover { background-position: right center; }
+
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .dot-pattern {
+            background-image: radial-gradient(#4A2C91 2px, transparent 2px);
+            background-size: 20px 20px;
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .reveal { opacity: 0; animation: fadeUp 0.8s ease-out forwards; }
+        .reveal-delay-1 { animation-delay: 0.2s; }
+        .reveal-delay-2 { animation-delay: 0.4s; }
+        .reveal-delay-3 { animation-delay: 0.6s; }
+    </style>
+    <style>
+        html { scroll-behavior: smooth; }
+        /* Page Transition Animations */
+        body {
+            opacity: 0;
+            animation: pageFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        body.fade-out {
+            animation: pageFadeOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pageFadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-10px); }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', e => {
+                    const href = link.getAttribute('href');
+                    if (href && 
+                        !href.startsWith('#') && 
+                        !href.startsWith('http') && 
+                        !href.startsWith('mailto:') && 
+                        !href.startsWith('tel:') && 
+                        link.target !== '_blank') {
+                        
+                        const url = new URL(link.href);
+                        if (url.origin === window.location.origin && url.pathname === window.location.pathname) {
+                            return; // Anchor on same page
+                        }
+
+                        e.preventDefault();
+                        document.body.classList.add('fade-out');
+                        setTimeout(() => {
+                            window.location.href = href;
+                        }, 300);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-sans antialiased min-h-screen flex flex-col selection:bg-primary-container selection:text-white">
+
+    <!-- Header / Navbar -->
+    <header class="bg-surface/80 backdrop-blur-md sticky top-0 z-50 border-b border-outline-variant/30 shadow-sm transition-all duration-300" id="main-header">
+        <div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-20">
+            <a href="index.html" class="font-headline-md text-primary flex items-center gap-2">
+                <img src="images/logo_asianindo.png" alt="CV Asianindo" class="h-14 object-contain" />
+                <span>CV Asianindo</span>
+            </a>
+            
+            <nav class="hidden md:flex gap-lg items-center">
+                <a href="index.html" class="text-on-surface-variant hover:text-primary transition-colors px-2 py-1 rounded font-label-md">Beranda</a>
+                <a href="about.html" class="text-primary border-b-2 border-primary font-bold pb-1 font-label-md transition-all duration-200">Tentang Kami</a>
+                <a href="katalog.html" class="text-on-surface-variant hover:text-primary transition-colors px-2 py-1 rounded font-label-md">Katalog Produk</a>
+                <a href="blog.html" class="text-on-surface-variant hover:text-primary transition-colors px-2 py-1 rounded font-label-md">Artikel</a>
+                <a href="#" class="text-on-surface-variant hover:text-primary transition-colors px-2 py-1 rounded font-label-md">Kontak</a>
+            </nav>
+
+            <a href="https://wa.me/6285335850517" target="_blank" class="hidden md:flex btn-gradient text-white px-6 py-3 rounded-xl font-label-md hover:shadow-lg transition-all items-center gap-2">
+                <span class="material-symbols-outlined" style="font-size: 18px;">chat</span>
+                Konsultasi Gratis
+            </a>
+
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-primary p-2 hover:bg-primary/5 rounded-lg transition-colors" id="mobile-menu-btn">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer (Hidden by default) -->
+    <div class="fixed inset-y-0 left-0 w-72 bg-surface shadow-2xl transform -translate-x-full transition-transform duration-300 z-[60] flex flex-col border-r border-outline-variant/30" id="mobile-menu">
+        <div class="px-6 py-6 border-b border-outline-variant/20 flex justify-between items-center">
+            <span class="font-headline-sm text-primary flex items-center gap-2">
+                <img src="images/logo_asianindo.png" alt="CV Asianindo" class="h-14 object-contain" />
+                <span>CV Asianindo</span>
+            </span>
+            <button class="text-on-surface-variant p-1 hover:bg-surface-container-high rounded-lg" id="close-mobile-menu">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <nav class="flex flex-col gap-1 flex-1 py-4 px-3">
+            <a href="index.html" class="text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3.5 flex items-center gap-3 transition-colors font-label-md">
+                <span class="material-symbols-outlined" style="font-size: 22px;">home</span> Beranda
+            </a>
+            <a href="about.html" class="bg-primary-container text-on-primary-container rounded-xl px-4 py-3.5 flex items-center gap-3 font-label-md">
+                <span class="material-symbols-outlined" style="font-size: 22px;">info</span> Tentang Kami
+            </a>
+            <a href="katalog.html" class="text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3.5 flex items-center gap-3 transition-colors font-label-md">
+                <span class="material-symbols-outlined" style="font-size: 22px;">precision_manufacturing</span> Katalog Mesin
+            </a>
+            <a href="blog.html" class="text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3.5 flex items-center gap-3 transition-colors font-label-md">
+                <span class="material-symbols-outlined" style="font-size: 22px;">newspaper</span> Artikel
+            </a>
+            <a href="#" class="text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3.5 flex items-center gap-3 transition-colors font-label-md">
+                <span class="material-symbols-outlined" style="font-size: 22px;">call</span> Kontak
+            </a>
+        </nav>
+    </div>
+    <!-- Mobile Backdrop -->
+    <div class="fixed inset-0 bg-black/50 z-50 hidden opacity-0 transition-opacity duration-300" id="mobile-backdrop"></div>
+
+    <main class="flex-grow">
+        
+        <!-- Hero Section -->
+        <section class="bg-gradient-purple pt-16 pb-24 relative overflow-hidden">
+            <div class="absolute inset-0 dot-pattern opacity-10"></div>
+            <!-- Decorative circles -->
+            <div class="absolute top-0 right-0 w-96 h-96 bg-primary-container/20 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+            <div class="absolute bottom-0 left-0 w-64 h-64 bg-secondary/20 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
+            
+            <div class="max-w-container-max mx-auto px-gutter relative z-10 text-center reveal">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-white/90 text-sm mb-6 backdrop-blur-sm">
+                    <span class="material-symbols-outlined" style="font-size: 16px;">apartment</span>
+                    Profil Perusahaan
+                </div>
+                <h1 class="font-headline-lg text-white mb-6">Tentang <span class="text-inverse-primary">CV. Asianindo</span></h1>
+                <p class="font-body-lg text-white/80 max-w-2xl mx-auto leading-relaxed">
+                    Mitra terpercaya bagi pelaku usaha di Indonesia dalam menyediakan solusi mesin industri yang efisien, inovatif, dan bernilai tinggi.
+                </p>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <section class="py-xl -mt-10 relative z-20">
+            <div class="max-w-container-max mx-auto px-gutter">
+                
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                    
+                    <!-- Left Sidebar (Company Quick Info) -->
+                    <div class="lg:col-span-4 reveal reveal-delay-1">
+                        <div class="glassmorphism rounded-3xl p-8 bg-surface border border-outline-variant/30 shadow-ambient sticky top-28">
+                            <h3 class="font-headline-sm text-on-surface mb-6 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">info</span> Info Perusahaan
+                            </h3>
+                            
+                            <div class="flex flex-col gap-6">
+                                <div class="flex gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-primary-container/10 flex items-center justify-center flex-shrink-0">
+                                        <span class="material-symbols-outlined text-primary">apartment</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-label-md text-outline mb-1">Nama Perusahaan</p>
+                                        <p class="font-title-lg text-on-surface">CV. Asianindo</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-primary-container/10 flex items-center justify-center flex-shrink-0">
+                                        <span class="material-symbols-outlined text-primary">event</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-label-md text-outline mb-1">Tahun Terdaftar</p>
+                                        <p class="font-title-lg text-on-surface">2024</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-primary-container/10 flex items-center justify-center flex-shrink-0">
+                                        <span class="material-symbols-outlined text-primary">location_on</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-label-md text-outline mb-1">Lokasi Workshop</p>
+                                        <a href="https://maps.app.goo.gl/uZUZYDwvWkcd8LNj8" target="_blank" class="font-body-md text-on-surface hover:text-primary transition-colors block">Jl. Kyai Parseh Jaya No.50, Bumiayu, Kec. Kedungkandang<br/>Kota Malang, Jawa Timur</a>
+                                    </div>
+                                </div>
+
+                                <hr class="border-outline-variant/30 my-2" />
+
+                                <h4 class="font-title-lg text-on-surface mb-2">Bidang Perusahaan</h4>
+                                <p class="font-body-md text-on-surface-variant leading-relaxed">
+                                    Distributor Mesin-Mesin Usaha Kecil Menengah.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Content Area -->
+                    <div class="lg:col-span-8 flex flex-col gap-12">
+                        
+                        <!-- Profil -->
+                        <div class="reveal reveal-delay-2 mt-4 lg:mt-6">
+                            <div class="prose prose-lg text-on-surface-variant font-body-lg text-justify">
+                                <p class="mb-4">
+                                    <strong class="text-on-surface font-semibold">CV. Asianindo</strong> adalah perusahaan manufaktur dan distributor yang bergerak di bidang penyediaan berbagai jenis mesin sesuai kebutuhan industri modern.
+                                </p>
+                                <p class="mb-4">
+                                    Kami memproduksi serta menyediakan beragam mesin industri, mesin pertanian, mesin percetakan, mesin pengolah makanan, hingga mesin bantu produksi dengan standar kualitas yang terjamin. Selain itu, kami juga menghadirkan produk-produk inovatif yang mengikuti tren pasar, sehingga pelanggan mendapatkan solusi tepat untuk mendukung pertumbuhan usaha mereka.
+                                </p>
+                                <p>
+                                    Dengan pengalaman dan komitmen pada mutu, CV. Asianindo hadir sebagai mitra terpercaya bagi pelaku usaha, mulai dari skala kecil hingga menengah, dalam mewujudkan proses produksi yang efisien, inovatif, dan bernilai tinggi.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Visi Misi -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 reveal reveal-delay-3">
+                            <div class="bg-surface-container-low rounded-2xl p-8 border border-outline-variant/20 hover:shadow-soft transition-all">
+                                <div class="w-14 h-14 rounded-full bg-gradient-purple flex items-center justify-center mb-6 shadow-glow">
+                                    <span class="material-symbols-outlined text-white" style="font-size: 28px;">visibility</span>
+                                </div>
+                                <h3 class="font-headline-sm text-on-surface mb-4">Visi</h3>
+                                <p class="font-body-md text-on-surface-variant leading-relaxed">
+                                    Menjadi mitra terpercaya bagi pelaku usaha di Indonesia dalam meningkatkan produktivitas dan efisiensi melalui penggunaan teknologi mesin yang tepat guna.
+                                </p>
+                            </div>
+                            
+                            <div class="bg-surface-container-low rounded-2xl p-8 border border-outline-variant/20 hover:shadow-soft transition-all">
+                                <div class="w-14 h-14 rounded-full bg-gradient-purple flex items-center justify-center mb-6 shadow-glow">
+                                    <span class="material-symbols-outlined text-white" style="font-size: 28px;">flag</span>
+                                </div>
+                                <h3 class="font-headline-sm text-on-surface mb-4">Misi</h3>
+                                <ul class="font-body-md text-on-surface-variant space-y-3">
+                                    <li class="flex items-start gap-3">
+                                        <span class="material-symbols-outlined text-primary shrink-0 mt-0.5">check_circle</span>
+                                        Menyediakan berbagai jenis mesin industri dengan kualitas terbaik dan harga kompetitif.
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <span class="material-symbols-outlined text-primary shrink-0 mt-0.5">check_circle</span>
+                                        Memberikan layanan konsultasi dan purna jual yang profesional.
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <span class="material-symbols-outlined text-primary shrink-0 mt-0.5">check_circle</span>
+                                        Membangun hubungan jangka panjang dengan pelanggan.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Portofolio / Kami Menjual -->
+                        <div class="reveal">
+                            <h2 class="font-headline-md text-on-surface mb-6 border-b border-outline-variant/30 pb-4">Produk Unggulan Kami</h2>
+                            <p class="font-body-lg text-on-surface-variant mb-8">
+                                Kami menyediakan solusi mesin-mesin industri untuk sektor makanan, packaging, dan pertanian. Beberapa produk andalan kami meliputi:
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex items-start gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/10">
+                                    <span class="material-symbols-outlined text-primary" style="font-size: 32px;">kitchen</span>
+                                    <div>
+                                        <h4 class="font-title-lg text-on-surface mb-1">Mesin Vacuum Frying</h4>
+                                        <p class="font-body-md text-on-surface-variant text-sm">Menghisap kadar air buah kecepatan tinggi untuk keripik berkualitas.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/10">
+                                    <span class="material-symbols-outlined text-primary" style="font-size: 32px;">sanitizer</span>
+                                    <div>
+                                        <h4 class="font-title-lg text-on-surface mb-1">Mesin Sterilisasi</h4>
+                                        <p class="font-body-md text-on-surface-variant text-sm">Membunuh bakteri pada produk makanan/botol dengan suhu tinggi.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/10">
+                                    <span class="material-symbols-outlined text-primary" style="font-size: 32px;">heat_pump</span>
+                                    <div>
+                                        <h4 class="font-title-lg text-on-surface mb-1">Mesin Rotary Dryer</h4>
+                                        <p class="font-body-md text-on-surface-variant text-sm">Pengeringan produk makanan, pertanian, hingga cacahan plastik.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/10">
+                                    <span class="material-symbols-outlined text-primary" style="font-size: 32px;">science</span>
+                                    <div>
+                                        <h4 class="font-title-lg text-on-surface mb-1">Mesin Evaporator Vacuum</h4>
+                                        <p class="font-body-md text-on-surface-variant text-sm">Mengurangi kadar air bahan cair (madu, sari buah, vco).</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/10">
+                                    <span class="material-symbols-outlined text-primary" style="font-size: 32px;">air</span>
+                                    <div>
+                                        <h4 class="font-title-lg text-on-surface mb-1">Mesin Spray Dryer</h4>
+                                        <p class="font-body-md text-on-surface-variant text-sm">Mengubah cairan menjadi bubuk kering secara kontinyu.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/10">
+                                    <span class="material-symbols-outlined text-primary" style="font-size: 32px;">local_drink</span>
+                                    <div>
+                                        <h4 class="font-title-lg text-on-surface mb-1">Mesin Pasteurisasi Susu</h4>
+                                        <p class="font-body-md text-on-surface-variant text-sm">Pemanasan cairan untuk membunuh bakteri merugikan.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-8">
+                                <a href="katalog.html" class="inline-flex items-center gap-2 text-primary font-title-lg hover:gap-3 transition-all">
+                                    Lihat Semua Katalog Mesin <span class="material-symbols-outlined">arrow_forward</span>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Galeri / Banner Image Section -->
+        <section class="py-12 bg-surface-container-low border-y border-outline-variant/20">
+             <div class="max-w-container-max mx-auto px-gutter text-center">
+                 <h2 class="font-headline-sm text-on-surface mb-8">Workshop Kami</h2>
+                 <div class="rounded-3xl overflow-hidden shadow-ambient max-w-4xl mx-auto">
+                     <!-- We reuse the factory image from homepage -->
+                     <img src="images/factory_workshop.png" alt="Workshop CV Asianindo" class="w-full h-auto object-cover max-h-[500px]" />
+                 </div>
+             </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-purple text-white/80 pt-16 pb-8 border-t border-white/10 mt-12">
+        <div class="max-w-container-max mx-auto px-gutter">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                
+                <!-- Brand Info -->
+                <div class="flex flex-col gap-6">
+                    <a class="font-headline-md text-white font-bold flex items-center gap-2" href="index.html">
+                <img src="images/logo_asianindo.png" alt="CV Asianindo" class="h-14 object-contain" />
+                <span>CV Asianindo</span>
+            </a>
+                    <p class="font-body-md text-white/60 leading-relaxed">Mitra terpercaya untuk kebutuhan mesin industri skala UMKM hingga manufaktur di seluruh Indonesia.</p>
+                </div>
+
+                <!-- Links -->
+                <div class="flex flex-col gap-4">
+                    <h3 class="font-label-md text-white tracking-wider uppercase text-xs mb-2">Perusahaan</h3>
+                    <a class="text-white/60 hover:text-white hover:translate-x-1 transition-all flex items-center gap-2 text-sm" href="about.html"><span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span> Tentang Kami</a>
+                    <a class="text-white/60 hover:text-white hover:translate-x-1 transition-all flex items-center gap-2 text-sm" href="blog.html"><span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span> Artikel</a>
+                    <a class="text-white/60 hover:text-white hover:translate-x-1 transition-all flex items-center gap-2 text-sm" href="kontak.html"><span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span> Kontak</a>
+                </div>
+
+                <!-- Products -->
+                <div class="flex flex-col gap-4">
+                    <h3 class="font-label-md text-white tracking-wider uppercase text-xs mb-2">Kategori Mesin</h3>
+                    <a class="text-white/60 hover:text-white hover:translate-x-1 transition-all flex items-center gap-2 text-sm" href="katalog.html"><span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span> Vacuum Frying</a>
+                    <a class="text-white/60 hover:text-white hover:translate-x-1 transition-all flex items-center gap-2 text-sm" href="katalog.html"><span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span> Spray Dryer</a>
+                    <a class="text-white/60 hover:text-white hover:translate-x-1 transition-all flex items-center gap-2 text-sm" href="katalog.html"><span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span> Roaster Kopi</a>
+                </div>
+
+                <!-- Contact -->
+                <div class="flex flex-col gap-4">
+                    <h3 class="font-label-md text-white tracking-wider uppercase text-xs mb-2">Hubungi Kami</h3>
+                    <div class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-inverse-primary" style="font-size: 20px;">location_on</span>
+                        <a href="https://maps.app.goo.gl/uZUZYDwvWkcd8LNj8" target="_blank" class="font-body-md text-sm text-white/60 leading-relaxed hover:text-white transition-colors block">Jl. Kyai Parseh Jaya No.50, Bumiayu, Kec. Kedungkandang<br/>Kota Malang, Jawa Timur</a>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-inverse-primary" style="font-size: 20px;">call</span>
+                        <span class="font-body-md text-sm text-white/60">+62 853-3585-0517</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Copyright -->
+            <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="font-body-md text-sm text-white/40">© <span id="year">2024</span> CV Asianindo. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/60 hover:bg-white/10 hover:text-white transition-colors" href="#">
+                        <span class="material-symbols-outlined" style="font-size: 20px;">language</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp -->
+    <a class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-ambient hover:scale-110 transition-transform flex items-center justify-center group" href="https://wa.me/6285335850517?text=Halo%20CV%20Asianindo%2C%20saya%20ingin%20tanya%20produk" target="_blank" aria-label="Hubungi via WhatsApp">
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"></path>
+        </svg>
+        <span class="absolute right-full mr-4 bg-surface text-on-surface px-4 py-2 rounded-xl text-sm font-label-md whitespace-nowrap shadow-ambient opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+            Chat dengan Sales
+        </span>
+    </a>
+
+    <!-- Scripts -->
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeMobileMenu = document.getElementById('close-mobile-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileBackdrop = document.getElementById('mobile-backdrop');
+
+        function toggleMenu() {
+            const isOpen = mobileMenu.classList.contains('translate-x-0');
+            
+            if (isOpen) {
+                mobileMenu.classList.remove('translate-x-0');
+                mobileMenu.classList.add('-translate-x-full');
+                mobileBackdrop.classList.remove('opacity-100');
+                setTimeout(() => mobileBackdrop.classList.add('hidden'), 300);
+            } else {
+                mobileMenu.classList.remove('-translate-x-full');
+                mobileMenu.classList.add('translate-x-0');
+                mobileBackdrop.classList.remove('hidden');
+                setTimeout(() => mobileBackdrop.classList.add('opacity-100'), 10);
+            }
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+        closeMobileMenu.addEventListener('click', toggleMenu);
+        mobileBackdrop.addEventListener('click', toggleMenu);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <link rel="icon" type="image/png" href="images/logo_asianindo.png" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>CV Asianindo - Solusi Mesin Industri UMKM & Manufaktur Indonesia</title>
+    <meta name="description" content="CV Asianindo adalah distributor dan manufaktur mesin industri terpercaya untuk UMKM hingga industri menengah. Vacuum Frying, Spray Dryer, Roasting Kopi, dan lainnya." />
+    <meta name="keywords" content="mesin vacuum frying, mesin UMKM, mesin industri makanan, mesin spray dryer, mesin roasting kopi, distributor mesin industri" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#f0f1f2",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-high": "#e7e8e9",
+                        "primary-fixed": "#e9ddff",
+                        "on-primary-fixed": "#22005d",
+                        "background": "#f8f9fa",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#cfbcff",
+                        "on-tertiary-fixed-variant": "#92001b",
+                        "primary-fixed-dim": "#cfbcff",
+                        "on-secondary-fixed-variant": "#493f72",
+                        "on-background": "#191c1d",
+                        "tertiary": "#5e000e",
+                        "on-surface-variant": "#494552",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#330e7a",
+                        "outline": "#7a7583",
+                        "surface-container": "#edeeef",
+                        "surface-container-low": "#f3f4f5",
+                        "on-tertiary-container": "#ff8c8b",
+                        "surface-container-highest": "#e1e3e4",
+                        "outline-variant": "#cbc4d3",
+                        "primary-container": "#4a2c91",
+                        "on-surface": "#191c1d",
+                        "surface": "#f8f9fa",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#ffb3b1",
+                        "secondary-container": "#cec1fd",
+                        "on-primary-container": "#b89eff",
+                        "on-tertiary-fixed": "#410007",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#d9dadb",
+                        "on-primary-fixed-variant": "#503297",
+                        "surface-bright": "#f8f9fa",
+                        "secondary": "#61578b",
+                        "on-secondary-container": "#574d81",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#ffdad8",
+                        "secondary-fixed": "#e7deff",
+                        "secondary-fixed-dim": "#cbbffa",
+                        "tertiary-container": "#880019",
+                        "on-secondary-fixed": "#1d1244",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#684cb1",
+                        "surface-variant": "#e1e3e4",
+                        "shopee": "#ee4d2d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "md": "24px",
+                        "base": "8px",
+                        "lg": "48px",
+                        "sm": "12px",
+                        "xs": "4px",
+                        "xl": "80px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Outfit"],
+                        "display-lg-mobile": ["Outfit"],
+                        "headline-sm": ["Outfit"],
+                        "headline-lg": ["Outfit"],
+                        "display-lg": ["Outfit"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "caption": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-sm": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.15", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "caption": ["12px", { "lineHeight": "1.4", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* ===== Base Utilities ===== */
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #2D2354 0%, #4A2C91 50%, #330e7a 100%);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #4A2C91 0%, #cfbcff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-dark {
+            background: linear-gradient(135deg, #2D2354 0%, #4A2C91 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .cta-gradient {
+            background: linear-gradient(135deg, #2D2354 0%, #4A2C91 40%, #503297 100%);
+        }
+
+        /* ===== Animations ===== */
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+        .ambient-shadow {
+            box-shadow: 0 8px 24px rgba(45, 35, 84, 0.08);
+        }
+        .ambient-shadow-lg {
+            box-shadow: 0 16px 48px rgba(45, 35, 84, 0.12);
+        }
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(45, 35, 84, 0.12);
+        }
+        .hover-lift-lg:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 48px rgba(45, 35, 84, 0.15);
+        }
+
+        /* ===== Scroll Reveal ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+        .reveal-delay-5 { transition-delay: 0.5s; }
+        .reveal-delay-6 { transition-delay: 0.6s; }
+
+        /* ===== Category Card Hover ===== */
+        .category-card {
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .category-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(74, 44, 145, 0.15);
+        }
+        .category-card:hover .category-icon {
+            transform: scale(1.1) rotate(-5deg);
+            background: linear-gradient(135deg, #4A2C91, #503297);
+            color: white;
+        }
+        .category-card:hover .category-icon span {
+            color: white;
+        }
+        .category-icon {
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* ===== Product Card ===== */
+        .product-card {
+            transition: all 0.35s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 48px rgba(45, 35, 84, 0.14);
+        }
+        .product-card:hover .product-img {
+            transform: scale(1.05);
+        }
+        .product-img {
+            transition: transform 0.5s ease;
+        }
+
+        /* ===== Feature Card ===== */
+        .feature-card {
+            transition: all 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #4A2C91, #cfbcff);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+        }
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(45, 35, 84, 0.12);
+        }
+
+        /* ===== Testimonial ===== */
+        .testimonial-card {
+            transition: all 0.3s ease;
+        }
+        .testimonial-card:hover {
+            box-shadow: 0 16px 48px rgba(45, 35, 84, 0.12);
+        }
+
+        /* ===== Counter Animation ===== */
+        .counter-value {
+            display: inline-block;
+        }
+
+        /* ===== Marquee ===== */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .marquee-track {
+            animation: marquee 30s linear infinite;
+        }
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        /* ===== Decorative ===== */
+        .dot-pattern {
+            background-image: radial-gradient(circle, #4A2C91 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* ===== Shopee Button ===== */
+        .btn-shopee {
+            background: linear-gradient(135deg, #ee4d2d 0%, #f0603a 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-shopee:hover {
+            background: linear-gradient(135deg, #d94425 0%, #ee4d2d 100%);
+            box-shadow: 0 4px 16px rgba(238, 77, 45, 0.3);
+        }
+
+        /* ===== Smooth scroll ===== */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ===== Scrollbar ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f3f4f5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbc4d3;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7a7583;
+        }
+    </style>
+    <style>
+        html { scroll-behavior: smooth; }
+        /* Page Transition Animations */
+        body {
+            opacity: 0;
+            animation: pageFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        body.fade-out {
+            animation: pageFadeOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pageFadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-10px); }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', e => {
+                    const href = link.getAttribute('href');
+                    if (href && 
+                        !href.startsWith('#') && 
+                        !href.startsWith('http') && 
+                        !href.startsWith('mailto:') && 
+                        !href.startsWith('tel:') && 
+                        link.target !== '_blank') {
+                        
+                        const url = new URL(link.href);
+                        if (url.origin === window.location.origin && url.pathname === window.location.pathname) {
+                            return; // Anchor on same page
+                        }
+
+                        e.preventDefault();
+                        document.body.classList.add('fade-out');
+                        setTimeout(() => {
+                            window.location.href = href;
+                        }, 300);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased overflow-x-hidden">
+
+    <!-- ============================================ -->
+    <!-- TopNavBar (Desktop) -->
+    <!-- ============================================ -->
+    <header class="bg-white text-primary sticky top-0 border-b border-primary/10 shadow-sm z-50 transition-all duration-300 hidden md:block" id="main-header">
+        <div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-20">
+            <a class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2" href="#">
+                <img src="images/logo_asianindo.png" alt="CV Asianindo" class="h-14 object-contain" />
+                <span>CV Asianindo</span>
+            </a>
+            <nav class="flex gap-lg items-center">
+                <a class="text-primary border-b-2 border-primary font-bold pb-1 font-label-md text-label-md transition-all duration-200" href="#">Beranda</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors px-2 py-1 rounded font-label-md text-label-md" href="about.html">Tentang Kami</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors px-2 py-1 rounded font-label-md text-label-md" href="katalog.html">Katalog</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors px-2 py-1 rounded font-label-md text-label-md" href="blog.html">Artikel</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors px-2 py-1 rounded font-label-md text-label-md" href="kontak.html">Kontak</a>
+            </nav>
+            <a class="bg-gradient-to-r from-[#2D2354] to-[#4A2C91] text-white px-6 py-3 rounded-xl font-label-md text-label-md hover:shadow-lg transition-all hover-lift flex items-center gap-2" href="https://wa.me/6285335850517?text=Halo%20CV%20Asianindo%2C%20saya%20ingin%20konsultasi%20mesin" target="_blank">
+                <span class="material-symbols-outlined" style="font-size: 18px;">chat</span>
+                Konsultasi Gratis
+            </a>
+        </div>
+    </header>
+
+    <!-- ============================================ -->
+    <!-- SideNavBar (Mobile) -->
+    <!-- ============================================ -->
+    <div class="md:hidden">
+        <div class="bg-white sticky top-0 z-40 border-b border-primary/10 px-4 py-3 flex justify-between items-center">
+            <a class="font-headline-sm text-headline-sm font-bold text-primary flex items-center gap-2" href="#">
+                <img src="images/logo_asianindo.png" alt="CV Asianindo" class="h-14 object-contain" />
+                <span>CV Asianindo</span>
+            </a>
+            <button class="text-primary p-2 hover:bg-primary/5 rounded-lg transition-colors" id="mobile-menu-btn">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+        <!-- Off-canvas Menu -->
+        <div class="fixed inset-y-0 left-0 w-72 bg-surface shadow-2xl transform -translate-x-full transition-transform duration-300 z-50 flex flex-col border-r border-outline-variant/30" id="mobile-menu">
+            <div class="px-6 py-6 border-b border-outline-variant/20">
+                <h2 class="font-headline-sm text-headline-sm text-primary font-bold flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+                    CV Asianindo
+                </h2>
+                <p class="font-body-md text-body-md text-on-surface-variant mt-1">Solusi Mesin Industri</p>
+            </div>
+            <nav class="flex flex-col gap-1 flex-1 py-4 px-3">
+                <a class="bg-primary-container text-on-primary-container rounded-xl px-4 py-3.5 flex items-center gap-3 font-label-md text-label-md" href="#">
+                    <span class="material-symbols-outlined" style="font-size: 22px;">home</span> Beranda
+                </a>
+                <a class="text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3.5 flex items-center gap-3 transition-colors font-label-md text-label-md" href="about.html">
+                    <span class="material-symbols-outlined" style="font-size: 22px;">info</span> Tentang Kami
+                </a>
+                <a class="text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3.5 flex items-center gap-3 transition-colors font-label-md text-label-md" href="katalog.html">
+                    <span class="material-symbols-outlined" style="font-size: 22px;">precision_manufacturing</span> Katalog Mesin
+                </a>
+                <a class="text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3.5 flex items-center gap-3 transition-colors font-label-md text-label-md" href="blog.html">
+                    <span class="material-symbols-outlined" style="font-size: 22px;">newspaper</span> Artikel
+                </a>
+                <a class="text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3.5 flex items-center gap-3 transition-colors font-label-md text-label-md" href="kontak.html">
+                    <span class="material-symbols-outlined" style="font-size: 22px;">call</span> Kontak
+                </a>
+            </nav>
+            <div class="px-4 pb-6">
+                <a class="bg-gradient-to-r from-[#2D2354] to-[#4A2C91] text-white px-6 py-3.5 rounded-xl font-label-md text-label-md flex items-center justify-center gap-2 w-full" href="https://wa.me/6285335850517" target="_blank">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">chat</span>
+                    Konsultasi Gratis
+                </a>
+            </div>
+            <button class="absolute top-5 right-4 text-on-surface-variant p-2 hover:bg-surface-container-high rounded-lg transition-colors" id="close-menu-btn">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300 opacity-0" id="mobile-overlay"></div>
+    </div>
+
+    <main>
+
+        <!-- ============================================ -->
+        <!-- Section 1: HERO -->
+        <!-- ============================================ -->
+        <section class="relative min-h-[90vh] flex items-center py-xl overflow-hidden hero-gradient">
+            <!-- Background Image -->
+            <div class="absolute inset-0 z-0">
+                <div class="bg-cover bg-center w-full h-full opacity-15 mix-blend-overlay" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuApOLPvf7vEkmDSjZc0Esr2RkZCN_9pchlIpCpQ8pOH2kmxaZaqusPgg6YQe5RA6r591q_IG9EYHkVjd0ssUB5XnIPV9_98WBA9Yz6usMCN6kvyDrgDFvnPDlwSxY7KlWh1BiTOPwjPk7lmQkm_fUzjWgBwng3SMfRHWJjF9GmNLP1pUDBjrL8cfuC2El5f941J_69Uye6M1HogMLevnVDM47Kn5z0mF1qi2buMsS7QKY442O0xW7Eh')"></div>
+            </div>
+            <!-- Decorative Elements -->
+            <div class="absolute top-20 right-10 w-72 h-72 bg-inverse-primary/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 left-10 w-96 h-96 bg-primary-container/20 rounded-full blur-3xl"></div>
+
+            <div class="max-w-container-max mx-auto px-gutter w-full grid grid-cols-1 md:grid-cols-12 gap-lg relative z-10 items-center">
+                <div class="md:col-span-7 flex flex-col gap-6">
+                    <!-- Badge -->
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 w-fit">
+                        <span class="material-symbols-outlined text-inverse-primary" style="font-size: 16px;">verified</span>
+                        <span class="font-label-md text-label-md text-white/90 tracking-wider uppercase text-xs">Pabrikasi Mesin Terpercaya Sejak 2014</span>
+                    </div>
+                    <!-- Headline -->
+                    <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-white leading-tight">
+                        Solusi Mesin Industri untuk <span class="text-inverse-primary font-black">UMKM</span> dan Manufaktur Indonesia
+                    </h1>
+                    <!-- Sub-headline -->
+                    <p class="font-body-lg text-body-lg text-white/80 max-w-2xl">
+                        Tingkatkan efisiensi dan kualitas produksi Anda dengan mesin-mesin industri berkualitas tinggi — dirancang khusus untuk kebutuhan pasar lokal dengan standar internasional.
+                    </p>
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4 mt-2">
+                        <a class="bg-white text-primary-container px-8 py-4 rounded-xl font-label-md text-label-md text-center hover:bg-primary-fixed transition-all hover-lift flex items-center justify-center gap-2 font-bold shadow-lg" href="katalog.html">
+                            Lihat Katalog Produk
+                            <span class="material-symbols-outlined" style="font-size: 20px;">arrow_forward</span>
+                        </a>
+                        <a class="border-2 border-white/30 text-white px-8 py-4 rounded-xl font-label-md text-label-md text-center hover:bg-white/10 transition-all flex items-center justify-center gap-2 backdrop-blur-sm" href="https://wa.me/6285335850517?text=Halo%20CV%20Asianindo%2C%20saya%20ingin%20konsultasi%20mesin" target="_blank">
+                            <span class="material-symbols-outlined" style="font-size: 20px;">chat</span>
+                            Konsultasi Gratis
+                        </a>
+                    </div>
+                    <!-- Stats -->
+                    <div class="grid grid-cols-3 gap-6 mt-8 pt-8 border-t border-white/15">
+                        <div>
+                            <p class="font-headline-md text-headline-md text-white font-black">500+</p>
+                            <p class="font-label-md text-label-md text-inverse-primary/80">Mesin Terjual</p>
+                        </div>
+                        <div>
+                            <p class="font-headline-md text-headline-md text-white font-black">10+</p>
+                            <p class="font-label-md text-label-md text-inverse-primary/80">Tahun Pengalaman</p>
+                        </div>
+                        <div>
+                            <p class="font-headline-md text-headline-md text-white font-black">100%</p>
+                            <p class="font-label-md text-label-md text-inverse-primary/80">Garansi Service</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Hero Image -->
+                <div class="md:col-span-5 relative hidden md:block">
+                    <div class="aspect-square rounded-3xl bg-gradient-to-tr from-primary-container/30 to-white/10 backdrop-blur-md border border-white/15 shadow-2xl flex items-center justify-center p-10 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-primary/10 animate-pulse mix-blend-overlay"></div>
+                        <img alt="Mesin industri CV Asianindo - Vacuum Frying Machine" class="w-full h-full object-contain relative z-10 drop-shadow-2xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBp_uoCxXFD2e7kJoKfgAFwFFVB3Idk9mFLID0jHFRenZ6inF7Cu4VsjYnrFSrITN-ZYBflAhJsWrTNFeuE9nxOeUaN21s6cRzxncSLznLzCOjN99r72aBfAEMIxCrRSwBSfhQl28wx-VJUJGVtMTs-97RMkHEv5ANZzbgZGJ3qoRn_FdFwt-K7dwW5-rjA0ByHySYOqXR6Fw69LG_JhHFqAbVtIB5j7ZMCAGCPUKJzqQ9tJFWHC3Gw" />
+                    </div>
+                </div>
+            </div>
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2 text-white/50">
+                <span class="text-xs font-label-md tracking-widest uppercase">Scroll</span>
+                <span class="material-symbols-outlined animate-bounce" style="font-size: 20px;">expand_more</span>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- Section 2: TENTANG CV ASIANINDO -->
+        <!-- ============================================ -->
+        <section class="py-xl relative overflow-hidden" id="tentang">
+            <!-- Decorative dot pattern -->
+            <div class="absolute top-0 right-0 w-48 h-48 dot-pattern opacity-[0.03]"></div>
+
+            <div class="max-w-container-max mx-auto px-gutter">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <!-- Image Side -->
+                    <div class="reveal relative">
+                        <div class="relative rounded-3xl overflow-hidden ambient-shadow-lg">
+                            <img alt="Workshop CV Asianindo - Pabrikasi Mesin Industri" class="w-full h-[400px] lg:h-[500px] object-cover" src="images/factory_workshop.png" />
+                            <!-- Overlay badge -->
+                            <div class="absolute bottom-6 left-6 right-6 glassmorphism rounded-2xl p-4 border border-white/30">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-container to-primary flex items-center justify-center flex-shrink-0">
+                                        <span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1; font-size: 24px;">factory</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-label-md text-label-md text-primary font-bold">Workshop & Pabrikasi</p>
+                                        <a href="https://maps.app.goo.gl/uZUZYDwvWkcd8LNj8" target="_blank" class="text-on-surface-variant text-sm hover:text-primary transition-colors block">Jl. Kyai Parseh Jaya No.50, Bumiayu, Kec. Kedungkandang, Kota Malang, Jawa Timur</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Decorative corner -->
+                        <div class="absolute -top-4 -left-4 w-24 h-24 border-t-4 border-l-4 border-primary-container/30 rounded-tl-3xl"></div>
+                        <div class="absolute -bottom-4 -right-4 w-24 h-24 border-b-4 border-r-4 border-inverse-primary/30 rounded-br-3xl"></div>
+                    </div>
+
+                    <!-- Content Side -->
+                    <div class="reveal reveal-delay-2 flex flex-col gap-6">
+                        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-fixed/50 border border-primary-fixed w-fit">
+                            <span class="material-symbols-outlined text-primary-container" style="font-size: 16px;">apartment</span>
+                            <span class="font-label-md text-label-md text-primary-container tracking-wider uppercase text-xs">Distributor Mesin-Mesin Usaha Kecil Menengah</span>
+                        </div>
+                        <h2 class="font-headline-lg text-headline-lg text-on-surface">
+                            Profil <span class="text-gradient-dark">Perusahaan</span>
+                        </h2>
+                        <p class="font-body-lg text-body-lg text-on-surface-variant">
+                            <strong class="text-on-surface">CV. Asianindo</strong> adalah perusahaan manufaktur dan distributor yang bergerak di bidang penyediaan berbagai jenis mesin sesuai kebutuhan industri modern. Kami memproduksi serta menyediakan beragam mesin industri, mesin pertanian, mesin percetakan, mesin pengolah makanan, hingga mesin bantu produksi dengan standar kualitas yang terjamin.
+                        </p>
+                        <p class="font-body-md text-body-md text-on-surface-variant">
+                            Selain itu, kami juga menghadirkan produk-produk inovatif yang mengikuti tren pasar, sehingga pelanggan mendapatkan solusi tepat untuk mendukung pertumbuhan usaha mereka. Dengan pengalaman dan komitmen pada mutu, CV. Asianindo hadir sebagai mitra terpercaya bagi pelaku usaha, mulai dari skala kecil hingga menengah, dalam mewujudkan proses produksi yang efisien, inovatif, dan bernilai tinggi.
+                        </p>
+                        <!-- Mini features -->
+                        <div class="grid grid-cols-2 gap-4 mt-2">
+                            <div class="flex items-center gap-3 p-3 rounded-xl bg-surface-container-low">
+                                <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1; font-size: 20px;">verified</span>
+                                <span class="font-label-md text-label-md text-on-surface">Tersertifikasi TKDN</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 rounded-xl bg-surface-container-low">
+                                <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1; font-size: 20px;">handshake</span>
+                                <span class="font-label-md text-label-md text-on-surface">1000+ Klien Puas</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 rounded-xl bg-surface-container-low">
+                                <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1; font-size: 20px;">location_on</span>
+                                <span class="font-label-md text-label-md text-on-surface">Produksi Lokal</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 rounded-xl bg-surface-container-low">
+                                <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1; font-size: 20px;">support_agent</span>
+                                <span class="font-label-md text-label-md text-on-surface">After Sales Service</span>
+                            </div>
+                        </div>
+                        <a class="inline-flex items-center gap-2 text-primary-container font-label-md text-label-md hover:gap-3 transition-all mt-2 group" href="about.html">
+                            Selengkapnya tentang kami
+                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" style="font-size: 18px;">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- Section 3: KATEGORI MESIN -->
+        <!-- ============================================ -->
+        <section class="py-xl bg-surface-container-low relative overflow-hidden" id="kategori">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary-container/20 to-transparent"></div>
+
+            <div class="max-w-container-max mx-auto px-gutter">
+                <!-- Section Header -->
+                <div class="text-center mb-16 reveal">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-fixed/50 border border-primary-fixed mb-6">
+                        <span class="material-symbols-outlined text-primary-container" style="font-size: 16px;">category</span>
+                        <span class="font-label-md text-label-md text-primary-container tracking-wider uppercase text-xs">Kategori Mesin</span>
+                    </div>
+                    <h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">
+                        Temukan Mesin Sesuai <span class="text-gradient-dark">Kebutuhan Anda</span>
+                    </h2>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                        Kami menyediakan berbagai jenis mesin industri untuk berbagai sektor usaha. Pilih kategori yang sesuai dengan kebutuhan produksi Anda.
+                    </p>
+                </div>
+
+                <!-- Category Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    <!-- Vacuum Frying -->
+                    <a class="category-card bg-white rounded-2xl p-6 lg:p-8 border border-outline-variant/20 cursor-pointer reveal reveal-delay-1" href="katalog.html">
+                        <div class="category-icon w-16 h-16 rounded-2xl bg-primary-fixed flex items-center justify-center mb-5">
+                            <span class="material-symbols-outlined text-primary-container" style="font-size: 32px;">local_fire_department</span>
+                        </div>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface text-lg mb-2">Vacuum Frying</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant text-sm mb-4">Mesin penggorengan vakum untuk keripik buah & sayur berkualitas tinggi</p>
+                        <span class="font-label-md text-label-md text-primary-container flex items-center gap-1 text-sm">
+                            8 Produk <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+                        </span>
+                    </a>
+
+                    <!-- Spray Dryer -->
+                    <a class="category-card bg-white rounded-2xl p-6 lg:p-8 border border-outline-variant/20 cursor-pointer reveal reveal-delay-2" href="katalog.html">
+                        <div class="category-icon w-16 h-16 rounded-2xl bg-primary-fixed flex items-center justify-center mb-5">
+                            <span class="material-symbols-outlined text-primary-container" style="font-size: 32px;">water_drop</span>
+                        </div>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface text-lg mb-2">Spray Dryer</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant text-sm mb-4">Pengering semprot untuk mengubah cairan menjadi bubuk berkualitas</p>
+                        <span class="font-label-md text-label-md text-primary-container flex items-center gap-1 text-sm">
+                            5 Produk <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+                        </span>
+                    </a>
+
+                    <!-- Roaster Kopi -->
+                    <a class="category-card bg-white rounded-2xl p-6 lg:p-8 border border-outline-variant/20 cursor-pointer reveal reveal-delay-3" href="katalog.html">
+                        <div class="category-icon w-16 h-16 rounded-2xl bg-primary-fixed flex items-center justify-center mb-5">
+                            <span class="material-symbols-outlined text-primary-container" style="font-size: 32px;">coffee</span>
+                        </div>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface text-lg mb-2">Roaster Kopi</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant text-sm mb-4">Mesin sangrai kopi dengan kontrol suhu presisi untuk hasil optimal</p>
+                        <span class="font-label-md text-label-md text-primary-container flex items-center gap-1 text-sm">
+                            6 Produk <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+                        </span>
+                    </a>
+
+                    <!-- Mesin Pertanian -->
+                    <a class="category-card bg-white rounded-2xl p-6 lg:p-8 border border-outline-variant/20 cursor-pointer reveal reveal-delay-4" href="katalog.html">
+                        <div class="category-icon w-16 h-16 rounded-2xl bg-primary-fixed flex items-center justify-center mb-5">
+                            <span class="material-symbols-outlined text-primary-container" style="font-size: 32px;">agriculture</span>
+                        </div>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface text-lg mb-2">Mesin Pertanian</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant text-sm mb-4">Solusi mesin pasca panen dan pengolahan produk pertanian</p>
+                        <span class="font-label-md text-label-md text-primary-container flex items-center gap-1 text-sm">
+                            7 Produk <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+                        </span>
+                    </a>
+
+                    <!-- Mesin Pengemasan -->
+                    <a class="category-card bg-white rounded-2xl p-6 lg:p-8 border border-outline-variant/20 cursor-pointer reveal reveal-delay-5" href="katalog.html">
+                        <div class="category-icon w-16 h-16 rounded-2xl bg-primary-fixed flex items-center justify-center mb-5">
+                            <span class="material-symbols-outlined text-primary-container" style="font-size: 32px;">inventory_2</span>
+                        </div>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface text-lg mb-2">Mesin Pengemasan</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant text-sm mb-4">Packaging machine untuk berbagai jenis produk dan kemasan</p>
+                        <span class="font-label-md text-label-md text-primary-container flex items-center gap-1 text-sm">
+                            5 Produk <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+                        </span>
+                    </a>
+
+                    <!-- Mesin Farmasi -->
+                    <a class="category-card bg-white rounded-2xl p-6 lg:p-8 border border-outline-variant/20 cursor-pointer reveal reveal-delay-6" href="katalog.html">
+                        <div class="category-icon w-16 h-16 rounded-2xl bg-primary-fixed flex items-center justify-center mb-5">
+                            <span class="material-symbols-outlined text-primary-container" style="font-size: 32px;">science</span>
+                        </div>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface text-lg mb-2">Mesin Farmasi</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant text-sm mb-4">Peralatan produksi farmasi dan laboratorium berstandar tinggi</p>
+                        <span class="font-label-md text-label-md text-primary-container flex items-center gap-1 text-sm">
+                            4 Produk <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- Section 4: PRODUK UNGGULAN -->
+        <!-- ============================================ -->
+        <section class="py-xl relative" id="katalog">
+            <div class="max-w-container-max mx-auto px-gutter">
+                <!-- Section Header -->
+                <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-12 gap-6 reveal">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-fixed/50 border border-primary-fixed mb-6">
+                            <span class="material-symbols-outlined text-primary-container" style="font-size: 16px;">star</span>
+                            <span class="font-label-md text-label-md text-primary-container tracking-wider uppercase text-xs">Produk Unggulan</span>
+                        </div>
+                        <h2 class="font-headline-lg text-headline-lg text-on-surface mb-3">
+                            Mesin <span class="text-gradient-dark">Terlaris</span> Kami
+                        </h2>
+                        <p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+                            Produk-produk pilihan dengan rating tertinggi dan paling banyak dipesan oleh pelanggan kami.
+                        </p>
+                    </div>
+                    <a class="inline-flex items-center gap-2 text-primary-container font-label-md text-label-md hover:gap-3 transition-all group bg-primary-fixed/30 px-6 py-3 rounded-xl border border-primary-fixed/50 hover:bg-primary-fixed/50 flex-shrink-0" href="katalog.html">
+                        Lihat Semua Produk
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" style="font-size: 18px;">arrow_forward</span>
+                    </a>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                    <!-- Product 1: Mesin Vacuum Frying 15kg Free Spinner ASIANINDO | Mesin Keripik Buah & Umbi – TKDN Terverifikasi -->
+                    <div class="product-card bg-white rounded-2xl border border-outline-variant/20 overflow-hidden reveal reveal-delay-1">
+                        <div class="relative overflow-hidden bg-surface-container-low p-4">
+                            <div class="absolute top-4 left-4 z-10 bg-[#FFB800] text-black font-bold px-3 py-1 rounded-full font-label-md text-label-md text-xs font-bold">
+                                Terlaris
+                            </div>
+                            <img alt="Mesin Vacuum Frying 15kg Free Spinner ASIANINDO | Mesin Keripik Buah & Umbi – TKDN Terverifikasi" class="product-img w-full h-48 object-contain" src="https://cf.shopee.co.id/file/id-11134207-81ztc-mfdz02xwvrbfde" loading="lazy" />
+                        </div>
+                        <div class="p-5 flex flex-col gap-3 flex-grow">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-primary-fixed text-primary-container px-2 py-0.5 rounded-md font-caption text-caption text-xs">Vacuum Frying</span>
+                            </div>
+                            <h3 class="font-headline-sm text-headline-sm text-on-surface text-base font-bold leading-tight line-clamp-2">Mesin Vacuum Frying 15kg Free Spinner ASIANINDO | Mesin Keripik Buah & Umbi – TKDN Terverifikasi</h3>
+                            <p class="text-on-surface-variant text-sm line-clamp-2 flex-grow">MESIN VACUUM FRYING  Mesin ini berfungsi untuk : memproduksi kripik atau camilan  jadi, yang berbahan dasar dari buah - buahan atau umbi - umbian. cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim k lokasi sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidakmenimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya.   nb : free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.  note : Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan didinas pemerintahan ( Tender )  deskripsi produk : - Kapasitas 15 kg on proses - Sistem vacuum : Water jet 2HP - Daya listrik 1500 watt / 220 volt - Suhu terkontrol otomatis - Kebutuhan minyak 75 liter - Pemanas kompor LPG   Keterangan :   - Unit mesin 100% Baru - Garansi servis 1 tahun ( non spare   part )..   Cocok bagi para pemula usaha pembuatan keripik buah ( jeruk, apel, nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).</p>
+                            <div class="flex items-center gap-1 text-xs text-on-surface-variant">
+                                <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span><span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span><span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span><span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span><span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span>
+                                <span class="ml-1">(15)</span>
+                            </div>
+                            <p class="font-headline-sm text-headline-sm text-primary-container text-lg font-black">Rp 20.200.000</p>
+                            <div class="flex gap-2 mt-1">
+                                <a class="bg-[#25D366] text-white px-4 py-2.5 rounded-xl font-label-md text-label-md text-center flex-1 flex items-center justify-center gap-1.5 text-xs hover:bg-[#1FAD54] transition-colors shadow-sm" href="https://wa.me/6285335850517?text=Halo%2C%20saya%20tertarik%20dengan%20Mesin%20Vacuum%20Frying%2015kg%20Free%20Spinner%20ASIANINDO%20%7C%20Mesin%20Keripik%20Buah%20%26%20Umbi%20%E2%80%93%20TKDN%20Terverifikasi" target="_blank" rel="noopener">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133-.298-.347-.446-.52-.149-.174-.198-.298-.298-.497-.099-.198-.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074-.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413-.248-.694-.248-1.289-.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                    Tanya Admin
+                                </a>
+                        <a class="border-2 border-primary/20 text-primary px-3 py-2.5 rounded-xl flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f9ce34] hover:via-[#ee2a7b] hover:to-[#6228d7] hover:text-white hover:border-transparent transition-all flex-shrink-0 group" href="https://www.instagram.com/asianindo.mesin/" target="_blank" rel="noopener" title="Lihat Instagram">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="group-hover:fill-white transition-colors"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm3.98-10.169a1.44 1.44 0 100-2.88 1.44 1.44 0 000 2.88z"/></svg>
+                        </a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 2: Mini Retort Sterilisasi 100 Liter Asianindo -->
+                    <div class="product-card bg-white rounded-2xl border border-outline-variant/20 overflow-hidden reveal reveal-delay-2">
+                        <div class="relative overflow-hidden bg-surface-container-low p-4">
+                            <div class="absolute top-4 left-4 z-10 bg-[#FFB800] text-black font-bold px-3 py-1 rounded-full font-label-md text-label-md text-xs font-bold">
+                                Terlaris
+                            </div>
+                            <img alt="Mini Retort Sterilisasi 100 Liter Asianindo" class="product-img w-full h-48 object-contain" src="https://cf.shopee.co.id/file/id-11134207-8224y-mk928bqeqhad69" loading="lazy" />
+                        </div>
+                        <div class="p-5 flex flex-col gap-3 flex-grow">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-primary-fixed text-primary-container px-2 py-0.5 rounded-md font-caption text-caption text-xs">Lainnya</span>
+                            </div>
+                            <h3 class="font-headline-sm text-headline-sm text-on-surface text-base font-bold leading-tight line-clamp-2">Mini Retort Sterilisasi 100 Liter Asianindo</h3>
+                            <p class="text-on-surface-variant text-sm line-clamp-2 flex-grow">Peralatan Industri Pengolahan Makanan Mesin retort ini ideal untuk sterilisasi produk makanan dalam kemasan tertutup. Menggunakan suhu tinggi dan tekanan untuk membunuh mikroorganisme berbahaya...</p>
+                            <div class="flex items-center gap-1 text-xs text-on-surface-variant">
+                                <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span><span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span><span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span><span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span><span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span>
+                                <span class="ml-1">(49)</span>
+                            </div>
+                            <p class="font-headline-sm text-headline-sm text-primary-container text-lg font-black">Rp18.800.000</p>
+                            <div class="flex gap-2 mt-1">
+                                <a class="bg-[#25D366] text-white px-4 py-2.5 rounded-xl font-label-md text-label-md text-center flex-1 flex items-center justify-center gap-1.5 text-xs hover:bg-[#1FAD54] transition-colors shadow-sm" href="https://wa.me/6285335850517?text=Halo%2C%20saya%20tertarik%20dengan%20Mini%20Retort%20Sterilisasi%20100%20Liter%20Asianindo" target="_blank" rel="noopener">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133-.298-.347-.446-.52-.149-.174-.198-.298-.298-.497-.099-.198-.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074-.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413-.248-.694-.248-1.289-.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                    Tanya Admin
+                                </a>
+                                <a class="border-2 border-primary/20 text-primary px-3 py-2.5 rounded-xl flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f9ce34] hover:via-[#ee2a7b] hover:to-[#6228d7] hover:text-white hover:border-transparent transition-all flex-shrink-0 group" href="https://www.instagram.com/asianindo.mesin/" target="_blank" rel="noopener" title="Lihat Instagram">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="group-hover:fill-white transition-colors"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm3.98-10.169a1.44 1.44 0 100-2.88 1.44 1.44 0 000 2.88z"/></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 3: MESIN PIROLISIS (PENGUBAH LIMBAH ORGANIK MENJADI BAHAN PENGAWET ATAU ASAP CAIR) ASIANINDO -->
+                    <div class="product-card bg-white rounded-2xl border border-outline-variant/20 overflow-hidden reveal reveal-delay-3">
+                        <div class="relative overflow-hidden bg-surface-container-low p-4">
+                            <div class="absolute top-4 left-4 z-10 bg-[#FFB800] text-black font-bold px-3 py-1 rounded-full font-label-md text-label-md text-xs font-bold">
+                                Terlaris
+                            </div>
+                            <img alt="MESIN PIROLISIS (PENGUBAH LIMBAH ORGANIK MENJADI BAHAN PENGAWET ATAU ASAP CAIR) ASIANINDO" class="product-img w-full h-48 object-contain" src="https://cf.shopee.co.id/file/id-11134207-8224y-mi9mrkjme1ag30" loading="lazy" />
+                        </div>
+                        <div class="p-5 flex flex-col gap-3 flex-grow">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-primary-fixed text-primary-container px-2 py-0.5 rounded-md font-caption text-caption text-xs">Lainnya</span>
+                            </div>
+                            <h3 class="font-headline-sm text-headline-sm text-on-surface text-base font-bold leading-tight line-clamp-2">MESIN PIROLISIS (PENGUBAH LIMBAH ORGANIK MENJADI BAHAN PENGAWET ATAU ASAP CAIR) ASIANINDO</h3>
+                            <p class="text-on-surface-variant text-sm line-clamp-2 flex-grow">Mesin pirolisis adalah alat yang menggunakan panas tinggi dalam kondisi minim atau tanpa oksigen untuk mengolah limbah organik atau sampah, mengubahnya menjadi produk lain seperti bahan pengawet dan asap cair. Mesin ini berperan penting dalam pengelolaan sampah, terutama kayu, batok kelapa, serabut kelapa, dan dapat menghasilkan produk yang bernilai tambah.   Spesifikasi : Kapasitas 60 kg bahan baku - Bahan Stainless steel 3mm - Terdiri dari tabung reaktor, tabung kondensor - Safety valve, thermo analog, dan presure gauge  Cara Kerja Mesin Pirolisis: 1. Pemanasan: Limbah organik atau sampah dimasukkan ke dalam reaktor dan dipanaskan pada suhu tinggi (misalnya, 300-800°C) tanpa adanya oksigen.  2. Penguraian: Proses pirolisis menyebabkan bahan organik terurai menjadi molekul yang lebih kecil, menghasilkan bahan pengawet dan asap cair. 3. Pemurnian: Produk bahan pengawet dan asap cair dapat dipisahkan dan dimurnikan untuk digunakan lebih lanjut, sedangkan residu padat dapat diolah menjadi karbon aktif atau produk lain. </p>
+                            <div class="flex items-center gap-1 text-xs text-on-surface-variant">
+                                <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span><span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span><span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span><span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span><span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span>
+                                <span class="ml-1">(35)</span>
+                            </div>
+                            <p class="font-headline-sm text-headline-sm text-primary-container text-lg font-black">Rp 25.300.000</p>
+                            <div class="flex gap-2 mt-1">
+                                <a class="bg-[#25D366] text-white px-4 py-2.5 rounded-xl font-label-md text-label-md text-center flex-1 flex items-center justify-center gap-1.5 text-xs hover:bg-[#1FAD54] transition-colors shadow-sm" href="https://wa.me/6285335850517?text=Halo%2C%20saya%20tertarik%20dengan%20MESIN%20PIROLISIS%20(PENGUBAH%20LIMBAH%20ORGANIK%20MENJADI%20BAHAN%20PENGAWET%20ATAU%20ASAP%20CAIR)%20ASIANINDO" target="_blank" rel="noopener">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133-.298-.347-.446-.52-.149-.174-.198-.298-.298-.497-.099-.198-.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074-.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413-.248-.694-.248-1.289-.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                    Tanya Admin
+                                </a>
+                        <a class="border-2 border-primary/20 text-primary px-3 py-2.5 rounded-xl flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f9ce34] hover:via-[#ee2a7b] hover:to-[#6228d7] hover:text-white hover:border-transparent transition-all flex-shrink-0 group" href="https://www.instagram.com/asianindo.mesin/" target="_blank" rel="noopener" title="Lihat Instagram">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="group-hover:fill-white transition-colors"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm3.98-10.169a1.44 1.44 0 100-2.88 1.44 1.44 0 000 2.88z"/></svg>
+                        </a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 4: Mesin Roasting Kopi Kapasitas 20kg CV Asianindo -->
+                    <div class="product-card bg-white rounded-2xl border border-outline-variant/20 overflow-hidden reveal reveal-delay-4">
+                        <div class="relative overflow-hidden bg-surface-container-low p-4">
+                            <img alt="Mesin Roasting Kopi Kapasitas 20kg CV Asianindo" class="product-img w-full h-48 object-contain" src="https://cf.shopee.co.id/file/id-11134207-8224s-mgojxxg4tdzg6f" loading="lazy" />
+                        </div>
+                        <div class="p-5 flex flex-col gap-3 flex-grow">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-primary-fixed text-primary-container px-2 py-0.5 rounded-md font-caption text-caption text-xs">Roaster Kopi</span>
+                            </div>
+                            <h3 class="font-headline-sm text-headline-sm text-on-surface text-base font-bold leading-tight line-clamp-2">Mesin Roasting Kopi Kapasitas 20kg CV Asianindo</h3>
+                            <p class="text-on-surface-variant text-sm line-clamp-2 flex-grow">SPESIFIKASI • Kapasitas 20kg • Tebal Bahan Drum 3 mm Stainless steel • Body Mild Steel • Rangka Pipa Kotak...</p>
+                            <div class="flex items-center gap-1 text-xs text-on-surface-variant">
+                                <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span><span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span><span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span><span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span><span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;color:#FFB800;">star</span>
+                                <span class="ml-1">(23)</span>
+                            </div>
+                            <p class="font-headline-sm text-headline-sm text-primary-container text-lg font-black">Rp23.950.000</p>
+                            <div class="flex gap-2 mt-1">
+                                <a class="bg-[#25D366] text-white px-4 py-2.5 rounded-xl font-label-md text-label-md text-center flex-1 flex items-center justify-center gap-1.5 text-xs hover:bg-[#1FAD54] transition-colors shadow-sm" href="https://wa.me/6285335850517?text=Halo%2C%20saya%20tertarik%20dengan%20Mesin%20Roasting%20Kopi%20Kapasitas%2020kg%20CV%20Asianindo" target="_blank" rel="noopener">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133-.298-.347-.446-.52-.149-.174-.198-.298-.298-.497-.099-.198-.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074-.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413-.248-.694-.248-1.289-.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                    Tanya Admin
+                                </a>
+                                <a class="border-2 border-primary/20 text-primary px-3 py-2.5 rounded-xl flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f9ce34] hover:via-[#ee2a7b] hover:to-[#6228d7] hover:text-white hover:border-transparent transition-all flex-shrink-0 group" href="https://www.instagram.com/asianindo.mesin/" target="_blank" rel="noopener" title="Lihat Instagram">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="group-hover:fill-white transition-colors"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm3.98-10.169a1.44 1.44 0 100-2.88 1.44 1.44 0 000 2.88z"/></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+</div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- Section 5: KEUNGGULAN / WHY CHOOSE US -->
+        <!-- ============================================ -->
+        <section class="py-xl relative overflow-hidden" id="keunggulan">
+            <!-- Background decoration -->
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary-fixed/5 to-transparent"></div>
+
+            <div class="max-w-container-max mx-auto px-gutter relative z-10">
+                <!-- Section Header -->
+                <div class="text-center mb-16 reveal">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-fixed/50 border border-primary-fixed mb-6">
+                        <span class="material-symbols-outlined text-primary-container" style="font-size: 16px;">workspace_premium</span>
+                        <span class="font-label-md text-label-md text-primary-container tracking-wider uppercase text-xs">Mengapa Asianindo</span>
+                    </div>
+                    <h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">
+                        Keunggulan <span class="text-gradient-dark">Memilih Kami</span>
+                    </h2>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                        Komitmen kami terhadap kualitas, pelayanan, dan kepuasan pelanggan menjadikan CV Asianindo pilihan utama untuk kebutuhan mesin industri Anda.
+                    </p>
+                </div>
+
+                <!-- Features Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Feature 1 -->
+                    <div class="feature-card bg-white rounded-2xl p-7 border border-outline-variant/15 reveal reveal-delay-1">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-fixed to-secondary-container flex items-center justify-center mb-5">
+                            <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1; font-size: 28px;">shield</span>
+                        </div>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface text-lg font-bold mb-3">Garansi Produk</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Setiap mesin dilengkapi garansi resmi untuk memberikan rasa aman dan kepercayaan dalam investasi Anda.</p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="feature-card bg-white rounded-2xl p-7 border border-outline-variant/15 reveal reveal-delay-2">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-fixed to-secondary-container flex items-center justify-center mb-5">
+                            <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1; font-size: 28px;">factory</span>
+                        </div>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface text-lg font-bold mb-3">Produksi Sendiri</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Dibuat di workshop kami sendiri di Sidoarjo, memastikan kontrol kualitas dari awal hingga akhir proses produksi.</p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="feature-card bg-white rounded-2xl p-7 border border-outline-variant/15 reveal reveal-delay-3">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-fixed to-secondary-container flex items-center justify-center mb-5">
+                            <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1; font-size: 28px;">payments</span>
+                        </div>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface text-lg font-bold mb-3">Harga Kompetitif</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Harga langsung dari pabrik tanpa perantara. Dapatkan mesin berkualitas dengan investasi yang terjangkau.</p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="feature-card bg-white rounded-2xl p-7 border border-outline-variant/15 reveal reveal-delay-4">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-fixed to-secondary-container flex items-center justify-center mb-5">
+                            <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1; font-size: 28px;">engineering</span>
+                        </div>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface text-lg font-bold mb-3">Dukungan Teknisi</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Tim teknisi berpengalaman siap membantu instalasi, pelatihan operasional, dan troubleshooting mesin Anda.</p>
+                    </div>
+
+                    <!-- Feature 5 -->
+                    <div class="feature-card bg-white rounded-2xl p-7 border border-outline-variant/15 reveal reveal-delay-5">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-fixed to-secondary-container flex items-center justify-center mb-5">
+                            <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1; font-size: 28px;">menu_book</span>
+                        </div>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface text-lg font-bold mb-3">Buku Panduan</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Setiap mesin disertai buku panduan pengoperasian lengkap agar Anda dapat menggunakan mesin dengan optimal.</p>
+                    </div>
+
+                    <!-- Feature 6 -->
+                    <div class="feature-card bg-white rounded-2xl p-7 border border-outline-variant/15 reveal reveal-delay-6">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-fixed to-secondary-container flex items-center justify-center mb-5">
+                            <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1; font-size: 28px;">support_agent</span>
+                        </div>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface text-lg font-bold mb-3">After Sales Service</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Layanan purna jual terbaik termasuk maintenance berkala, penyediaan spare part, dan konsultasi teknis gratis.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- Section 6: TESTIMONI -->
+        <!-- ============================================ -->
+        <section class="py-xl bg-surface-container-low relative overflow-hidden" id="testimoni">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary-container/20 to-transparent"></div>
+
+            <div class="max-w-container-max mx-auto px-gutter">
+                <!-- Section Header -->
+                <div class="text-center mb-16 reveal">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-fixed/50 border border-primary-fixed mb-6">
+                        <span class="material-symbols-outlined text-primary-container" style="font-size: 16px;">format_quote</span>
+                        <span class="font-label-md text-label-md text-primary-container tracking-wider uppercase text-xs">Testimoni</span>
+                    </div>
+                    <h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">
+                        Dipercaya oleh <span class="text-gradient-dark">Ribuan Pelanggan</span>
+                    </h2>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                        Dengarkan cerita sukses pelanggan kami yang telah menggunakan mesin Asianindo untuk mengembangkan usahanya.
+                    </p>
+                </div>
+
+                <!-- Testimonials Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card bg-white rounded-2xl p-7 border border-outline-variant/15 reveal reveal-delay-1 relative">
+                        <div class="absolute top-6 right-6 text-primary-fixed">
+                            <span class="material-symbols-outlined" style="font-size: 40px; font-variation-settings: 'FILL' 1;">format_quote</span>
+                        </div>
+                        <!-- Stars -->
+                        <div class="flex gap-0.5 mb-4">
+                            <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1; color: #FFB800;">star</span>
+                            <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1; color: #FFB800;">star</span>
+                            <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1; color: #FFB800;">star</span>
+                            <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1; color: #FFB800;">star</span>
+                            <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1; color: #FFB800;">star</span>
+                        </div>
+                        <p class="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">
+                            "Mesin vacuum frying dari Asianindo sangat membantu usaha keripik buah kami. Kualitas produk meningkat drastis dan kapasitas produksi naik 3x lipat. Pelayanan after sales juga sangat responsif."
+                        </p>
+                        <div class="flex items-center gap-4 pt-4 border-t border-outline-variant/15">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary-container to-primary flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-bold text-lg">B</span>
+                            </div>
+                            <div>
+                                <p class="font-label-md text-label-md text-on-surface font-bold">Budi Santoso</p>
+                                <p class="text-on-surface-variant text-sm">Owner, Keripik Nusantara — Malang</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-card bg-white rounded-2xl p-7 border border-outline-variant/15 reveal reveal-delay-2 relative">
+                        <div class="absolute top-6 right-6 text-primary-fixed">
+                            <span class="material-symbols-outlined" style="font-size: 40px; font-variation-settings: 'FILL' 1;">format_quote</span>
+                        </div>
+                        <div class="flex gap-0.5 mb-4">
+                            <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1; color: #FFB800;">star</span>
+                            <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1; color: #FFB800;">star</span>
+                            <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1; color: #FFB800;">star</span>
+                            <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1; color: #FFB800;">star</span>
+                            <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1; color: #FFB800;">star</span>
+                        </div>
+                        <p class="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">
+                            "Kami sudah menggunakan spray dryer dari Asianindo selama 3 tahun dan performanya konsisten. Proses konsultasi sebelum membeli juga sangat membantu kami menentukan spesifikasi yang tepat."
+                        </p>
+                        <div class="flex items-center gap-4 pt-4 border-t border-outline-variant/15">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary-container to-primary flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-bold text-lg">S</span>
+                            </div>
+                            <div>
+                                <p class="font-label-md text-label-md text-on-surface font-bold">Siti Rahmawati</p>
+                                <p class="text-on-surface-variant text-sm">R&D Manager, PT Herba Sehat — Surabaya</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-card bg-white rounded-2xl p-7 border border-outline-variant/15 reveal reveal-delay-3 relative">
+                        <div class="absolute top-6 right-6 text-primary-fixed">
+                            <span class="material-symbols-outlined" style="font-size: 40px; font-variation-settings: 'FILL' 1;">format_quote</span>
+                        </div>
+                        <div class="flex gap-0.5 mb-4">
+                            <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1; color: #FFB800;">star</span>
+                            <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1; color: #FFB800;">star</span>
+                            <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1; color: #FFB800;">star</span>
+                            <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1; color: #FFB800;">star</span>
+                            <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1; color: #FFB800;">star</span>
+                        </div>
+                        <p class="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">
+                            "Roaster kopi dari Asianindo menjadi investasi terbaik untuk kedai kopi kami. Hasil sangrai sangat merata dan konsisten. Tim teknisi juga sabar mengajari kami cara operasional yang benar."
+                        </p>
+                        <div class="flex items-center gap-4 pt-4 border-t border-outline-variant/15">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary-container to-primary flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-bold text-lg">A</span>
+                            </div>
+                            <div>
+                                <p class="font-label-md text-label-md text-on-surface font-bold">Ahmad Fauzi</p>
+                                <p class="text-on-surface-variant text-sm">Owner, Kopi Nusantara Roastery — Jakarta</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- Section 7: CTA WHATSAPP -->
+        <!-- ============================================ -->
+        <section class="relative overflow-hidden" id="cta">
+            <div class="cta-gradient py-xl relative">
+                <!-- Decorative elements -->
+                <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+                <div class="absolute bottom-0 left-0 w-72 h-72 bg-inverse-primary/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"></div>
+                <!-- Grid pattern overlay -->
+                <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+                <div class="max-w-container-max mx-auto px-gutter relative z-10">
+                    <div class="max-w-3xl mx-auto text-center flex flex-col items-center gap-8">
+                        <!-- Icon -->
+                        <div class="w-20 h-20 rounded-3xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center reveal">
+                            <span class="material-symbols-outlined text-white" style="font-size: 40px; font-variation-settings: 'FILL' 1;">support_agent</span>
+                        </div>
+
+                        <h2 class="font-headline-lg text-headline-lg text-white reveal reveal-delay-1">
+                            Konsultasi Mesin <span class="text-inverse-primary">Gratis</span> dengan Tim Ahli Kami
+                        </h2>
+                        <p class="font-body-lg text-body-lg text-white/80 max-w-xl reveal reveal-delay-2">
+                            Bingung memilih mesin yang tepat untuk usaha Anda? Tim konsultan kami siap membantu Anda menemukan solusi mesin yang sesuai dengan kebutuhan dan budget Anda.
+                        </p>
+
+                        <!-- CTA Buttons -->
+                        <div class="flex flex-col sm:flex-row gap-4 reveal reveal-delay-3">
+                            <a class="bg-[#25D366] text-white px-10 py-4 rounded-xl font-label-md text-label-md text-center hover:bg-[#1FAD54] transition-all hover-lift flex items-center justify-center gap-3 shadow-lg text-base font-bold" href="https://wa.me/6285335850517?text=Halo%20CV%20Asianindo%2C%20saya%20ingin%20konsultasi%20mesin%20untuk%20usaha%20saya" target="_blank">
+                                <span class="material-symbols-outlined" style="font-size: 24px;">chat</span>
+                                Hubungi via WhatsApp
+                            </a>
+                            
+                        </div>
+
+                        <!-- Trust indicators -->
+                        <div class="flex flex-wrap items-center justify-center gap-6 mt-4 reveal reveal-delay-4">
+                            <div class="flex items-center gap-2 text-white/60">
+                                <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1;">schedule</span>
+                                <span class="text-sm">Respon Cepat</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-white/60">
+                                <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1;">lock</span>
+                                <span class="text-sm">Privasi Terjaga</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-white/60">
+                                <span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: 'FILL' 1;">verified</span>
+                                <span class="text-sm">Konsultasi Gratis</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ============================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================ -->
+    <footer class="bg-[#2D2354] text-white">
+        <div class="max-w-container-max mx-auto px-gutter">
+            <!-- Main Footer -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 py-16">
+                <!-- Brand Column -->
+                <div class="flex flex-col gap-5 lg:col-span-1">
+                    <a class="font-headline-sm text-headline-sm font-black text-white flex items-center gap-2" href="#">
+                <img src="images/logo_asianindo.png" alt="CV Asianindo" class="h-14 object-contain" />
+                <span>CV Asianindo</span>
+            </a>
+                    <p class="font-body-md text-body-md text-white/60 leading-relaxed">
+                        Mitra terpercaya untuk kebutuhan mesin industri skala UMKM hingga manufaktur di seluruh Indonesia sejak 2014.
+                    </p>
+                    <!-- Social Media -->
+                      <div class="flex gap-3 mt-2">
+                          <a class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors" href="https://youtube.com/@cvasianindo?si=abd-I9-xEMRUeizb" target="_blank" rel="noopener" aria-label="YouTube">
+                              <span class="material-symbols-outlined" style="font-size: 20px;">play_circle</span>
+                          </a>
+                          <a class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors" href="https://www.tiktok.com/@cv.asianindo?_r=1&_t=ZS-98K0a34Gl89" target="_blank" rel="noopener" aria-label="TikTok">
+                              <span class="material-symbols-outlined" style="font-size: 20px;">smart_display</span>
+                          </a>
+                          <a class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors" href="https://www.instagram.com/asianindo.mesin/" target="_blank" rel="noopener" aria-label="Instagram">
+                              <span class="material-symbols-outlined" style="font-size: 20px;">photo_camera</span>
+                          </a>
+                          <a class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors" href="https://www.facebook.com/share/1DSoqkEVbM/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
+                              <span class="material-symbols-outlined" style="font-size: 20px;">thumb_up</span>
+                          </a>
+                      </div>
+                </div>
+
+                <!-- Perusahaan Links -->
+                <div class="flex flex-col gap-4">
+                    <h3 class="font-label-md text-label-md text-white tracking-wider uppercase text-xs mb-2">Perusahaan</h3>
+                    <a class="font-body-md text-body-md text-white/60 hover:text-white hover:translate-x-1 transition-all flex items-center gap-2" href="about.html">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span> Tentang Kami
+                    </a>
+                    <a class="font-body-md text-body-md text-white/60 hover:text-white hover:translate-x-1 transition-all flex items-center gap-2" href="#">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span> Artikel & Edukasi
+                    </a>
+                    <a class="font-body-md text-body-md text-white/60 hover:text-white hover:translate-x-1 transition-all flex items-center gap-2" href="#">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span> Karir
+                    </a>
+                    <a class="font-body-md text-body-md text-white/60 hover:text-white hover:translate-x-1 transition-all flex items-center gap-2" href="kontak.html">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span> Kontak
+                    </a>
+                </div>
+
+                <!-- Kategori Mesin -->
+                <div class="flex flex-col gap-4">
+                    <h3 class="font-label-md text-label-md text-white tracking-wider uppercase text-xs mb-2">Kategori Mesin</h3>
+                    <a class="font-body-md text-body-md text-white/60 hover:text-white hover:translate-x-1 transition-all flex items-center gap-2" href="#">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span> Vacuum Frying
+                    </a>
+                    <a class="font-body-md text-body-md text-white/60 hover:text-white hover:translate-x-1 transition-all flex items-center gap-2" href="#">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span> Spray Dryer
+                    </a>
+                    <a class="font-body-md text-body-md text-white/60 hover:text-white hover:translate-x-1 transition-all flex items-center gap-2" href="#">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span> Roaster Kopi
+                    </a>
+                    <a class="font-body-md text-body-md text-white/60 hover:text-white hover:translate-x-1 transition-all flex items-center gap-2" href="#">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span> Mesin Pengemasan
+                    </a>
+                    <a class="font-body-md text-body-md text-white/60 hover:text-white hover:translate-x-1 transition-all flex items-center gap-2" href="katalog.html">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span> Lihat Semua
+                    </a>
+                </div>
+
+                <!-- Kontak -->
+                <div class="flex flex-col gap-4">
+                    <h3 class="font-label-md text-label-md text-white tracking-wider uppercase text-xs mb-2">Hubungi Kami</h3>
+                    <div class="flex items-start gap-3 text-white/60">
+                        <span class="material-symbols-outlined flex-shrink-0 mt-1" style="font-size: 18px; font-variation-settings: 'FILL' 1;">location_on</span>
+                        <a href="https://maps.app.goo.gl/uZUZYDwvWkcd8LNj8" target="_blank" class="text-sm hover:text-white transition-colors">Jl. Kyai Parseh Jaya No.50, Bumiayu, Kec. Kedungkandang, Kota Malang, Jawa Timur</a>
+                    </div>
+                    <a class="flex items-center gap-3 text-white/60 hover:text-white transition-colors" href="https://wa.me/6285335850517" target="_blank">
+                        <span class="material-symbols-outlined flex-shrink-0" style="font-size: 18px; font-variation-settings: 'FILL' 1;">chat</span>
+                        <span class="text-sm">+62 853-3585-0517</span>
+                    </a>
+                    <a class="flex items-center gap-3 text-white/60 hover:text-white transition-colors" href="mailto:cvasianindo@gmail.com">
+                        <span class="material-symbols-outlined flex-shrink-0" style="font-size: 18px; font-variation-settings: 'FILL' 1;">mail</span>
+                        <span class="text-sm">cvasianindo@gmail.com</span>
+                    </a>
+                    <div class="flex items-center gap-3 text-white/60">
+                        <span class="material-symbols-outlined flex-shrink-0" style="font-size: 18px; font-variation-settings: 'FILL' 1;">schedule</span>
+                        <span class="text-sm">Senin-Sabtu pukul 09.00-16.00 WIB</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="border-t border-white/10 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="font-caption text-caption text-white/40 text-center md:text-left">
+                    © 2024 CV Asianindo Industrial Machinery. All rights reserved.
+                </p>
+                <div class="flex gap-6">
+                    <a class="font-caption text-caption text-white/40 hover:text-white/70 transition-colors" href="#">Privacy Policy</a>
+                    <a class="font-caption text-caption text-white/40 hover:text-white/70 transition-colors" href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================ -->
+    <!-- Floating WhatsApp Button -->
+    <!-- ============================================ -->
+    <a class="fixed bottom-8 right-8 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform pulse-animation group" href="https://wa.me/6285335850517?text=Halo%20CV%20Asianindo%2C%20saya%20ingin%20konsultasi%20mesin" target="_blank" aria-label="WhatsApp">
+        <span class="material-symbols-outlined" style="font-size: 32px;">chat</span>
+        <span class="absolute right-full mr-4 bg-white text-on-surface px-4 py-2.5 rounded-xl font-label-md text-label-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity ambient-shadow border border-outline-variant/20 pointer-events-none">
+            💬 Konsultasi Mesin Gratis
+        </span>
+    </a>
+
+    <!-- ============================================ -->
+    <!-- SCRIPTS -->
+    <!-- ============================================ -->
+    <script>
+        // ===== Mobile Menu Logic =====
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const overlay = document.getElementById('mobile-overlay');
+
+        function toggleMenu() {
+            const isClosed = mobileMenu.classList.contains('-translate-x-full');
+            if (isClosed) {
+                mobileMenu.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+                document.body.style.overflow = 'hidden';
+            } else {
+                mobileMenu.classList.add('-translate-x-full');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+                document.body.style.overflow = '';
+            }
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+        closeMenuBtn.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+
+        // ===== Scroll Reveal Animation =====
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // ===== Header Scroll Effect =====
+        const header = document.getElementById('main-header');
+        let lastScrollY = 0;
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            
+            if (header) {
+                if (scrollY > 100) {
+                    header.classList.add('shadow-md');
+                    header.classList.remove('shadow-sm');
+                } else {
+                    header.classList.remove('shadow-md');
+                    header.classList.add('shadow-sm');
+                }
+            }
+
+            lastScrollY = scrollY;
+        });
+
+        // ===== Smooth Scroll for Anchor Links =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                e.preventDefault();
+                const target = document.querySelector(targetId);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+<script>
+    // Force reload on back navigation to fix blank display issues
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted || (window.performance && window.performance.navigation && window.performance.navigation.type === 2) || (window.performance && window.performance.getEntriesByType && window.performance.getEntriesByType("navigation").length > 0 && window.performance.getEntriesByType("navigation")[0].type === "back_forward")) {
+            window.location.reload();
+        }
+    });
+    </script>
+</body>
+</html>
