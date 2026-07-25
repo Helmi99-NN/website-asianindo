@@ -9,7 +9,7 @@ $is_admin = isset($_SESSION['is_admin']) ? true : false;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asianindo Seller Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.13.3/dist/cdn.min.js"></script>
     <style>
         [x-cloak] { display: none !important; }
         .shopee-bg { background-color: #f6f6f6; }
@@ -21,7 +21,7 @@ $is_admin = isset($_SESSION['is_admin']) ? true : false;
 <body class="shopee-bg text-gray-800 font-sans" x-data="adminApp()" x-init="initApp()">
 
     <!-- LOGIN SCREEN -->
-    <template x-if="!isLoggedIn">
+    <div x-show="!isLoggedIn" id="loginScreen">
         <div class="min-h-screen flex items-center justify-center bg-gray-100">
             <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
                 <div class="text-center mb-8">
@@ -45,10 +45,10 @@ $is_admin = isset($_SESSION['is_admin']) ? true : false;
                 </form>
             </div>
         </div>
-    </template>
+    </div>
 
     <!-- DASHBOARD -->
-    <template x-if="isLoggedIn">
+    <div x-show="isLoggedIn" x-cloak id="dashboardScreen">
         <div class="flex h-screen overflow-hidden">
             <!-- Sidebar -->
             <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
@@ -285,7 +285,7 @@ $is_admin = isset($_SESSION['is_admin']) ? true : false;
                 </div>
             </main>
         </div>
-    </template>
+    </div>
 
     <script>
         function adminApp() {
