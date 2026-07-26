@@ -206,7 +206,16 @@ if ($action === 'save_product') {
     $price = (int)($_POST['price'] ?? 0);
     $priceRange = $_POST['priceRange'] ?? '';
     $description = $_POST['description'] ?? '';
-    $imagePath = $_POST['existing_image'] ?? '';
+    
+    // Parse images array from frontend
+    $images = [];
+    if (isset($_POST['images'])) {
+        $imagesData = json_decode($_POST['images'], true);
+        if (is_array($imagesData)) {
+            $images = $imagesData;
+        }
+    }
+    
     $videoPath = $_POST['existing_video'] ?? '';
     
     $features = [];
@@ -226,19 +235,7 @@ if ($action === 'save_product') {
         }
     }
 
-    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        if ($_FILES['image']['size'] > 2 * 1024 * 1024) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Ukuran gambar maksimal 2MB!']);
-            exit;
-        }
-        $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-        $filename = uniqid('img_') . '.' . $ext;
-        if (!is_dir($UPLOAD_DIR)) mkdir($UPLOAD_DIR, 0777, true);
-        move_uploaded_file($_FILES['image']['tmp_name'], $UPLOAD_DIR . $filename);
-        $imagePath = 'images/' . $filename;
-    }
-
+    // Handle video upload (legacy, but keeping it)
     if (isset($_FILES['video']) && $_FILES['video']['error'] === UPLOAD_ERR_OK) {
         if ($_FILES['video']['size'] > 15 * 1024 * 1024) {
             http_response_code(400);
@@ -262,7 +259,7 @@ if ($action === 'save_product') {
         'capacity' => $capacity,
         'price' => $price,
         'priceRange' => $priceRange,
-        'image' => $imagePath,
+        'images' => $images,
         'video' => $videoPath,
         'rating' => 5,
         'reviews' => rand(5, 50),

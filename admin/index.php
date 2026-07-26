@@ -219,7 +219,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             <tbody>
                 <template x-for="p in filteredProducts" :key="p.id">
                     <tr class="border-t border-gray-100 hover:bg-primary-50/30">
-                        <td class="p-3"><img :src="'../'+p.image" class="w-14 h-14 object-cover rounded-lg border" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2256%22 height=%2256%22><rect fill=%22%23eee%22 width=%2256%22 height=%2256%22/><text x=%2228%22 y=%2232%22 text-anchor=%22middle%22 fill=%22%23aaa%22 font-size=%2212%22>No img</text></svg>'"></td>
+                        <td class="p-3"><img :src="p.images && p.images.length > 0 ? (p.images[0].startsWith('http') || p.images[0].startsWith('data:') ? p.images[0] : '../'+p.images[0]) : ''" class="w-14 h-14 object-cover rounded-lg border" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2256%22 height=%2256%22><rect fill=%22%23eee%22 width=%2256%22 height=%2256%22/><text x=%2228%22 y=%2232%22 text-anchor=%22middle%22 fill=%22%23aaa%22 font-size=%2212%22>No img</text></svg>'"></td>
                         <td class="p-3 font-medium text-sm" x-text="p.name"></td>
                         <td class="p-3 text-sm text-gray-500" x-text="p.category"></td>
                         <td class="p-3 text-sm text-right font-semibold" x-text="'Rp '+Number(p.price).toLocaleString('id-ID')"></td>
@@ -285,12 +285,21 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
         <!-- Image Upload -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div class="form-group">
-                <label class="form-label">Foto Produk (Maks 2MB)</label>
-                <input type="file" accept="image/*" @change="handleImage($event)" class="form-input text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-primary-light file:text-primary file:font-medium file:cursor-pointer">
-                <div class="mt-2" x-show="imagePreview || productForm.existing_image">
-                    <img :src="imagePreview || ('../'+productForm.existing_image)" class="w-32 h-32 object-cover rounded-lg border">
+            <div class="form-group md:col-span-2">
+                <label class="form-label">Galeri Foto Produk (Bisa lebih dari 1, Maks 2MB/file)</label>
+                <input type="file" accept="image/*" multiple @change="handleMultipleImages($event)" class="form-input text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-primary-light file:text-primary file:font-medium file:cursor-pointer">
+                
+                <div class="mt-3 flex flex-wrap gap-3" x-show="productForm.images.length > 0">
+                    <template x-for="(img, idx) in productForm.images" :key="idx">
+                        <div class="relative group">
+                            <img :src="img.startsWith('http') || img.startsWith('data:') ? img : ('../'+img)" class="w-32 h-32 object-cover rounded-lg border shadow-sm">
+                            <button type="button" @click="productForm.images.splice(idx, 1)" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-md">
+                                <i class="fas fa-times text-xs"></i>
+                            </button>
+                        </div>
+                    </template>
                 </div>
+                <p class="text-xs text-gray-400 mt-2"><i class="fas fa-info-circle"></i> Gambar pertama akan menjadi foto sampul utama (cover).</p>
             </div>
             <div class="form-group">
                 <label class="form-label">Video Produk (Maks 15MB)</label>

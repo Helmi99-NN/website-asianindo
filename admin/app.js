@@ -198,7 +198,7 @@ function adminApp() {
 
         openAddProduct() {
             this.editingId = null;
-            this.productForm = { id: '', name: '', category: 'Mesin Industri', subCategory: '', price: '', priceRange: '', description: '', features: [''], specs: [{key: '', val: ''}], existing_image: '', existing_video: '' };
+            this.productForm = { id: '', name: '', category: 'Mesin Industri', subCategory: '', price: '', priceRange: '', description: '', features: [''], specs: [{key: '', val: ''}], images: [], existing_video: '' };
             this.resetMedia();
             this.changeView('product_form');
         },
@@ -212,21 +212,42 @@ function adminApp() {
                 id: p.id, name: p.name, category: p.category || 'Mesin Industri', subCategory: p.subCategory || '',
                 price: p.price, priceRange: p.priceRange || '', description: p.description || '',
                 features: (p.features && p.features.length) ? [...p.features] : [''],
-                specs: specs, existing_image: p.image || '', existing_video: p.video || ''
+                specs: specs, images: p.images && p.images.length ? [...p.images] : (p.image ? [p.image] : []), existing_video: p.video || ''
             };
             this.resetMedia();
             this.changeView('product_form');
         },
 
         resetMedia() {
-            this.imagePreview = null; this.videoPreview = null;
-            this.imageFile = null; this.videoFile = null;
+            this.videoPreview = null;
+            this.videoFile = null;
         },
 
-        handleImage(e) {
-            let f = e.target.files[0]; if (!f) return;
-            if (f.size > 2*1024*1024) { alert('Ukuran gambar maksimal 2MB!'); e.target.value=''; return; }
-            this.imageFile = f; this.imagePreview = URL.createObjectURL(f);
+        async handleMultipleImages(e) {
+            let files = e.target.files;
+            if (!files || files.length === 0) return;
+            this.isSaving = true; // Show loading
+            
+            for (let i = 0; i < files.length; i++) {
+                let f = files[i];
+                if (f.size > 2*1024*1024) { alert('Ukuran gambar maksimal 2MB per file!'); continue; }
+                
+                let fd = new FormData();
+                fd.append('file', f);
+                try {
+                    let res = await fetch('api.php?action=upload_media', { method: 'POST', body: fd });
+                    let json = await res.json();
+                    if (json.success) {
+                        this.productForm.images.push(json.path);
+                    } else {
+                        alert('Gagal unggah: ' + f.name);
+                    }
+                } catch(err) {
+                    console.error(err);
+                }
+            }
+            e.target.value = ''; // Reset input
+            this.isSaving = false;
         },
 
         handleVideo(e) {
@@ -237,13 +258,14 @@ function adminApp() {
 
         async saveProduct() {
             if (!this.productForm.name || !this.productForm.price) { alert('Mohon isi nama dan harga produk'); return; }
-            if (!this.editingId && !this.imageFile) { alert('Mohon unggah foto produk'); return; }
+            if (this.productForm.images.length === 0) { alert('Mohon unggah minimal 1 foto produk'); return; }
             this.isSaving = true;
             let fd = new FormData();
-            for (let key of ['id','name','category','subCategory','price','priceRange','description','existing_image','existing_video']) {
+            for (let key of ['id','name','category','subCategory','price','priceRange','description','existing_video']) {
                 fd.append(key, this.productForm[key] || '');
             }
-            if (this.imageFile) fd.append('image', this.imageFile);
+            fd.append('images', JSON.stringify(this.productForm.images));
+            if (this.videoFile) fd.append('video', this.videoFile);
             if (this.videoFile) fd.append('video', this.videoFile);
             this.productForm.features.forEach(f => { if (f.trim()) fd.append('features[]', f); });
             this.productForm.specs.forEach(s => {

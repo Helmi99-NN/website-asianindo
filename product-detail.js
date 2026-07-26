@@ -21,8 +21,33 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('breadcrumb-product-name').innerText = product.name;
     document.getElementById('product-name').innerText = product.name;
     document.getElementById('product-price').innerText = product.priceDisplay;
-    document.getElementById('product-image').src = product.image;
-    document.getElementById('product-image').alt = product.name;
+    if (product.images && product.images.length > 0) {
+        document.getElementById('product-image').src = product.images[0];
+        document.getElementById('product-image').alt = product.name;
+        
+        // Render thumbnails if more than 1 image
+        const thumbContainer = document.getElementById('product-thumbnails');
+        if (thumbContainer && product.images.length > 1) {
+            let thumbHtml = '';
+            product.images.forEach((img, idx) => {
+                let borderClass = idx === 0 ? 'border-primary' : 'border-gray-200';
+                thumbHtml += `
+                    <div class="flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 ${borderClass} cursor-pointer transition-all hover:border-primary" 
+                         onclick="
+                            document.getElementById('product-image').src='${img}';
+                            Array.from(this.parentElement.children).forEach(c => c.classList.replace('border-primary', 'border-gray-200'));
+                            this.classList.replace('border-gray-200', 'border-primary');
+                         ">
+                        <img src="${img}" alt="Thumbnail ${idx+1}" class="w-full h-full object-cover">
+                    </div>
+                `;
+            });
+            thumbContainer.innerHTML = thumbHtml;
+        }
+    } else if (product.image) {
+        document.getElementById('product-image').src = product.image;
+        document.getElementById('product-image').alt = product.name;
+    }
     document.getElementById('product-category').innerText = product.category;
     document.getElementById('product-capacity').innerText = product.capacity;
     
