@@ -355,7 +355,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="blog_data.js"></script>
+    <script src="data/articles.js"></script>
 
     <main class="min-h-screen bg-surface-container-lowest">
         <!-- Hero Section -->
@@ -382,12 +382,12 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const grid = document.getElementById('cms-blog-grid');
-            if (!window.BLOG_ARTICLES) return;
+            if (!window.ARTICLES_DATA) return;
 
-            grid.innerHTML = window.BLOG_ARTICLES.map((a, i) => `
+            grid.innerHTML = window.ARTICLES_DATA.map((a, i) => `
                 <a href="article.html?id=${a.id}" class="group bg-white rounded-3xl border border-outline-variant/20 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 reveal reveal-delay-${(i % 3) + 1} flex flex-col">
-                    <div class="relative overflow-hidden h-56 bg-surface-container-low">
-                        <img src="${a.image}" alt="${a.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <div class="relative overflow-hidden h-56 bg-surface-container-low flex items-center justify-center">
+                        <img src="${a.existing_image || 'images/logo_asianindo.webp'}" alt="${a.title}" class="${a.existing_image ? 'w-full h-full object-cover transition-transform duration-700 group-hover:scale-105' : 'h-24 opacity-20'}" />
                         <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full font-label-md text-xs font-bold text-primary shadow-sm">
                             ${a.category || 'Artikel'}
                         </div>
@@ -395,7 +395,7 @@
                     <div class="p-6 flex flex-col flex-grow">
                         <div class="flex items-center gap-2 mb-3 text-on-surface-variant text-sm font-medium">
                             <span class="material-symbols-outlined" style="font-size: 16px;">calendar_today</span>
-                            ${a.date}
+                            ${a.publish_date || '-'}
                         </div>
                         <h3 class="font-headline-sm text-xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors line-clamp-3 leading-snug">
                             ${a.title}

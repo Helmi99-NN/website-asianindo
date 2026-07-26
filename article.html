@@ -355,7 +355,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="blog_data.js"></script>
+    <script src="data/articles.js"></script>
 
     <main class="min-h-screen bg-surface-container-lowest">
         <article class="pt-24 pb-20 px-gutter max-w-4xl mx-auto" id="article-content">
@@ -383,13 +383,20 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const id = parseInt(urlParams.get('id'));
-            const article = window.BLOG_ARTICLES?.find(a => a.id === id);
+            let id = urlParams.get('id');
+            // If id is a number string, keep it, otherwise it might be a string like art_123.
+            if(id && !isNaN(id)) id = parseInt(id);
+
+            const article = window.ARTICLES_DATA?.find(a => a.id === id || a.id == id);
 
             const container = document.getElementById('article-content');
 
             if (article) {
                 document.title = article.title + " - CV Asianindo";
+                const imgHtml = article.existing_image 
+                    ? `<img id="cms-article-cover" src="${article.existing_image}" alt="${article.title}" class="w-full rounded-3xl object-cover mb-12 shadow-sm" style="max-height: 500px;" />` 
+                    : '';
+                    
                 container.innerHTML = `
                     <a href="blog.html" class="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors mb-8 font-label-md">
                         <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>
@@ -401,14 +408,14 @@
                     <div class="flex items-center gap-4 mb-8 text-on-surface-variant text-sm font-medium border-b border-outline-variant/20 pb-8">
                         <div class="flex items-center gap-1.5" id="cms-article-date">
                             <span class="material-symbols-outlined" style="font-size: 18px;">calendar_today</span>
-                            ${article.date}
+                            ${article.publish_date || '-'}
                         </div>
                         <div class="flex items-center gap-1.5" id="cms-article-category">
                             <span class="material-symbols-outlined" style="font-size: 18px;">category</span>
-                            ${article.category}
+                            ${article.category || 'Umum'}
                         </div>
                     </div>
-                    <img id="cms-article-cover" src="${article.image}" alt="${article.title}" class="w-full rounded-3xl object-cover mb-12 shadow-sm" style="max-height: 500px;" />
+                    ${imgHtml}
                     <div id="cms-article-content" class="article-body font-body-lg text-lg">
                         ${article.content}
                     </div>
