@@ -1,6 +1,6 @@
 /**
  * Asianindo CMS Frontend Loader & Analytics Tracker
- * Loads CMS data and dynamically updates page content
+ * Loads CMS data and dynamically updates page content preserving M3 design system.
  */
 (function() {
     'use strict';
@@ -30,7 +30,7 @@
     document.addEventListener('click', function(e) {
         var a = e.target.closest ? e.target.closest('a') : null;
         if (a && a.href) {
-            if (a.href.indexOf('wa.me') !== -1 || a.href.indexOf('whatsapp') !== -1) {
+            if (a.href.indexOf('wa.me') !== -1 || a.href.indexOf('whatsapp') !== -1 || a.href.indexOf('api.whatsapp.com') !== -1) {
                 trackEvent('wa_click');
             }
         }
@@ -64,7 +64,7 @@
 
         // Update all WA links
         var waNum = (s.whatsapp || '').replace(/[^0-9]/g, '');
-        var waMsg = encodeURIComponent(s.wa_message || 'Halo, saya ingin konsultasi');
+        var waMsg = encodeURIComponent(s.wa_message || 'Halo CV Asianindo, saya ingin konsultasi mesin');
         document.querySelectorAll('a[href*="wa.me"]').forEach(function(a) {
             a.href = 'https://wa.me/' + waNum + '?text=' + waMsg;
         });
@@ -92,13 +92,16 @@
         setText('cms-hero-title', data.hero_title);
         setText('cms-hero-subtitle', data.hero_subtitle);
 
-        // Stats
+        // Stats - Preserve M3 classes
         if (data.stats && data.stats.length) {
             var statsEl = document.getElementById('cms-stats');
             if (statsEl) {
                 var html = '';
                 data.stats.forEach(function(st) {
-                    html += '<div class="text-center"><p class="text-3xl md:text-4xl font-bold text-white">' + st.value + '</p><p class="text-sm text-white/80 mt-1">' + st.label + '</p></div>';
+                    html += '<div>' +
+                            '<p class="font-headline-md text-headline-md text-white font-black">' + st.value + '</p>' +
+                            '<p class="font-label-md text-label-md text-inverse-primary/80">' + st.label + '</p>' +
+                            '</div>';
                 });
                 statsEl.innerHTML = html;
             }
@@ -109,36 +112,43 @@
         setText('cms-home-about-title', data.about_title);
         setText('cms-home-about-desc', data.about_desc);
 
-        // Advantages
+        // Advantages - Preserve M3 classes
         if (data.advantages && data.advantages.length) {
             var advEl = document.getElementById('cms-advantages');
             if (advEl) {
                 var html = '';
-                data.advantages.forEach(function(adv) {
-                    html += '<div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-100">' +
-                        '<div class="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style="background-color:#e9ddff">' +
-                        '<i class="' + adv.icon + ' text-xl" style="color:#330e7a"></i></div>' +
-                        '<h3 class="text-lg font-bold text-gray-800 mb-2">' + adv.title + '</h3>' +
-                        '<p class="text-sm text-gray-600">' + adv.desc + '</p></div>';
+                data.advantages.forEach(function(adv, i) {
+                    var icon = adv.icon.includes('fa-') ? adv.icon.split('-').pop() : adv.icon; // try to convert FA to material if needed, or just use as is if valid material icon. Let's assume user inputted valid material icon like "shield"
+                    html += '<div class="feature-card bg-white rounded-2xl p-7 border border-outline-variant/15 reveal active">' +
+                        '<div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-fixed to-secondary-container flex items-center justify-center mb-5">' +
+                        '<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: \'FILL\' 1; font-size: 28px;">' + icon + '</span></div>' +
+                        '<h3 class="font-headline-sm text-headline-sm text-on-surface text-lg font-bold mb-3">' + adv.title + '</h3>' +
+                        '<p class="font-body-md text-body-md text-on-surface-variant">' + adv.desc + '</p></div>';
                 });
                 advEl.innerHTML = html;
             }
         }
 
-        // Testimonials
+        // Testimonials - Preserve M3 classes
         if (data.testimonials && data.testimonials.length) {
             var testEl = document.getElementById('cms-testimonials');
             if (testEl) {
                 var html = '';
-                data.testimonials.forEach(function(t) {
+                data.testimonials.forEach(function(t, i) {
                     if (!t.name) return;
                     var stars = '';
-                    for (var i = 0; i < (t.rating || 5); i++) stars += '<i class="fas fa-star text-yellow-400 text-sm"></i>';
-                    html += '<div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">' +
-                        '<div class="flex gap-1 mb-3">' + stars + '</div>' +
-                        '<p class="text-gray-600 text-sm mb-4 italic">"' + t.text + '"</p>' +
-                        '<div class="border-t pt-3"><p class="font-bold text-gray-800">' + t.name + '</p>' +
-                        '<p class="text-xs text-gray-500">' + (t.title || '') + '</p></div></div>';
+                    for (var j = 0; j < (t.rating || 5); j++) {
+                        stars += '<span class="material-symbols-outlined" style="font-size: 18px; font-variation-settings: \'FILL\' 1; color: #FFB800;">star</span>';
+                    }
+                    var initial = t.name.charAt(0).toUpperCase();
+                    html += '<div class="testimonial-card bg-white rounded-2xl p-7 border border-outline-variant/15 reveal active relative">' +
+                        '<div class="absolute top-6 right-6 text-primary-fixed"><span class="material-symbols-outlined" style="font-size: 40px; font-variation-settings: \'FILL\' 1;">format_quote</span></div>' +
+                        '<div class="flex gap-0.5 mb-4">' + stars + '</div>' +
+                        '<p class="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">"' + t.text + '"</p>' +
+                        '<div class="flex items-center gap-4 pt-4 border-t border-outline-variant/15">' +
+                        '<div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary-container to-primary flex items-center justify-center flex-shrink-0"><span class="text-white font-bold text-lg">' + initial + '</span></div>' +
+                        '<div><p class="font-label-md text-label-md text-on-surface font-bold">' + t.name + '</p>' +
+                        '<p class="text-on-surface-variant text-sm">' + (t.title || '') + '</p></div></div></div>';
                 });
                 testEl.innerHTML = html;
             }
@@ -175,7 +185,7 @@
             if (mEl) {
                 var html = '';
                 data.missions.forEach(function(m) {
-                    if (m) html += '<li class="flex items-start gap-3"><i class="fas fa-check-circle text-green-500 mt-1"></i><span>' + m + '</span></li>';
+                    if (m) html += '<li class="flex items-start gap-3"><span class="material-symbols-outlined text-primary shrink-0 mt-0.5">check_circle</span>' + m + '</li>';
                 });
                 mEl.innerHTML = html;
             }
@@ -210,18 +220,21 @@
         // Set global for article.html to use
         window.CMS_ARTICLES = articles;
 
-        // If we're on blog.html, render the article list
+        // If we're on blog.html, render the article list with proper M3 classes
         var blogGrid = document.getElementById('cms-blog-grid');
         if (blogGrid) {
             var html = '';
-            articles.forEach(function(a) {
-                html += '<a href="article.html?id=' + a.id + '" class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow border border-gray-100 block">' +
-                    (a.existing_image ? '<img src="' + a.existing_image + '" class="w-full h-48 object-cover" alt="' + a.title + '">' : '<div class="w-full h-48 bg-gray-100 flex items-center justify-center"><i class="fas fa-image text-4xl text-gray-300"></i></div>') +
-                    '<div class="p-5">' +
-                    '<span class="text-xs font-semibold px-2 py-1 rounded-full" style="background-color:#e9ddff;color:#330e7a">' + (a.category || 'Umum') + '</span>' +
-                    '<h3 class="text-lg font-bold text-gray-800 mt-3 mb-2">' + a.title + '</h3>' +
-                    '<p class="text-sm text-gray-500 mb-3">' + (a.excerpt || '') + '</p>' +
-                    '<p class="text-xs text-gray-400">' + (a.publish_date || '') + '</p>' +
+            articles.forEach(function(a, i) {
+                var img = a.existing_image || 'images/default-article.jpg';
+                html += '<a href="article.html?id=' + a.id + '" class="group bg-white rounded-3xl border border-outline-variant/20 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 reveal active flex flex-col">' +
+                    '<div class="relative overflow-hidden h-56 bg-surface-container-low">' +
+                    '<img src="' + img + '" alt="' + a.title + '" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />' +
+                    '<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full font-label-md text-xs font-bold text-primary shadow-sm">' + (a.category || 'Artikel') + '</div></div>' +
+                    '<div class="p-6 flex flex-col flex-grow">' +
+                    '<div class="flex items-center gap-2 mb-3 text-on-surface-variant text-sm font-medium"><span class="material-symbols-outlined" style="font-size: 16px;">calendar_today</span>' + (a.publish_date || '') + '</div>' +
+                    '<h3 class="font-headline-sm text-xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors line-clamp-3 leading-snug">' + a.title + '</h3>' +
+                    '<p class="text-on-surface-variant text-base line-clamp-3 leading-relaxed flex-grow">' + (a.excerpt || '') + '</p>' +
+                    '<div class="mt-6 flex items-center text-primary font-bold text-sm group-hover:gap-2 transition-all">Baca Selengkapnya <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span></div>' +
                     '</div></a>';
             });
             blogGrid.innerHTML = html;
