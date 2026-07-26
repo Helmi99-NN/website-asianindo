@@ -39,6 +39,24 @@ if ($action === 'check_session') {
     exit;
 }
 
+// PUBLIC READ - allows frontend pages to load CMS content without login
+if ($action === 'get_public') {
+    $module = $_GET['module'] ?? '';
+    $allowed = ['settings', 'homepage', 'about', 'contact', 'articles'];
+    if (in_array($module, $allowed)) {
+        $path = __DIR__ . '/../data/' . $module . '.json';
+        if (file_exists($path)) {
+            echo file_get_contents($path);
+        } else {
+            echo json_encode($module === 'articles' ? [] : new stdClass());
+        }
+        exit;
+    }
+    http_response_code(400);
+    echo json_encode(['error' => 'Invalid module']);
+    exit;
+}
+
 if ($action === 'track_event') {
     // Only accept POST
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

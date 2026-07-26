@@ -376,7 +376,7 @@
 
         <!-- Blog Grid -->
         <section class="py-12 px-gutter max-w-container-max mx-auto relative z-20 -mt-16">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-grid">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="cms-blog-grid">
                 <!-- JS will render articles here -->
             </div>
         </section>
@@ -384,7 +384,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const grid = document.getElementById('blog-grid');
+            const grid = document.getElementById('cms-blog-grid');
             if (!window.BLOG_ARTICLES) return;
 
             grid.innerHTML = window.BLOG_ARTICLES.map((a, i) => `

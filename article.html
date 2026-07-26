@@ -398,21 +398,21 @@
                         <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>
                         Kembali ke Blog
                     </a>
-                    <h1 class="font-display-lg text-3xl md:text-[40px] font-black text-on-surface mb-6 leading-tight tracking-tight">
+                    <h1 class="font-display-lg text-3xl md:text-[40px] font-black text-on-surface mb-6 leading-tight tracking-tight" id="cms-article-title">
                         ${article.title}
                     </h1>
                     <div class="flex items-center gap-4 mb-8 text-on-surface-variant text-sm font-medium border-b border-outline-variant/20 pb-8">
-                        <div class="flex items-center gap-1.5">
+                        <div class="flex items-center gap-1.5" id="cms-article-date">
                             <span class="material-symbols-outlined" style="font-size: 18px;">calendar_today</span>
                             ${article.date}
                         </div>
-                        <div class="flex items-center gap-1.5">
+                        <div class="flex items-center gap-1.5" id="cms-article-category">
                             <span class="material-symbols-outlined" style="font-size: 18px;">category</span>
                             ${article.category}
                         </div>
                     </div>
-                    <img src="${article.image}" alt="${article.title}" class="w-full rounded-3xl object-cover mb-12 shadow-sm" style="max-height: 500px;" />
-                    <div class="article-body font-body-lg text-lg">
+                    <img id="cms-article-cover" src="${article.image}" alt="${article.title}" class="w-full rounded-3xl object-cover mb-12 shadow-sm" style="max-height: 500px;" />
+                    <div id="cms-article-content" class="article-body font-body-lg text-lg">
                         ${article.content}
                     </div>
                 `;
