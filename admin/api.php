@@ -6,9 +6,14 @@ $DATA_JSON = __DIR__ . '/../data/products.json';
 $DATA_JS = __DIR__ . '/../data/products.js';
 $UPLOAD_DIR = __DIR__ . '/../images/';
 $ADMIN_USER = 'admin';
-$ADMIN_PASS = 'asianindo123'; // Default password
+$ADMIN_PASS = 'asianindo123';
 
 $action = $_GET['action'] ?? '';
+
+// CORS for tracking if needed
+header("Access-Control-Allow-Origin: *");
+
+// === PUBLIC ROUTES ===
 
 if ($action === 'login') {
     $user = $_POST['username'] ?? '';
@@ -34,17 +39,122 @@ if ($action === 'check_session') {
     exit;
 }
 
-// PROTECTED ROUTES BELOW
+if ($action === 'track_event') {
+    // Only accept POST
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        exit;
+    }
+    
+    // Parse JSON input since fetch might send JSON
+    $inputJSON = file_get_contents('php://input');
+    $input = json_decode($inputJSON, true) ?? [];
+    
+    $event = $input['event'] ?? $_POST['event'] ?? ''; 
+    $productId = $input['product_id'] ?? $_POST['product_id'] ?? '';
+    
+    $analyticsFile = __DIR__ . '/../data/analytics.json';
+    $data = ['visitors' => 0, 'wa_clicks' => 0, 'messages' => 0, 'product_views' => []];
+    
+    if (file_exists($analyticsFile)) {
+        $parsed = json_decode(file_get_contents($analyticsFile), true);
+        if (is_array($parsed)) $data = array_merge($data, $parsed);
+    }
+    
+    if ($event === 'visitor') $data['visitors']++;
+    elseif ($event === 'wa_click') $data['wa_clicks']++;
+    elseif ($event === 'message') $data['messages']++;
+    elseif ($event === 'product_view' && $productId) {
+        if (!isset($data['product_views'][$productId])) {
+            $data['product_views'][$productId] = 0;
+        }
+        $data['product_views'][$productId]++;
+    }
+    
+    if (!is_dir(dirname($analyticsFile))) mkdir(dirname($analyticsFile), 0777, true);
+    file_put_contents($analyticsFile, json_encode($data, JSON_PRETTY_PRINT));
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// === PROTECTED ROUTES BELOW ===
 if (!isset($_SESSION['is_admin'])) {
     http_response_code(401);
     echo json_encode(['error' => 'Unauthorized']);
     exit;
 }
 
+// Helper functions for general JSON
+function getJson($filename, $default = []) {
+    $path = __DIR__ . '/../data/' . $filename . '.json';
+    if (file_exists($path)) {
+        $content = file_get_contents($path);
+        return json_decode($content, true) ?? $default;
+    }
+    return $default;
+}
+
+function saveJson($filename, $data) {
+    $path = __DIR__ . '/../data/' . $filename . '.json';
+    $jsPath = __DIR__ . '/../data/' . $filename . '.js';
+    if (!is_dir(dirname($path))) mkdir(dirname($path), 0777, true);
+    $json = json_encode($data, JSON_PRETTY_PRINT);
+    file_put_contents($path, $json);
+    file_put_contents($jsPath, "window." . strtoupper($filename) . "_DATA = " . $json . ";");
+}
+
+// Data modules generic endpoints
+$allowed_modules = ['settings', 'articles', 'homepage', 'about', 'contact'];
+
+if ($action === 'get_module') {
+    $module = $_GET['module'] ?? '';
+    if (in_array($module, $allowed_modules)) {
+        echo json_encode(getJson($module, $module === 'articles' ? [] : new stdClass()));
+        exit;
+    }
+}
+
+if ($action === 'save_module') {
+    $module = $_GET['module'] ?? '';
+    if (in_array($module, $allowed_modules)) {
+        $jsonPayload = file_get_contents('php://input');
+        $data = json_decode($jsonPayload, true);
+        if ($data !== null) {
+            saveJson($module, $data);
+            echo json_encode(['success' => true]);
+            exit;
+        }
+    }
+    http_response_code(400);
+    echo json_encode(['error' => 'Invalid module or data']);
+    exit;
+}
+
+if ($action === 'get_analytics') {
+    $analytics = getJson('analytics', ['visitors' => 0, 'wa_clicks' => 0, 'messages' => 0, 'product_views' => []]);
+    echo json_encode($analytics);
+    exit;
+}
+
+// Upload Media Endpoint
+if ($action === 'upload_media') {
+    if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+        $ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+        $filename = uniqid('media_') . '.' . $ext;
+        if (!is_dir($UPLOAD_DIR)) mkdir($UPLOAD_DIR, 0777, true);
+        if (move_uploaded_file($_FILES['file']['tmp_name'], $UPLOAD_DIR . $filename)) {
+            echo json_encode(['success' => true, 'path' => 'images/' . $filename]);
+            exit;
+        }
+    }
+    http_response_code(400);
+    echo json_encode(['error' => 'Upload failed']);
+    exit;
+}
+
+// Legacy Product Functions (preserving for compatibility)
 function readData() {
     global $DATA_JSON;
     if (!file_exists($DATA_JSON)) {
-        // Fallback to default tracked by git
         $DEFAULT_JSON = __DIR__ . '/../default_products.json';
         if (file_exists($DEFAULT_JSON)) {
             return json_decode(file_get_contents($DEFAULT_JSON), true) ?? [];
@@ -57,9 +167,7 @@ function readData() {
 function writeData($data) {
     global $DATA_JSON, $DATA_JS;
     $dir = dirname($DATA_JSON);
-    if (!is_dir($dir)) {
-        mkdir($dir, 0777, true);
-    }
+    if (!is_dir($dir)) mkdir($dir, 0777, true);
     $jsonString = json_encode($data, JSON_PRETTY_PRINT);
     file_put_contents($DATA_JSON, $jsonString);
     file_put_contents($DATA_JS, "window.CATALOG_PRODUCTS = " . $jsonString . ";");
@@ -83,7 +191,6 @@ if ($action === 'save_product') {
     $imagePath = $_POST['existing_image'] ?? '';
     $videoPath = $_POST['existing_video'] ?? '';
     
-    // Process Features
     $features = [];
     if (isset($_POST['features']) && is_array($_POST['features'])) {
         foreach ($_POST['features'] as $feat) {
@@ -91,7 +198,6 @@ if ($action === 'save_product') {
         }
     }
     
-    // Process Specs
     $specs = [];
     if (isset($_POST['specs_keys']) && is_array($_POST['specs_keys'])) {
         foreach ($_POST['specs_keys'] as $i => $key) {
@@ -102,7 +208,6 @@ if ($action === 'save_product') {
         }
     }
 
-    // Handle Image Upload (Max 2MB)
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         if ($_FILES['image']['size'] > 2 * 1024 * 1024) {
             http_response_code(400);
@@ -111,11 +216,11 @@ if ($action === 'save_product') {
         }
         $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
         $filename = uniqid('img_') . '.' . $ext;
+        if (!is_dir($UPLOAD_DIR)) mkdir($UPLOAD_DIR, 0777, true);
         move_uploaded_file($_FILES['image']['tmp_name'], $UPLOAD_DIR . $filename);
         $imagePath = 'images/' . $filename;
     }
 
-    // Handle Video Upload (Max 15MB)
     if (isset($_FILES['video']) && $_FILES['video']['error'] === UPLOAD_ERR_OK) {
         if ($_FILES['video']['size'] > 15 * 1024 * 1024) {
             http_response_code(400);
@@ -124,8 +229,9 @@ if ($action === 'save_product') {
         }
         $ext = pathinfo($_FILES['video']['name'], PATHINFO_EXTENSION);
         $filename = uniqid('vid_') . '.' . $ext;
+        if (!is_dir($UPLOAD_DIR)) mkdir($UPLOAD_DIR, 0777, true);
         move_uploaded_file($_FILES['video']['tmp_name'], $UPLOAD_DIR . $filename);
-        $videoPath = 'images/' . $filename; // Saving in images folder for now
+        $videoPath = 'images/' . $filename;
     }
 
     $product = [
