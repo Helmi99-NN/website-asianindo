@@ -28,7 +28,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         }
         window.IS_LOGGED_IN = <?php echo $is_admin ? 'true' : 'false'; ?>;
     </script>
-    <style>
+    <style type="text/tailwindcss">
         [x-cloak] { display: none !important; }
         .form-label { @apply block text-sm font-semibold text-gray-700 mb-1; }
         .form-input { @apply w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none transition-all; }
