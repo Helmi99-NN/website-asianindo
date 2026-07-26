@@ -45,7 +45,7 @@ function adminApp() {
             about_badge: 'Tentang Kami',
             about_title: 'Produsen Mesin Industri Terpercaya',
             about_desc: '',
-            about_image: 'images/factory_workshop.png',
+            about_image: 'images/factory_workshop.webp',
             about_features: [
                 { icon: 'fas fa-certificate', title: 'TKDN', desc: 'Produk lokal berkualitas' },
                 { icon: 'fas fa-users', title: '1000+ Klien', desc: 'Dipercaya seluruh Indonesia' },
@@ -83,7 +83,7 @@ function adminApp() {
             highlights: [
                 { name: '', desc: '', image: '' }
             ],
-            workshop_image: 'images/factory_workshop.png'
+            workshop_image: 'images/factory_workshop.webp'
         },
 
         contact: {
