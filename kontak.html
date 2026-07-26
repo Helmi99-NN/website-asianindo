@@ -107,8 +107,8 @@
 
         /* Animations */
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         .reveal { opacity: 0; animation: fadeUp 0.8s ease-out forwards; }
         .reveal-delay-1 { animation-delay: 0.2s; }
@@ -126,12 +126,12 @@
             animation: pageFadeOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
         @keyframes pageFadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         @keyframes pageFadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(-10px); }
+            from { opacity: 1; }
+            to { opacity: 0; }
         }
     </style>
     <script>
