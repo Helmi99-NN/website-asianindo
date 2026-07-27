@@ -507,7 +507,7 @@
             return `
             <article class="product-card bg-white rounded-2xl border border-outline-variant/15 overflow-hidden flex flex-col group reveal" style="transition-delay: ${delay}ms;">
                 <div class="aspect-[4/3] bg-surface-container-low relative overflow-hidden">
-                    <img class="product-img w-full h-full object-contain p-4" alt="${p.name}" src="${p.images && p.images.length > 0 ? p.images[0] : '}" loading="lazy" />
+                    <img class="product-img w-full h-full object-contain p-4" alt="${p.name}" src="${p.images && p.images.length > 0 ? p.images[0] : 'images/placeholder.webp'}" loading="lazy" />
                     ${p.badge ? `<div class="absolute top-3 left-3 z-10 ${p.badgeColor} px-3 py-1 rounded-full font-caption text-caption text-xs font-bold shadow-sm">${p.badge}</div>` : ''}
                     <div class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-lg text-primary font-caption text-caption border border-primary/15 text-xs">${p.subCategory}</div>
                 </div>
