@@ -153,25 +153,43 @@ if ($action === 'get_analytics') {
     exit;
 }
 
-function getDirSize($dir) {
-    $size = 0;
-    if (!is_dir($dir)) return 0;
-    $iterator = new RecursiveIteratorIterator(
-        new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS)
-    );
-    foreach ($iterator as $file) {
-        $size += $file->getSize();
+function getAccountSize() {
+    $dir = isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'] ? dirname($_SERVER['DOCUMENT_ROOT']) : realpath(__DIR__ . '/../');
+    
+    // Try shell_exec (fastest for Hostinger/Linux)
+    if (function_exists('shell_exec')) {
+        $output = @shell_exec('du -sb ' . escapeshellarg($dir) . ' 2>/dev/null');
+        if ($output) {
+            $parts = preg_split('/\s+/', trim($output));
+            if (is_numeric($parts[0])) {
+                return (float)$parts[0];
+            }
+        }
     }
+    
+    // Fallback to PHP recursion
+    $size = 0;
+    try {
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CATCH_GET_CHILD
+        );
+        foreach ($iterator as $file) {
+            if ($file->isFile()) {
+                $size += $file->getSize();
+            }
+        }
+    } catch (Exception $e) {}
     return $size;
 }
 
 if ($action === 'get_storage') {
     $settings = getJson('settings', []);
-    $total_gb = isset($settings['storage_quota_gb']) ? (float)$settings['storage_quota_gb'] : 2.0;
+    // Default to 100GB which is Hostinger Premium default, user can change in settings
+    $total_gb = isset($settings['storage_quota_gb']) ? (float)$settings['storage_quota_gb'] : 100.0;
     $total_bytes = $total_gb * 1073741824;
     
-    $web_root = realpath(__DIR__ . '/../');
-    $used_bytes = getDirSize($web_root);
+    $used_bytes = getAccountSize();
     $free_bytes = max(0, $total_bytes - $used_bytes);
     
     echo json_encode([
