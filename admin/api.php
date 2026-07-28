@@ -153,6 +153,21 @@ if ($action === 'get_analytics') {
     exit;
 }
 
+if ($action === 'get_storage') {
+    $path = __DIR__;
+    $total_bytes = disk_total_space($path) ?: 1; // fallback to 1 to avoid division by zero
+    $free_bytes = disk_free_space($path) ?: 0;
+    $used_bytes = $total_bytes - $free_bytes;
+    
+    echo json_encode([
+        'total_gb' => round($total_bytes / 1073741824, 2),
+        'free_gb' => round($free_bytes / 1073741824, 2),
+        'used_gb' => round($used_bytes / 1073741824, 2),
+        'percent_used' => round(($used_bytes / $total_bytes) * 100, 1)
+    ]);
+    exit;
+}
+
 // Upload Media Endpoint
 if ($action === 'upload_media') {
     if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {

@@ -181,6 +181,36 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             <div><p class="text-xs text-gray-500 font-medium">Total Artikel</p><p class="text-2xl font-bold" x-text="articles.length"></p></div>
         </div>
     </div>
+    
+    <!-- Storage Info -->
+    <div class="card mb-8">
+        <div class="card-header"><h3 class="font-bold text-gray-700"><i class="fas fa-hdd text-blue-500 mr-2"></i>Kapasitas Penyimpanan Server (Storage)</h3></div>
+        <div class="card-body">
+            <div class="flex justify-between items-end mb-2">
+                <div>
+                    <p class="text-sm text-gray-500">Terpakai</p>
+                    <p class="text-2xl font-bold text-gray-800"><span x-text="storage.used_gb"></span> <span class="text-sm font-normal text-gray-500">GB</span></p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-gray-500">Tersisa</p>
+                    <p class="text-2xl font-bold text-green-600"><span x-text="storage.free_gb"></span> <span class="text-sm font-normal text-green-600">GB</span></p>
+                </div>
+            </div>
+            
+            <div class="w-full bg-gray-200 rounded-full h-4 mb-2 overflow-hidden shadow-inner">
+                <div class="h-4 rounded-full transition-all duration-1000 relative" 
+                     :class="storage.percent_used > 90 ? 'bg-red-500' : (storage.percent_used > 75 ? 'bg-amber-500' : 'bg-primary')"
+                     :style="`width: ${storage.percent_used}%`">
+                </div>
+            </div>
+            
+            <div class="flex justify-between text-xs text-gray-500 font-medium">
+                <span x-text="storage.percent_used + '% Digunakan'"></span>
+                <span>Total: <span x-text="storage.total_gb"></span> GB</span>
+            </div>
+        </div>
+    </div>
+    
     <!-- Popular Products Table -->
     <div class="card">
         <div class="card-header"><h3 class="font-bold text-gray-700"><i class="fas fa-fire text-orange-500 mr-2"></i>Produk Terpopuler</h3></div>
