@@ -389,7 +389,8 @@
                     <!-- Search -->
                     <div class="relative flex-1">
                         <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline" style="font-size: 20px;">search</span>
-                        <input class="w-full pl-11 pr-4 py-3 rounded-xl border border-outline-variant/40 bg-white text-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-outline shadow-ambient" id="search-input" placeholder="Cari mesin... (contoh: vacuum frying, spray dryer)" type="text" />
+                        <input class="w-full pl-11 pr-24 py-3 rounded-xl border border-outline-variant/40 bg-white text-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-outline shadow-ambient" id="search-input" placeholder="Cari mesin... (contoh: vacuum frying, spray dryer)" type="text" />
+                        <button class="absolute right-1.5 top-1/2 -translate-y-1/2 bg-primary text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm" id="search-btn">Cari</button>
                     </div>
                     <div class="flex gap-3">
                         <!-- Mobile Filter Button -->
@@ -945,9 +946,24 @@
 
         // Search
         let searchTimeout;
-        document.getElementById('search-input').addEventListener('input', () => {
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        
+        searchInput.addEventListener('input', () => {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(updateView, 300);
+        });
+        
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                clearTimeout(searchTimeout);
+                updateView();
+            }
+        });
+        
+        searchBtn.addEventListener('click', () => {
+            clearTimeout(searchTimeout);
+            updateView();
         });
 
         // Sort
