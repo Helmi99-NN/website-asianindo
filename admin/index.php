@@ -240,6 +240,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <div class="card overflow-hidden">
         <table class="w-full">
             <thead><tr class="bg-gray-50 text-xs text-gray-500 uppercase">
+                <th class="p-4 text-center font-medium w-16">No</th>
                 <th class="p-4 text-left font-medium">Gambar</th>
                 <th class="p-4 text-left font-medium">Nama Produk</th>
                 <th class="p-4 text-left font-medium">Kategori</th>
@@ -247,8 +248,9 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 <th class="p-4 text-center font-medium">Aksi</th>
             </tr></thead>
             <tbody>
-                <template x-for="p in filteredProducts()" :key="p.id || Math.random()">
+                <template x-for="(p, index) in filteredProducts()" :key="p.id || Math.random()">
                     <tr class="border-t border-gray-100 hover:bg-primary-50/30">
+                        <td class="p-3 text-center text-sm font-semibold text-gray-500" x-text="index + 1"></td>
                         <td class="p-3"><img :src="p.images && p.images.length > 0 ? (p.images[0].startsWith('http') || p.images[0].startsWith('data:') ? p.images[0] : '../'+p.images[0]) : ''" class="w-14 h-14 object-cover rounded-lg border" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2256%22 height=%2256%22><rect fill=%22%23eee%22 width=%2256%22 height=%2256%22/><text x=%2228%22 y=%2232%22 text-anchor=%22middle%22 fill=%22%23aaa%22 font-size=%2212%22>No img</text></svg>'"></td>
                         <td class="p-3 font-medium text-sm" x-text="p.name"></td>
                         <td class="p-3 text-sm text-gray-500" x-text="p.category"></td>
@@ -359,14 +361,16 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <div class="card overflow-hidden">
         <table class="w-full">
             <thead><tr class="bg-gray-50 text-xs text-gray-500 uppercase">
+                <th class="p-4 text-center font-medium w-16">No</th>
                 <th class="p-4 text-left font-medium">Judul</th>
                 <th class="p-4 text-left font-medium">Kategori</th>
                 <th class="p-4 text-left font-medium">Tanggal</th>
                 <th class="p-4 text-center font-medium">Aksi</th>
             </tr></thead>
             <tbody>
-                <template x-for="a in filteredArticles()" :key="a.id || Math.random()">
+                <template x-for="(a, index) in filteredArticles()" :key="a.id || Math.random()">
                     <tr class="border-t border-gray-100 hover:bg-primary-50/30">
+                        <td class="p-4 text-center text-sm font-semibold text-gray-500" x-text="index + 1"></td>
                         <td class="p-4 font-medium text-sm" x-text="a.title"></td>
                         <td class="p-4 text-sm"><span class="bg-primary-light text-primary px-2 py-1 rounded-full text-xs font-medium" x-text="a.category||'Umum'"></span></td>
                         <td class="p-4 text-sm text-gray-500" x-text="a.publish_date||'-'"></td>
