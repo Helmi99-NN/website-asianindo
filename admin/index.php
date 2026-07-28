@@ -233,7 +233,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <div class="flex items-center justify-between mb-6">
         <div class="relative w-72">
             <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
-            <input type="text" x-model="searchQuery" placeholder="Cari produk..." class="form-input pl-10">
+            <input type="text" x-model="searchQuery" placeholder="Cari produk..." class="form-input !pl-10">
         </div>
         <button @click="openAddProduct()" class="btn-primary"><i class="fas fa-plus"></i> Tambah Produk</button>
     </div>
@@ -352,7 +352,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <div class="flex items-center justify-between mb-6">
         <div class="relative w-72">
             <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
-            <input type="text" x-model="articleSearch" placeholder="Cari artikel..." class="form-input pl-10">
+            <input type="text" x-model="articleSearch" placeholder="Cari artikel..." class="form-input !pl-10">
         </div>
         <button @click="openAddArticle()" class="btn-primary"><i class="fas fa-plus"></i> Tulis Artikel</button>
     </div>
