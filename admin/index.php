@@ -663,6 +663,6 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         </main>
     </div><!-- end flex layout -->
 
-    <script src="app.js"></script>
+    <script src="app.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>
