@@ -191,9 +191,11 @@ function adminApp() {
         },
 
         // ==================== PRODUCT CRUD ====================
-        get filteredProducts() {
-            if (!this.searchQuery) return this.products;
-            return this.products.filter(p => p.name.toLowerCase().includes(this.searchQuery.toLowerCase()));
+        filteredProducts() {
+            let list = Array.isArray(this.products) ? this.products : Object.values(this.products);
+            list = list.filter(p => p && typeof p === 'object');
+            if (!this.searchQuery) return list;
+            return list.filter(p => (p.name || '').toLowerCase().includes(this.searchQuery.toLowerCase()));
         },
 
         openAddProduct() {
@@ -288,9 +290,11 @@ function adminApp() {
         },
 
         // ==================== ARTICLE CRUD ====================
-        get filteredArticles() {
-            if (!this.articleSearch) return this.articles;
-            return this.articles.filter(a => a.title.toLowerCase().includes(this.articleSearch.toLowerCase()));
+        filteredArticles() {
+            let list = Array.isArray(this.articles) ? this.articles : Object.values(this.articles);
+            list = list.filter(a => a && typeof a === 'object');
+            if (!this.articleSearch) return list;
+            return list.filter(a => (a.title || '').toLowerCase().includes(this.articleSearch.toLowerCase()));
         },
 
         openAddArticle() {

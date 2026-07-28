@@ -217,7 +217,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 <th class="p-4 text-center font-medium">Aksi</th>
             </tr></thead>
             <tbody>
-                <template x-for="p in filteredProducts" :key="p.id">
+                <template x-for="p in filteredProducts()" :key="p.id || Math.random()">
                     <tr class="border-t border-gray-100 hover:bg-primary-50/30">
                         <td class="p-3"><img :src="p.images && p.images.length > 0 ? (p.images[0].startsWith('http') || p.images[0].startsWith('data:') ? p.images[0] : '../'+p.images[0]) : ''" class="w-14 h-14 object-cover rounded-lg border" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2256%22 height=%2256%22><rect fill=%22%23eee%22 width=%2256%22 height=%2256%22/><text x=%2228%22 y=%2232%22 text-anchor=%22middle%22 fill=%22%23aaa%22 font-size=%2212%22>No img</text></svg>'"></td>
                         <td class="p-3 font-medium text-sm" x-text="p.name"></td>
@@ -231,7 +231,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 </template>
             </tbody>
         </table>
-        <div x-show="filteredProducts.length===0" class="p-8 text-center text-gray-400">Tidak ada produk ditemukan</div>
+        <div x-show="filteredProducts().length===0" class="p-8 text-center text-gray-400">Tidak ada produk ditemukan</div>
     </div>
 </div>
 
@@ -335,7 +335,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 <th class="p-4 text-center font-medium">Aksi</th>
             </tr></thead>
             <tbody>
-                <template x-for="a in filteredArticles" :key="a.id">
+                <template x-for="a in filteredArticles()" :key="a.id || Math.random()">
                     <tr class="border-t border-gray-100 hover:bg-primary-50/30">
                         <td class="p-4 font-medium text-sm" x-text="a.title"></td>
                         <td class="p-4 text-sm"><span class="bg-primary-light text-primary px-2 py-1 rounded-full text-xs font-medium" x-text="a.category||'Umum'"></span></td>
@@ -348,7 +348,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 </template>
             </tbody>
         </table>
-        <div x-show="filteredArticles.length===0" class="p-8 text-center text-gray-400">Belum ada artikel</div>
+        <div x-show="filteredArticles().length===0" class="p-8 text-center text-gray-400">Belum ada artikel</div>
     </div>
 </div>
 
