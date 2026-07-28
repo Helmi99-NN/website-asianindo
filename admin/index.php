@@ -340,9 +340,11 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         <td class="p-4 font-medium text-sm" x-text="a.title"></td>
                         <td class="p-4 text-sm"><span class="bg-primary-light text-primary px-2 py-1 rounded-full text-xs font-medium" x-text="a.category||'Umum'"></span></td>
                         <td class="p-4 text-sm text-gray-500" x-text="a.publish_date||'-'"></td>
-                        <td class="p-4 text-center">
-                            <button @click="openEditArticle(a)" class="text-primary hover:text-primary-hover p-1.5"><i class="fas fa-edit"></i></button>
-                            <button @click="deleteArticle(a.id)" class="text-red-500 hover:text-red-700 p-1.5 ml-1"><i class="fas fa-trash"></i></button>
+                        <td class="p-4 text-center flex items-center justify-center gap-1">
+                            <a :href="'../article.html?id=' + a.id" target="_blank" class="text-green-500 hover:text-green-700 p-1.5" title="Lihat di Website"><i class="fas fa-external-link-alt"></i></a>
+                            <a :href="'https://www.google.com/search?q=site:asianindomesin.com+' + encodeURIComponent(a.title)" target="_blank" class="text-blue-500 hover:text-blue-700 p-1.5" title="Cari di Google"><i class="fab fa-google"></i></a>
+                            <button @click="openEditArticle(a)" class="text-primary hover:text-primary-hover p-1.5" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button @click="deleteArticle(a.id)" class="text-red-500 hover:text-red-700 p-1.5" title="Hapus"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
                 </template>
