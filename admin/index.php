@@ -189,7 +189,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             <div class="flex justify-between items-end mb-2">
                 <div>
                     <p class="text-sm text-gray-500">Terpakai</p>
-                    <p class="text-2xl font-bold text-gray-800"><span x-text="storage.used_gb"></span> <span class="text-sm font-normal text-gray-500">GB</span></p>
+                    <p class="text-2xl font-bold text-gray-800"><span x-text="storage.used_mb < 1000 ? storage.used_mb : storage.used_gb"></span> <span class="text-sm font-normal text-gray-500" x-text="storage.used_mb < 1000 ? 'MB' : 'GB'"></span></p>
                 </div>
                 <div class="text-right">
                     <p class="text-sm text-gray-500">Tersisa</p>
@@ -467,6 +467,13 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         <!-- Copyright -->
         <div class="card card-body mb-6">
             <div class="form-group"><label class="form-label">Teks Copyright Footer</label><input type="text" x-model="settings.copyright" class="form-input"></div>
+        </div>
+
+        <!-- System Settings -->
+        <div class="card card-body mb-6">
+            <h3 class="section-title"><i class="fas fa-server text-indigo-500"></i> Konfigurasi Sistem</h3>
+            <div class="form-group"><label class="form-label">Kapasitas Hosting / Quota (GB)</label><input type="number" step="0.1" x-model.number="settings.storage_quota_gb" class="form-input" placeholder="Contoh: 2"></div>
+            <p class="text-xs text-gray-400"><i class="fas fa-info-circle mr-1"></i>Kapasitas ini digunakan untuk menghitung sisa penyimpanan di halaman Dashboard.</p>
         </div>
 
         <button @click="saveModule('settings')" class="btn-success"><i class="fas fa-save"></i> Simpan Pengaturan</button>

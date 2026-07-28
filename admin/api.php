@@ -153,17 +153,33 @@ if ($action === 'get_analytics') {
     exit;
 }
 
+function getDirSize($dir) {
+    $size = 0;
+    if (!is_dir($dir)) return 0;
+    $iterator = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS)
+    );
+    foreach ($iterator as $file) {
+        $size += $file->getSize();
+    }
+    return $size;
+}
+
 if ($action === 'get_storage') {
-    $path = __DIR__;
-    $total_bytes = disk_total_space($path) ?: 1; // fallback to 1 to avoid division by zero
-    $free_bytes = disk_free_space($path) ?: 0;
-    $used_bytes = $total_bytes - $free_bytes;
+    $settings = getJson('settings', []);
+    $total_gb = isset($settings['storage_quota_gb']) ? (float)$settings['storage_quota_gb'] : 2.0;
+    $total_bytes = $total_gb * 1073741824;
+    
+    $web_root = realpath(__DIR__ . '/../');
+    $used_bytes = getDirSize($web_root);
+    $free_bytes = max(0, $total_bytes - $used_bytes);
     
     echo json_encode([
-        'total_gb' => round($total_bytes / 1073741824, 2),
+        'total_gb' => $total_gb,
         'free_gb' => round($free_bytes / 1073741824, 2),
-        'used_gb' => round($used_bytes / 1073741824, 2),
-        'percent_used' => round(($used_bytes / $total_bytes) * 100, 1)
+        'used_gb' => round($used_bytes / 1073741824, 3),
+        'used_mb' => round($used_bytes / 1048576, 2),
+        'percent_used' => $total_bytes > 0 ? round(($used_bytes / $total_bytes) * 100, 1) : 0
     ]);
     exit;
 }
