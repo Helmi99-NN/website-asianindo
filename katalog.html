@@ -942,17 +942,10 @@
 
         // ============================
         // EVENT BINDINGS
-        // ============================
-
         // Search
         let searchTimeout;
         const searchInput = document.getElementById('search-input');
         const searchBtn = document.getElementById('search-btn');
-        
-        searchInput.addEventListener('input', () => {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(updateView, 300);
-        });
         
         searchInput.addEventListener('keyup', (e) => {
             if (e.key === 'Enter') {
