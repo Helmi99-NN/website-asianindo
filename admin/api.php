@@ -313,7 +313,7 @@ if ($action === 'save_product') {
         'rating' => 5,
         'reviews' => rand(5, 50),
         'sold' => rand(10, 100),
-        'description' => $description,
+        'desc' => $description,
         'features' => $features,
         'specs' => $specs
     ];

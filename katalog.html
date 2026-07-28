@@ -814,7 +814,7 @@
 
             let filtered = products.filter(p => {
                 // Search
-                if (search && !p.name.toLowerCase().includes(search) && !p.desc.toLowerCase().includes(search) && !p.subCategory.toLowerCase().includes(search) && !p.category.toLowerCase().includes(search)) return false;
+                if (search && !p.name.toLowerCase().includes(search) && !(p.desc || p.description || '').toLowerCase().includes(search) && !(p.subCategory || '').toLowerCase().includes(search) && !(p.category || '').toLowerCase().includes(search)) return false;
                 // Category
                 if (cats.length > 0 && !cats.includes(p.category)) return false;
                 // Sub-category
@@ -1081,6 +1081,12 @@
         // ============================
         // INIT
         // ============================
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlSearch = urlParams.get('q') || urlParams.get('search');
+        if (urlSearch) {
+            document.getElementById('search-input').value = urlSearch;
+        }
+
         render();
         observeReveals();
 
