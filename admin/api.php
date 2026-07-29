@@ -322,18 +322,44 @@ if ($action === 'save_product') {
     $found = false;
     foreach ($products as $i => $p) {
         if ($p['id'] === $id) {
-            $products[$i] = $product;
+            // Merge: keep existing fields, overwrite with new non-empty values
+            $merged = $p;
+            foreach ($product as $key => $val) {
+                // Only overwrite if the new value is not empty/default,
+                // or if the key is explicitly being set (like video, images)
+                if ($key === 'images' || $key === 'video') {
+                    // Always take the new value for media fields
+                    $merged[$key] = $val;
+                } elseif ($key === 'price' && $val > 0) {
+                    $merged[$key] = $val;
+                    // Recalculate priceDisplay when price changes
+                    $merged['priceDisplay'] = 'Rp ' . number_format($val, 0, ',', '.');
+                } elseif (is_string($val) && $val !== '') {
+                    $merged[$key] = $val;
+                } elseif (is_array($val) && !empty($val)) {
+                    $merged[$key] = $val;
+                }
+                // Skip overwriting with empty values to preserve original data
+            }
+            // Ensure desc is synced (admin sends as 'description' field)
+            if ($description !== '') {
+                $merged['desc'] = $description;
+            }
+            $products[$i] = $merged;
             $found = true;
             break;
         }
     }
     
     if (!$found) {
+        // New product: generate priceDisplay and waMsg
+        $product['priceDisplay'] = 'Rp ' . number_format($price, 0, ',', '.');
+        $product['waMsg'] = 'Halo, saya tertarik dengan ' . $name;
         $products[] = $product;
     }
 
     writeData($products);
-    echo json_encode(['success' => true, 'product' => $product]);
+    echo json_encode(['success' => true, 'product' => $found ? $products[$i] : $product]);
     exit;
 }
 
