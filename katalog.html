@@ -389,8 +389,7 @@
                     <!-- Search -->
                     <div class="relative flex-1">
                         <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline" style="font-size: 20px;">search</span>
-                        <input class="w-full pl-11 pr-24 py-3 rounded-xl border border-outline-variant/40 bg-white text-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-outline shadow-ambient" id="search-input" placeholder="Cari mesin... (contoh: vacuum frying, spray dryer)" type="text" />
-                        <button class="absolute right-1.5 top-1/2 -translate-y-1/2 bg-primary text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm" id="search-btn">Cari</button>
+                        <input class="w-full pl-11 pr-4 py-3 rounded-xl border border-outline-variant/40 bg-white text-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-outline shadow-ambient" id="search-input" placeholder="Cari mesin... (contoh: vacuum frying, spray dryer)" type="text" />
                     </div>
                     <div class="flex gap-3">
                         <!-- Mobile Filter Button -->
@@ -687,8 +686,8 @@
     <!-- ============================================ -->
     <!-- JAVASCRIPT -->
     <!-- ============================================ -->
-    <script src="default_products.js?v=3"></script>
-    <script src="data/products.js?v=3"></script>
+    <script src="default_products.js?v=4"></script>
+    <script src="data/products.js?v=4"></script>
     <script>
     (function() {
         'use strict';
@@ -815,7 +814,7 @@
 
             let filtered = products.filter(p => {
                 // Search
-                if (search && !p.name.toLowerCase().includes(search) && !(p.desc || p.description || '').toLowerCase().includes(search) && !(p.subCategory || '').toLowerCase().includes(search) && !(p.category || '').toLowerCase().includes(search)) return false;
+                if (search && !(p.name || '').toLowerCase().includes(search) && !(p.desc || p.description || '').toLowerCase().includes(search) && !(p.subCategory || '').toLowerCase().includes(search) && !(p.category || '').toLowerCase().includes(search)) return false;
                 // Category
                 if (cats.length > 0 && !cats.includes(p.category)) return false;
                 // Sub-category
@@ -942,21 +941,13 @@
 
         // ============================
         // EVENT BINDINGS
-        // Search
+        // ============================
+
+        // Search – live search on typing with debounce
         let searchTimeout;
-        const searchInput = document.getElementById('search-input');
-        const searchBtn = document.getElementById('search-btn');
-        
-        searchInput.addEventListener('keyup', (e) => {
-            if (e.key === 'Enter') {
-                clearTimeout(searchTimeout);
-                updateView();
-            }
-        });
-        
-        searchBtn.addEventListener('click', () => {
+        document.getElementById('search-input').addEventListener('input', function() {
             clearTimeout(searchTimeout);
-            updateView();
+            searchTimeout = setTimeout(updateView, 300);
         });
 
         // Sort
