@@ -247,9 +247,20 @@
             if (aId) {
                 var article = articles.find(function(a) { return a.id === aId; });
                 if (article) {
+                    // Track View
+                    fetch('admin/api.php?action=track_article_view', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: aId })
+                    }).catch(function(e) { console.error('Tracking error', e); });
+                    
                     setText('cms-article-title', article.title);
                     setText('cms-article-category', article.category);
                     setText('cms-article-date', article.publish_date);
+                    
+                    var viewsEl = document.getElementById('cms-article-views');
+                    if (viewsEl) viewsEl.innerText = article.views ? article.views + ' x dilihat' : '0 x dilihat';
+                    
                     setHTML('cms-article-content', article.content);
                     if (article.existing_image) {
                         var coverEl = document.getElementById('cms-article-cover');

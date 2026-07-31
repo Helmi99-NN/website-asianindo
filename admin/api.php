@@ -94,6 +94,30 @@ if ($action === 'track_event') {
     exit;
 }
 
+if ($action === 'track_article_view') {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') exit;
+    $inputJSON = file_get_contents('php://input');
+    $input = json_decode($inputJSON, true) ?? [];
+    $articleId = $input['id'] ?? '';
+    
+    if ($articleId) {
+        $path = __DIR__ . '/../data/articles.json';
+        if (file_exists($path)) {
+            // Read and increment
+            $articles = json_decode(file_get_contents($path), true) ?? [];
+            foreach ($articles as &$a) {
+                if (isset($a['id']) && $a['id'] === $articleId) {
+                    $a['views'] = ($a['views'] ?? 0) + 1;
+                    break;
+                }
+            }
+            file_put_contents($path, json_encode($articles, JSON_PRETTY_PRINT));
+        }
+    }
+    echo json_encode(['success' => true]);
+    exit;
+}
+
 // === PROTECTED ROUTES BELOW ===
 if (!isset($_SESSION['is_admin'])) {
     http_response_code(401);

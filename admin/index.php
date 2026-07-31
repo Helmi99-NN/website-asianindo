@@ -365,6 +365,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 <th class="p-4 text-left font-medium">Judul</th>
                 <th class="p-4 text-left font-medium">Kategori</th>
                 <th class="p-4 text-left font-medium">Tanggal</th>
+                <th class="p-4 text-center font-medium">Dilihat</th>
                 <th class="p-4 text-center font-medium">Aksi</th>
             </tr></thead>
             <tbody>
@@ -374,6 +375,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         <td class="p-4 font-medium text-sm" x-text="a.title"></td>
                         <td class="p-4 text-sm"><span class="bg-primary-light text-primary px-2 py-1 rounded-full text-xs font-medium" x-text="a.category||'Umum'"></span></td>
                         <td class="p-4 text-sm text-gray-500" x-text="a.publish_date||'-'"></td>
+                        <td class="p-4 text-center text-sm text-gray-500 font-semibold"><i class="far fa-eye mr-1"></i><span x-text="a.views||0"></span></td>
                         <td class="p-4 text-center flex items-center justify-center gap-1">
                             <a :href="'../article.html?id=' + a.id" target="_blank" class="text-green-500 hover:text-green-700 p-1.5" title="Lihat di Website"><i class="fas fa-external-link-alt"></i></a>
                             <a :href="'https://www.google.com/search?q=site:asianindomachine.com+' + encodeURIComponent(a.title)" target="_blank" class="text-blue-500 hover:text-blue-700 p-1.5" title="Cari di Google"><i class="fab fa-google"></i></a>
