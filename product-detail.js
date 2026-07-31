@@ -17,7 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Populate data
-    document.title = `${product.name} - CV Asianindo`;
+    if (typeof window.updateSEO === 'function') {
+        window.updateSEO(product.meta_title || `${product.name} - CV Asianindo`, product.meta_description || product.description || product.desc);
+    } else {
+        document.title = product.meta_title || `${product.name} - CV Asianindo`;
+    }
     document.getElementById('breadcrumb-product-name').innerText = product.name;
     document.getElementById('product-name').innerText = product.name;
     document.getElementById('product-price').innerText = product.priceDisplay;

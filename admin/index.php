@@ -107,6 +107,11 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         <span class="ml-auto bg-white/20 text-xs px-2 py-0.5 rounded-full" x-text="articles.length"></span>
                     </a></li>
                     
+                    <!-- Media Library -->
+                    <li><a href="#" @click.prevent="changeView('media')" :class="currentView==='media' ? 'bg-primary text-white shadow-md' : 'text-gray-300 hover:bg-sidebar-hover'" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm">
+                        <i class="fas fa-images w-5 text-center"></i> Galeri Media
+                    </a></li>
+                    
                     <li class="pt-4 pb-1 px-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Halaman Web</li>
                     
                     <!-- Beranda -->
@@ -340,6 +345,16 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             </div>
         </div>
 
+        <!-- SEO Optimasi -->
+        <div class="card card-body bg-gray-50 border-gray-200 mt-4">
+            <h3 class="section-title text-base"><i class="fas fa-search text-blue-500"></i> Optimasi SEO (Pencarian Google)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="form-group"><label class="form-label">Meta Title</label><input type="text" x-model="productForm.meta_title" class="form-input" placeholder="Kosongkan untuk pakai Nama Produk"></div>
+                <div class="form-group"><label class="form-label">Slug URL</label><input type="text" x-model="productForm.slug" class="form-input" placeholder="otomatis-dibuat-jika-kosong"></div>
+                <div class="form-group md:col-span-2"><label class="form-label">Meta Description</label><textarea x-model="productForm.meta_description" class="form-textarea" rows="2" placeholder="Tuliskan deskripsi singkat untuk pencarian Google..."></textarea></div>
+            </div>
+        </div>
+
         <div class="flex gap-3 mt-6 pt-6 border-t">
             <button @click="saveProduct()" class="btn-primary"><i class="fas fa-save"></i> Simpan Produk</button>
             <button @click="changeView('products')" class="btn-secondary">Batal</button>
@@ -421,6 +436,16 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             <textarea x-model="articleForm.content" class="form-textarea font-mono text-xs" rows="15" placeholder="<h2>Judul Section</h2><p>Isi artikel...</p>"></textarea>
             <p class="text-xs text-gray-400 mt-1"><i class="fas fa-info-circle mr-1"></i>Anda bisa menggunakan tag HTML untuk memformat artikel.</p>
         </div>
+        <!-- SEO Optimasi -->
+        <div class="card card-body bg-gray-50 border-gray-200 mt-4">
+            <h3 class="section-title text-base"><i class="fas fa-search text-blue-500"></i> Optimasi SEO (Pencarian Google)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="form-group"><label class="form-label">Meta Title</label><input type="text" x-model="articleForm.meta_title" class="form-input" placeholder="Kosongkan untuk pakai Judul Artikel"></div>
+                <div class="form-group"><label class="form-label">Slug URL</label><input type="text" x-model="articleForm.slug" class="form-input" placeholder="otomatis-dibuat-jika-kosong"></div>
+                <div class="form-group md:col-span-2"><label class="form-label">Meta Description</label><textarea x-model="articleForm.meta_description" class="form-textarea" rows="2" placeholder="Tuliskan deskripsi singkat untuk pencarian Google..."></textarea></div>
+            </div>
+        </div>
+
         <div class="flex gap-3 mt-6 pt-6 border-t">
             <button @click="saveArticle()" class="btn-primary"><i class="fas fa-save"></i> Simpan Artikel</button>
             <button @click="changeView('articles')" class="btn-secondary">Batal</button>
@@ -575,6 +600,13 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             <div class="form-group"><label class="form-label">Teks Tombol</label><input type="text" x-model="homepage.cta_button" class="form-input"></div>
         </div>
 
+        <!-- SEO Beranda -->
+        <div class="card card-body mb-6 bg-gray-50 border-gray-200">
+            <h3 class="section-title"><i class="fas fa-search text-blue-500"></i> Optimasi SEO Beranda</h3>
+            <div class="form-group"><label class="form-label">Meta Title</label><input type="text" x-model="homepage.meta_title" class="form-input" placeholder="CV Asianindo - Solusi Mesin Industri..."></div>
+            <div class="form-group"><label class="form-label">Meta Description</label><textarea x-model="homepage.meta_description" class="form-textarea" rows="2" placeholder="Deskripsi untuk pencarian Google..."></textarea></div>
+        </div>
+
         <button @click="saveModule('homepage')" class="btn-success"><i class="fas fa-save"></i> Simpan Konten Beranda</button>
     </div>
 </div>
@@ -634,6 +666,13 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             <button @click="addHighlight()" class="text-primary text-sm font-medium hover:underline mt-1"><i class="fas fa-plus mr-1"></i>Tambah Highlight</button>
         </div>
 
+        <!-- SEO Tentang Kami -->
+        <div class="card card-body mb-6 bg-gray-50 border-gray-200">
+            <h3 class="section-title"><i class="fas fa-search text-blue-500"></i> Optimasi SEO Tentang Kami</h3>
+            <div class="form-group"><label class="form-label">Meta Title</label><input type="text" x-model="about.meta_title" class="form-input" placeholder="Tentang Kami - CV Asianindo"></div>
+            <div class="form-group"><label class="form-label">Meta Description</label><textarea x-model="about.meta_description" class="form-textarea" rows="2" placeholder="Deskripsi untuk pencarian Google..."></textarea></div>
+        </div>
+
         <button @click="saveModule('about')" class="btn-success"><i class="fas fa-save"></i> Simpan Konten Tentang Kami</button>
     </div>
 </div>
@@ -666,6 +705,13 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 <div class="form-group"><label class="form-label">Telepon / WA</label><input type="text" x-model="contact.phone" class="form-input"></div>
                 <div class="form-group"><label class="form-label">Email</label><input type="email" x-model="contact.email" class="form-input"></div>
             </div>
+        </div>
+
+        <!-- SEO Kontak -->
+        <div class="card card-body mb-6 bg-gray-50 border-gray-200">
+            <h3 class="section-title"><i class="fas fa-search text-blue-500"></i> Optimasi SEO Kontak</h3>
+            <div class="form-group"><label class="form-label">Meta Title</label><input type="text" x-model="contact.meta_title" class="form-input" placeholder="Hubungi Kami - CV Asianindo"></div>
+            <div class="form-group"><label class="form-label">Meta Description</label><textarea x-model="contact.meta_description" class="form-textarea" rows="2" placeholder="Deskripsi untuk pencarian Google..."></textarea></div>
         </div>
 
         <button @click="saveModule('contact')" class="btn-success"><i class="fas fa-save"></i> Simpan Konten Kontak</button>

@@ -13,6 +13,9 @@ function adminApp() {
         products: [],
         searchQuery: '',
         articleSearch: '',
+        mediaItems: [],
+        isUploadingMedia: false,
+        mediaSearch: '',
         
         settings: {
             company_name: 'CV Asianindo',
@@ -101,10 +104,10 @@ function adminApp() {
 
         // Product Form
         editingId: null,
-        productForm: { id: '', name: '', category: 'Mesin Industri', subCategory: '', price: '', priceRange: '', description: '', features: [''], specs: [{key: '', val: ''}], existing_image: '', existing_video: '' },
+        productForm: { id: '', name: '', category: 'Mesin Industri', subCategory: '', price: '', priceRange: '', description: '', features: [''], specs: [{key: '', val: ''}], images: [], existing_video: '', meta_title: '', meta_description: '', slug: '' },
         
         // Article Form
-        articleForm: { id: '', title: '', category: '', publish_date: '', excerpt: '', content: '', existing_image: '' },
+        articleForm: { id: '', title: '', category: '', publish_date: '', excerpt: '', content: '', existing_image: '', meta_title: '', meta_description: '', slug: '' },
 
         imagePreview: null,
         videoPreview: null,
@@ -141,6 +144,11 @@ function adminApp() {
             this.loginForm.password = '';
         },
 
+        generateSlug(text) {
+            if (!text) return '';
+            return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+        },
+
         changeView(view) { this.currentView = view; },
 
         // ==================== DATA LOADING ====================
@@ -149,6 +157,7 @@ function adminApp() {
                 this.loadAnalytics(),
                 this.loadStorage(),
                 this.loadProducts(),
+                this.loadMedia(),
                 this.loadModule('settings'),
                 this.loadModule('articles'),
                 this.loadModule('homepage'),
@@ -167,6 +176,56 @@ function adminApp() {
 
         async loadProducts() {
             try { let r = await fetch('api.php?action=get_products'); this.products = await r.json(); } catch(e) {}
+        },
+
+        async loadMedia() {
+            try { let r = await fetch('api.php?action=get_media'); this.mediaItems = await r.json(); } catch(e) {}
+        },
+        async deleteMedia(filename) {
+            if(!confirm('Hapus gambar ini secara permanen?')) return;
+            try {
+                let r = await fetch('api.php?action=delete_media', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({filename: filename})
+                });
+                let res = await r.json();
+                if(res.success) {
+                    this.loadMedia();
+                    this.loadStorage(); // Update storage stats
+                }
+            } catch(e) {}
+        },
+        async uploadMediaToLibrary(event) {
+            let files = event.target.files;
+            if(!files || files.length === 0) return;
+            this.isUploadingMedia = true;
+            for(let i=0; i<files.length; i++) {
+                let fd = new FormData();
+                fd.append('file', files[i]);
+                try {
+                    await fetch('api.php?action=upload_media', {method: 'POST', body: fd});
+                } catch(e) {}
+            }
+            this.isUploadingMedia = false;
+            this.loadMedia();
+            this.loadStorage(); // Update storage stats
+            event.target.value = ''; 
+        },
+        copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            alert('URL disalin: ' + text);
+        },
+        filteredMedia() {
+            if(!this.mediaSearch) return this.mediaItems;
+            let q = this.mediaSearch.toLowerCase();
+            return this.mediaItems.filter(m => m.name.toLowerCase().includes(q));
+        },
+        formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024, dm = 2, sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
         },
 
         async loadModule(mod) {
@@ -206,7 +265,7 @@ function adminApp() {
 
         openAddProduct() {
             this.editingId = null;
-            this.productForm = { id: '', name: '', category: 'Mesin Industri', subCategory: '', price: '', priceRange: '', description: '', features: [''], specs: [{key: '', val: ''}], images: [], existing_video: '' };
+            this.productForm = { id: '', name: '', category: 'Mesin Industri', subCategory: '', price: '', priceRange: '', description: '', features: [''], specs: [{key: '', val: ''}], images: [], existing_video: '', meta_title: '', meta_description: '', slug: '' };
             this.resetMedia();
             this.changeView('product_form');
         },
@@ -220,7 +279,8 @@ function adminApp() {
                 id: p.id, name: p.name, category: p.category || 'Mesin Industri', subCategory: p.subCategory || '',
                 price: p.price, priceRange: p.priceRange || '', description: p.description || '',
                 features: (p.features && p.features.length) ? [...p.features] : [''],
-                specs: specs, images: p.images && p.images.length ? [...p.images] : (p.image ? [p.image] : []), existing_video: p.video || ''
+                specs: specs, images: p.images && p.images.length ? [...p.images] : (p.image ? [p.image] : []), existing_video: p.video || '',
+                meta_title: p.meta_title || '', meta_description: p.meta_description || '', slug: p.slug || ''
             };
             this.resetMedia();
             this.changeView('product_form');
@@ -269,7 +329,7 @@ function adminApp() {
             if (this.productForm.images.length === 0) { alert('Mohon unggah minimal 1 foto produk'); return; }
             this.isSaving = true;
             let fd = new FormData();
-            for (let key of ['id','name','category','subCategory','price','priceRange','description','existing_video']) {
+            for (let key of ['id','name','category','subCategory','price','priceRange','description','existing_video','meta_title','meta_description','slug']) {
                 fd.append(key, this.productForm[key] || '');
             }
             fd.append('images', JSON.stringify(this.productForm.images));
@@ -305,14 +365,14 @@ function adminApp() {
 
         openAddArticle() {
             this.editingId = null;
-            this.articleForm = { id: '', title: '', category: 'Edukasi', publish_date: new Date().toISOString().split('T')[0], excerpt: '', content: '', existing_image: '' };
+            this.articleForm = { id: '', title: '', category: 'Edukasi', publish_date: new Date().toISOString().split('T')[0], excerpt: '', content: '', existing_image: '', meta_title: '', meta_description: '', slug: '' };
             this.resetMedia();
             this.changeView('article_form');
         },
 
         openEditArticle(a) {
             this.editingId = a.id;
-            this.articleForm = { ...a };
+            this.articleForm = { ...a, meta_title: a.meta_title || '', meta_description: a.meta_description || '', slug: a.slug || '' };
             this.resetMedia();
             this.changeView('article_form');
         },
@@ -320,6 +380,9 @@ function adminApp() {
         async saveArticle() {
             if (!this.articleForm.title) { alert('Mohon isi judul artikel'); return; }
             this.isSaving = true;
+            if (!this.articleForm.slug) {
+                this.articleForm.slug = this.generateSlug(this.articleForm.title);
+            }
             let id = this.editingId || 'art_' + Date.now();
             let article = { ...this.articleForm, id: id };
 

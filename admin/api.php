@@ -226,13 +226,104 @@ if ($action === 'get_storage') {
     exit;
 }
 
-// Upload Media Endpoint
+// Media Library Endpoints
+if ($action === 'get_media') {
+    if (!is_dir($UPLOAD_DIR)) mkdir($UPLOAD_DIR, 0777, true);
+    $files = array_diff(scandir($UPLOAD_DIR), ['.', '..']);
+    $media = [];
+    foreach ($files as $file) {
+        $path = $UPLOAD_DIR . $file;
+        if (is_file($path)) {
+            $media[] = [
+                'name' => $file,
+                'path' => 'images/' . $file,
+                'size' => filesize($path),
+                'mtime' => filemtime($path)
+            ];
+        }
+    }
+    usort($media, function($a, $b) { return $b['mtime'] <=> $a['mtime']; });
+    echo json_encode($media);
+    exit;
+}
+
+if ($action === 'delete_media') {
+    $inputJSON = file_get_contents('php://input');
+    $input = json_decode($inputJSON, true) ?? [];
+    $filename = $input['filename'] ?? $_POST['filename'] ?? '';
+    if ($filename && strpos($filename, '..') === false) {
+        $path = $UPLOAD_DIR . basename($filename);
+        if (file_exists($path) && is_file($path)) {
+            unlink($path);
+            echo json_encode(['success' => true]);
+            exit;
+        }
+    }
+    http_response_code(400);
+    echo json_encode(['error' => 'File not found or invalid']);
+    exit;
+}
+
 if ($action === 'upload_media') {
     if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
-        $ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
-        $filename = uniqid('media_') . '.' . $ext;
         if (!is_dir($UPLOAD_DIR)) mkdir($UPLOAD_DIR, 0777, true);
-        if (move_uploaded_file($_FILES['file']['tmp_name'], $UPLOAD_DIR . $filename)) {
+        
+        $tmp = $_FILES['file']['tmp_name'];
+        $origName = $_FILES['file']['name'];
+        $ext = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
+        
+        // Image processing (GD required)
+        $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'webp']);
+        
+        if ($isImage && function_exists('imagecreatefromjpeg')) {
+            $filename = uniqid('media_') . '.webp';
+            $destPath = $UPLOAD_DIR . $filename;
+            
+            if ($ext === 'jpg' || $ext === 'jpeg') $img = @imagecreatefromjpeg($tmp);
+            elseif ($ext === 'png') $img = @imagecreatefrompng($tmp);
+            elseif ($ext === 'webp') $img = @imagecreatefromwebp($tmp);
+            else $img = false;
+            
+            if ($img !== false) {
+                $width = imagesx($img);
+                $height = imagesy($img);
+                $maxWidth = 1200;
+                
+                if ($width > $maxWidth) {
+                    $newWidth = $maxWidth;
+                    $newHeight = floor($height * ($maxWidth / $width));
+                    $newImg = imagecreatetruecolor($newWidth, $newHeight);
+                    
+                    // Handle transparency for PNG
+                    if ($ext === 'png' || $ext === 'webp') {
+                        imagealphablending($newImg, false);
+                        imagesavealpha($newImg, true);
+                        $transparent = imagecolorallocatealpha($newImg, 255, 255, 255, 127);
+                        imagefilledrectangle($newImg, 0, 0, $newWidth, $newHeight, $transparent);
+                    }
+                    
+                    imagecopyresampled($newImg, $img, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+                    imagedestroy($img);
+                    $img = $newImg;
+                }
+                
+                if (function_exists('imagewebp')) {
+                    imagewebp($img, $destPath, 80);
+                } else {
+                    $filename = uniqid('media_') . '.jpg';
+                    $destPath = $UPLOAD_DIR . $filename;
+                    imagejpeg($img, $destPath, 80);
+                }
+                imagedestroy($img);
+                
+                echo json_encode(['success' => true, 'path' => 'images/' . $filename]);
+                exit;
+            }
+        }
+        
+        // Fallback for non-images or if GD fails
+        $filename = uniqid('media_') . '.' . $ext;
+        if (move_uploaded_file($tmp, $UPLOAD_DIR . $filename)) {
             echo json_encode(['success' => true, 'path' => 'images/' . $filename]);
             exit;
         }
@@ -279,6 +370,10 @@ if ($action === 'save_product') {
     $price = (int)($_POST['price'] ?? 0);
     $priceRange = $_POST['priceRange'] ?? '';
     $description = $_POST['description'] ?? '';
+    $meta_title = $_POST['meta_title'] ?? '';
+    $meta_description = $_POST['meta_description'] ?? '';
+    $slug = $_POST['slug'] ?? '';
+
     
     // Parse images array from frontend
     $images = [];
@@ -325,7 +420,9 @@ if ($action === 'save_product') {
     $product = [
         'id' => $id,
         'name' => $name,
-        'slug' => strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name))),
+        'slug' => $slug ?: strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name))),
+        'meta_title' => $meta_title,
+        'meta_description' => $meta_description,
         'category' => $category,
         'subCategory' => $subCategory,
         'capacitySize' => $capacitySize,

@@ -58,6 +58,22 @@
         if (el && val) el.setAttribute(attr, val);
     }
 
+    // ======================== SEO MANAGER ========================
+    window.updateSEO = function(title, description) {
+        if (title) document.title = title;
+        if (description) {
+            var metaDesc = document.querySelector('meta[name="description"]');
+            if (metaDesc) {
+                metaDesc.setAttribute('content', description);
+            } else {
+                var meta = document.createElement('meta');
+                meta.name = 'description';
+                meta.content = description;
+                document.head.appendChild(meta);
+            }
+        }
+    }
+
     // ======================== GLOBAL SETTINGS (all pages) ========================
     function applySettings(s) {
         if (!s || !s.company_name) return;
@@ -88,6 +104,8 @@
     // ======================== HOMEPAGE ========================
     function applyHomepage(data) {
         if (!data || !data.hero_title) return;
+
+        window.updateSEO(data.meta_title, data.meta_description);
 
         setText('cms-hero-title', data.hero_title);
         setText('cms-hero-subtitle', data.hero_subtitle);
@@ -164,6 +182,8 @@
     function applyAbout(data) {
         if (!data || !data.hero_title) return;
 
+        window.updateSEO(data.meta_title, data.meta_description);
+
         setText('cms-about-hero-title', data.hero_title);
         setText('cms-about-hero-desc', data.hero_desc);
 
@@ -196,6 +216,8 @@
     function applyContact(data) {
         if (!data || !data.hero_title) return;
 
+        window.updateSEO(data.meta_title, data.meta_description);
+
         setText('cms-contact-hero-title', data.hero_title);
         setText('cms-contact-hero-desc', data.hero_desc);
         setText('cms-contact-address', data.office_address);
@@ -225,10 +247,11 @@
         if (blogGrid) {
             var html = '';
             articles.forEach(function(a, i) {
+                var aId = a.slug || a.id;
                 var img = a.existing_image || 'images/default-article.jpg';
-                html += '<a href="article.html?id=' + a.id + '" class="group bg-white rounded-3xl border border-outline-variant/20 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 reveal active flex flex-col">' +
+                html += '<a href="article.html?id=' + aId + '" class="group bg-white rounded-3xl border border-outline-variant/20 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 reveal active flex flex-col">' +
                     '<div class="relative overflow-hidden h-56 bg-surface-container-low">' +
-                    '<img src="' + img + '" alt="' + a.title + '" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />' +
+                    '<img src="' + img + '" alt="' + (a.title ? a.title.replace(/"/g, '&quot;') : '') + '" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />' +
                     '<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full font-label-md text-xs font-bold text-primary shadow-sm">' + (a.category || 'Artikel') + '</div></div>' +
                     '<div class="p-6 flex flex-col flex-grow">' +
                     '<div class="flex items-center gap-2 mb-3 text-on-surface-variant text-sm font-medium"><span class="material-symbols-outlined" style="font-size: 16px;">calendar_today</span>' + (a.publish_date || '') + '</div>' +
@@ -245,7 +268,7 @@
             var aParams = new URLSearchParams(window.location.search);
             var aId = aParams.get('id');
             if (aId) {
-                var article = articles.find(function(a) { return a.id === aId; });
+                var article = articles.find(function(a) { return a.slug === aId || a.id === aId; });
                 if (article) {
                     // Track View
                     fetch('admin/api.php?action=track_article_view', {
@@ -264,10 +287,13 @@
                     setHTML('cms-article-content', article.content);
                     if (article.existing_image) {
                         var coverEl = document.getElementById('cms-article-cover');
-                        if (coverEl) coverEl.src = article.existing_image;
+                        if (coverEl) {
+                            coverEl.src = article.existing_image;
+                            coverEl.alt = article.title;
+                        }
                     }
-                    // Update page title
-                    document.title = article.title + ' - CV Asianindo';
+                    // Update page title & description
+                    window.updateSEO(article.meta_title || (article.title + ' - CV Asianindo'), article.meta_description || article.excerpt);
                 }
             }
         }
