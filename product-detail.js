@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Smart Back Navigation
 function goBackToKatalog() {
-    if (document.referrer.includes('katalog.html')) {
+    if (document.referrer.includes('katalog.html') && window.history.length > 1) {
         window.history.back();
     } else {
         window.location.href = 'katalog.html';
