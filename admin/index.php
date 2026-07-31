@@ -456,6 +456,59 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 <!-- ================================================================ -->
 <!-- 6. SETTINGS (Pengaturan Umum) -->
 <!-- ================================================================ -->
+<!-- MEDIA LIBRARY -->
+<!-- ================================================================ -->
+<div x-show="currentView==='media'">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+        <div class="relative w-full md:w-96">
+            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+            <input type="text" x-model="mediaSearch" class="form-input pl-10" placeholder="Cari nama gambar...">
+        </div>
+        <div class="flex items-center gap-2">
+            <label class="btn-primary cursor-pointer relative overflow-hidden">
+                <i class="fas fa-upload" x-show="!isUploadingMedia"></i>
+                <i class="fas fa-spinner fa-spin" x-show="isUploadingMedia"></i>
+                <span x-text="isUploadingMedia ? 'Mengunggah...' : 'Unggah Gambar'"></span>
+                <input type="file" multiple accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" @change="uploadMediaToLibrary" :disabled="isUploadingMedia">
+            </label>
+        </div>
+    </div>
+    
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div x-show="filteredMedia().length === 0" class="text-center py-12 text-gray-500">
+            <i class="fas fa-images text-4xl mb-3 text-gray-300"></i>
+            <p>Belum ada gambar atau tidak ditemukan.</p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <template x-for="m in filteredMedia()" :key="m.name">
+                <div class="group relative rounded-lg border border-gray-200 overflow-hidden bg-gray-50 hover:shadow-md transition-all flex flex-col">
+                    <div class="h-32 w-full overflow-hidden flex items-center justify-center bg-gray-100">
+                        <img :src="'../' + m.path" class="object-cover h-full w-full" loading="lazy">
+                    </div>
+                    <div class="p-2 text-xs flex-1 border-t border-gray-100">
+                        <p class="font-medium text-gray-800 truncate" :title="m.name" x-text="m.name"></p>
+                        <p class="text-gray-500 mt-0.5" x-text="formatBytes(m.size)"></p>
+                    </div>
+                    
+                    <!-- Overlay Actions -->
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 backdrop-blur-sm">
+                        <div class="flex gap-2">
+                            <button @click="copyToClipboard(window.location.origin + '/' + m.path)" class="w-9 h-9 rounded-full bg-white text-gray-800 hover:text-blue-500 hover:scale-110 transition-transform flex items-center justify-center shadow-lg" title="Salin URL Gambar">
+                                <i class="fas fa-link"></i>
+                            </button>
+                            <button @click="deleteMedia(m.name)" class="w-9 h-9 rounded-full bg-red-500 text-white hover:bg-red-600 hover:scale-110 transition-transform flex items-center justify-center shadow-lg" title="Hapus Permanen">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================ -->
 <div x-show="currentView==='settings'">
     <div class="max-w-4xl">
         <h2 class="text-xl font-bold mb-6"><i class="fas fa-cog text-primary mr-2"></i>Pengaturan Umum Perusahaan</h2>
