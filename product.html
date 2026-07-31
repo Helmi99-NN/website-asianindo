@@ -390,10 +390,17 @@
                     <div class="md:col-span-5">
                         <div class="bg-white rounded-3xl p-6 md:p-10 shadow-lg border border-primary/5 sticky top-28">
                             <div class="aspect-square relative flex items-center justify-center overflow-hidden rounded-2xl group">
-                                <img id="product-image" src="" alt="Product Image" class="w-full h-full object-contain drop-shadow-xl transition-transform duration-500 group-hover:scale-110" />
+                                <img id="product-image" src="" alt="Product Image" class="w-full h-full object-contain drop-shadow-xl transition-all duration-300 group-hover:scale-110" />
                                 <div id="product-badge-container" class="absolute top-4 left-4 z-10 hidden">
                                     <span id="product-badge" class="px-3 py-1 text-xs font-bold rounded-full"></span>
                                 </div>
+                                <!-- Navigation Arrows -->
+                                <button id="gallery-prev" class="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-lg border border-gray-200/50 flex items-center justify-center text-gray-600 hover:bg-white hover:text-primary hover:shadow-xl transition-all opacity-0 group-hover:opacity-100 disabled:opacity-30 disabled:cursor-not-allowed" style="display:none;">
+                                    <span class="material-symbols-outlined" style="font-size:22px;">chevron_left</span>
+                                </button>
+                                <button id="gallery-next" class="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-lg border border-gray-200/50 flex items-center justify-center text-gray-600 hover:bg-white hover:text-primary hover:shadow-xl transition-all opacity-0 group-hover:opacity-100 disabled:opacity-30 disabled:cursor-not-allowed" style="display:none;">
+                                    <span class="material-symbols-outlined" style="font-size:22px;">chevron_right</span>
+                                </button>
                             </div>
                             
                                 <!-- Thumbnails Gallery -->
