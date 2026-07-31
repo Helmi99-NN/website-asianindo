@@ -733,12 +733,12 @@
                         </style>
                         ${p.images && p.images.length > 0 
                             ? p.images.map(img => `
-                                <a href="product.html?id=${p.id}" class="w-full h-full flex-shrink-0 snap-center relative block">
+                                <a href="product.html?id=${p.slug || p.id}" class="w-full h-full flex-shrink-0 snap-center relative block">
                                     <img src="${img}" class="product-img w-full h-full object-contain p-4 mix-blend-multiply" alt="${p.name}" loading="lazy" />
                                 </a>
                               `).join('')
                             : `
-                                <a href="product.html?id=${p.id}" class="w-full h-full flex-shrink-0 snap-center relative block">
+                                <a href="product.html?id=${p.slug || p.id}" class="w-full h-full flex-shrink-0 snap-center relative block">
                                     <img src="images/placeholder.webp" class="product-img w-full h-full object-contain p-4 mix-blend-multiply" alt="${p.name}" loading="lazy" />
                                 </a>
                               `
@@ -751,7 +751,7 @@
                     <div class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-lg text-primary font-caption text-caption border border-primary/15 text-xs shadow-sm pointer-events-none">${p.subCategory}</div>
                 </div>
                 <div class="p-5 flex flex-col flex-grow gap-2.5">
-                    <a href="product.html?id=${p.id}" class="hover:text-primary transition-colors"><h3 class="font-headline-sm text-[17px] font-bold text-on-surface line-clamp-2 leading-snug">${p.name}</h3></a>
+                    <a href="product.html?id=${p.slug || p.id}" class="hover:text-primary transition-colors"><h3 class="font-headline-sm text-[17px] font-bold text-on-surface line-clamp-2 leading-snug">${p.name}</h3></a>
                     <p class="text-on-surface-variant text-sm line-clamp-2 leading-relaxed">${(p.desc || p.description || '').replace(/<[^>]*>?/gm, '')}</p>
                     <div class="flex items-center gap-2 mt-1">
                         <span class="material-symbols-outlined text-primary" style="font-size: 16px;">scale</span>
