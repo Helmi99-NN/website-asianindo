@@ -141,3 +141,12 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('btn-shopee').style.display = 'none';
     }
 });
+
+// Smart Back Navigation
+function goBackToKatalog() {
+    if (document.referrer.includes('katalog.html')) {
+        window.history.back();
+    } else {
+        window.location.href = 'katalog.html';
+    }
+}

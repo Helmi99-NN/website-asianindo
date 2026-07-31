@@ -940,6 +940,41 @@
             }
 
             renderActiveFilters();
+            saveStateToURL();
+        }
+
+        function saveStateToURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            const search = document.getElementById('search-input').value.trim();
+            if (search) urlParams.set('search', search);
+            else { urlParams.delete('search'); urlParams.delete('q'); }
+
+            const cats = Array.from(document.querySelectorAll('.filter-cat:checked')).map(c => c.value);
+            if (cats.length) urlParams.set('cat', cats.join(','));
+            else urlParams.delete('cat');
+
+            const subs = Array.from(document.querySelectorAll('.filter-sub:checked')).map(c => c.value);
+            if (subs.length) urlParams.set('sub', subs.join(','));
+            else urlParams.delete('sub');
+
+            const caps = Array.from(document.querySelectorAll('.filter-cap:checked')).map(c => c.value);
+            if (caps.length) urlParams.set('cap', caps.join(','));
+            else urlParams.delete('cap');
+
+            const price = document.getElementById('price-range').value;
+            if (price !== "200") urlParams.set('price', price);
+            else urlParams.delete('price');
+
+            const sort = document.getElementById('sort-select').value;
+            if (sort !== "newest") urlParams.set('sort', sort);
+            else urlParams.delete('sort');
+
+            if (currentPage !== 1) urlParams.set('page', currentPage);
+            else urlParams.delete('page');
+
+            const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+            window.history.replaceState({}, '', newUrl);
         }
 
         // ============================
@@ -1085,9 +1120,49 @@
         // INIT
         // ============================
         const urlParams = new URLSearchParams(window.location.search);
+        
         const urlSearch = urlParams.get('q') || urlParams.get('search');
-        if (urlSearch) {
-            document.getElementById('search-input').value = urlSearch;
+        if (urlSearch) document.getElementById('search-input').value = urlSearch;
+
+        const urlCat = urlParams.get('cat');
+        if (urlCat) {
+            urlCat.split(',').forEach(c => {
+                const el = document.querySelector(`.filter-cat[value="${c}"]`);
+                if (el) el.checked = true;
+            });
+        }
+
+        const urlSub = urlParams.get('sub');
+        if (urlSub) {
+            urlSub.split(',').forEach(c => {
+                const el = document.querySelector(`.filter-sub[value="${c}"]`);
+                if (el) el.checked = true;
+            });
+        }
+
+        const urlCap = urlParams.get('cap');
+        if (urlCap) {
+            urlCap.split(',').forEach(c => {
+                const el = document.querySelector(`.filter-cap[value="${c}"]`);
+                if (el) el.checked = true;
+            });
+        }
+
+        const urlPrice = urlParams.get('price');
+        if (urlPrice) {
+            document.getElementById('price-range').value = urlPrice;
+            const priceLabel = document.getElementById('price-label');
+            priceLabel.textContent = parseInt(urlPrice) >= 200 ? 'Semua Harga' : `Maks Rp ${urlPrice} Juta`;
+        }
+
+        const urlSort = urlParams.get('sort');
+        if (urlSort) {
+            document.getElementById('sort-select').value = urlSort;
+        }
+
+        const urlPage = urlParams.get('page');
+        if (urlPage) {
+            currentPage = parseInt(urlPage) || 1;
         }
 
         render();
