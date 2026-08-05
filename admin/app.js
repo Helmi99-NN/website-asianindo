@@ -26,7 +26,7 @@ function adminApp() {
             email: 'cvasianindo@gmail.com',
             address: 'Jl. Kyai Parseh Jaya No.50, Bumiayu, Kec. Kedungkandang, Kota Malang, Jawa Timur',
             hours: 'Senin-Sabtu pukul 09.00-16.00 WIB',
-            year: '2014',
+            year: '2018',
             youtube: '',
             tiktok: '',
             instagram: '',
@@ -77,7 +77,7 @@ function adminApp() {
             hero_desc: 'Mitra terpercaya untuk kebutuhan mesin industri skala UMKM hingga manufaktur di seluruh Indonesia.',
             quick_info: {
                 name: 'CV. Asianindo',
-                year: '2014',
+                year: '2018',
                 address: 'Kota Malang, Jawa Timur',
                 scope: 'Mesin Industri & Pengolahan'
             },
