@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview Desain Hero</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #2D2354 0%, #4A2C91 50%, #330e7a 100%);
+        }
+    </style>
+</head>
+<body class="hero-gradient min-h-screen text-white flex flex-col font-sans">
+    <div class="p-8 text-center bg-black/20 backdrop-blur-md border-b border-white/10">
+        <h1 class="text-3xl font-bold mb-2">Preview Desain Gambar Mesin</h1>
+        <p class="text-white/70">Berikut adalah cara mempresentasikan gambar asli Anda menggunakan trik pencahayaan khusus (Smart Multiply Blending).</p>
+    </div>
+
+    <div class="flex-grow flex items-center justify-center p-12">
+        <div class="max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            
+            <!-- Dummy Text Left Side -->
+            <div class="flex flex-col gap-6">
+                <h2 class="text-5xl font-bold leading-tight">Solusi Mesin Industri yang Bagus & Proper</h2>
+                <p class="text-xl text-white/80">Gambar mesin Anda yang sesungguhnya! Tidak ada lagi tepian kasar yang dipotong AI, dan tidak ada lagi kotak putih yang kaku. Gambar menyatu sempurna layaknya sulap berkat trik CSS tingkat lanjut.</p>
+            </div>
+
+            <!-- THE MAGIC PREVIEW -->
+            <div class="relative flex items-center justify-center group" style="perspective: 1000px;">
+                <!-- 
+                  MAGIC TRICK: 
+                  A bright white glow behind the machine.
+                  When the image multiplies against this, the machine retains its original proper catalog color,
+                  while the white background of the image multiplies against the dark purple and disappears perfectly!
+                -->
+                <div class="absolute w-[85%] h-[65%] bg-white rounded-[100%] blur-[70px] z-0 opacity-90"></div>
+                
+                <!-- Floating Container -->
+                <div class="relative w-full transform-style-3d hover:-translate-y-4 transition-transform duration-700 ease-out z-10">
+                    <!-- Floor Shadow for grounding -->
+                    <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[70%] h-12 bg-black blur-[25px] rounded-[100%] opacity-80 z-0 pointer-events-none"></div>
+                    
+                    <img alt="Sistem Mesin Industri CV Asianindo" 
+                         class="w-full object-contain relative z-10 mix-blend-multiply" 
+                         src="images/complex_line.png" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
