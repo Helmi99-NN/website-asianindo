@@ -270,14 +270,37 @@ function adminApp() {
             this.changeView('product_form');
         },
 
+        cleanDesc(raw) {
+            if (!raw) return '';
+            let str = raw;
+            if (str.includes('<li>')) {
+                let temp = str.replace(/<ul[^>]*>/gi, '').replace(/<\/ul>/gi, '');
+                let items = temp.split(/<\/li>/gi)
+                    .map(item => item.replace(/<li[^>]*>/gi, '').replace(/<[^>]*>/g, '').trim())
+                    .filter(item => item.length > 0);
+                return items.map(item => item.startsWith('•') ? item : '• ' + item).join('\n');
+            }
+            if (str.includes('·')) {
+                let items = str.split('·')
+                    .map(item => item.trim())
+                    .filter(item => item.length > 0);
+                return items.map(item => item.startsWith('•') ? item : '• ' + item).join('\n');
+            }
+            if (str.includes('<br')) {
+                str = str.replace(/<br\s*\/?>/gi, '\n');
+            }
+            return str.replace(/<[^>]*>/g, '').trim();
+        },
+
         openEditProduct(p) {
             this.editingId = p.id;
             let specs = [];
             if (p.specs) { for (let k in p.specs) specs.push({key: k, val: p.specs[k]}); }
             if (!specs.length) specs.push({key: '', val: ''});
+            let rawDesc = p.description || p.desc || '';
             this.productForm = {
                 id: p.id, name: p.name, category: p.category || 'Mesin Industri', subCategory: p.subCategory || '',
-                price: p.price, priceRange: p.priceRange || '', description: p.description || p.desc || '',
+                price: p.price, priceRange: p.priceRange || '', description: this.cleanDesc(rawDesc),
                 features: (p.features && p.features.length) ? [...p.features] : [''],
                 specs: specs, images: p.images && p.images.length ? [...p.images] : (p.image ? [p.image] : []), existing_video: p.video || '',
                 meta_title: p.meta_title || '', meta_description: p.meta_description || '', slug: p.slug || ''
