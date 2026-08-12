@@ -277,7 +277,7 @@ function adminApp() {
             if (!specs.length) specs.push({key: '', val: ''});
             this.productForm = {
                 id: p.id, name: p.name, category: p.category || 'Mesin Industri', subCategory: p.subCategory || '',
-                price: p.price, priceRange: p.priceRange || '', description: p.description || '',
+                price: p.price, priceRange: p.priceRange || '', description: p.description || p.desc || '',
                 features: (p.features && p.features.length) ? [...p.features] : [''],
                 specs: specs, images: p.images && p.images.length ? [...p.images] : (p.image ? [p.image] : []), existing_video: p.video || '',
                 meta_title: p.meta_title || '', meta_description: p.meta_description || '', slug: p.slug || ''
