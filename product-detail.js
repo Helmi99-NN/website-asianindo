@@ -124,22 +124,37 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('product-category').innerText = product.category || '';
     document.getElementById('product-capacity').innerText = product.capacity || '';
     
-    // Format description (preserve line breaks & bullets)
-    let descText = product.desc || product.description || '';
-    if (descText.includes('·') && !descText.includes('\n')) {
-        descText = descText.split('·').map(s => s.trim()).filter(Boolean).map(s => '• ' + s).join('\n');
+    // Format description (guarantee vertical line breaks for bullets)
+    let rawDesc = product.desc || product.description || '';
+    if (rawDesc.includes('<li>')) {
+        rawDesc = rawDesc.replace(/<ul[^>]*>/gi, '').replace(/<\/ul>/gi, '');
+        let parts = rawDesc.split(/<\/li>/gi);
+        let items = [];
+        parts.forEach(p => {
+            let cleaned = p.replace(/<li[^>]*>/gi, '').replace(/<[^>]*>/g, '').trim();
+            if (cleaned) items.push(cleaned);
+        });
+        rawDesc = items.join('\n');
+    } else if (rawDesc.includes('<br')) {
+        rawDesc = rawDesc.replace(/<br\s*\/?>/gi, '\n');
     }
-    // Clean any legacy html tags if present
-    if (descText.includes('<li>')) {
-        descText = descText.replace(/<ul[^>]*>/gi, '').replace(/<\/ul>/gi, '')
-            .split(/<\/li>/gi)
-            .map(s => s.replace(/<li[^>]*>/gi, '').replace(/<[^>]*>/g, '').trim())
-            .filter(Boolean)
-            .map(s => s.startsWith('•') ? s : '• ' + s)
-            .join('\n');
-    }
-    const formattedDesc = descText.replace(/\n/g, '<br/>');
-    document.getElementById('product-description').innerHTML = formattedDesc;
+
+    let descLines = rawDesc.split('\n');
+    let finalItems = [];
+    descLines.forEach(line => {
+        let trimmed = line.replace(/<[^>]*>/g, '').trim();
+        if (!trimmed) return;
+        if (trimmed.includes('·')) {
+            let subItems = trimmed.split('·').map(s => s.trim()).filter(Boolean);
+            subItems.forEach(item => {
+                finalItems.push(item.startsWith('•') || item.startsWith('·') ? item : '• ' + item);
+            });
+        } else {
+            finalItems.push(trimmed.startsWith('•') || trimmed.startsWith('·') ? trimmed : '• ' + trimmed);
+        }
+    });
+
+    document.getElementById('product-description').innerHTML = finalItems.join('<br/>');
 
     // Badge
     const badgeEl = document.getElementById('product-badge');

@@ -3,44 +3,46 @@
  * sync_products.php
  * 
  * Sinkronisasi semua produk dari default_products.js ke data/products.json
- * dan membersihkansemua tag HTML / kode random menjadi poin-poin bersih (•).
+ * dan memecah semua poin yang menyamping menjadi berderet ke bawah (vertikal).
  * 
  * PENTING: Jalankan sekali saja melalui browser, lalu hapus file ini.
  */
 
 header('Content-Type: text/html; charset=utf-8');
-echo "<h2>🔄 Sinkronisasi Produk & Pembersihan Deskripsi</h2>";
+echo "<h2>🔄 Sinkronisasi Produk & Pemisahan Poin Vertikal</h2>";
 
 function cleanDescHtml($text) {
     if (!$text) return '';
-    if (strpos($text, '<li>') !== false) {
-        $temp = preg_replace('/<ul[^>]*>/i', '', $text);
-        $temp = preg_replace('/<\/ul>/i', '', $temp);
-        $parts = explode('</li>', $temp);
+    $str = $text;
+    if (strpos($str, '<li>') !== false) {
+        $str = preg_replace('/<ul[^>]*>/i', '', $str);
+        $str = preg_replace('/<\/ul>/i', '', $str);
+        $parts = explode('</li>', $str);
         $items = [];
         foreach ($parts as $part) {
-            $item = trim(strip_tags($part));
-            if ($item !== '') {
-                $items[] = (strpos($item, '•') === 0) ? $item : '• ' . $item;
-            }
+            $cleaned = trim(strip_tags($part));
+            if ($cleaned) $items[] = $cleaned;
         }
-        return implode("\n", $items);
+        $str = implode("\n", $items);
+    } else if (strpos($str, '<br') !== false) {
+        $str = preg_replace('/<br\s*\/?>/i', "\n", $str);
     }
-    if (strpos($text, '·') !== false) {
-        $parts = explode('·', $text);
-        $items = [];
-        foreach ($parts as $part) {
-            $item = trim($part);
-            if ($item !== '') {
-                $items[] = (strpos($item, '•') === 0) ? $item : '• ' . $item;
+
+    $lines = explode("\n", $str);
+    $finalItems = [];
+    foreach ($lines as $line) {
+        $trimmed = trim(strip_tags($line));
+        if (!$trimmed) continue;
+        if (strpos($trimmed, '·') !== false) {
+            $subItems = array_filter(array_map('trim', explode('·', $trimmed)));
+            foreach ($subItems as $item) {
+                $finalItems[] = (strpos($item, '•') === 0 || strpos($item, '·') === 0) ? $item : '• ' . $item;
             }
+        } else {
+            $finalItems[] = (strpos($trimmed, '•') === 0 || strpos($trimmed, '·') === 0) ? $trimmed : '• ' . $trimmed;
         }
-        return implode("\n", $items);
     }
-    if (strpos($text, '<br') !== false) {
-        $text = preg_replace('/<br\s*\/?>/i', "\n", $text);
-    }
-    return trim(strip_tags($text));
+    return implode("\n", $finalItems);
 }
 
 $defaultJsFile = __DIR__ . '/default_products.js';
@@ -64,28 +66,25 @@ $jsonStr = substr($jsContent, $startPos, $endPos - $startPos + 1);
 $defaultProducts = json_decode($jsonStr, true);
 
 if (!is_array($defaultProducts)) {
-    echo "<p style='color:red'>❌ Gagal decode JSON dari default_products.js! Error: " . json_last_error_msg() . "</p>";
+    echo "<p style='color:red'>❌ Gagal decode JSON dari default_products.js!</p>";
     exit;
 }
 
 echo "<p>📦 Ditemukan <strong>" . count($defaultProducts) . "</strong> produk di default_products.js</p>";
 
-// 2. Load existing data/products.json (CMS data)
+// 2. Load existing data/products.json
 $cmsProducts = [];
 if (file_exists($dataJsonFile)) {
     $cmsProducts = json_decode(file_get_contents($dataJsonFile), true) ?? [];
 }
-echo "<p>📋 Ditemukan <strong>" . count($cmsProducts) . "</strong> produk di data/products.json (CMS)</p>";
 
-// 3. Build index of CMS products by ID
+// 3. Build index
 $cmsIndex = [];
 foreach ($cmsProducts as $i => $p) {
-    if (isset($p['id'])) {
-        $cmsIndex[$p['id']] = $i;
-    }
+    if (isset($p['id'])) $cmsIndex[$p['id']] = $i;
 }
 
-// 4. Merge & Clean descriptions
+// 4. Merge & Clean
 $added = 0;
 $updated = 0;
 
@@ -93,7 +92,6 @@ foreach ($defaultProducts as $defProduct) {
     $id = $defProduct['id'] ?? null;
     if (!$id) continue;
     
-    // Clean description
     if (isset($defProduct['desc'])) {
         $defProduct['desc'] = cleanDescHtml($defProduct['desc']);
     }
@@ -109,11 +107,10 @@ foreach ($defaultProducts as $defProduct) {
                 $changed = true;
             }
         }
-        // Force clean desc in CMS if it contains raw HTML code
         if (isset($existing['desc'])) {
-            $cleanedDesc = cleanDescHtml($existing['desc']);
-            if ($cleanedDesc !== $existing['desc']) {
-                $existing['desc'] = $cleanedDesc;
+            $cleaned = cleanDescHtml($existing['desc']);
+            if ($cleaned !== $existing['desc']) {
+                $existing['desc'] = $cleaned;
                 $changed = true;
             }
         }
@@ -128,18 +125,13 @@ foreach ($defaultProducts as $defProduct) {
     }
 }
 
-// Also clean any CMS products that weren't in defaultProducts
 foreach ($cmsProducts as &$p) {
     if (isset($p['desc'])) {
         $p['desc'] = cleanDescHtml($p['desc']);
     }
 }
 
-echo "<p>➕ <strong>$added</strong> produk baru ditambahkan ke CMS</p>";
-echo "<p>🔧 <strong>$updated</strong> produk di-update & dibersihkan dari kode HTML</p>";
-echo "<p>📊 Total produk sekarang: <strong>" . count($cmsProducts) . "</strong></p>";
-
-// 5. Write back to data/products.json and data/products.js
+// 5. Save
 $dir = dirname($dataJsonFile);
 if (!is_dir($dir)) mkdir($dir, 0777, true);
 
@@ -148,8 +140,8 @@ file_put_contents($dataJsonFile, $jsonOutput);
 file_put_contents($dataJsFile, "window.CATALOG_PRODUCTS = " . $jsonOutput . ";");
 
 echo "<hr>";
-echo "<h3 style='color: green'>✅ Sinkronisasi & Pembersihan Kode Berhasil!</h3>";
-echo "<p>Semua kode HTML (seperti <code>&lt;ul&gt;</code>, <code>&lt;li&gt;</code>) telah dibersihkan menjadi teks poin-poin rapi (<code>•</code>).</p>";
-echo "<p>Sekarang di CMS maupun Website tampilan deskripsi sudah bersih tanpa kode-kode random.</p>";
+echo "<h3 style='color: green'>✅ Pemisahan Poin Vertikal Berhasil!</h3>";
+echo "<p>Semua poin deskripsi telah dipecah secara vertikal per baris.</p>";
+echo "<p>Sekarang di CMS maupun Website Katalog tampilannya sudah 100% konsisten berderet ke bawah.</p>";
 echo "<p><a href='admin/index.php'>→ Buka CMS Admin</a></p>";
 ?>

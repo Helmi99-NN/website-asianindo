@@ -2,29 +2,35 @@ const fs = require('fs');
 
 function formatToCleanBullets(text) {
     if (!text) return '';
-    let cleaned = text;
-    // If it has <li> tags
-    if (cleaned.includes('<li>')) {
-        let temp = cleaned.replace(/<ul[^>]*>/gi, '').replace(/<\/ul>/gi, '');
-        let items = temp.split(/<\/li>/gi)
-            .map(item => item.replace(/<li[^>]*>/gi, '').replace(/<[^>]*>/g, '').trim())
-            .filter(item => item.length > 0);
-        return items.map(item => item.startsWith('•') ? item : '• ' + item).join('\n');
+    let str = text;
+    if (str.includes('<li>')) {
+        str = str.replace(/<ul[^>]*>/gi, '').replace(/<\/ul>/gi, '');
+        let parts = str.split(/<\/li>/gi);
+        let items = [];
+        parts.forEach(p => {
+            let cleaned = p.replace(/<li[^>]*>/gi, '').replace(/<[^>]*>/g, '').trim();
+            if (cleaned) items.push(cleaned);
+        });
+        str = items.join('\n');
+    } else if (str.includes('<br')) {
+        str = str.replace(/<br\s*\/?>/gi, '\n');
     }
-    // If it has inline bullet '·'
-    if (cleaned.includes('·')) {
-        let items = cleaned.split('·')
-            .map(item => item.trim())
-            .filter(item => item.length > 0);
-        return items.map(item => item.startsWith('•') ? item : '• ' + item).join('\n');
-    }
-    // If it has <br> tags
-    if (cleaned.includes('<br')) {
-        cleaned = cleaned.replace(/<br\s*\/?>/gi, '\n');
-    }
-    // Strip any remaining HTML tags
-    cleaned = cleaned.replace(/<[^>]*>/g, '').trim();
-    return cleaned;
+
+    let lines = str.split('\n');
+    let finalItems = [];
+    lines.forEach(line => {
+        let trimmed = line.replace(/<[^>]*>/g, '').trim();
+        if (!trimmed) return;
+        if (trimmed.includes('·')) {
+            let subItems = trimmed.split('·').map(s => s.trim()).filter(Boolean);
+            subItems.forEach(item => {
+                finalItems.push(item.startsWith('•') || item.startsWith('·') ? item : '• ' + item);
+            });
+        } else {
+            finalItems.push(trimmed.startsWith('•') || trimmed.startsWith('·') ? trimmed : '• ' + trimmed);
+        }
+    });
+    return finalItems.join('\n');
 }
 
 // 1. Clean default_products.js
@@ -46,7 +52,6 @@ products.forEach(p => {
 fs.writeFileSync('default_products.js', 'window.CATALOG_PRODUCTS = ' + JSON.stringify(products, null, 2) + ';');
 console.log(`Cleaned ${updatedCount} product descriptions in default_products.js`);
 
-// 2. Clean data/products.json if exists locally
 if (fs.existsSync('data/products.json')) {
     let dataContent = fs.readFileSync('data/products.json', 'utf8');
     try {
