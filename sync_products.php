@@ -3,14 +3,45 @@
  * sync_products.php
  * 
  * Sinkronisasi semua produk dari default_products.js ke data/products.json
- * Produk yang sudah ada di data/products.json akan di-merge (data CMS menang),
- * produk yang belum ada akan ditambahkan.
+ * dan membersihkansemua tag HTML / kode random menjadi poin-poin bersih (•).
  * 
  * PENTING: Jalankan sekali saja melalui browser, lalu hapus file ini.
  */
 
 header('Content-Type: text/html; charset=utf-8');
-echo "<h2>🔄 Sinkronisasi Produk</h2>";
+echo "<h2>🔄 Sinkronisasi Produk & Pembersihan Deskripsi</h2>";
+
+function cleanDescHtml($text) {
+    if (!$text) return '';
+    if (strpos($text, '<li>') !== false) {
+        $temp = preg_replace('/<ul[^>]*>/i', '', $text);
+        $temp = preg_replace('/<\/ul>/i', '', $temp);
+        $parts = explode('</li>', $temp);
+        $items = [];
+        foreach ($parts as $part) {
+            $item = trim(strip_tags($part));
+            if ($item !== '') {
+                $items[] = (strpos($item, '•') === 0) ? $item : '• ' . $item;
+            }
+        }
+        return implode("\n", $items);
+    }
+    if (strpos($text, '·') !== false) {
+        $parts = explode('·', $text);
+        $items = [];
+        foreach ($parts as $part) {
+            $item = trim($part);
+            if ($item !== '') {
+                $items[] = (strpos($item, '•') === 0) ? $item : '• ' . $item;
+            }
+        }
+        return implode("\n", $items);
+    }
+    if (strpos($text, '<br') !== false) {
+        $text = preg_replace('/<br\s*\/?>/i', "\n", $text);
+    }
+    return trim(strip_tags($text));
+}
 
 $defaultJsFile = __DIR__ . '/default_products.js';
 $dataJsonFile = __DIR__ . '/data/products.json';
@@ -23,7 +54,6 @@ if (!file_exists($defaultJsFile)) {
 }
 
 $jsContent = file_get_contents($defaultJsFile);
-// Extract JSON array from: window.CATALOG_PRODUCTS = [...];
 $startPos = strpos($jsContent, '[');
 $endPos = strrpos($jsContent, ']');
 if ($startPos === false || $endPos === false) {
@@ -47,7 +77,7 @@ if (file_exists($dataJsonFile)) {
 }
 echo "<p>📋 Ditemukan <strong>" . count($cmsProducts) . "</strong> produk di data/products.json (CMS)</p>";
 
-// 3. Build index of CMS products by ID for fast lookup
+// 3. Build index of CMS products by ID
 $cmsIndex = [];
 foreach ($cmsProducts as $i => $p) {
     if (isset($p['id'])) {
@@ -55,8 +85,7 @@ foreach ($cmsProducts as $i => $p) {
     }
 }
 
-// 4. Merge: for each default product, if it exists in CMS, merge (CMS wins for non-empty fields).
-//    If it doesn't exist in CMS, add it.
+// 4. Merge & Clean descriptions
 $added = 0;
 $updated = 0;
 
@@ -64,16 +93,27 @@ foreach ($defaultProducts as $defProduct) {
     $id = $defProduct['id'] ?? null;
     if (!$id) continue;
     
+    // Clean description
+    if (isset($defProduct['desc'])) {
+        $defProduct['desc'] = cleanDescHtml($defProduct['desc']);
+    }
+    
     if (isset($cmsIndex[$id])) {
-        // Product exists in CMS - merge missing fields from default
         $cmsIdx = $cmsIndex[$id];
         $existing = $cmsProducts[$cmsIdx];
         
         $changed = false;
         foreach ($defProduct as $key => $val) {
-            // Only fill in fields that are missing or empty in CMS
             if (!isset($existing[$key]) || $existing[$key] === '' || $existing[$key] === null) {
                 $existing[$key] = $val;
+                $changed = true;
+            }
+        }
+        // Force clean desc in CMS if it contains raw HTML code
+        if (isset($existing['desc'])) {
+            $cleanedDesc = cleanDescHtml($existing['desc']);
+            if ($cleanedDesc !== $existing['desc']) {
+                $existing['desc'] = $cleanedDesc;
                 $changed = true;
             }
         }
@@ -83,14 +123,20 @@ foreach ($defaultProducts as $defProduct) {
             $updated++;
         }
     } else {
-        // Product doesn't exist in CMS - add it
         $cmsProducts[] = $defProduct;
         $added++;
     }
 }
 
+// Also clean any CMS products that weren't in defaultProducts
+foreach ($cmsProducts as &$p) {
+    if (isset($p['desc'])) {
+        $p['desc'] = cleanDescHtml($p['desc']);
+    }
+}
+
 echo "<p>➕ <strong>$added</strong> produk baru ditambahkan ke CMS</p>";
-echo "<p>🔧 <strong>$updated</strong> produk yang ada di-update (field kosong diisi)</p>";
+echo "<p>🔧 <strong>$updated</strong> produk di-update & dibersihkan dari kode HTML</p>";
 echo "<p>📊 Total produk sekarang: <strong>" . count($cmsProducts) . "</strong></p>";
 
 // 5. Write back to data/products.json and data/products.js
@@ -102,9 +148,8 @@ file_put_contents($dataJsonFile, $jsonOutput);
 file_put_contents($dataJsFile, "window.CATALOG_PRODUCTS = " . $jsonOutput . ";");
 
 echo "<hr>";
-echo "<h3 style='color: green'>✅ Sinkronisasi selesai!</h3>";
-echo "<p>Semua produk dari <code>default_products.js</code> sekarang ada di CMS (<code>data/products.json</code>).</p>";
-echo "<p>Deskripsi produk sekarang terdeteksi di CMS dan bisa diedit langsung.</p>";
-echo "<p><strong>⚠️ PENTING:</strong> Hapus file <code>sync_products.php</code> ini setelah selesai demi keamanan.</p>";
+echo "<h3 style='color: green'>✅ Sinkronisasi & Pembersihan Kode Berhasil!</h3>";
+echo "<p>Semua kode HTML (seperti <code>&lt;ul&gt;</code>, <code>&lt;li&gt;</code>) telah dibersihkan menjadi teks poin-poin rapi (<code>•</code>).</p>";
+echo "<p>Sekarang di CMS maupun Website tampilan deskripsi sudah bersih tanpa kode-kode random.</p>";
 echo "<p><a href='admin/index.php'>→ Buka CMS Admin</a></p>";
 ?>

@@ -124,8 +124,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('product-category').innerText = product.category || '';
     document.getElementById('product-capacity').innerText = product.capacity || '';
     
-    // Format description (preserve line breaks)
-    const formattedDesc = (product.desc || product.description || '').replace(/\n/g, '<br/>');
+    // Format description (preserve line breaks & bullets)
+    let descText = product.desc || product.description || '';
+    if (descText.includes('·') && !descText.includes('\n')) {
+        descText = descText.split('·').map(s => s.trim()).filter(Boolean).map(s => '• ' + s).join('\n');
+    }
+    // Clean any legacy html tags if present
+    if (descText.includes('<li>')) {
+        descText = descText.replace(/<ul[^>]*>/gi, '').replace(/<\/ul>/gi, '')
+            .split(/<\/li>/gi)
+            .map(s => s.replace(/<li[^>]*>/gi, '').replace(/<[^>]*>/g, '').trim())
+            .filter(Boolean)
+            .map(s => s.startsWith('•') ? s : '• ' + s)
+            .join('\n');
+    }
+    const formattedDesc = descText.replace(/\n/g, '<br/>');
     document.getElementById('product-description').innerHTML = formattedDesc;
 
     // Badge
