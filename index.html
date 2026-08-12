@@ -363,41 +363,37 @@
 <body class="bg-background text-on-background font-body-md text-body-md antialiased overflow-x-hidden">
 
     <!-- ============================================ -->
-    <!-- TopNavBar (Desktop) -->
+    <!-- TopNavBar (Desktop & Mobile) -->
     <!-- ============================================ -->
-    <header class="bg-white text-primary sticky top-0 border-b border-primary/10 shadow-sm z-50 transition-all duration-300 hidden md:block" id="main-header">
-        <div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-20">
+    <header class="bg-white text-primary sticky top-0 border-b border-primary/10 shadow-sm z-50 transition-all duration-300" id="main-header">
+        <div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-16 md:h-20">
             <a class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2" href="#">
-                <img src="images/logo_asianindo.webp" alt="CV Asianindo" class="h-14 object-contain" />
-                <span>CV Asianindo</span>
+                <img src="images/logo_asianindo.webp" alt="CV Asianindo" class="h-10 md:h-14 object-contain" />
+                <span class="text-lg md:text-2xl">CV Asianindo</span>
             </a>
-            <nav class="flex gap-lg items-center">
+            <nav class="hidden md:flex gap-lg items-center">
                 <a class="text-primary border-b-2 border-primary font-bold pb-1 font-label-md text-label-md transition-all duration-200" href="#">Beranda</a>
                 <a class="text-on-surface-variant hover:text-primary transition-colors px-2 py-1 rounded font-label-md text-label-md" href="about.html">Tentang Kami</a>
                 <a class="text-on-surface-variant hover:text-primary transition-colors px-2 py-1 rounded font-label-md text-label-md" href="katalog.html">Katalog</a>
                 <a class="text-on-surface-variant hover:text-primary transition-colors px-2 py-1 rounded font-label-md text-label-md" href="blog.html">Artikel</a>
                 <a class="text-on-surface-variant hover:text-primary transition-colors px-2 py-1 rounded font-label-md text-label-md" href="kontak.html">Kontak</a>
             </nav>
-            <a class="bg-gradient-to-r from-[#2D2354] to-[#4A2C91] text-white px-6 py-3 rounded-xl font-label-md text-label-md hover:shadow-lg transition-all hover-lift flex items-center gap-2" href="https://wa.me/6285335850517?text=Halo%20CV%20Asianindo%2C%20saya%20ingin%20konsultasi%20mesin" target="_blank">
-                <span class="material-symbols-outlined" style="font-size: 18px;">chat</span>
-                Konsultasi Gratis
-            </a>
+            <div class="flex items-center gap-2">
+                <a class="hidden md:inline-flex bg-gradient-to-r from-[#2D2354] to-[#4A2C91] text-white px-6 py-3 rounded-xl font-label-md text-label-md hover:shadow-lg transition-all hover-lift items-center gap-2" href="https://wa.me/6285335850517?text=Halo%20CV%20Asianindo%2C%20saya%20ingin%20konsultasi%20mesin" target="_blank">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">chat</span>
+                    Konsultasi Gratis
+                </a>
+                <button class="md:hidden text-primary p-2 hover:bg-primary/5 rounded-lg transition-colors" id="mobile-menu-btn">
+                    <span class="material-symbols-outlined text-[28px]">menu</span>
+                </button>
+            </div>
         </div>
     </header>
 
     <!-- ============================================ -->
-    <!-- SideNavBar (Mobile) -->
+    <!-- SideNavBar (Mobile Drawer) -->
     <!-- ============================================ -->
     <div class="md:hidden">
-        <div class="bg-white sticky top-0 z-40 border-b border-primary/10 px-4 py-3 flex justify-between items-center">
-            <a class="font-headline-sm text-headline-sm font-bold text-primary flex items-center gap-2" href="#">
-                <img src="images/logo_asianindo.webp" alt="CV Asianindo" class="h-14 object-contain" />
-                <span>CV Asianindo</span>
-            </a>
-            <button class="text-primary p-2 hover:bg-primary/5 rounded-lg transition-colors" id="mobile-menu-btn">
-                <span class="material-symbols-outlined">menu</span>
-            </button>
-        </div>
         <!-- Off-canvas Menu -->
         <div class="fixed inset-y-0 left-0 w-72 bg-surface shadow-2xl transform -translate-x-full transition-transform duration-300 z-50 flex flex-col border-r border-outline-variant/30" id="mobile-menu">
             <div class="px-6 py-6 border-b border-outline-variant/20">
