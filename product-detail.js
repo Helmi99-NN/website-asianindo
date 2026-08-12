@@ -135,11 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const waMessage = encodeURIComponent(product.waMsg || `Halo, saya tertarik dengan ${product.name}`);
     document.getElementById('btn-whatsapp').href = `https://wa.me/${waNumber}?text=${waMessage}`;
     
-    if (product.shopeeUrl) {
-        document.getElementById('btn-shopee').href = product.shopeeUrl;
-    } else {
-        document.getElementById('btn-shopee').style.display = 'none';
-    }
+
 });
 
 // Smart Back Navigation
