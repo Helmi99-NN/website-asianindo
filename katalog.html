@@ -697,6 +697,18 @@
         // ============================
         let products = window.CATALOG_PRODUCTS || [];
 
+        // Asynchronously load the latest products to bypass CDN cache
+        fetch('data/products.json?v=' + new Date().getTime())
+            .then(res => res.json())
+            .then(data => {
+                if (data && Array.isArray(data) && data.length > 0) {
+                    products = data;
+                    window.CATALOG_PRODUCTS = data;
+                    updateView(); // Re-render with fresh data
+                }
+            })
+            .catch(err => console.error("Failed to fetch live products", err));
+
         const ITEMS_PER_PAGE = 9;
         let currentPage = 1;
 
@@ -940,10 +952,10 @@
             }
 
             renderActiveFilters();
-            saveStateToURL();
+            saveState();
         }
 
-        function saveStateToURL() {
+        function saveState() {
             const urlParams = new URLSearchParams(window.location.search);
             
             const search = document.getElementById('search-input').value.trim();
@@ -975,6 +987,17 @@
 
             const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
             window.history.replaceState({}, '', newUrl);
+
+            // Save to Session Storage as fallback
+            sessionStorage.setItem('katalog_state', JSON.stringify({
+                search: search,
+                cat: cats,
+                sub: subs,
+                cap: caps,
+                price: price,
+                sort: sort,
+                page: currentPage
+            }));
         }
 
         // ============================
@@ -1120,49 +1143,70 @@
         // INIT
         // ============================
         const urlParams = new URLSearchParams(window.location.search);
-        
         const urlSearch = urlParams.get('q') || urlParams.get('search');
-        if (urlSearch) document.getElementById('search-input').value = urlSearch;
+        const hasUrlFilters = urlSearch || urlParams.has('cat') || urlParams.has('sub') || urlParams.has('cap') || urlParams.has('price') || urlParams.has('sort') || urlParams.has('page');
+        
+        let state = null;
+        try {
+            state = JSON.parse(sessionStorage.getItem('katalog_state'));
+        } catch(e) {}
 
-        const urlCat = urlParams.get('cat');
-        if (urlCat) {
-            urlCat.split(',').forEach(c => {
-                const el = document.querySelector(`.filter-cat[value="${c}"]`);
-                if (el) el.checked = true;
-            });
-        }
+        if (hasUrlFilters) {
+            // Priority 1: URL Parameters (if user shared a link or came from a form)
+            if (urlSearch) document.getElementById('search-input').value = urlSearch;
 
-        const urlSub = urlParams.get('sub');
-        if (urlSub) {
-            urlSub.split(',').forEach(c => {
-                const el = document.querySelector(`.filter-sub[value="${c}"]`);
-                if (el) el.checked = true;
-            });
-        }
+            const urlCat = urlParams.get('cat');
+            if (urlCat) {
+                urlCat.split(',').forEach(c => {
+                    const el = document.querySelector(`.filter-cat[value="${c}"]`);
+                    if (el) el.checked = true;
+                });
+            }
 
-        const urlCap = urlParams.get('cap');
-        if (urlCap) {
-            urlCap.split(',').forEach(c => {
-                const el = document.querySelector(`.filter-cap[value="${c}"]`);
-                if (el) el.checked = true;
-            });
-        }
+            const urlSub = urlParams.get('sub');
+            if (urlSub) {
+                urlSub.split(',').forEach(c => {
+                    const el = document.querySelector(`.filter-sub[value="${c}"]`);
+                    if (el) el.checked = true;
+                });
+            }
 
-        const urlPrice = urlParams.get('price');
-        if (urlPrice) {
-            document.getElementById('price-range').value = urlPrice;
-            const priceLabel = document.getElementById('price-label');
-            priceLabel.textContent = parseInt(urlPrice) >= 200 ? 'Semua Harga' : `Maks Rp ${urlPrice} Juta`;
-        }
+            const urlCap = urlParams.get('cap');
+            if (urlCap) {
+                urlCap.split(',').forEach(c => {
+                    const el = document.querySelector(`.filter-cap[value="${c}"]`);
+                    if (el) el.checked = true;
+                });
+            }
 
-        const urlSort = urlParams.get('sort');
-        if (urlSort) {
-            document.getElementById('sort-select').value = urlSort;
-        }
+            const urlPrice = urlParams.get('price');
+            if (urlPrice) {
+                document.getElementById('price-range').value = urlPrice;
+                const priceLabel = document.getElementById('price-label');
+                priceLabel.textContent = parseInt(urlPrice) >= 200 ? 'Semua Harga' : `Maks Rp ${urlPrice} Juta`;
+            }
 
-        const urlPage = urlParams.get('page');
-        if (urlPage) {
-            currentPage = parseInt(urlPage) || 1;
+            const urlSort = urlParams.get('sort');
+            if (urlSort) {
+                document.getElementById('sort-select').value = urlSort;
+            }
+
+            const urlPage = urlParams.get('page');
+            if (urlPage) {
+                currentPage = parseInt(urlPage) || 1;
+            }
+        } else if (state) {
+            // Priority 2: Session Storage (if user clicked back or navigated without params)
+            if (state.search) document.getElementById('search-input').value = state.search;
+            if (state.cat) document.querySelectorAll('.filter-cat').forEach(el => { el.checked = state.cat.includes(el.value); });
+            if (state.sub) document.querySelectorAll('.filter-sub').forEach(el => { el.checked = state.sub.includes(el.value); });
+            if (state.cap) document.querySelectorAll('.filter-cap').forEach(el => { el.checked = state.cap.includes(el.value); });
+            if (state.price) {
+                document.getElementById('price-range').value = state.price;
+                document.getElementById('price-label').textContent = parseInt(state.price) >= 200 ? 'Semua Harga' : `Maks Rp ${state.price} Juta`;
+            }
+            if (state.sort) document.getElementById('sort-select').value = state.sort;
+            if (state.page) currentPage = state.page;
         }
 
         render();
