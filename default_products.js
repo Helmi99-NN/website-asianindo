@@ -1026,7 +1026,7 @@ window.CATALOG_PRODUCTS = [
     "reviews": 26,
     "badge": "",
     "badgeColor": "",
-    "desc": "·  Kapasitas 10Liter Bahan/jam ·  Dimensi 185x175x260 cm ·  Ruang Pengering Stainless steel Food Grade ·  Material Rangka Full Stainless Steel ·  Total Daya 15.000 Watt ·  Air Compressor 3HP ·  Heater Elektrik 13.000 Watt ·  Blower 2pcs, 600 Watt ·  Cyclone stainless steel Food Grade ·  1 Buah Tabung Dinding, 1 Buah Pemanas Atas",
+    "desc": "<ul class=\"list-disc pl-4 space-y-1\">\n  <li>Kapasitas 10Liter Bahan/jam</li>\n  <li>Dimensi 185x175x260 cm</li>\n  <li>Ruang Pengering Stainless steel Food Grade</li>\n  <li>Material Rangka Full Stainless Steel</li>\n  <li>Total Daya 15.000 Watt</li>\n  <li>Air Compressor 3HP</li>\n  <li>Heater Elektrik 13.000 Watt</li>\n  <li>Blower 2pcs, 600 Watt</li>\n  <li>Cyclone stainless steel Food Grade</li>\n  <li>1 Buah Tabung Dinding, 1 Buah Pemanas Atas</li>\n</ul>",
     "shopeeUrl": "https://shopee.co.id/product/69832393/43663950850",
     "waMsg": "Halo, saya tertarik dengan Mesin Spray Dryer 10 Liter Asianindo",
     "images": [
@@ -2085,7 +2085,7 @@ window.CATALOG_PRODUCTS = [
     "reviews": 28,
     "badge": "",
     "badgeColor": "",
-    "desc": "·\n\nKapasitas 3 Liter Bahan/jam ·\n\nDimensi 85x145x200 cm ·\n\nRuang Pengering Stainless steel Food Grade ·\n\nMaterial Rangka Full Stainless Steel ·\n\nTotal Daya 15.000 Watt ·\n\nAir Compressor 2HP/380 V ·\n\nHeater Elektrik 12.000 Watt ·\n\nBlower 2pcs, 600 Watt ·\n\nCyclone stainless steel Food Grade ·\n\n1 Buah Tabung Dinding, 1 Buah Pemanas Atas",
+    "desc": "<ul class=\"list-disc pl-4 space-y-1\">\n  <li>Kapasitas 3 Liter Bahan/jam</li>\n  <li>Dimensi 85x145x200 cm</li>\n  <li>Ruang Pengering Stainless steel Food Grade</li>\n  <li>Material Rangka Full Stainless Steel</li>\n  <li>Total Daya 15.000 Watt</li>\n  <li>Air Compressor 2HP/380 V</li>\n  <li>Heater Elektrik 12.000 Watt</li>\n  <li>Blower 2pcs, 600 Watt</li>\n  <li>Cyclone stainless steel Food Grade</li>\n  <li>1 Buah Tabung Dinding, 1 Buah Pemanas Atas</li>\n</ul>",
     "shopeeUrl": "https://shopee.co.id/product/69832393/41313960240",
     "waMsg": "Halo, saya tertarik dengan Mesin Spray Dryer 3 Liter Asianindo",
     "images": [
@@ -2535,7 +2535,7 @@ window.CATALOG_PRODUCTS = [
     "reviews": 36,
     "badge": "",
     "badgeColor": "",
-    "desc": "·  Kapasitas 5 Liter Bahan/jam ·  Dimensi 100x175x220 cm ·  Ruang Pengering Stainless steel Food Grade ·  Material Rangka Full Stainless Steel ·  Total Daya 15.000 Watt ·  Air Compressor 3HP ·  Heater Elektrik 13.000 Watt ·  Blower 2pcs, 600 Watt ·  Cyclone stainless steel Food Grade ·  1 Buah Tabung Dinding, 1 Buah Pemanas Atas",
+    "desc": "<ul class=\"list-disc pl-4 space-y-1\">\n  <li>Kapasitas 5 Liter Bahan/jam</li>\n  <li>Dimensi 100x175x220 cm</li>\n  <li>Ruang Pengering Stainless steel Food Grade</li>\n  <li>Material Rangka Full Stainless Steel</li>\n  <li>Total Daya 15.000 Watt</li>\n  <li>Air Compressor 3HP</li>\n  <li>Heater Elektrik 13.000 Watt</li>\n  <li>Blower 2pcs, 600 Watt</li>\n  <li>Cyclone stainless steel Food Grade</li>\n  <li>1 Buah Tabung Dinding, 1 Buah Pemanas Atas</li>\n</ul>",
     "shopeeUrl": "https://shopee.co.id/product/69832393/40213950748",
     "waMsg": "Halo, saya tertarik dengan Mesin Spray Dryer 5 Liter Asianindo",
     "images": [
@@ -2582,7 +2582,7 @@ window.CATALOG_PRODUCTS = [
     "reviews": 5,
     "badge": "",
     "badgeColor": "",
-    "desc": "· Kapasitas 2 Liter Bahan/jam · Ruang Pengering Stainless steel Food Grade · Material Rangka Full Stainless Steel · Total Daya 13.000 Watt · Air Compressor 2HP/380 V · Heater Elektrik 12.000 Watt · Blower 2pcs, 600 Watt · Cyclone stainless steel Food Grade · 1 Buah Tabung Dinding, 1 Buah Pemanas Atas",
+    "desc": "<ul class=\"list-disc pl-4 space-y-1\">\n  <li>Kapasitas 2 Liter Bahan/jam</li>\n  <li>Ruang Pengering Stainless steel Food Grade</li>\n  <li>Material Rangka Full Stainless Steel</li>\n  <li>Total Daya 13.000 Watt</li>\n  <li>Air Compressor 2HP/380 V</li>\n  <li>Heater Elektrik 12.000 Watt</li>\n  <li>Blower 2pcs, 600 Watt</li>\n  <li>Cyclone stainless steel Food Grade</li>\n  <li>1 Buah Tabung Dinding, 1 Buah Pemanas Atas</li>\n</ul>",
     "shopeeUrl": "https://shopee.co.id/product/69832393/40013976782",
     "waMsg": "Halo, saya tertarik dengan Mesin Spray Dryer 2 Liter Asianindo",
     "images": [
@@ -2963,7 +2963,7 @@ window.CATALOG_PRODUCTS = [
     "reviews": 37,
     "badge": "",
     "badgeColor": "",
-    "desc": "·  Kapasitas 1 Liter Bahan/proses ·  Ruang Pengering Stainless steel Food Grade ·  Material Rangka Full Stainless Steel ·  Total Daya 9.000 Watt ·  Air Compressor 2HP/380 V ·  Heater Elektrik 7.000 Watt ·  Blower 2pcs, 600 Watt ·  Cyclone stainless steel Food Grade Sus 304 ·  1 Buah Tabung Dinding,  .\n\n1 Buah Pemanas Atas",
+    "desc": "<ul class=\"list-disc pl-4 space-y-1\">\n  <li>Kapasitas 1 Liter Bahan/proses</li>\n  <li>Ruang Pengering Stainless steel Food Grade</li>\n  <li>Material Rangka Full Stainless Steel</li>\n  <li>Total Daya 9.000 Watt</li>\n  <li>Air Compressor 2HP/380 V</li>\n  <li>Heater Elektrik 7.000 Watt</li>\n  <li>Blower 2pcs, 600 Watt</li>\n  <li>Cyclone stainless steel Food Grade Sus 304</li>\n  <li>1 Buah Tabung Dinding,  .\n\n1 Buah Pemanas Atas</li>\n</ul>",
     "shopeeUrl": "https://shopee.co.id/product/69832393/26590146837",
     "waMsg": "Halo, saya tertarik dengan Mesin Spray Dryer 1 Liter Asianindo",
     "images": [
