@@ -758,7 +758,8 @@
                     </div>
                     ${p.images && p.images.length > 1 ? `<div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10 pointer-events-none opacity-0 group-hover/gallery:opacity-100 transition-opacity duration-300">
                         ${p.images.map((_, i) => `<div class="w-1.5 h-1.5 rounded-full bg-black/40 border border-white/60 shadow-sm"></div>`).join('')}
-                    <                    ${p.badge ? `<div class="absolute top-2 left-2 z-10 ${p.badgeColor} px-2 py-0.5 rounded-full font-caption text-[10px] sm:text-xs font-bold shadow-sm pointer-events-none">${p.badge}</div>` : ''}
+                    </div>` : ''}
+                    ${p.badge ? `<div class="absolute top-2 left-2 z-10 ${p.badgeColor} px-2 py-0.5 rounded-full font-caption text-[10px] sm:text-xs font-bold shadow-sm pointer-events-none">${p.badge}</div>` : ''}
                     <div class="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-lg text-primary font-caption border border-primary/15 text-[10px] sm:text-xs shadow-sm pointer-events-none">${p.subCategory}</div>
                 </div>
                 <div class="p-3 sm:p-5 flex flex-col flex-grow gap-1.5 sm:gap-2.5">
