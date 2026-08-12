@@ -1,15 +1,29 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Get product ID from URL query param ?id=...
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
 
-    if (!productId || !window.CATALOG_PRODUCTS) {
+    let products = window.CATALOG_PRODUCTS || [];
+    
+    // Fetch live products to bypass cache
+    try {
+        const res = await fetch('data/products.json?v=' + new Date().getTime());
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+            products = data;
+            window.CATALOG_PRODUCTS = data; // Update global state for related products
+        }
+    } catch (err) {
+        console.error("Failed to fetch live products", err);
+    }
+
+    if (!productId || products.length === 0) {
         document.getElementById('product-name').innerText = "Produk tidak ditemukan.";
         return;
     }
 
     // Find the product
-    const product = window.CATALOG_PRODUCTS.find(p => p.id === productId || p.slug === productId);
+    const product = products.find(p => p.id === productId || p.slug === productId);
 
     if (!product) {
         document.getElementById('product-name').innerText = "Produk tidak ditemukan.";

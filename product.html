@@ -914,8 +914,20 @@
         // ============================
         // INIT
         // ============================
-        render();
-        observeReveals();
+        fetch('data/products.json?v=' + new Date().getTime())
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data) && data.length > 0) {
+                    products = data;
+                }
+                render();
+                observeReveals();
+            })
+            .catch(err => {
+                console.error("Failed to fetch live products", err);
+                render();
+                observeReveals();
+            });
 
     })();
     </script>
