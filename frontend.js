@@ -137,7 +137,7 @@
                 var html = '';
                 data.advantages.forEach(function(adv, i) {
                     var icon = adv.icon.includes('fa-') ? adv.icon.split('-').pop() : adv.icon; // try to convert FA to material if needed, or just use as is if valid material icon. Let's assume user inputted valid material icon like "shield"
-                    html += '<div class="feature-card bg-white rounded-2xl p-7 border border-outline-variant/15 reveal active">' +
+                    html += '<div class="feature-card bg-white rounded-2xl p-7 border border-outline-variant/15 reveal active flex flex-col items-center text-center md:items-start md:text-left">' +
                         '<div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-fixed to-secondary-container flex items-center justify-center mb-5">' +
                         '<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: \'FILL\' 1; font-size: 28px;">' + icon + '</span></div>' +
                         '<h3 class="font-headline-sm text-headline-sm text-on-surface text-lg font-bold mb-3">' + adv.title + '</h3>' +
