@@ -7,6 +7,8 @@
     <title>Katalog Mesin Industri - CV Asianindo | Vacuum Frying, Spray Dryer, Roaster Kopi</title>
     <meta name="description" content="Katalog lengkap mesin industri CV Asianindo. Vacuum Frying, Spray Dryer, Roaster Kopi, Mesin Pertanian, Pengemasan, Farmasi. Harga langsung pabrik." />
     <meta name="keywords" content="katalog mesin industri, mesin vacuum frying, mesin spray dryer, mesin roasting kopi, mesin UMKM, CV Asianindo" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
@@ -84,15 +86,16 @@
                         "gutter": "24px"
                     },
                     "fontFamily": {
-                        "headline-md": ["Outfit"],
-                        "display-lg-mobile": ["Outfit"],
-                        "headline-sm": ["Outfit"],
-                        "headline-lg": ["Outfit"],
-                        "display-lg": ["Outfit"],
-                        "body-lg": ["Inter"],
-                        "label-md": ["Inter"],
-                        "body-md": ["Inter"],
-                        "caption": ["Inter"]
+                        sans: ["Inter", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+                        "headline-md": ["Outfit", "sans-serif"],
+                        "display-lg-mobile": ["Outfit", "sans-serif"],
+                        "headline-sm": ["Outfit", "sans-serif"],
+                        "headline-lg": ["Outfit", "sans-serif"],
+                        "display-lg": ["Outfit", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "label-md": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "caption": ["Inter", "sans-serif"]
                     },
                     "fontSize": {
                         "headline-md": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
@@ -110,6 +113,12 @@
         }
     </script>
     <style>
+        body, html {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+        }
         /* ===== Base ===== */
         html { scroll-behavior: smooth; }
 
