@@ -154,7 +154,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    document.getElementById('product-description').innerHTML = finalItems.join('<br/>');
+    if (finalItems.length > 0) {
+        document.getElementById('product-description').innerHTML = 
+            '<ul class="list-disc pl-5 space-y-2 text-on-surface-variant">' + 
+            finalItems.map(item => `<li>${item.replace(/^[•·]\s*/, '')}</li>`).join('') + 
+            '</ul>';
+    } else {
+        document.getElementById('product-description').innerHTML = '<p>' + rawDesc + '</p>';
+    }
 
     // Badge
     const badgeEl = document.getElementById('product-badge');
