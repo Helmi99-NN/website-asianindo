@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk / Daftar - CV Asianindo</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#330e7a',
+                        'primary-container': '#4a2c91',
+                        'primary-light': '#5e37b8',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        [v-cloak] { display: none; }
+    </style>
+</head>
+<body class="bg-[#f8f9fa] text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100 shadow-sm">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary to-primary-container rounded-xl flex items-center justify-center text-white font-heading font-bold text-xl shadow-lg shadow-primary/30">
+                        A
+                    </div>
+                    <div>
+                        <h1 class="font-heading font-bold text-xl text-primary leading-tight">CV Asianindo</h1>
+                        <p class="text-xs text-slate-500 font-medium tracking-wide uppercase">Industrial Machinery</p>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center gap-8">
+                    <a href="index.html" class="text-slate-600 hover:text-primary font-medium transition-colors">Beranda</a>
+                    <a href="tentang.html" class="text-slate-600 hover:text-primary font-medium transition-colors">Tentang Kami</a>
+                    <a href="katalog.html" class="text-slate-600 hover:text-primary font-medium transition-colors">Katalog</a>
+                    <a href="artikel.html" class="text-slate-600 hover:text-primary font-medium transition-colors">Artikel</a>
+                    <a href="kontak.html" class="text-slate-600 hover:text-primary font-medium transition-colors">Kontak</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 text-slate-600 hover:text-primary" id="mobile-menu-btn">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Nav Menu -->
+        <div class="md:hidden hidden bg-white border-t border-gray-100 absolute w-full" id="mobile-menu">
+            <div class="px-4 pt-2 pb-6 space-y-1 shadow-lg">
+                <a href="index.html" class="block px-3 py-2 text-slate-600 hover:text-primary hover:bg-slate-50 rounded-lg">Beranda</a>
+                <a href="tentang.html" class="block px-3 py-2 text-slate-600 hover:text-primary hover:bg-slate-50 rounded-lg">Tentang Kami</a>
+                <a href="katalog.html" class="block px-3 py-2 text-slate-600 hover:text-primary hover:bg-slate-50 rounded-lg">Katalog</a>
+                <a href="artikel.html" class="block px-3 py-2 text-slate-600 hover:text-primary hover:bg-slate-50 rounded-lg">Artikel</a>
+                <a href="kontak.html" class="block px-3 py-2 text-slate-600 hover:text-primary hover:bg-slate-50 rounded-lg">Kontak</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden relative">
+            
+            <!-- Toast Notification -->
+            <div id="toast" class="absolute top-4 left-4 right-4 hidden rounded-lg p-3 text-sm font-medium z-10 transition-opacity duration-300">
+                <span id="toast-message"></span>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex border-b border-gray-200">
+                <button id="tab-login" class="flex-1 py-4 text-center font-heading font-semibold text-primary border-b-2 border-primary transition-colors focus:outline-none" onclick="switchTab('login')">
+                    Masuk
+                </button>
+                <button id="tab-register" class="flex-1 py-4 text-center font-heading font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 transition-colors focus:outline-none" onclick="switchTab('register')">
+                    Daftar
+                </button>
+            </div>
+
+            <div class="p-6 sm:p-8 relative">
+                
+                <!-- Full Page Loader -->
+                <div id="page-loader" class="absolute inset-0 bg-white/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center hidden rounded-b-2xl">
+                    <span class="material-symbols-outlined animate-spin text-4xl text-primary">progress_activity</span>
+                    <p class="mt-2 text-sm text-slate-600 font-medium">Memeriksa sesi...</p>
+                </div>
+
+                <!-- Login Form -->
+                <form id="login-form" class="space-y-5" onsubmit="handleLogin(event)">
+                    <div>
+                        <label for="login-email" class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="material-symbols-outlined text-slate-400 text-lg">mail</span>
+                            </div>
+                            <input type="email" id="login-email" required class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm shadow-sm" placeholder="email@contoh.com">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <label for="login-password" class="block text-sm font-medium text-slate-700">Password</label>
+                            <a href="#" class="text-xs text-primary hover:text-primary-light font-medium">Lupa Password?</a>
+                        </div>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="material-symbols-outlined text-slate-400 text-lg">lock</span>
+                            </div>
+                            <input type="password" id="login-password" required class="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm shadow-sm" placeholder="••••••••">
+                            <button type="button" onclick="togglePassword('login-password', 'login-toggle-icon')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none">
+                                <span id="login-toggle-icon" class="material-symbols-outlined text-lg">visibility</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btn-login" class="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-primary to-primary-container hover:from-primary-light hover:to-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all">
+                        <span>Masuk</span>
+                        <span class="material-symbols-outlined animate-spin hidden ml-2 text-lg loader">progress_activity</span>
+                    </button>
+
+                    <div class="mt-6">
+                        <div class="relative">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div class="relative flex justify-center text-sm">
+                                <span class="px-2 bg-white text-slate-500">Atau</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-center">
+                            <p class="text-sm text-slate-600">
+                                Belum punya akun? 
+                                <button type="button" onclick="switchTab('register')" class="font-medium text-primary hover:text-primary-light">Daftar sekarang</button>
+                            </p>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Register Form -->
+                <form id="register-form" class="space-y-4 hidden" onsubmit="handleRegister(event)">
+                    <div>
+                        <label for="reg-name" class="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="material-symbols-outlined text-slate-400 text-lg">person</span>
+                            </div>
+                            <input type="text" id="reg-name" required class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm shadow-sm" placeholder="Budi Santoso">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="reg-email" class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="material-symbols-outlined text-slate-400 text-lg">mail</span>
+                            </div>
+                            <input type="email" id="reg-email" required class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm shadow-sm" placeholder="email@contoh.com">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="reg-phone" class="block text-sm font-medium text-slate-700 mb-1">Nomor Telepon / WhatsApp</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="material-symbols-outlined text-slate-400 text-lg">call</span>
+                            </div>
+                            <input type="tel" id="reg-phone" required class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm shadow-sm" placeholder="08123456789">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="reg-password" class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <span class="material-symbols-outlined text-slate-400 text-lg">lock</span>
+                                </div>
+                                <input type="password" id="reg-password" required minlength="6" class="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm shadow-sm" placeholder="••••••••">
+                                <button type="button" onclick="togglePassword('reg-password', 'reg-toggle-icon')" class="absolute inset-y-0 right-0 pr-2 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none">
+                                    <span id="reg-toggle-icon" class="material-symbols-outlined text-base">visibility</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="reg-confirm" class="block text-sm font-medium text-slate-700 mb-1">Konfirmasi</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <span class="material-symbols-outlined text-slate-400 text-lg">lock_reset</span>
+                                </div>
+                                <input type="password" id="reg-confirm" required minlength="6" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm shadow-sm" placeholder="••••••••">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-200 pt-4 mt-2">
+                        <h4 class="text-sm font-heading font-medium text-slate-800 mb-3">Informasi Pengiriman (Opsional)</h4>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label for="reg-address" class="block text-xs font-medium text-slate-700 mb-1">Alamat Lengkap</label>
+                                <textarea id="reg-address" rows="2" class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm shadow-sm" placeholder="Jl. Contoh No. 123..."></textarea>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="reg-province" class="block text-xs font-medium text-slate-700 mb-1">Provinsi</label>
+                                    <select id="reg-province" class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm shadow-sm bg-white">
+                                        <option value="">Pilih Provinsi</option>
+                                        <option value="Aceh">Aceh</option>
+                                        <option value="Sumatera Utara">Sumatera Utara</option>
+                                        <option value="Sumatera Barat">Sumatera Barat</option>
+                                        <option value="Riau">Riau</option>
+                                        <option value="Jambi">Jambi</option>
+                                        <option value="Sumatera Selatan">Sumatera Selatan</option>
+                                        <option value="Bengkulu">Bengkulu</option>
+                                        <option value="Lampung">Lampung</option>
+                                        <option value="Kepulauan Bangka Belitung">Kepulauan Bangka Belitung</option>
+                                        <option value="Kepulauan Riau">Kepulauan Riau</option>
+                                        <option value="DKI Jakarta">DKI Jakarta</option>
+                                        <option value="Jawa Barat">Jawa Barat</option>
+                                        <option value="Jawa Tengah">Jawa Tengah</option>
+                                        <option value="DI Yogyakarta">DI Yogyakarta</option>
+                                        <option value="Jawa Timur">Jawa Timur</option>
+                                        <option value="Banten">Banten</option>
+                                        <option value="Bali">Bali</option>
+                                        <option value="Nusa Tenggara Barat">Nusa Tenggara Barat</option>
+                                        <option value="Nusa Tenggara Timur">Nusa Tenggara Timur</option>
+                                        <option value="Kalimantan Barat">Kalimantan Barat</option>
+                                        <option value="Kalimantan Tengah">Kalimantan Tengah</option>
+                                        <option value="Kalimantan Selatan">Kalimantan Selatan</option>
+                                        <option value="Kalimantan Timur">Kalimantan Timur</option>
+                                        <option value="Kalimantan Utara">Kalimantan Utara</option>
+                                        <option value="Sulawesi Utara">Sulawesi Utara</option>
+                                        <option value="Sulawesi Tengah">Sulawesi Tengah</option>
+                                        <option value="Sulawesi Selatan">Sulawesi Selatan</option>
+                                        <option value="Sulawesi Tenggara">Sulawesi Tenggara</option>
+                                        <option value="Gorontalo">Gorontalo</option>
+                                        <option value="Sulawesi Barat">Sulawesi Barat</option>
+                                        <option value="Maluku">Maluku</option>
+                                        <option value="Maluku Utara">Maluku Utara</option>
+                                        <option value="Papua Barat">Papua Barat</option>
+                                        <option value="Papua">Papua</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="reg-city" class="block text-xs font-medium text-slate-700 mb-1">Kota/Kabupaten</label>
+                                    <input type="text" id="reg-city" class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm shadow-sm" placeholder="Kota Anda">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="reg-zip" class="block text-xs font-medium text-slate-700 mb-1">Kode Pos</label>
+                                <input type="text" id="reg-zip" class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm shadow-sm" placeholder="12345">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btn-register" class="w-full mt-4 flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-primary to-primary-container hover:from-primary-light hover:to-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all">
+                        <span>Daftar Sekarang</span>
+                        <span class="material-symbols-outlined animate-spin hidden ml-2 text-lg loader">progress_activity</span>
+                    </button>
+                    
+                    <div class="mt-4 text-center">
+                        <p class="text-sm text-slate-600">
+                            Sudah punya akun? 
+                            <button type="button" onclick="switchTab('login')" class="font-medium text-primary hover:text-primary-light">Masuk di sini</button>
+                        </p>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white pt-12 pb-6 border-t border-primary-light/30">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-center md:text-left">
+                <div>
+                    <h3 class="font-heading font-bold text-xl mb-4 text-white">CV Asianindo</h3>
+                    <p class="text-primary-light text-sm mb-4">Solusi mesin industri terbaik untuk kebutuhan bisnis Anda. Berkualitas, terpercaya, dan bergaransi.</p>
+                </div>
+                <div>
+                    <h3 class="font-heading font-bold text-lg mb-4 text-white">Tautan Cepat</h3>
+                    <ul class="space-y-2 text-sm text-primary-light">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Beranda</a></li>
+                        <li><a href="katalog.html" class="hover:text-white transition-colors">Katalog Produk</a></li>
+                        <li><a href="tentang.html" class="hover:text-white transition-colors">Tentang Kami</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-heading font-bold text-lg mb-4 text-white">Hubungi Kami</h3>
+                    <ul class="space-y-2 text-sm text-primary-light">
+                        <li class="flex items-center justify-center md:justify-start gap-2">
+                            <span class="material-symbols-outlined text-sm">mail</span> info@asianindomachine.com
+                        </li>
+                        <li class="flex items-center justify-center md:justify-start gap-2">
+                            <span class="material-symbols-outlined text-sm">phone</span> +62 853-3585-0517
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-primary-light/20 pt-6 text-center">
+                <p class="text-primary-light text-xs">&copy; 2026 CV Asianindo. Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Parse URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectParam = urlParams.get('redirect');
+        
+        // Target redirect logic
+        function getRedirectTarget() {
+            if (redirectParam) {
+                return redirectParam;
+            }
+            if (document.referrer && !document.referrer.includes('login.html')) {
+                return document.referrer;
+            }
+            return 'index.html';
+        }
+
+        // On Load: Check if already logged in
+        document.addEventListener('DOMContentLoaded', async () => {
+            const pageLoader = document.getElementById('page-loader');
+            pageLoader.classList.remove('hidden');
+            
+            try {
+                const res = await fetch('auth_api.php?action=check_session');
+                const data = await res.json();
+                
+                if (data.status === 'success' && data.logged_in) {
+                    window.location.href = getRedirectTarget();
+                } else {
+                    pageLoader.classList.add('hidden');
+                }
+            } catch (err) {
+                console.error("Session check failed", err);
+                pageLoader.classList.add('hidden');
+            }
+        });
+
+        // Tab Switching Logic
+        function switchTab(tabName) {
+            const loginTab = document.getElementById('tab-login');
+            const registerTab = document.getElementById('tab-register');
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+
+            if (tabName === 'login') {
+                loginTab.classList.replace('text-slate-500', 'text-primary');
+                loginTab.classList.replace('font-medium', 'font-semibold');
+                loginTab.classList.replace('border-transparent', 'border-primary');
+                
+                registerTab.classList.replace('text-primary', 'text-slate-500');
+                registerTab.classList.replace('font-semibold', 'font-medium');
+                registerTab.classList.replace('border-primary', 'border-transparent');
+                
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+            } else {
+                registerTab.classList.replace('text-slate-500', 'text-primary');
+                registerTab.classList.replace('font-medium', 'font-semibold');
+                registerTab.classList.replace('border-transparent', 'border-primary');
+                
+                loginTab.classList.replace('text-primary', 'text-slate-500');
+                loginTab.classList.replace('font-semibold', 'font-medium');
+                loginTab.classList.replace('border-primary', 'border-transparent');
+                
+                registerForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+            }
+        }
+
+        // Password Visibility Toggle
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility_off';
+            } else {
+                input.type = 'password';
+                icon.textContent = 'visibility';
+            }
+        }
+
+        // Show Toast Notification
+        function showToast(message, type = 'error') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            
+            toast.className = 'absolute top-4 left-4 right-4 rounded-lg p-3 text-sm font-medium z-10 transition-opacity duration-300';
+            
+            if (type === 'error') {
+                toast.classList.add('bg-red-100', 'text-red-800', 'border', 'border-red-200');
+            } else if (type === 'success') {
+                toast.classList.add('bg-green-100', 'text-green-800', 'border', 'border-green-200');
+            }
+            
+            toastMsg.textContent = message;
+            toast.classList.remove('hidden');
+            
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Handle Login Submission
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            const btn = document.getElementById('btn-login');
+            const loader = btn.querySelector('.loader');
+            
+            // UI Loading state
+            btn.disabled = true;
+            loader.classList.remove('hidden');
+            
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('password', password);
+
+            try {
+                const res = await fetch('auth_api.php?action=login', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                
+                if (data.status === 'success') {
+                    showToast('Login berhasil! Mengalihkan...', 'success');
+                    setTimeout(() => {
+                        window.location.href = getRedirectTarget();
+                    }, 1000);
+                } else {
+                    showToast(data.message || 'Login gagal. Periksa email dan password Anda.');
+                    btn.disabled = false;
+                    loader.classList.add('hidden');
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('Terjadi kesalahan pada server.');
+                btn.disabled = false;
+                loader.classList.add('hidden');
+            }
+        }
+
+        // Handle Register Submission
+        async function handleRegister(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const phone = document.getElementById('reg-phone').value;
+            const password = document.getElementById('reg-password').value;
+            const confirm = document.getElementById('reg-confirm').value;
+            
+            // Optional
+            const address = document.getElementById('reg-address').value;
+            const province = document.getElementById('reg-province').value;
+            const city = document.getElementById('reg-city').value;
+            const zip = document.getElementById('reg-zip').value;
+            
+            if (password !== confirm) {
+                showToast('Password dan konfirmasi password tidak cocok.');
+                return;
+            }
+            
+            const btn = document.getElementById('btn-register');
+            const loader = btn.querySelector('.loader');
+            
+            // UI Loading state
+            btn.disabled = true;
+            loader.classList.remove('hidden');
+            
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('phone', phone);
+            formData.append('password', password);
+            formData.append('address', address);
+            formData.append('province', province);
+            formData.append('city', city);
+            formData.append('zip', zip);
+
+            try {
+                const res = await fetch('auth_api.php?action=register', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                
+                if (data.status === 'success') {
+                    showToast('Pendaftaran berhasil! Anda akan dialihkan...', 'success');
+                    setTimeout(() => {
+                        window.location.href = getRedirectTarget();
+                    }, 1500);
+                } else {
+                    showToast(data.message || 'Pendaftaran gagal. Silakan coba lagi.');
+                    btn.disabled = false;
+                    loader.classList.add('hidden');
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('Terjadi kesalahan pada server.');
+                btn.disabled = false;
+                loader.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

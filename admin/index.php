@@ -112,6 +112,26 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         <i class="fas fa-images w-5 text-center"></i> Galeri Media
                     </a></li>
                     
+                    <li class="pt-4 pb-1 px-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest">E-Commerce</li>
+                    
+                    <!-- Pesanan -->
+                    <li><a href="#" @click.prevent="changeView('orders')" :class="currentView==='orders' ? 'bg-primary text-white shadow-md' : 'text-gray-300 hover:bg-sidebar-hover'" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm">
+                        <i class="fas fa-box-open w-5 text-center"></i> Pesanan Masuk
+                        <span x-show="ecommerceStats.pending_payment > 0" class="ml-auto bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full" x-text="ecommerceStats.pending_payment"></span>
+                    </a></li>
+                    
+                    <!-- Pembayaran -->
+                    <li><a href="#" @click.prevent="changeView('payments')" :class="currentView==='payments' ? 'bg-primary text-white shadow-md' : 'text-gray-300 hover:bg-sidebar-hover'" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm">
+                        <i class="fas fa-money-check-alt w-5 text-center"></i> Verifikasi Pembayaran
+                        <span x-show="ecommerceStats.pending_verifications > 0" class="ml-auto bg-orange-500 text-white text-[10px] px-1.5 py-0.5 rounded-full" x-text="ecommerceStats.pending_verifications"></span>
+                    </a></li>
+                    
+                    <!-- Pengiriman -->
+                    <li><a href="#" @click.prevent="changeView('shipments')" :class="currentView==='shipments' ? 'bg-primary text-white shadow-md' : 'text-gray-300 hover:bg-sidebar-hover'" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm">
+                        <i class="fas fa-truck w-5 text-center"></i> Pengiriman & Resi
+                        <span x-show="ecommerceStats.active_shipments > 0" class="ml-auto bg-blue-500 text-white text-[10px] px-1.5 py-0.5 rounded-full" x-text="ecommerceStats.active_shipments"></span>
+                    </a></li>
+                    
                     <li class="pt-4 pb-1 px-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Halaman Web</li>
                     
                     <!-- Beranda -->
@@ -768,6 +788,280 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         </div>
 
         <button @click="saveModule('contact')" class="btn-success"><i class="fas fa-save"></i> Simpan Konten Kontak</button>
+    </div>
+</div>
+<!-- ================================================================ -->
+<!-- 10. E-COMMERCE: ORDERS -->
+<!-- ================================================================ -->
+<div x-show="currentView === 'orders' || currentView === 'payments' || currentView === 'shipments'">
+    
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+        <h2 class="text-xl font-bold flex items-center gap-2">
+            <i class="fas" :class="{'fa-box-open text-primary': currentView==='orders', 'fa-money-check-alt text-orange-500': currentView==='payments', 'fa-truck text-blue-500': currentView==='shipments'}"></i>
+            <span x-text="currentView === 'orders' ? 'Semua Pesanan' : (currentView === 'payments' ? 'Verifikasi Pembayaran' : 'Pengiriman & Resi')"></span>
+        </h2>
+        <div class="relative w-full md:w-72">
+            <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
+            <input type="text" x-model="orderSearch" @input.debounce.500ms="loadOrders()" placeholder="Cari No. Pesanan / Nama..." class="form-input !pl-10">
+        </div>
+    </div>
+
+    <!-- Filters (Only for 'orders' view) -->
+    <div x-show="currentView === 'orders'" class="flex overflow-x-auto gap-2 pb-2 mb-4 no-scrollbar">
+        <template x-for="stat in ['all', 'pending_payment', 'payment_uploaded', 'payment_verified', 'processing', 'shipped', 'delivered', 'cancelled']">
+            <button @click="orderFilter = stat; loadOrders()" 
+                    :class="orderFilter === stat ? 'bg-primary text-white' : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'"
+                    class="px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-colors">
+                <span x-text="getOrderStatusLabel(stat)"></span>
+            </button>
+        </template>
+    </div>
+
+    <div class="card overflow-x-auto">
+        <table class="w-full text-sm text-left whitespace-nowrap">
+            <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
+                <tr>
+                    <th class="p-4 font-medium">No. Pesanan / Tgl</th>
+                    <th class="p-4 font-medium">Pelanggan</th>
+                    <th class="p-4 font-medium text-right">Total</th>
+                    <th class="p-4 font-medium text-center">Status</th>
+                    <th class="p-4 font-medium text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                <template x-for="o in orders" :key="o.id">
+                    <tr class="hover:bg-primary-50/30 transition-colors">
+                        <td class="p-4">
+                            <div class="font-bold text-primary" x-text="o.order_number"></div>
+                            <div class="text-xs text-gray-500 mt-1" x-text="formatDate(o.created_at)"></div>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-medium" x-text="o.customer_name"></div>
+                            <div class="text-xs text-gray-500" x-text="o.item_count + ' Item'"></div>
+                        </td>
+                        <td class="p-4 text-right font-bold" x-text="formatRupiah(o.total_amount)"></td>
+                        <td class="p-4 text-center">
+                            <span class="px-2.5 py-1 text-[11px] font-bold rounded-full"
+                                  :class="getOrderStatusBadgeClass(o.status)"
+                                  x-text="getOrderStatusLabel(o.status)"></span>
+                        </td>
+                        <td class="p-4 text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                <button @click="openOrderDetailModal(o.id)" class="text-gray-500 hover:text-primary bg-gray-100 hover:bg-primary-50 w-8 h-8 rounded-lg flex items-center justify-center transition-colors" title="Detail Pesanan">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                
+                                <button x-show="o.status === 'payment_uploaded' || currentView === 'payments'" 
+                                        @click="openPaymentModal(o.id)" 
+                                        class="text-orange-500 hover:text-white bg-orange-50 hover:bg-orange-500 w-8 h-8 rounded-lg flex items-center justify-center transition-colors" title="Verifikasi Pembayaran">
+                                    <i class="fas fa-money-check"></i>
+                                </button>
+
+                                <button x-show="['payment_verified','processing','shipped'].includes(o.status) || currentView === 'shipments'" 
+                                        @click="openShipmentModal(o.id)" 
+                                        class="text-blue-500 hover:text-white bg-blue-50 hover:bg-blue-500 w-8 h-8 rounded-lg flex items-center justify-center transition-colors" title="Input / Update Resi">
+                                    <i class="fas fa-truck-loading"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </template>
+                <tr x-show="orders.length === 0">
+                    <td colspan="5" class="p-8 text-center text-gray-400">Tidak ada data pesanan.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ================= MODALS ================= -->
+
+<!-- Payment Verification Modal -->
+<div x-show="showPaymentModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" x-cloak>
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        <div class="px-6 py-4 border-b flex justify-between items-center bg-gray-50">
+            <h3 class="font-bold text-lg"><i class="fas fa-money-check-alt text-orange-500 mr-2"></i>Verifikasi Pembayaran</h3>
+            <button @click="showPaymentModal = false" class="text-gray-400 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
+        </div>
+        <div class="p-6 overflow-y-auto flex-1" x-show="activeOrder">
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Bukti Transfer -->
+                <div class="w-full md:w-1/2">
+                    <p class="text-sm font-semibold text-gray-700 mb-2">Bukti Transfer</p>
+                    <div class="border rounded-xl overflow-hidden bg-gray-100 flex items-center justify-center cursor-pointer min-h-[300px]">
+                        <img :src="activeOrder?.payment?.proof_image ? '../' + activeOrder.payment.proof_image : ''" 
+                             class="max-w-full h-auto object-contain max-h-[400px]" 
+                             onerror="this.style.display='none'"
+                             alt="Bukti Transfer">
+                        <span x-show="!activeOrder?.payment?.proof_image" class="text-gray-400">Belum ada bukti upload</span>
+                    </div>
+                </div>
+                <!-- Info Order -->
+                <div class="w-full md:w-1/2 space-y-4">
+                    <div>
+                        <p class="text-xs text-gray-500 uppercase">No. Pesanan</p>
+                        <p class="font-bold text-lg text-primary" x-text="activeOrder?.order_number"></p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 uppercase">Total Harus Dibayar</p>
+                        <p class="font-bold text-xl text-green-600" x-text="activeOrder ? formatRupiah(activeOrder.total_amount) : ''"></p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 uppercase">Bank Tujuan</p>
+                        <p class="font-medium" x-text="activeOrder?.payment?.payment_method || '-'"></p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 uppercase">Tanggal Upload</p>
+                        <p class="font-medium" x-text="activeOrder?.payment?.created_at ? formatDate(activeOrder.payment.created_at) : '-'"></p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 uppercase mb-1">Catatan Admin (Opsional)</p>
+                        <textarea x-model="paymentNotes" class="form-textarea text-sm w-full" rows="2" placeholder="Alasan penolakan / catatan acc..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="px-6 py-4 border-t bg-gray-50 flex justify-end gap-3">
+            <button @click="verifyPayment('rejected')" class="btn-danger"><i class="fas fa-times"></i> Tolak Bukti</button>
+            <button @click="verifyPayment('verified')" class="btn-success"><i class="fas fa-check"></i> Terima Pembayaran</button>
+        </div>
+    </div>
+</div>
+
+<!-- Shipment Modal -->
+<div x-show="showShipmentModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" x-cloak>
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden flex flex-col">
+        <div class="px-6 py-4 border-b flex justify-between items-center bg-gray-50">
+            <h3 class="font-bold text-lg"><i class="fas fa-truck text-blue-500 mr-2"></i>Update Pengiriman</h3>
+            <button @click="showShipmentModal = false" class="text-gray-400 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
+        </div>
+        <div class="p-6 space-y-4">
+            <div class="bg-blue-50 text-blue-800 p-3 rounded-lg text-sm mb-4">
+                No. Pesanan: <strong x-text="activeOrder?.order_number"></strong>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Ekspedisi</label>
+                <input type="text" x-model="shipmentForm.expedition" class="form-input" placeholder="Misal: Indah Kargo">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Nomor Resi</label>
+                <input type="text" x-model="shipmentForm.tracking_number" class="form-input" placeholder="Masukkan nomor resi valid">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Status Pengiriman</label>
+                <select x-model="shipmentForm.status" class="form-input">
+                    <option value="preparing">Sedang Disiapkan</option>
+                    <option value="shipped">Dikirim (Dalam Perjalanan)</option>
+                    <option value="delivered">Tiba di Tujuan (Selesai)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Estimasi Tiba (Opsional)</label>
+                <input type="date" x-model="shipmentForm.estimated_arrival" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Catatan Tambahan</label>
+                <textarea x-model="shipmentForm.notes" class="form-textarea" rows="2" placeholder="Catatan logistik..."></textarea>
+            </div>
+        </div>
+        <div class="px-6 py-4 border-t bg-gray-50 flex justify-end gap-3">
+            <button @click="showShipmentModal = false" class="btn-secondary">Batal</button>
+            <button @click="saveShipment()" class="btn-primary"><i class="fas fa-save"></i> Simpan Resi</button>
+        </div>
+    </div>
+</div>
+
+<!-- Order Detail Modal -->
+<div x-show="showOrderDetailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" x-cloak>
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-4xl overflow-hidden flex flex-col max-h-[90vh]">
+        <div class="px-6 py-4 border-b flex justify-between items-center bg-gray-50">
+            <h3 class="font-bold text-lg"><i class="fas fa-receipt text-primary mr-2"></i>Detail Pesanan <span x-text="activeOrder?.order_number"></span></h3>
+            <button @click="showOrderDetailModal = false" class="text-gray-400 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
+        </div>
+        <div class="p-6 overflow-y-auto flex-1 bg-gray-50/50" x-show="activeOrder">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Kiri: Info Customer & Shipping -->
+                <div class="md:col-span-1 space-y-6">
+                    <div class="card card-body p-4 border border-gray-200 shadow-none">
+                        <h4 class="font-bold text-sm uppercase text-gray-500 mb-3 border-b pb-2">Pelanggan</h4>
+                        <p class="font-semibold text-gray-800" x-text="activeOrder?.customer_name"></p>
+                        <p class="text-sm text-gray-600 mt-1"><i class="fas fa-phone mr-2"></i><span x-text="activeOrder?.customer_phone"></span></p>
+                        <p class="text-sm text-gray-600 mt-1"><i class="fas fa-envelope mr-2"></i><span x-text="activeOrder?.customer_email"></span></p>
+                    </div>
+
+                    <div class="card card-body p-4 border border-gray-200 shadow-none">
+                        <h4 class="font-bold text-sm uppercase text-gray-500 mb-3 border-b pb-2">Alamat Pengiriman</h4>
+                        <p class="text-sm text-gray-700 leading-relaxed" x-text="activeOrder?.shipping_address"></p>
+                        <p class="text-sm text-gray-700 mt-2 font-semibold">Kota/Kec: <span class="font-normal" x-text="activeOrder?.shipping_city"></span></p>
+                        <p class="text-sm text-gray-700 font-semibold">Provinsi: <span class="font-normal" x-text="activeOrder?.shipping_province"></span></p>
+                        <p class="text-sm text-gray-700 font-semibold">Kode Pos: <span class="font-normal" x-text="activeOrder?.shipping_postal_code"></span></p>
+                    </div>
+
+                    <div class="card card-body p-4 border border-gray-200 shadow-none">
+                        <h4 class="font-bold text-sm uppercase text-gray-500 mb-3 border-b pb-2">Logistik</h4>
+                        <p class="text-sm text-gray-700 font-semibold">Kurir: <span class="font-normal" x-text="activeOrder?.shipping_courier"></span></p>
+                        <p class="text-sm text-gray-700 font-semibold mt-1">Resi: <span class="font-normal text-blue-600" x-text="activeOrder?.shipment?.tracking_number || 'Belum ada'"></span></p>
+                        <p class="text-sm text-gray-700 font-semibold mt-1">Status: <span class="font-normal uppercase" x-text="activeOrder?.shipment?.status || '-'"></span></p>
+                    </div>
+                </div>
+
+                <!-- Kanan: Items & Ringkasan -->
+                <div class="md:col-span-2 space-y-6">
+                    <div class="card border border-gray-200 shadow-none overflow-hidden">
+                        <table class="w-full text-sm">
+                            <thead class="bg-gray-100 text-gray-600">
+                                <tr>
+                                    <th class="p-3 text-left">Produk</th>
+                                    <th class="p-3 text-center">Harga</th>
+                                    <th class="p-3 text-center">Qty</th>
+                                    <th class="p-3 text-right">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <template x-for="item in activeOrder?.items" :key="item.id">
+                                    <tr>
+                                        <td class="p-3">
+                                            <p class="font-medium text-gray-800" x-text="item.product_name"></p>
+                                        </td>
+                                        <td class="p-3 text-center text-gray-600" x-text="formatRupiah(item.price)"></td>
+                                        <td class="p-3 text-center text-gray-600" x-text="item.quantity"></td>
+                                        <td class="p-3 text-right font-medium text-gray-800" x-text="formatRupiah(item.subtotal)"></td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                            <tfoot class="bg-gray-50 border-t">
+                                <tr>
+                                    <td colspan="3" class="p-3 text-right text-gray-600">Subtotal Produk</td>
+                                    <td class="p-3 text-right font-medium text-gray-800" x-text="formatRupiah(activeOrder?.total_amount - activeOrder?.shipping_cost)"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="p-3 text-right text-gray-600 border-none pt-0">Ongkos Kirim</td>
+                                    <td class="p-3 text-right font-medium text-gray-800 border-none pt-0" x-text="formatRupiah(activeOrder?.shipping_cost)"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="p-3 text-right font-bold text-primary text-base">Total Pesanan</td>
+                                    <td class="p-3 text-right font-bold text-primary text-base" x-text="formatRupiah(activeOrder?.total_amount)"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 justify-end">
+                        <select x-model="orderStatusUpdate" class="form-input w-48 text-sm">
+                            <option value="pending_payment">Menunggu Bayar</option>
+                            <option value="payment_uploaded">Bukti Diunggah</option>
+                            <option value="payment_verified">Pembayaran Terverifikasi</option>
+                            <option value="processing">Sedang Diproses</option>
+                            <option value="shipped">Dikirim</option>
+                            <option value="delivered">Tiba di Tujuan</option>
+                            <option value="completed">Selesai</option>
+                            <option value="cancelled">Dibatalkan</option>
+                        </select>
+                        <button @click="updateOrderStatus()" class="btn-primary text-sm"><i class="fas fa-sync-alt"></i> Update Status</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

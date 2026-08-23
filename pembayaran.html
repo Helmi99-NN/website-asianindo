@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran & Konfirmasi - CV Asianindo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; }
+        .gradient-primary { background: linear-gradient(135deg, #330e7a 0%, #4a2c91 100%); }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="gradient-primary text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex items-center justify-between max-w-3xl">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-3xl">precision_manufacturing</span>
+                <span class="font-bold text-xl font-outfit">CV Asianindo</span>
+            </div>
+            <div class="text-sm font-semibold opacity-90">Langkah 3: Pembayaran</div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 max-w-3xl space-y-6">
+        
+        <!-- Status & Timer -->
+        <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-[#330e7a]">
+            <div class="flex items-center justify-center mb-4">
+                <span class="material-symbols-outlined text-orange-500 text-4xl mr-2">pending_actions</span>
+                <h2 class="text-2xl font-bold text-gray-800">Menunggu Pembayaran</h2>
+            </div>
+            
+            <div class="text-center mb-4">
+                <p class="text-gray-500 text-sm mb-1">Selesaikan pembayaran dalam waktu</p>
+                <div id="countdown" class="text-3xl font-bold text-[#330e7a] tracking-wider">23:59:59</div>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-between bg-gray-50 p-4 rounded-lg">
+                <div class="mb-2 md:mb-0">
+                    <span class="text-sm text-gray-500 block">Nomor Pesanan</span>
+                    <strong class="text-lg" id="display_order_number">-</strong>
+                </div>
+                <button onclick="copyText('display_order_number')" class="text-[#330e7a] flex items-center text-sm font-semibold hover:bg-gray-200 px-3 py-1 rounded">
+                    <span class="material-symbols-outlined mr-1 text-sm">content_copy</span> Salin
+                </button>
+            </div>
+        </div>
+
+        <!-- Instruksi Pembayaran -->
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <h3 class="text-xl font-bold text-gray-800 border-b pb-3 mb-4 flex items-center">
+                <span class="material-symbols-outlined mr-2 text-[#330e7a]">account_balance</span>
+                Transfer Bank BCA
+            </h3>
+            
+            <div class="mb-6 bg-blue-50 p-4 rounded-lg border border-blue-100">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" alt="BCA" class="h-8 mb-4">
+                
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <span class="text-sm text-gray-500 block">Nomor Rekening</span>
+                            <strong class="text-xl text-gray-800" id="bank_account">6670747997</strong>
+                        </div>
+                        <button onclick="copyText('bank_account')" class="bg-white text-blue-600 border border-blue-200 flex items-center text-sm px-3 py-1.5 rounded hover:bg-blue-100 transition">
+                            <span class="material-symbols-outlined mr-1 text-sm">content_copy</span> Salin
+                        </button>
+                    </div>
+                    
+                    <div>
+                        <span class="text-sm text-gray-500 block">Atas Nama</span>
+                        <strong class="text-gray-800" id="bank_name">Iman Anjani Buchory</strong>
+                    </div>
+
+                    <div class="flex justify-between items-center border-t border-blue-200 pt-4 mt-2">
+                        <div>
+                            <span class="text-sm text-gray-500 block">Total Pembayaran</span>
+                            <strong class="text-2xl text-[#330e7a]" id="total_amount">Rp 0</strong>
+                        </div>
+                        <button onclick="copyText('total_amount')" class="bg-white text-blue-600 border border-blue-200 flex items-center text-sm px-3 py-1.5 rounded hover:bg-blue-100 transition">
+                            <span class="material-symbols-outlined mr-1 text-sm">content_copy</span> Salin
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-sm text-gray-600 space-y-2">
+                <h4 class="font-bold text-gray-800">Petunjuk Transfer:</h4>
+                <details class="group bg-gray-50 rounded-lg p-3 cursor-pointer">
+                    <summary class="font-semibold flex justify-between">m-BCA (Mobile Banking) <span class="material-symbols-outlined group-open:rotate-180 transition">expand_more</span></summary>
+                    <ol class="list-decimal pl-5 mt-2 space-y-1">
+                        <li>Buka aplikasi BCA mobile, pilih m-BCA</li>
+                        <li>Pilih menu <strong>m-Transfer</strong> > <strong>Antar Rekening</strong></li>
+                        <li>Masukkan nomor rekening <strong>6670747997</strong></li>
+                        <li>Masukkan jumlah <strong>Total Pembayaran</strong></li>
+                        <li>Pastikan nama penerima <strong>Iman Anjani Buchory</strong></li>
+                        <li>Masukkan PIN m-BCA</li>
+                    </ol>
+                </details>
+                <details class="group bg-gray-50 rounded-lg p-3 cursor-pointer">
+                    <summary class="font-semibold flex justify-between">ATM BCA <span class="material-symbols-outlined group-open:rotate-180 transition">expand_more</span></summary>
+                    <ol class="list-decimal pl-5 mt-2 space-y-1">
+                        <li>Masukkan Kartu ATM BCA dan PIN</li>
+                        <li>Pilih <strong>Transaksi Lainnya</strong> > <strong>Transfer</strong> > <strong>Ke Rek BCA</strong></li>
+                        <li>Masukkan nomor rekening <strong>6670747997</strong></li>
+                        <li>Masukkan jumlah <strong>Total Pembayaran</strong></li>
+                        <li>Konfirmasi nama penerima <strong>Iman Anjani Buchory</strong></li>
+                    </ol>
+                </details>
+            </div>
+        </div>
+
+        <!-- Upload Form -->
+        <div class="bg-white rounded-xl shadow-md p-6" id="upload_section">
+            <h3 class="text-xl font-bold text-gray-800 border-b pb-3 mb-4 flex items-center">
+                <span class="material-symbols-outlined mr-2 text-[#330e7a]">upload_file</span>
+                Upload Bukti Pembayaran
+            </h3>
+            
+            <div id="upload_form_container">
+                <p class="text-gray-600 mb-4 text-sm">Pastikan foto bukti transfer terlihat jelas agar pesanan Anda dapat segera diproses.</p>
+                <form id="uploadForm">
+                    <input type="hidden" id="order_number_input" name="order_number">
+                    
+                    <label class="block w-full border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:bg-gray-50 transition relative" id="dropzone">
+                        <input type="file" name="proof_image" id="proof_image" accept=".jpg,.jpeg,.png,.webp" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                        <div id="preview_container" class="hidden flex-col items-center">
+                            <img id="image_preview" class="max-h-48 rounded mb-2 shadow">
+                            <span class="text-sm text-blue-600 font-semibold">Ganti Gambar</span>
+                        </div>
+                        <div id="placeholder_container">
+                            <span class="material-symbols-outlined text-4xl text-gray-400 mb-2">cloud_upload</span>
+                            <span class="block text-gray-600 font-semibold">Klik atau Drag & Drop file ke sini</span>
+                            <span class="block text-gray-400 text-sm mt-1">JPG, PNG, WEBP (Maks. 5MB)</span>
+                        </div>
+                    </label>
+
+                    <button type="submit" id="submitBtn" class="w-full mt-6 gradient-primary text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition flex justify-center items-center opacity-50 cursor-not-allowed" disabled>
+                        <span id="btnText">Konfirmasi & Kirim Bukti Transfer</span>
+                        <span id="btnLoader" class="material-symbols-outlined animate-spin hidden ml-2">autorenew</span>
+                    </button>
+                </form>
+            </div>
+            
+            <div id="uploaded_success" class="hidden text-center py-6">
+                <span class="material-symbols-outlined text-green-500 text-6xl mb-2">verified</span>
+                <h4 class="text-lg font-bold text-gray-800">Bukti Transfer Berhasil Terkirim!</h4>
+                <p class="text-gray-600 mt-2 text-sm">Bukti transfer Anda sedang diverifikasi oleh admin. Kami akan memproses pesanan Anda secepatnya.</p>
+                <div class="mt-4">
+                    <img id="uploaded_preview" class="max-h-48 mx-auto rounded shadow">
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex flex-col gap-3 pb-8">
+            <a id="btn_tracking" href="pesanan.html" class="w-full bg-white border border-gray-300 text-gray-700 font-bold py-3 px-4 rounded-lg shadow text-center hover:bg-gray-50 transition">
+                Lihat Status Pesanan & Tracking
+            </a>
+            
+            <a id="btn_wa" href="https://wa.me/6285335850517" target="_blank" class="w-full bg-green-500 text-white font-bold py-3 px-4 rounded-lg shadow text-center hover:bg-green-600 transition flex items-center justify-center">
+                <span class="material-symbols-outlined mr-2">chat</span>
+                Hubungi Customer Care
+            </a>
+        </div>
+    </main>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderNumber = urlParams.get('order_number');
+        
+        if (!orderNumber) {
+            alert('Nomor pesanan tidak ditemukan.');
+            window.location.href = 'index.html';
+        }
+
+        document.getElementById('display_order_number').innerText = orderNumber;
+        document.getElementById('order_number_input').value = orderNumber;
+        document.getElementById('btn_tracking').href = `pesanan.html?order_number=${orderNumber}`;
+
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.toString().replace(/[^,\d]/g, ''),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if(ribuan){
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
+        }
+
+        function copyText(elementId) {
+            let text = document.getElementById(elementId).innerText;
+            if(elementId === 'total_amount') text = text.replace(/[^0-9]/g, '');
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Teks disalin: ' + text);
+            });
+        }
+
+        // Fetch Order Data
+        fetch(`payment_api.php?action=get_payment_info&order_number=${orderNumber}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const order = data.order;
+                    document.getElementById('total_amount').innerText = formatRupiah(order.total_amount, 'Rp');
+                    
+                    // Pre-fill WA
+                    const waText = encodeURIComponent(`Halo CV Asianindo, saya sudah transfer untuk pesanan ${orderNumber}`);
+                    document.getElementById('btn_wa').href = `https://wa.me/6285335850517?text=${waText}`;
+
+                    // Handle Uploaded state
+                    if (order.payment_status !== 'pending' && order.proof_image) {
+                        document.getElementById('upload_form_container').classList.add('hidden');
+                        document.getElementById('uploaded_success').classList.remove('hidden');
+                        document.getElementById('uploaded_preview').src = order.proof_image;
+                    }
+
+                    // Timer (24 hours from created_at)
+                    const createdDate = new Date(order.created_at).getTime();
+                    const expireDate = createdDate + (24 * 60 * 60 * 1000);
+
+                    const x = setInterval(function() {
+                        const now = new Date().getTime();
+                        const distance = expireDate - now;
+
+                        if (distance < 0) {
+                            clearInterval(x);
+                            document.getElementById("countdown").innerHTML = "WAKTU HABIS";
+                        } else {
+                            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                            document.getElementById("countdown").innerHTML = 
+                                (hours < 10 ? "0" + hours : hours) + ":" + 
+                                (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+                                (seconds < 10 ? "0" + seconds : seconds);
+                        }
+                    }, 1000);
+
+                } else {
+                    alert(data.message);
+                }
+            });
+
+        // Image Preview
+        const proofInput = document.getElementById('proof_image');
+        const submitBtn = document.getElementById('submitBtn');
+
+        proofInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('image_preview').src = e.target.result;
+                    document.getElementById('placeholder_container').classList.add('hidden');
+                    document.getElementById('preview_container').classList.remove('hidden');
+                    document.getElementById('preview_container').classList.add('flex');
+                    
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form Submit
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            formData.append('action', 'upload_proof');
+            
+            submitBtn.disabled = true;
+            document.getElementById('btnText').innerText = 'Mengunggah...';
+            document.getElementById('btnLoader').classList.remove('hidden');
+
+            fetch('payment_api.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Berhasil: ' + data.message);
+                    location.reload();
+                } else {
+                    alert('Gagal: ' + data.message);
+                    submitBtn.disabled = false;
+                    document.getElementById('btnText').innerText = 'Konfirmasi & Kirim Bukti Transfer';
+                    document.getElementById('btnLoader').classList.add('hidden');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Terjadi kesalahan jaringan.');
+                submitBtn.disabled = false;
+                document.getElementById('btnText').innerText = 'Konfirmasi & Kirim Bukti Transfer';
+                document.getElementById('btnLoader').classList.add('hidden');
+            });
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking Pesanan - CV Asianindo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; }
+        .gradient-primary { background: linear-gradient(135deg, #330e7a 0%, #4a2c91 100%); }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="gradient-primary text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex items-center justify-between max-w-3xl">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-3xl">precision_manufacturing</span>
+                <span class="font-bold text-xl font-outfit">CV Asianindo</span>
+            </div>
+            <div class="text-sm font-semibold opacity-90">Status Pesanan</div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 max-w-3xl space-y-6" id="app_content">
+        <div class="text-center py-10" id="loading">
+            <span class="material-symbols-outlined animate-spin text-4xl text-[#330e7a]">autorenew</span>
+            <p class="mt-2 text-gray-500">Memuat detail pesanan...</p>
+        </div>
+        
+        <!-- Content will be injected here via JS -->
+    </main>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderNumber = urlParams.get('order_number');
+        
+        if (!orderNumber) {
+            alert('Nomor pesanan tidak ditemukan.');
+            window.location.href = 'index.html';
+        }
+
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.toString().replace(/[^,\d]/g, ''),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if(ribuan){
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
+        }
+
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Berhasil disalin: ' + text);
+            });
+        }
+
+        fetch(`tracking_api.php?action=get_tracking&order_number=${orderNumber}`)
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    renderApp(data);
+                } else {
+                    document.getElementById('app_content').innerHTML = `
+                        <div class="bg-red-50 text-red-500 p-6 rounded-xl text-center">
+                            <span class="material-symbols-outlined text-4xl mb-2">error</span>
+                            <p>${data.message}</p>
+                            <a href="index.html" class="inline-block mt-4 bg-red-500 text-white px-4 py-2 rounded">Kembali ke Beranda</a>
+                        </div>
+                    `;
+                }
+            })
+            .catch(err => {
+                document.getElementById('app_content').innerHTML = '<div class="text-center text-red-500">Gagal memuat data.</div>';
+            });
+
+        function renderApp(data) {
+            const { order, shipping, customer, items, timeline } = data;
+
+            let timelineHTML = '<div class="relative border-l border-gray-200 ml-3 space-y-6">';
+            Object.values(timeline).forEach(step => {
+                const isCompleted = step.completed;
+                const iconClass = isCompleted ? 'bg-[#330e7a] text-white' : 'bg-gray-200 text-gray-400';
+                const textClass = isCompleted ? 'text-gray-800' : 'text-gray-400';
+                
+                timelineHTML += `
+                    <div class="mb-8 ml-6">
+                        <span class="absolute flex items-center justify-center w-6 h-6 rounded-full -left-3 ring-8 ring-white ${iconClass}">
+                            <span class="material-symbols-outlined text-sm">${isCompleted ? 'check' : 'circle'}</span>
+                        </span>
+                        <h3 class="font-bold text-sm md:text-base ${textClass}">${step.title}</h3>
+                        ${step.date ? `<time class="block mb-2 text-xs font-normal text-gray-500">${step.date}</time>` : ''}
+                    </div>
+                `;
+            });
+            timelineHTML += '</div>';
+
+            let itemsHTML = '';
+            items.forEach(item => {
+                itemsHTML += `
+                    <div class="flex items-center gap-4 py-3 border-b border-gray-100 last:border-0">
+                        <div class="w-16 h-16 bg-gray-100 rounded flex-shrink-0 flex items-center justify-center overflow-hidden">
+                            ${item.image_url ? `<img src="${item.image_url}" class="w-full h-full object-cover">` : '<span class="material-symbols-outlined text-gray-400">image</span>'}
+                        </div>
+                        <div class="flex-grow">
+                            <h4 class="font-semibold text-gray-800 text-sm md:text-base">${item.name}</h4>
+                            <p class="text-xs text-gray-500">${item.quantity} x ${formatRupiah(item.price, 'Rp')}</p>
+                        </div>
+                        <div class="font-bold text-[#330e7a] text-sm md:text-base">
+                            ${formatRupiah(item.quantity * item.price, 'Rp')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            const waText = encodeURIComponent(`Halo CV Asianindo, saya ingin bertanya tentang pesanan saya dengan nomor ${order.order_number}`);
+
+            let shippingHTML = '';
+            if (shipping.tracking_number) {
+                shippingHTML = `
+                    <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mt-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <div class="text-sm text-gray-500">Nomor Resi / Surat Jalan</div>
+                            <button onclick="copyText('${shipping.tracking_number}')" class="text-blue-600 flex items-center text-xs font-semibold bg-white border border-blue-200 px-2 py-1 rounded hover:bg-blue-100">
+                                <span class="material-symbols-outlined mr-1 text-[16px]">content_copy</span> Salin
+                            </button>
+                        </div>
+                        <div class="font-bold text-lg text-gray-800 mb-1">${shipping.tracking_number}</div>
+                        <div class="text-sm font-semibold text-blue-700">${shipping.expedition_name || '-'}</div>
+                        
+                        ${shipping.notes ? `
+                            <div class="mt-3 p-3 bg-white rounded border border-blue-100 text-sm text-gray-600">
+                                <strong class="block text-gray-800 mb-1">Catatan Pengiriman:</strong>
+                                ${shipping.notes}
+                            </div>
+                        ` : ''}
+                        
+                        ${shipping.estimated_arrival ? `
+                            <div class="mt-3 flex items-center text-sm text-gray-600">
+                                <span class="material-symbols-outlined text-gray-400 mr-2 text-[20px]">calendar_month</span>
+                                Estimasi Sampai: <strong class="ml-1">${shipping.estimated_arrival}</strong>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            } else {
+                shippingHTML = `
+                    <div class="bg-gray-50 border border-gray-100 rounded-xl p-4 mt-4 text-center text-sm text-gray-500">
+                        Nomor resi belum tersedia. Pesanan sedang diproses atau menunggu penjemputan ekspedisi.
+                    </div>
+                `;
+            }
+
+            const isPendingPayment = order.status === 'pending';
+            let paymentActionHTML = '';
+            if (isPendingPayment) {
+                paymentActionHTML = `
+                    <div class="mt-4 p-4 bg-orange-50 border border-orange-200 rounded-lg flex items-center justify-between">
+                        <div class="text-sm text-orange-700"><strong>Menunggu Pembayaran!</strong> Segera upload bukti transfer.</div>
+                        <a href="pembayaran.html?order_number=${order.order_number}" class="bg-orange-500 text-white text-sm font-bold px-4 py-2 rounded shadow hover:bg-orange-600">Bayar Sekarang</a>
+                    </div>
+                `;
+            }
+
+            const html = `
+                <!-- Order Header -->
+                <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100 flex justify-between items-center">
+                    <div>
+                        <div class="text-xs text-gray-500 mb-1">Nomor Pesanan</div>
+                        <div class="font-bold text-gray-800">${order.order_number}</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800 capitalize">
+                            ${order.status.replace('_', ' ')}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Timeline -->
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
+                        <span class="material-symbols-outlined mr-2 text-[#330e7a]">local_shipping</span>
+                        Status Pengiriman
+                    </h3>
+                    ${timelineHTML}
+                    ${shippingHTML}
+                </div>
+
+                <!-- Address -->
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center border-b pb-3">
+                        <span class="material-symbols-outlined mr-2 text-[#330e7a]">location_on</span>
+                        Alamat Pengiriman
+                    </h3>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <strong class="text-gray-800 block text-base">${customer.name}</strong>
+                        <div>${customer.phone}</div>
+                        <div class="pt-1">${customer.address}</div>
+                    </div>
+                </div>
+
+                <!-- Items -->
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center border-b pb-3">
+                        <span class="material-symbols-outlined mr-2 text-[#330e7a]">inventory_2</span>
+                        Rincian Pesanan
+                    </h3>
+                    <div class="mb-4">
+                        ${itemsHTML}
+                    </div>
+                    <div class="space-y-2 text-sm pt-4 border-t border-gray-100">
+                        <div class="flex justify-between text-gray-500">
+                            <span>Subtotal Produk</span>
+                            <span>${formatRupiah(order.total_amount - (order.shipping_cost || 0), 'Rp')}</span>
+                        </div>
+                        <div class="flex justify-between text-gray-500">
+                            <span>Ongkos Kirim</span>
+                            <span>${formatRupiah(order.shipping_cost || 0, 'Rp')}</span>
+                        </div>
+                        <div class="flex justify-between font-bold text-lg text-[#330e7a] pt-2 border-t border-gray-100 mt-2">
+                            <span>Total Pesanan</span>
+                            <span>${formatRupiah(order.total_amount, 'Rp')}</span>
+                        </div>
+                    </div>
+                    ${paymentActionHTML}
+                </div>
+
+                <!-- Help Button -->
+                <div class="pb-8">
+                    <a href="https://wa.me/6285335850517?text=${waText}" target="_blank" class="w-full bg-green-500 text-white font-bold py-3 px-4 rounded-lg shadow text-center hover:bg-green-600 transition flex items-center justify-center">
+                        <span class="material-symbols-outlined mr-2">chat</span>
+                        Bantuan / Hubungi Admin
+                    </a>
+                </div>
+            `;
+
+            document.getElementById('app_content').innerHTML = html;
+        }
+    </script>
+</body>
+</html>

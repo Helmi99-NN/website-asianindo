@@ -183,7 +183,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     const waNumber = "6285335850517";
     const waMessage = encodeURIComponent(product.waMsg || `Halo, saya tertarik dengan ${product.name}`);
     document.getElementById('btn-whatsapp').href = `https://wa.me/${waNumber}?text=${waMessage}`;
-    
+
+    const btnBuyNow = document.getElementById('btn-buy-now');
+    if (btnBuyNow) {
+        btnBuyNow.addEventListener('click', () => {
+            if (typeof window.buyNow === 'function') {
+                window.buyNow(product, 1);
+            } else {
+                window.location.href = 'checkout.html?product_id=' + (product.id || product.slug) + '&qty=1';
+            }
+        });
+    }
+
+    const btnAddCart = document.getElementById('btn-add-cart');
+    if (btnAddCart) {
+        btnAddCart.addEventListener('click', () => {
+            if (typeof window.addToCart === 'function') {
+                window.addToCart(product, 1);
+            }
+        });
+    }
 
 });
 

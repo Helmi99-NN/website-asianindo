@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akun Saya - CV Asianindo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#330e7a',
+                        'primary-container': '#4a2c91',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; }
+        .tab-active { background-color: #f3f4f6; color: #330e7a; font-weight: 600; border-left: 4px solid #330e7a; }
+        .tab-inactive { color: #4b5563; border-left: 4px solid transparent; }
+        .tab-inactive:hover { background-color: #f9fafb; color: #330e7a; }
+        
+        /* Mobile tab styling */
+        @media (max-width: 768px) {
+            .tab-active { border-left: none; border-bottom: 3px solid #330e7a; }
+            .tab-inactive { border-left: none; border-bottom: 3px solid transparent; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-primary text-white sticky top-0 z-50 shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-heading font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined text-3xl">precision_manufacturing</span>
+                CV Asianindo
+            </a>
+            
+            <nav class="hidden md:flex space-x-6 items-center">
+                <a href="index.html" class="hover:text-gray-300 transition">Beranda</a>
+                <a href="katalog.html" class="hover:text-gray-300 transition">Katalog</a>
+                <a href="tentang.html" class="hover:text-gray-300 transition">Tentang Kami</a>
+                <a href="kontak.html" class="hover:text-gray-300 transition">Kontak</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <a href="keranjang.html" class="relative hover:text-gray-300 transition">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    <span id="cart-badge" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+                </a>
+                <div class="hidden md:flex items-center gap-2" id="header-user-info">
+                    <span class="material-symbols-outlined">account_circle</span>
+                    <span id="header-user-name" class="font-medium">Memuat...</span>
+                </div>
+                
+                <button class="md:hidden text-white" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                    <span class="material-symbols-outlined text-3xl">menu</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-primary-container p-4">
+            <a href="index.html" class="block py-2">Beranda</a>
+            <a href="katalog.html" class="block py-2">Katalog</a>
+            <a href="tentang.html" class="block py-2">Tentang Kami</a>
+            <a href="kontak.html" class="block py-2">Kontak</a>
+            <div class="border-t border-white/20 mt-2 pt-2">
+                <span id="mobile-user-name" class="block py-2 font-medium text-white">Memuat...</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- Sidebar / Tabs -->
+            <div class="w-full md:w-64 shrink-0">
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden flex flex-row md:flex-col overflow-x-auto md:overflow-x-visible pb-2 md:pb-0">
+                    <a href="#profil" onclick="switchTab('profil')" id="tab-btn-profil" class="tab-active flex items-center gap-3 px-5 py-4 whitespace-nowrap transition-colors">
+                        <span class="material-symbols-outlined">person</span>
+                        Profil Saya
+                    </a>
+                    <a href="#pesanan" onclick="switchTab('pesanan')" id="tab-btn-pesanan" class="tab-inactive flex items-center gap-3 px-5 py-4 whitespace-nowrap transition-colors">
+                        <span class="material-symbols-outlined">receipt_long</span>
+                        Pesanan Saya
+                    </a>
+                    <a href="keranjang.html" class="tab-inactive flex items-center gap-3 px-5 py-4 whitespace-nowrap transition-colors">
+                        <span class="material-symbols-outlined">shopping_cart</span>
+                        Keranjang
+                    </a>
+                    <a href="#password" onclick="switchTab('password')" id="tab-btn-password" class="tab-inactive flex items-center gap-3 px-5 py-4 whitespace-nowrap transition-colors">
+                        <span class="material-symbols-outlined">lock</span>
+                        Ubah Password
+                    </a>
+                    <a href="#" onclick="logout()" class="text-red-600 hover:bg-red-50 flex items-center gap-3 px-5 py-4 whitespace-nowrap transition border-l-4 border-transparent md:border-b-0 border-b-3 mt-auto md:border-t md:border-gray-100">
+                        <span class="material-symbols-outlined">logout</span>
+                        Keluar
+                    </a>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="flex-grow bg-white rounded-xl shadow-sm p-6 min-h-[400px]">
+                
+                <!-- Section: Profil Saya -->
+                <div id="section-profil" class="tab-content block">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-heading font-bold text-gray-800">Profil Saya</h2>
+                        <button id="btn-edit-profil" onclick="toggleEditProfile()" class="text-primary hover:text-primary-container font-medium flex items-center gap-1 transition-colors">
+                            <span class="material-symbols-outlined text-sm">edit</span> Edit Profil
+                        </button>
+                    </div>
+
+                    <div id="profile-view" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-4">
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Nama Lengkap</p>
+                                <p class="font-medium text-gray-800" id="view-nama">-</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Email</p>
+                                <p class="font-medium text-gray-800" id="view-email">-</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Nomor Telepon</p>
+                                <p class="font-medium text-gray-800" id="view-telepon">-</p>
+                            </div>
+                            <div class="md:col-span-2">
+                                <p class="text-sm text-gray-500 mb-1">Alamat Lengkap</p>
+                                <p class="font-medium text-gray-800" id="view-alamat">-</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Kota</p>
+                                <p class="font-medium text-gray-800" id="view-kota">-</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Provinsi</p>
+                                <p class="font-medium text-gray-800" id="view-provinsi">-</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Kode Pos</p>
+                                <p class="font-medium text-gray-800" id="view-kodepos">-</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="profile-edit" class="space-y-4 hidden" onsubmit="saveProfile(event)">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                                <input type="text" id="input-nama" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <input type="email" id="input-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed" readonly>
+                                <p class="text-xs text-gray-500 mt-1">Email tidak dapat diubah.</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon</label>
+                                <input type="tel" id="input-telepon" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap</label>
+                                <textarea id="input-alamat" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Kota</label>
+                                <input type="text" id="input-kota" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Provinsi</label>
+                                <input type="text" id="input-provinsi" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Kode Pos</label>
+                                <input type="text" id="input-kodepos" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-3 pt-4 border-t mt-6">
+                            <button type="button" onclick="toggleEditProfile()" class="px-5 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition">Batal</button>
+                            <button type="submit" id="btn-save-profile" class="px-5 py-2 bg-primary text-white font-medium rounded-lg hover:bg-primary-container transition">Simpan Profil</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Section: Pesanan Saya -->
+                <div id="section-pesanan" class="tab-content hidden">
+                    <h2 class="text-2xl font-heading font-bold text-gray-800 mb-6">Pesanan Saya</h2>
+                    
+                    <div id="orders-container" class="space-y-4">
+                        <div class="text-center py-12 text-gray-500">
+                            <span class="material-symbols-outlined text-4xl mb-2 animate-spin">sync</span>
+                            <p>Memuat pesanan...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Ubah Password -->
+                <div id="section-password" class="tab-content hidden">
+                    <h2 class="text-2xl font-heading font-bold text-gray-800 mb-6">Ubah Password</h2>
+                    
+                    <form id="password-form" class="max-w-md space-y-5" onsubmit="changePassword(event)">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Password Saat Ini</label>
+                            <input type="password" id="current-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Password Baru</label>
+                            <input type="password" id="new-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" required minlength="6">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password Baru</label>
+                            <input type="password" id="confirm-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" required minlength="6">
+                        </div>
+                        
+                        <div id="password-msg" class="text-sm font-medium hidden p-3 rounded-lg"></div>
+
+                        <div class="pt-4 border-t">
+                            <button type="submit" id="btn-save-password" class="px-5 py-2 bg-primary text-white font-medium rounded-lg hover:bg-primary-container transition w-full md:w-auto">Simpan Password</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-10 mt-auto">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-heading font-bold text-white mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined">precision_manufacturing</span>
+                    CV Asianindo
+                </h3>
+                <p class="text-sm">Penyedia mesin industri berkualitas tinggi untuk kebutuhan bisnis Anda.</p>
+            </div>
+            <div>
+                <h4 class="text-lg font-heading font-bold text-white mb-4">Kontak</h4>
+                <p class="text-sm flex items-center gap-2 mb-2"><span class="material-symbols-outlined text-sm">phone</span> WhatsApp: 6285335850517</p>
+                <p class="text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">email</span> info@asianindomachine.com</p>
+            </div>
+            <div>
+                <h4 class="text-lg font-heading font-bold text-white mb-4">Pembayaran</h4>
+                <p class="text-sm mb-1">BCA 6670747997</p>
+                <p class="text-sm">a/n Iman Anjani Buchory</p>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 mt-8 pt-4 border-t border-gray-800 text-center text-sm">
+            &copy; 2026 CV Asianindo. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-full opacity-0 transition duration-300 z-50 flex items-center gap-2 font-medium">
+        <span class="material-symbols-outlined text-xl">info</span>
+        <span id="toast-message">Message</span>
+    </div>
+
+    <script>
+        const API_URL_AUTH = 'auth_api.php';
+        const API_URL_ORDER = 'order_api.php';
+        let isEditingProfile = false;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkSession();
+            handleHashChange();
+            window.addEventListener('hashchange', handleHashChange);
+        });
+
+        async function checkSession() {
+            try {
+                const response = await fetch(`${API_URL_AUTH}?action=check_session`);
+                const data = await response.json();
+                
+                if (data.status === 'success' && data.logged_in) {
+                    const name = data.user.name;
+                    document.getElementById('header-user-name').textContent = name;
+                    document.getElementById('mobile-user-name').textContent = `Halo, ${name}`;
+                    
+                    loadProfile();
+                    loadOrders();
+                    updateCartBadge();
+                } else {
+                    window.location.href = 'login.html?redirect=akun.html';
+                }
+            } catch (error) {
+                console.error('Session check failed:', error);
+                window.location.href = 'login.html';
+            }
+        }
+
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('asianindo_cart') || '[]');
+            const badge = document.getElementById('cart-badge');
+            
+            if (cart.length > 0) {
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                badge.textContent = totalItems;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        async function loadProfile() {
+            try {
+                const response = await fetch(`${API_URL_AUTH}?action=get_profile`);
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    const user = data.data;
+                    
+                    // Populate view
+                    document.getElementById('view-nama').textContent = user.name || '-';
+                    document.getElementById('view-email').textContent = user.email || '-';
+                    document.getElementById('view-telepon').textContent = user.phone || '-';
+                    document.getElementById('view-alamat').textContent = user.address || '-';
+                    document.getElementById('view-kota').textContent = user.city || '-';
+                    document.getElementById('view-provinsi').textContent = user.province || '-';
+                    document.getElementById('view-kodepos').textContent = user.postal_code || '-';
+                    
+                    // Populate form
+                    document.getElementById('input-nama').value = user.name || '';
+                    document.getElementById('input-email').value = user.email || '';
+                    document.getElementById('input-telepon').value = user.phone || '';
+                    document.getElementById('input-alamat').value = user.address || '';
+                    document.getElementById('input-kota').value = user.city || '';
+                    document.getElementById('input-provinsi').value = user.province || '';
+                    document.getElementById('input-kodepos').value = user.postal_code || '';
+                }
+            } catch (error) {
+                console.error('Failed to load profile:', error);
+                showToast('Gagal memuat profil', 'error');
+            }
+        }
+
+        function toggleEditProfile() {
+            isEditingProfile = !isEditingProfile;
+            const viewDiv = document.getElementById('profile-view');
+            const editDiv = document.getElementById('profile-edit');
+            const btn = document.getElementById('btn-edit-profil');
+            
+            if (isEditingProfile) {
+                viewDiv.classList.add('hidden');
+                editDiv.classList.remove('hidden');
+                btn.classList.add('hidden');
+            } else {
+                viewDiv.classList.remove('hidden');
+                editDiv.classList.add('hidden');
+                btn.classList.remove('hidden');
+                loadProfile(); // Reset fields if cancelled
+            }
+        }
+
+        async function saveProfile(event) {
+            event.preventDefault();
+            const btn = document.getElementById('btn-save-profile');
+            btn.disabled = true;
+            btn.textContent = 'Menyimpan...';
+            
+            const formData = new FormData();
+            formData.append('name', document.getElementById('input-nama').value);
+            formData.append('phone', document.getElementById('input-telepon').value);
+            formData.append('address', document.getElementById('input-alamat').value);
+            formData.append('city', document.getElementById('input-kota').value);
+            formData.append('province', document.getElementById('input-provinsi').value);
+            formData.append('postal_code', document.getElementById('input-kodepos').value);
+            
+            try {
+                const response = await fetch(`${API_URL_AUTH}?action=update_profile`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    showToast('Profil berhasil diperbarui', 'success');
+                    toggleEditProfile();
+                    
+                    // Update header name if changed
+                    const newName = document.getElementById('input-nama').value;
+                    document.getElementById('header-user-name').textContent = newName;
+                    document.getElementById('mobile-user-name').textContent = `Halo, ${newName}`;
+                } else {
+                    showToast(data.message || 'Gagal memperbarui profil', 'error');
+                }
+            } catch (error) {
+                console.error('Failed to update profile:', error);
+                showToast('Terjadi kesalahan', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Simpan Profil';
+            }
+        }
+
+        async function loadOrders() {
+            try {
+                const response = await fetch(`${API_URL_ORDER}?action=get_orders`);
+                const data = await response.json();
+                
+                const container = document.getElementById('orders-container');
+                container.innerHTML = '';
+                
+                if (data.status === 'success') {
+                    const orders = data.data;
+                    
+                    if (!orders || orders.length === 0) {
+                        container.innerHTML = `
+                            <div class="text-center py-12 border border-dashed border-gray-300 rounded-xl bg-gray-50">
+                                <span class="material-symbols-outlined text-5xl text-gray-400 mb-3 block">shopping_bag</span>
+                                <h3 class="text-lg font-heading font-medium text-gray-800 mb-2">Belum ada pesanan</h3>
+                                <p class="text-gray-500 mb-6">Anda belum pernah melakukan pesanan. Ayo mulai belanja!</p>
+                                <a href="katalog.html" class="inline-block px-6 py-2.5 bg-primary text-white font-medium rounded-lg hover:bg-primary-container transition">Mulai Belanja</a>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    orders.forEach(order => {
+                        // Format currency
+                        const total = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(order.total_amount);
+                        
+                        // Format date
+                        const date = new Date(order.created_at).toLocaleDateString('id-ID', { 
+                            day: 'numeric', month: 'long', year: 'numeric'
+                        });
+                        
+                        // Badge color
+                        let badgeClass = '';
+                        let statusText = '';
+                        switch (order.status) {
+                            case 'pending': 
+                                badgeClass = 'bg-yellow-100 text-yellow-800 border-yellow-200';
+                                statusText = 'Menunggu Pembayaran';
+                                break;
+                            case 'processing': 
+                                badgeClass = 'bg-blue-100 text-blue-800 border-blue-200';
+                                statusText = 'Diproses';
+                                break;
+                            case 'shipped': 
+                                badgeClass = 'bg-green-100 text-green-800 border-green-200';
+                                statusText = 'Dikirim';
+                                break;
+                            case 'completed': 
+                                badgeClass = 'bg-green-100 text-green-800 border-green-200';
+                                statusText = 'Selesai';
+                                break;
+                            case 'cancelled': 
+                                badgeClass = 'bg-red-100 text-red-800 border-red-200';
+                                statusText = 'Dibatalkan';
+                                break;
+                            default: 
+                                badgeClass = 'bg-gray-100 text-gray-800 border-gray-200';
+                                statusText = order.status;
+                        }
+                        
+                        const orderCard = `
+                            <div class="border border-gray-200 rounded-xl p-5 hover:border-primary/30 hover:shadow-md transition bg-white">
+                                <div class="flex flex-col md:flex-row justify-between md:items-center gap-3 border-b border-gray-100 pb-4 mb-4">
+                                    <div>
+                                        <p class="text-xs text-gray-500 mb-1">Tanggal Belanja</p>
+                                        <p class="font-medium text-sm text-gray-800">${date}</p>
+                                    </div>
+                                    <div class="flex flex-col md:items-end">
+                                        <p class="text-xs text-gray-500 mb-1 hidden md:block">Status</p>
+                                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold border ${badgeClass}">${statusText}</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                                    <div>
+                                        <p class="text-sm text-gray-500 mb-1">Nomor Pesanan</p>
+                                        <p class="font-medium text-primary">${order.order_number}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500 mb-1">Total Belanja</p>
+                                        <p class="font-bold text-lg text-gray-800">${total}</p>
+                                    </div>
+                                    <a href="pesanan.html?id=${order.id}" class="w-full md:w-auto text-center px-5 py-2 border-2 border-primary text-primary font-medium rounded-lg hover:bg-primary hover:text-white transition">Lihat Detail</a>
+                                </div>
+                            </div>
+                        `;
+                        container.insertAdjacentHTML('beforeend', orderCard);
+                    });
+                } else {
+                    container.innerHTML = `<p class="text-red-500 text-center py-4">${data.message || 'Gagal memuat pesanan'}</p>`;
+                }
+            } catch (error) {
+                console.error('Failed to load orders:', error);
+                document.getElementById('orders-container').innerHTML = '<p class="text-red-500 text-center py-4">Terjadi kesalahan saat memuat pesanan.</p>';
+            }
+        }
+
+        async function changePassword(event) {
+            event.preventDefault();
+            
+            const current = document.getElementById('current-password').value;
+            const newPass = document.getElementById('new-password').value;
+            const confirm = document.getElementById('confirm-password').value;
+            const msgDiv = document.getElementById('password-msg');
+            
+            msgDiv.classList.remove('hidden', 'bg-red-50', 'text-red-600', 'border', 'border-red-200', 'bg-green-50', 'text-green-600', 'border-green-200');
+            
+            if (newPass !== confirm) {
+                msgDiv.textContent = 'Password baru dan konfirmasi tidak cocok.';
+                msgDiv.classList.add('bg-red-50', 'text-red-600', 'border', 'border-red-200');
+                return;
+            }
+            
+            const btn = document.getElementById('btn-save-password');
+            btn.disabled = true;
+            btn.textContent = 'Menyimpan...';
+            
+            const formData = new FormData();
+            formData.append('current_password', current);
+            formData.append('new_password', newPass);
+            
+            try {
+                const response = await fetch(`${API_URL_AUTH}?action=change_password`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    msgDiv.textContent = 'Password berhasil diubah.';
+                    msgDiv.classList.add('bg-green-50', 'text-green-600', 'border', 'border-green-200');
+                    document.getElementById('password-form').reset();
+                    showToast('Password berhasil diubah', 'success');
+                } else {
+                    msgDiv.textContent = data.message || 'Gagal mengubah password.';
+                    msgDiv.classList.add('bg-red-50', 'text-red-600', 'border', 'border-red-200');
+                }
+            } catch (error) {
+                console.error('Failed to change password:', error);
+                msgDiv.textContent = 'Terjadi kesalahan jaringan.';
+                msgDiv.classList.add('bg-red-50', 'text-red-600', 'border', 'border-red-200');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Simpan Password';
+            }
+        }
+
+        async function logout() {
+            if (confirm('Apakah Anda yakin ingin keluar dari akun?')) {
+                try {
+                    const response = await fetch(`${API_URL_AUTH}?action=logout`);
+                    const data = await response.json();
+                    
+                    if (data.status === 'success') {
+                        window.location.href = 'index.html';
+                    } else {
+                        // Force redirect anyway on error
+                        window.location.href = 'index.html';
+                    }
+                } catch (error) {
+                    console.error('Logout failed:', error);
+                    window.location.href = 'index.html'; 
+                }
+            }
+        }
+
+        function handleHashChange() {
+            const hash = window.location.hash || '#profil';
+            const tabName = hash.replace('#', '');
+            
+            if (['profil', 'pesanan', 'password'].includes(tabName)) {
+                switchTab(tabName, false);
+            }
+        }
+
+        function switchTab(tabName, updateHash = true) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            
+            document.querySelectorAll('[id^="tab-btn-"]').forEach(el => {
+                el.classList.remove('tab-active');
+                el.classList.add('tab-inactive');
+            });
+            
+            const contentEl = document.getElementById(`section-${tabName}`);
+            if (contentEl) {
+                contentEl.classList.remove('hidden');
+            }
+            
+            const tabBtn = document.getElementById(`tab-btn-${tabName}`);
+            if (tabBtn) {
+                tabBtn.classList.remove('tab-inactive');
+                tabBtn.classList.add('tab-active');
+            }
+            
+            if (updateHash) {
+                window.location.hash = tabName;
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+            const icon = toast.querySelector('.material-symbols-outlined');
+            
+            msgEl.textContent = message;
+            
+            if (type === 'error') {
+                toast.classList.replace('bg-gray-800', 'bg-red-600');
+                icon.textContent = 'error';
+            } else {
+                toast.classList.replace('bg-red-600', 'bg-gray-800');
+                icon.textContent = 'check_circle';
+            }
+            
+            toast.classList.remove('translate-y-full', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-full', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

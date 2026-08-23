@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - CV Asianindo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#330e7a',
+                        secondary: '#4a2c91',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+        }
+
+        let checkoutItems = [];
+        let isFromCart = false;
+        let subtotal = 0;
+        let totalWeight = 0;
+        let shippingCost = 0;
+
+        async function initCheckout() {
+            // Check auth
+            try {
+                const resAuth = await fetch('auth_api.php?action=get_profile');
+                if(!resAuth.ok) throw new Error();
+                const dataAuth = await resAuth.json();
+                if(!dataAuth.success) {
+                    window.location.href = 'login.html?redirect=checkout.html';
+                    return;
+                }
+                
+                // Pre-fill user data
+                if(dataAuth.user) {
+                    document.getElementById('ship_name').value = dataAuth.user.name || '';
+                    document.getElementById('ship_phone').value = dataAuth.user.phone || '';
+                    document.getElementById('ship_address').value = dataAuth.user.address || '';
+                    document.getElementById('ship_city').value = dataAuth.user.city || '';
+                    document.getElementById('ship_province').value = dataAuth.user.province || '';
+                    document.getElementById('ship_postal').value = dataAuth.user.postal_code || '';
+                }
+            } catch(e) {
+                console.error("Auth check failed", e);
+            }
+
+            // Load items
+            const urlParams = new URLSearchParams(window.location.search);
+            const directProductId = urlParams.get('product_id');
+            
+            if (directProductId) {
+                // TODO: fetch product detail if needed. For now assume we pass details or fallback
+                // Here we'd ideally fetch product detail. Let's mock based on params if available
+                checkoutItems = [{
+                    product_id: directProductId,
+                    product_name: urlParams.get('name') || 'Produk Asianindo',
+                    product_image: urlParams.get('image') || '',
+                    price: parseInt(urlParams.get('price')) || 0,
+                    quantity: parseInt(urlParams.get('qty')) || 1,
+                    weight_grams: parseInt(urlParams.get('weight')) || 1000
+                }];
+            } else {
+                const stored = sessionStorage.getItem('checkout_items');
+                isFromCart = sessionStorage.getItem('is_from_cart') === 'true';
+                if(stored) {
+                    checkoutItems = JSON.parse(stored);
+                } else {
+                    window.location.href = 'keranjang.html';
+                    return;
+                }
+            }
+
+            renderItems();
+            calculateTotals();
+        }
+
+        function renderItems() {
+            const container = document.getElementById('order-items');
+            container.innerHTML = '';
+            subtotal = 0;
+            totalWeight = 0;
+
+            checkoutItems.forEach(item => {
+                subtotal += item.price * item.quantity;
+                totalWeight += (item.weight_grams || 0) * item.quantity;
+                
+                container.innerHTML += `
+                    <div class="flex gap-4 py-4 border-b border-gray-100 last:border-0">
+                        <img src="${item.product_image || 'https://via.placeholder.com/80'}" class="w-16 h-16 object-cover rounded-lg border">
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-800 line-clamp-2 text-sm">${item.product_name}</h4>
+                            <p class="text-xs text-gray-500 mt-1">Berat: ${((item.weight_grams || 1000) / 1000).toFixed(1)} kg</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="font-bold text-primary">${formatRupiah(item.price)}</span>
+                                <span class="text-sm font-medium">x${item.quantity}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('subtotal-display').textContent = formatRupiah(subtotal);
+            updateShippingCost();
+        }
+
+        async function updateShippingCost() {
+            const province = document.getElementById('ship_province').value;
+            if(!province) {
+                shippingCost = 0;
+                updateGrandTotal();
+                return;
+            }
+
+            const fd = new FormData();
+            fd.append('action', 'calculate_shipping');
+            fd.append('weight_grams', totalWeight);
+            fd.append('province', province);
+
+            try {
+                const res = await fetch('order_api.php', { method: 'POST', body: fd });
+                const data = await res.json();
+                if(data.success) {
+                    shippingCost = data.shipping_cost;
+                    document.getElementById('shipping-cost-display').textContent = formatRupiah(shippingCost);
+                    updateGrandTotal();
+                }
+            } catch(e) {
+                console.error("Failed to calc shipping", e);
+            }
+        }
+
+        function updateGrandTotal() {
+            const total = subtotal + shippingCost;
+            document.getElementById('grand-total-display').textContent = formatRupiah(total);
+        }
+
+        async function placeOrder() {
+            const btn = document.getElementById('btn-submit');
+            
+            // Validate
+            const reqFields = ['ship_name', 'ship_phone', 'ship_address', 'ship_city', 'ship_province'];
+            for(let f of reqFields) {
+                if(!document.getElementById(f).value.trim()) {
+                    alert('Harap lengkapi alamat pengiriman');
+                    document.getElementById(f).focus();
+                    return;
+                }
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">sync</span> Memproses...';
+
+            const fd = new FormData();
+            fd.append('action', 'create_order');
+            fd.append('items', JSON.stringify(checkoutItems));
+            fd.append('is_from_cart', isFromCart);
+            fd.append('shipping_name', document.getElementById('ship_name').value);
+            fd.append('shipping_phone', document.getElementById('ship_phone').value);
+            fd.append('shipping_address', document.getElementById('ship_address').value);
+            fd.append('shipping_city', document.getElementById('ship_city').value);
+            fd.append('shipping_province', document.getElementById('ship_province').value);
+            fd.append('shipping_postal_code', document.getElementById('ship_postal').value);
+            fd.append('notes', document.getElementById('notes').value);
+
+            try {
+                const res = await fetch('order_api.php', { method: 'POST', body: fd });
+                const data = await res.json();
+                
+                if(data.success) {
+                    // Clear session if from cart
+                    if(isFromCart) sessionStorage.removeItem('checkout_items');
+                    window.location.href = 'pembayaran.html?order_number=' + data.order_number;
+                } else {
+                    alert('Gagal membuat pesanan: ' + (data.error || 'Unknown error'));
+                    btn.disabled = false;
+                    btn.textContent = 'Buat Pesanan';
+                }
+            } catch(e) {
+                alert('Terjadi kesalahan jaringan.');
+                btn.disabled = false;
+                btn.textContent = 'Buat Pesanan';
+            }
+        }
+
+        window.onload = initCheckout;
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans pb-10">
+
+    <!-- Header -->
+    <header class="bg-primary text-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 h-16 flex items-center max-w-6xl">
+            <button onclick="window.history.back()" class="mr-4 hover:bg-secondary p-2 rounded-full transition-colors">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <h1 class="text-xl font-heading font-semibold">Checkout</h1>
+            <div class="ml-auto hidden md:flex items-center text-sm font-medium opacity-90">
+                <span class="text-white">1. Keranjang</span>
+                <span class="material-symbols-outlined text-sm mx-2">chevron_right</span>
+                <span class="text-yellow-300 font-bold">2. Checkout</span>
+                <span class="material-symbols-outlined text-sm mx-2">chevron_right</span>
+                <span class="opacity-70">3. Pembayaran</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 mt-8 max-w-6xl">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Left Column -->
+            <div class="flex-1 space-y-6">
+                <!-- Alamat Pengiriman -->
+                <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h2 class="text-lg font-heading font-bold mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">location_on</span>
+                        Alamat Pengiriman
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Penerima</label>
+                            <input type="text" id="ship_name" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary focus:border-primary outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nomor HP / WhatsApp</label>
+                            <input type="text" id="ship_phone" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap</label>
+                            <textarea id="ship_address" rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none" placeholder="Nama Jalan, Gedung, RT/RW"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Provinsi</label>
+                            <select id="ship_province" onchange="updateShippingCost()" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none bg-white">
+                                <option value="">Pilih Provinsi...</option>
+                                <option value="Jawa Timur">Jawa Timur</option>
+                                <option value="Jawa Tengah">Jawa Tengah</option>
+                                <option value="Jawa Barat">Jawa Barat</option>
+                                <option value="DKI Jakarta">DKI Jakarta</option>
+                                <option value="Sumatera Utara">Sumatera Utara</option>
+                                <option value="Sumatera Selatan">Sumatera Selatan</option>
+                                <option value="Kalimantan Timur">Kalimantan Timur</option>
+                                <option value="Sulawesi Selatan">Sulawesi Selatan</option>
+                                <option value="Papua">Papua</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Kota / Kabupaten</label>
+                            <input type="text" id="ship_city" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Kode Pos</label>
+                            <input type="text" id="ship_postal" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Daftar Pesanan -->
+                <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h2 class="text-lg font-heading font-bold mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">inventory_2</span>
+                        Daftar Pesanan
+                    </h2>
+                    <div id="order-items" class="mb-4">
+                        <!-- Items rendered via JS -->
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Catatan untuk Penjual (Opsional)</label>
+                        <input type="text" id="notes" placeholder="Tinggalkan pesan..." class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none">
+                    </div>
+                </section>
+
+                <!-- Pengiriman & Pembayaran -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <h2 class="text-lg font-heading font-bold mb-4 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">local_shipping</span>
+                            Metode Pengiriman
+                        </h2>
+                        <div class="border-2 border-primary rounded-xl p-4 bg-primary/5">
+                            <h3 class="font-bold text-gray-800">Indah Kargo Logistik</h3>
+                            <p class="text-sm text-gray-600 mt-1">Cargo Logistik Mesin Spesialis</p>
+                        </div>
+                    </section>
+                    
+                    <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <h2 class="text-lg font-heading font-bold mb-4 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">payments</span>
+                            Metode Pembayaran
+                        </h2>
+                        <div class="border-2 border-primary rounded-xl p-4 bg-primary/5">
+                            <h3 class="font-bold text-gray-800">Transfer Bank (Manual)</h3>
+                            <p class="text-sm text-gray-600 mt-1">Bank BCA - 6670747997</p>
+                            <p class="text-sm text-gray-600">a/n Iman Anjani Buchory</p>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Right Column (Summary) -->
+            <div class="w-full lg:w-[350px]">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 lg:sticky lg:top-24">
+                    <h2 class="text-lg font-heading font-bold mb-4">Ringkasan Belanja</h2>
+                    
+                    <div class="space-y-3 mb-6 pb-6 border-b border-gray-100 text-sm">
+                        <div class="flex justify-between text-gray-600">
+                            <span>Subtotal Produk</span>
+                            <span id="subtotal-display" class="font-medium text-gray-800">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between text-gray-600">
+                            <span>Total Ongkos Kirim</span>
+                            <span id="shipping-cost-display" class="font-medium text-gray-800">Rp 0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="font-bold text-gray-800">Total Pembayaran</span>
+                        <span id="grand-total-display" class="text-xl font-heading font-bold text-primary">Rp 0</span>
+                    </div>
+                    
+                    <button id="btn-submit" onclick="placeOrder()" class="w-full bg-primary hover:bg-secondary text-white font-bold py-3 px-4 rounded-xl transition shadow-lg shadow-primary/30 flex items-center justify-center">
+                        Buat Pesanan
+                    </button>
+
+                    <div class="mt-6 space-y-3">
+                        <div class="flex items-center gap-3 text-sm text-gray-600">
+                            <span class="material-symbols-outlined text-green-500">verified_user</span>
+                            <span>Transaksi Aman & Terpercaya</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-sm text-gray-600">
+                            <span class="material-symbols-outlined text-blue-500">workspace_premium</span>
+                            <span>Garansi Resmi 100%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

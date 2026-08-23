@@ -125,6 +125,190 @@ if (!isset($_SESSION['is_admin'])) {
     exit;
 }
 
+require_once __DIR__ . '/../database/db.php';
+
+if ($action === 'get_admin_orders') {
+    $db = getDB();
+    $status = $_GET['status'] ?? 'all';
+    $search = $_GET['search'] ?? '';
+
+    $where = [];
+    $params = [];
+
+    if ($status !== 'all') {
+        $where[] = 'o.status = ?';
+        $params[] = $status;
+    }
+
+    if (!empty($search)) {
+        $where[] = '(o.order_number LIKE ? OR c.name LIKE ?)';
+        $params[] = "%$search%";
+        $params[] = "%$search%";
+    }
+
+    $whereClause = count($where) > 0 ? 'WHERE ' . implode(' AND ', $where) : '';
+    
+    $stmt = $db->prepare("
+        SELECT o.id, o.order_number, o.status, o.total_amount, o.created_at, 
+               c.name as customer_name, c.email as customer_email,
+               (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) as item_count,
+               p.status as payment_status, s.status as shipment_status
+        FROM orders o
+        JOIN customers c ON o.customer_id = c.id
+        LEFT JOIN payments p ON o.id = p.order_id
+        LEFT JOIN shipments s ON o.id = s.order_id
+        $whereClause
+        ORDER BY o.created_at DESC
+    ");
+    $stmt->execute($params);
+    echo json_encode($stmt->fetchAll());
+    exit;
+}
+
+if ($action === 'get_admin_order_detail') {
+    $db = getDB();
+    $order_id = $_GET['order_id'] ?? null;
+    $order_number = $_GET['order_number'] ?? null;
+    
+    if (!$order_id && !$order_number) {
+        http_response_code(400); echo json_encode(['error' => 'Missing order ID']); exit;
+    }
+
+    $where = $order_id ? "o.id = ?" : "o.order_number = ?";
+    $param = $order_id ? $order_id : $order_number;
+
+    $stmt = $db->prepare("
+        SELECT o.*, c.name as customer_name, c.email as customer_email, c.phone as customer_phone
+        FROM orders o
+        JOIN customers c ON o.customer_id = c.id
+        WHERE $where
+    ");
+    $stmt->execute([$param]);
+    $order = $stmt->fetch();
+
+    if (!$order) {
+        http_response_code(404); echo json_encode(['error' => 'Order not found']); exit;
+    }
+
+    $stmtItems = $db->prepare("SELECT * FROM order_items WHERE order_id = ?");
+    $stmtItems->execute([$order['id']]);
+    $order['items'] = $stmtItems->fetchAll();
+
+    $stmtPay = $db->prepare("SELECT * FROM payments WHERE order_id = ? ORDER BY id DESC LIMIT 1");
+    $stmtPay->execute([$order['id']]);
+    $order['payment'] = $stmtPay->fetch();
+
+    $stmtShip = $db->prepare("SELECT * FROM shipments WHERE order_id = ? ORDER BY id DESC LIMIT 1");
+    $stmtShip->execute([$order['id']]);
+    $order['shipment'] = $stmtShip->fetch();
+
+    echo json_encode($order);
+    exit;
+}
+
+if ($action === 'verify_payment') {
+    $db = getDB();
+    $input = json_decode(file_get_contents('php://input'), true);
+    $order_id = $input['order_id'] ?? null;
+    $status = $input['status'] ?? null;
+    $admin_notes = $input['admin_notes'] ?? '';
+
+    if (!$order_id || !in_array($status, ['verified', 'rejected'])) {
+        http_response_code(400); echo json_encode(['error' => 'Invalid data']); exit;
+    }
+
+    $db->beginTransaction();
+    try {
+        $stmt = $db->prepare("UPDATE payments SET status = ?, admin_notes = ?, verified_at = NOW() WHERE order_id = ?");
+        $stmt->execute([$status, $admin_notes, $order_id]);
+
+        $order_status = $status === 'verified' ? 'payment_verified' : 'pending_payment';
+        $stmtOrd = $db->prepare("UPDATE orders SET status = ? WHERE id = ?");
+        $stmtOrd->execute([$order_status, $order_id]);
+
+        $db->commit();
+        echo json_encode(['success' => true]);
+    } catch (Exception $e) {
+        $db->rollBack();
+        http_response_code(500); echo json_encode(['error' => $e->getMessage()]);
+    }
+    exit;
+}
+
+if ($action === 'update_shipment') {
+    $db = getDB();
+    $input = json_decode(file_get_contents('php://input'), true);
+    $order_id = $input['order_id'] ?? null;
+    $tracking_number = $input['tracking_number'] ?? '';
+    $expedition = $input['expedition'] ?? 'Indah Kargo';
+    $status = $input['status'] ?? 'preparing';
+    $estimated_arrival = $input['estimated_arrival'] ?? null;
+    $notes = $input['notes'] ?? '';
+
+    if (!$order_id) {
+        http_response_code(400); echo json_encode(['error' => 'Missing order ID']); exit;
+    }
+
+    $db->beginTransaction();
+    try {
+        $stmt = $db->prepare("SELECT id FROM shipments WHERE order_id = ?");
+        $stmt->execute([$order_id]);
+        $exists = $stmt->fetchColumn();
+
+        if ($exists) {
+            $update = $db->prepare("UPDATE shipments SET tracking_number=?, expedition=?, status=?, estimated_arrival=?, notes=?, updated_at=NOW() WHERE order_id=?");
+            $update->execute([$tracking_number, $expedition, $status, $estimated_arrival, $notes, $order_id]);
+        } else {
+            $insert = $db->prepare("INSERT INTO shipments (order_id, tracking_number, expedition, status, estimated_arrival, notes) VALUES (?, ?, ?, ?, ?, ?)");
+            $insert->execute([$order_id, $tracking_number, $expedition, $status, $estimated_arrival, $notes]);
+        }
+
+        if (in_array($status, ['shipped', 'delivered'])) {
+            $updOrder = $db->prepare("UPDATE orders SET status = ? WHERE id = ?");
+            $updOrder->execute([$status, $order_id]);
+        }
+
+        $db->commit();
+        echo json_encode(['success' => true]);
+    } catch (Exception $e) {
+        $db->rollBack();
+        http_response_code(500); echo json_encode(['error' => $e->getMessage()]);
+    }
+    exit;
+}
+
+if ($action === 'update_order_status') {
+    $db = getDB();
+    $input = json_decode(file_get_contents('php://input'), true);
+    $order_id = $input['order_id'] ?? null;
+    $status = $input['status'] ?? null;
+
+    if (!$order_id || !$status) {
+        http_response_code(400); echo json_encode(['error' => 'Invalid data']); exit;
+    }
+
+    $stmt = $db->prepare("UPDATE orders SET status = ? WHERE id = ?");
+    if ($stmt->execute([$status, $order_id])) {
+        echo json_encode(['success' => true]);
+    } else {
+        http_response_code(500); echo json_encode(['error' => 'Failed to update order status']);
+    }
+    exit;
+}
+
+if ($action === 'get_ecommerce_stats') {
+    $db = getDB();
+    $stats = [
+        'total_orders' => $db->query("SELECT COUNT(*) FROM orders")->fetchColumn(),
+        'pending_payment' => $db->query("SELECT COUNT(*) FROM orders WHERE status = 'pending_payment'")->fetchColumn(),
+        'pending_verifications' => $db->query("SELECT COUNT(*) FROM orders WHERE status = 'payment_uploaded'")->fetchColumn(),
+        'active_shipments' => $db->query("SELECT COUNT(*) FROM shipments WHERE status IN ('preparing', 'shipped', 'in_transit')")->fetchColumn(),
+        'total_sales' => $db->query("SELECT SUM(total_amount) FROM orders WHERE status NOT IN ('cancelled', 'pending_payment', 'payment_uploaded')")->fetchColumn() ?? 0
+    ];
+    echo json_encode($stats);
+    exit;
+}
+
 // Helper functions for general JSON
 function getJson($filename, $default = []) {
     $path = __DIR__ . '/../data/' . $filename . '.json';

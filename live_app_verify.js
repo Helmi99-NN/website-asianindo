@@ -9,13 +9,9 @@ function adminApp() {
 
         // Data Models
         analytics: { visitors: 0, wa_clicks: 0, messages: 0, product_views: {} },
-        storage: { total_gb: 0, free_gb: 0, used_gb: 0, percent_used: 0 },
         products: [],
         searchQuery: '',
         articleSearch: '',
-        mediaItems: [],
-        isUploadingMedia: false,
-        mediaSearch: '',
         
         settings: {
             company_name: 'CV Asianindo',
@@ -26,7 +22,7 @@ function adminApp() {
             email: 'cvasianindo@gmail.com',
             address: 'Jl. Kyai Parseh Jaya No.50, Bumiayu, Kec. Kedungkandang, Kota Malang, Jawa Timur',
             hours: 'Senin-Sabtu pukul 09.00-16.00 WIB',
-            year: '2018',
+            year: '2014',
             youtube: '',
             tiktok: '',
             instagram: '',
@@ -77,7 +73,7 @@ function adminApp() {
             hero_desc: 'Mitra terpercaya untuk kebutuhan mesin industri skala UMKM hingga manufaktur di seluruh Indonesia.',
             quick_info: {
                 name: 'CV. Asianindo',
-                year: '2018',
+                year: '2014',
                 address: 'Kota Malang, Jawa Timur',
                 scope: 'Mesin Industri & Pengolahan'
             },
@@ -104,28 +100,15 @@ function adminApp() {
 
         // Product Form
         editingId: null,
-        productForm: { id: '', name: '', category: 'Mesin Industri', subCategory: '', price: '', priceRange: '', description: '', features: [''], specs: [{key: '', val: ''}], images: [], existing_video: '', meta_title: '', meta_description: '', slug: '' },
+        productForm: { id: '', name: '', category: 'Mesin Industri', subCategory: '', price: '', priceRange: '', description: '', features: [''], specs: [{key: '', val: ''}], existing_image: '', existing_video: '' },
         
         // Article Form
-        articleForm: { id: '', title: '', category: '', publish_date: '', excerpt: '', content: '', existing_image: '', meta_title: '', meta_description: '', slug: '' },
+        articleForm: { id: '', title: '', category: '', publish_date: '', excerpt: '', content: '', existing_image: '' },
 
         imagePreview: null,
         videoPreview: null,
         imageFile: null,
         videoFile: null,
-
-        // E-Commerce
-        orders: [],
-        ecommerceStats: { total_orders: 0, pending_payment: 0, pending_verifications: 0, active_shipments: 0, total_sales: 0 },
-        orderSearch: '',
-        orderFilter: 'all',
-        activeOrder: null,
-        showPaymentModal: false,
-        showShipmentModal: false,
-        showOrderDetailModal: false,
-        paymentNotes: '',
-        orderStatusUpdate: '',
-        shipmentForm: { expedition: 'Indah Kargo', tracking_number: '', status: 'preparing', estimated_arrival: '', notes: '' },
 
         // ==================== INITIALIZATION ====================
         initApp() {
@@ -157,39 +140,18 @@ function adminApp() {
             this.loginForm.password = '';
         },
 
-        generateSlug(text) {
-            if (!text) return '';
-            return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-        },
-
-        changeView(view) { 
-            this.currentView = view; 
-            if (view === 'orders') {
-                this.orderFilter = 'all';
-                this.loadOrders();
-            } else if (view === 'payments') {
-                this.orderFilter = 'payment_uploaded';
-                this.loadOrders();
-            } else if (view === 'shipments') {
-                this.orderFilter = 'processing'; // or something to show shippable orders
-                this.loadOrders();
-            }
-        },
+        changeView(view) { this.currentView = view; },
 
         // ==================== DATA LOADING ====================
         async loadAllData() {
             await Promise.all([
                 this.loadAnalytics(),
-                this.loadStorage(),
                 this.loadProducts(),
-                this.loadMedia(),
                 this.loadModule('settings'),
                 this.loadModule('articles'),
                 this.loadModule('homepage'),
                 this.loadModule('about'),
-                this.loadModule('contact'),
-                this.loadEcommerceStats(),
-                this.loadOrders()
+                this.loadModule('contact')
             ]);
         },
 
@@ -197,62 +159,8 @@ function adminApp() {
             try { let r = await fetch('api.php?action=get_analytics'); this.analytics = await r.json(); } catch(e) {}
         },
 
-        async loadStorage() {
-            try { let r = await fetch('api.php?action=get_storage'); this.storage = await r.json(); } catch(e) {}
-        },
-
         async loadProducts() {
             try { let r = await fetch('api.php?action=get_products'); this.products = await r.json(); } catch(e) {}
-        },
-
-        async loadMedia() {
-            try { let r = await fetch('api.php?action=get_media'); this.mediaItems = await r.json(); } catch(e) {}
-        },
-        async deleteMedia(filename) {
-            if(!confirm('Hapus gambar ini secara permanen?')) return;
-            try {
-                let r = await fetch('api.php?action=delete_media', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({filename: filename})
-                });
-                let res = await r.json();
-                if(res.success) {
-                    this.loadMedia();
-                    this.loadStorage(); // Update storage stats
-                }
-            } catch(e) {}
-        },
-        async uploadMediaToLibrary(event) {
-            let files = event.target.files;
-            if(!files || files.length === 0) return;
-            this.isUploadingMedia = true;
-            for(let i=0; i<files.length; i++) {
-                let fd = new FormData();
-                fd.append('file', files[i]);
-                try {
-                    await fetch('api.php?action=upload_media', {method: 'POST', body: fd});
-                } catch(e) {}
-            }
-            this.isUploadingMedia = false;
-            this.loadMedia();
-            this.loadStorage(); // Update storage stats
-            event.target.value = ''; 
-        },
-        copyToClipboard(text) {
-            navigator.clipboard.writeText(text);
-            alert('URL disalin: ' + text);
-        },
-        filteredMedia() {
-            if(!this.mediaSearch) return this.mediaItems;
-            let q = this.mediaSearch.toLowerCase();
-            return this.mediaItems.filter(m => m.name.toLowerCase().includes(q));
-        },
-        formatBytes(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024, dm = 2, sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
         },
 
         async loadModule(mod) {
@@ -282,175 +190,6 @@ function adminApp() {
             this.isSaving = false;
         },
 
-        // ==================== E-COMMERCE FUNCTIONS ====================
-        async loadEcommerceStats() {
-            try {
-                let r = await fetch('api.php?action=get_ecommerce_stats');
-                this.ecommerceStats = await r.json();
-            } catch(e) {}
-        },
-
-        async loadOrders() {
-            try {
-                let url = `api.php?action=get_admin_orders&status=${this.orderFilter}`;
-                if (this.orderSearch) url += `&search=${encodeURIComponent(this.orderSearch)}`;
-                let r = await fetch(url);
-                this.orders = await r.json();
-            } catch(e) {}
-        },
-
-        async openPaymentModal(orderId) {
-            await this.loadOrderDetail(orderId);
-            this.paymentNotes = this.activeOrder?.payment?.admin_notes || '';
-            this.showPaymentModal = true;
-        },
-
-        async verifyPayment(status) {
-            if (!this.activeOrder) return;
-            if (status === 'rejected' && !confirm('Yakin menolak bukti transfer ini?')) return;
-            if (status === 'verified' && !confirm('Terima pembayaran dan update status?')) return;
-
-            this.isSaving = true;
-            try {
-                let res = await fetch('api.php?action=verify_payment', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        order_id: this.activeOrder.id,
-                        status: status,
-                        admin_notes: this.paymentNotes
-                    })
-                });
-                let data = await res.json();
-                if (data.success) {
-                    alert('Pembayaran berhasil diupdate!');
-                    this.showPaymentModal = false;
-                    this.loadOrders();
-                    this.loadEcommerceStats();
-                } else {
-                    alert(data.error || 'Gagal verifikasi pembayaran');
-                }
-            } catch(e) { alert('Kesalahan jaringan'); }
-            this.isSaving = false;
-        },
-
-        async openShipmentModal(orderId) {
-            await this.loadOrderDetail(orderId);
-            let s = this.activeOrder?.shipment || {};
-            this.shipmentForm = {
-                expedition: s.expedition || 'Indah Kargo',
-                tracking_number: s.tracking_number || '',
-                status: s.status || 'preparing',
-                estimated_arrival: s.estimated_arrival || '',
-                notes: s.notes || ''
-            };
-            this.showShipmentModal = true;
-        },
-
-        async saveShipment() {
-            if (!this.activeOrder) return;
-            this.isSaving = true;
-            try {
-                let res = await fetch('api.php?action=update_shipment', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        order_id: this.activeOrder.id,
-                        ...this.shipmentForm
-                    })
-                });
-                let data = await res.json();
-                if (data.success) {
-                    alert('Data pengiriman berhasil disimpan!');
-                    this.showShipmentModal = false;
-                    this.loadOrders();
-                    this.loadEcommerceStats();
-                } else {
-                    alert(data.error || 'Gagal menyimpan pengiriman');
-                }
-            } catch(e) { alert('Kesalahan jaringan'); }
-            this.isSaving = false;
-        },
-
-        async openOrderDetailModal(orderId) {
-            await this.loadOrderDetail(orderId);
-            this.orderStatusUpdate = this.activeOrder.status;
-            this.showOrderDetailModal = true;
-        },
-
-        async loadOrderDetail(orderId) {
-            try {
-                let r = await fetch(`api.php?action=get_admin_order_detail&order_id=${orderId}`);
-                this.activeOrder = await r.json();
-            } catch(e) { alert('Gagal memuat detail pesanan'); }
-        },
-
-        async updateOrderStatus() {
-            if (!this.activeOrder) return;
-            if (!confirm(`Update status pesanan menjadi: ${this.getOrderStatusLabel(this.orderStatusUpdate)}?`)) return;
-            
-            this.isSaving = true;
-            try {
-                let res = await fetch('api.php?action=update_order_status', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        order_id: this.activeOrder.id,
-                        status: this.orderStatusUpdate
-                    })
-                });
-                let data = await res.json();
-                if (data.success) {
-                    alert('Status pesanan berhasil diupdate!');
-                    this.activeOrder.status = this.orderStatusUpdate;
-                    this.loadOrders();
-                    this.loadEcommerceStats();
-                } else {
-                    alert(data.error || 'Gagal update status');
-                }
-            } catch(e) { alert('Kesalahan jaringan'); }
-            this.isSaving = false;
-        },
-
-        formatDate(dateStr) {
-            if (!dateStr) return '-';
-            return new Date(dateStr).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' });
-        },
-
-        getOrderStatusLabel(status) {
-            const map = {
-                'all': 'Semua',
-                'pending_payment': 'Menunggu Bayar',
-                'payment_uploaded': 'Bukti Diunggah',
-                'payment_verified': 'Diproses (Lunas)',
-                'processing': 'Sedang Diproses',
-                'shipped': 'Dikirim',
-                'delivered': 'Selesai',
-                'completed': 'Selesai',
-                'cancelled': 'Dibatalkan'
-            };
-            return map[status] || status;
-        },
-
-        getOrderStatusBadgeClass(status) {
-            const map = {
-                'pending_payment': 'bg-red-100 text-red-700',
-                'payment_uploaded': 'bg-orange-100 text-orange-700',
-                'payment_verified': 'bg-blue-100 text-blue-700',
-                'processing': 'bg-blue-100 text-blue-700',
-                'shipped': 'bg-purple-100 text-purple-700',
-                'delivered': 'bg-green-100 text-green-700',
-                'completed': 'bg-green-100 text-green-700',
-                'cancelled': 'bg-gray-200 text-gray-700'
-            };
-            return map[status] || 'bg-gray-100 text-gray-700';
-        },
-
-        formatRupiah(amount) {
-            if (!amount) return 'Rp 0';
-            return 'Rp ' + Number(amount).toLocaleString('id-ID');
-        },
-
         // ==================== PRODUCT CRUD ====================
         filteredProducts() {
             let list = Array.isArray(this.products) ? this.products : Object.values(this.products);
@@ -461,42 +200,9 @@ function adminApp() {
 
         openAddProduct() {
             this.editingId = null;
-            this.productForm = { id: '', name: '', category: 'Mesin Industri', subCategory: '', price: '', priceRange: '', description: '', features: [''], specs: [{key: '', val: ''}], images: [], existing_video: '', meta_title: '', meta_description: '', slug: '' };
+            this.productForm = { id: '', name: '', category: 'Mesin Industri', subCategory: '', price: '', priceRange: '', description: '', features: [''], specs: [{key: '', val: ''}], images: [], existing_video: '' };
             this.resetMedia();
             this.changeView('product_form');
-        },
-
-        cleanDesc(raw) {
-            if (!raw) return '';
-            let str = raw;
-            if (str.includes('<li>')) {
-                str = str.replace(/<ul[^>]*>/gi, '').replace(/<\/ul>/gi, '');
-                let parts = str.split(/<\/li>/gi);
-                let items = [];
-                parts.forEach(p => {
-                    let cleaned = p.replace(/<li[^>]*>/gi, '').replace(/<[^>]*>/g, '').trim();
-                    if (cleaned) items.push(cleaned);
-                });
-                str = items.join('\n');
-            } else if (str.includes('<br')) {
-                str = str.replace(/<br\s*\/?>/gi, '\n');
-            }
-
-            let lines = str.split('\n');
-            let finalItems = [];
-            lines.forEach(line => {
-                let trimmed = line.replace(/<[^>]*>/g, '').trim();
-                if (!trimmed) return;
-                if (trimmed.includes('·')) {
-                    let subItems = trimmed.split('·').map(s => s.trim()).filter(Boolean);
-                    subItems.forEach(item => {
-                        finalItems.push(item.startsWith('·') || item.startsWith('•') ? item : '· ' + item);
-                    });
-                } else {
-                    finalItems.push(trimmed.startsWith('·') || trimmed.startsWith('•') ? trimmed : '· ' + trimmed);
-                }
-            });
-            return finalItems.join('\n');
         },
 
         openEditProduct(p) {
@@ -504,13 +210,11 @@ function adminApp() {
             let specs = [];
             if (p.specs) { for (let k in p.specs) specs.push({key: k, val: p.specs[k]}); }
             if (!specs.length) specs.push({key: '', val: ''});
-            let rawDesc = p.description || p.desc || '';
             this.productForm = {
                 id: p.id, name: p.name, category: p.category || 'Mesin Industri', subCategory: p.subCategory || '',
-                price: p.price, priceRange: p.priceRange || '', description: this.cleanDesc(rawDesc),
+                price: p.price, priceRange: p.priceRange || '', description: p.description || '',
                 features: (p.features && p.features.length) ? [...p.features] : [''],
-                specs: specs, images: p.images && p.images.length ? [...p.images] : (p.image ? [p.image] : []), existing_video: p.video || '',
-                meta_title: p.meta_title || '', meta_description: p.meta_description || '', slug: p.slug || ''
+                specs: specs, images: p.images && p.images.length ? [...p.images] : (p.image ? [p.image] : []), existing_video: p.video || ''
             };
             this.resetMedia();
             this.changeView('product_form');
@@ -559,7 +263,7 @@ function adminApp() {
             if (this.productForm.images.length === 0) { alert('Mohon unggah minimal 1 foto produk'); return; }
             this.isSaving = true;
             let fd = new FormData();
-            for (let key of ['id','name','category','subCategory','price','priceRange','description','existing_video','meta_title','meta_description','slug']) {
+            for (let key of ['id','name','category','subCategory','price','priceRange','description','existing_video']) {
                 fd.append(key, this.productForm[key] || '');
             }
             fd.append('images', JSON.stringify(this.productForm.images));
@@ -595,14 +299,14 @@ function adminApp() {
 
         openAddArticle() {
             this.editingId = null;
-            this.articleForm = { id: '', title: '', category: 'Edukasi', publish_date: new Date().toISOString().split('T')[0], excerpt: '', content: '', existing_image: '', meta_title: '', meta_description: '', slug: '' };
+            this.articleForm = { id: '', title: '', category: 'Edukasi', publish_date: new Date().toISOString().split('T')[0], excerpt: '', content: '', existing_image: '' };
             this.resetMedia();
             this.changeView('article_form');
         },
 
         openEditArticle(a) {
             this.editingId = a.id;
-            this.articleForm = { ...a, meta_title: a.meta_title || '', meta_description: a.meta_description || '', slug: a.slug || '' };
+            this.articleForm = { ...a };
             this.resetMedia();
             this.changeView('article_form');
         },
@@ -610,9 +314,6 @@ function adminApp() {
         async saveArticle() {
             if (!this.articleForm.title) { alert('Mohon isi judul artikel'); return; }
             this.isSaving = true;
-            if (!this.articleForm.slug) {
-                this.articleForm.slug = this.generateSlug(this.articleForm.title);
-            }
             let id = this.editingId || 'art_' + Date.now();
             let article = { ...this.articleForm, id: id };
 
