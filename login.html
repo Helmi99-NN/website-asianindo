@@ -616,7 +616,7 @@
         // ==========================================
         // GOOGLE SIGN-IN / REGISTER HANDLER
         // ==========================================
-        const GOOGLE_CLIENT_ID = ''; // Masukkan Client ID dari Google Cloud jika ada
+        const GOOGLE_CLIENT_ID = '858372081672-sfprfg8bvuubjbc45kk5tnnff7lncqrn.apps.googleusercontent.com';
 
         async function handleGoogleResponse(response) {
             if (!response || !response.credential) {
@@ -651,7 +651,11 @@
 
         function triggerGoogleAuth() {
             if (GOOGLE_CLIENT_ID && window.google && google.accounts && google.accounts.id) {
-                google.accounts.id.prompt();
+                google.accounts.id.prompt((notification) => {
+                    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                        openGoogleModal();
+                    }
+                });
             } else {
                 openGoogleModal();
             }
