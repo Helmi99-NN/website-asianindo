@@ -116,21 +116,39 @@ if ($action === 'register') {
         // Hash password with bcrypt
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-        // Insert into customers table
-        $insertStmt = $pdo->prepare("
-            INSERT INTO customers (name, email, phone, password, address, city, province, postal_code, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
-        ");
-        $insertStmt->execute([
-            $name,
-            $email,
-            $phone,
-            $hashedPassword,
-            $address,
-            $city,
-            $province,
-            $postal_code
-        ]);
+        // Insert into customers table (using password_hash from setup.sql)
+        try {
+            $insertStmt = $pdo->prepare("
+                INSERT INTO customers (name, email, phone, password_hash, address, city, province, postal_code, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
+            ");
+            $insertStmt->execute([
+                $name,
+                $email,
+                $phone,
+                $hashedPassword,
+                $address,
+                $city,
+                $province,
+                $postal_code
+            ]);
+        } catch (PDOException $pe) {
+            // Fallback in case column is named password
+            $insertStmt = $pdo->prepare("
+                INSERT INTO customers (name, email, phone, password, address, city, province, postal_code, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
+            ");
+            $insertStmt->execute([
+                $name,
+                $email,
+                $phone,
+                $hashedPassword,
+                $address,
+                $city,
+                $province,
+                $postal_code
+            ]);
+        }
 
         $customerId = (int)$pdo->lastInsertId();
 
@@ -182,16 +200,13 @@ if ($action === 'login') {
     }
 
     try {
-        $stmt = $pdo->prepare("
-            SELECT id, name, email, phone, password, address, city, province, postal_code
-            FROM customers
-            WHERE email = ?
-            LIMIT 1
-        ");
+        $stmt = $pdo->prepare("SELECT * FROM customers WHERE email = ? LIMIT 1");
         $stmt->execute([$email]);
         $customer = $stmt->fetch();
 
-        if (!$customer || !password_verify($password, $customer['password'])) {
+        $storedHash = $customer['password_hash'] ?? $customer['password'] ?? '';
+
+        if (!$customer || empty($storedHash) || !password_verify($password, $storedHash)) {
             http_response_code(401);
             echo json_encode(['error' => 'Email atau password salah!']);
             exit;
@@ -209,7 +224,7 @@ if ($action === 'login') {
                 'id' => (int)$customer['id'],
                 'name' => $customer['name'],
                 'email' => $customer['email'],
-                'phone' => $customer['phone'],
+                'phone' => $customer['phone'] ?? '',
                 'address' => $customer['address'] ?? '',
                 'city' => $customer['city'] ?? '',
                 'province' => $customer['province'] ?? '',
@@ -221,6 +236,115 @@ if ($action === 'login') {
         echo json_encode(['error' => 'Terjadi kesalahan pada server saat login: ' . $e->getMessage()]);
     }
     exit;
+}
+
+// ==========================================
+// 2B. GOOGLE AUTH (LOGIN / REGISTER) (POST)
+// ==========================================
+if ($action === 'google_auth') {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        echo json_encode(['error' => 'Metode request tidak diizinkan. Gunakan POST.']);
+        exit;
+    }
+
+    $data = getRequestData();
+    $credential = $data['credential'] ?? '';
+    $email = trim($data['email'] ?? '');
+    $name = trim($data['name'] ?? '');
+
+    // If Google JWT token was sent from Google Identity Services
+    if (!empty($credential)) {
+        $parts = explode('.', $credential);
+        if (count($parts) === 3) {
+            $payloadJson = base64_decode(str_replace(['-', '_'], ['+', '/'], $parts[1]));
+            $payload = json_decode($payloadJson, true);
+            if ($payload && !empty($payload['email'])) {
+                $email = trim($payload['email']);
+                $name = trim($payload['name'] ?? explode('@', $email)[0]);
+            }
+        }
+    }
+
+    if (empty($email)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Data akun Google tidak valid!']);
+        exit;
+    }
+
+    try {
+        // Check if customer exists
+        $stmt = $pdo->prepare("SELECT * FROM customers WHERE email = ? LIMIT 1");
+        $stmt->execute([$email]);
+        $customer = $stmt->fetch();
+
+        if ($customer) {
+            // Existing customer -> Auto Login
+            $_SESSION['customer_id'] = (int)$customer['id'];
+            $_SESSION['customer_name'] = $customer['name'];
+            $_SESSION['customer_email'] = $customer['email'];
+
+            echo json_encode([
+                'success' => true,
+                'is_new' => false,
+                'message' => 'Login dengan akun Google berhasil!',
+                'customer' => [
+                    'id' => (int)$customer['id'],
+                    'name' => $customer['name'],
+                    'email' => $customer['email'],
+                    'phone' => $customer['phone'] ?? '',
+                    'address' => $customer['address'] ?? '',
+                    'city' => $customer['city'] ?? '',
+                    'province' => $customer['province'] ?? '',
+                    'postal_code' => $customer['postal_code'] ?? ''
+                ]
+            ]);
+            exit;
+        } else {
+            // New customer -> Auto Register
+            $randomPassword = bin2hex(random_bytes(16));
+            $hashedPassword = password_hash($randomPassword, PASSWORD_BCRYPT);
+            $phone = trim($data['phone'] ?? '-');
+
+            try {
+                $insertStmt = $pdo->prepare("
+                    INSERT INTO customers (name, email, phone, password_hash, created_at, updated_at)
+                    VALUES (?, ?, ?, ?, NOW(), NOW())
+                ");
+                $insertStmt->execute([$name, $email, $phone, $hashedPassword]);
+            } catch (PDOException $pe) {
+                $insertStmt = $pdo->prepare("
+                    INSERT INTO customers (name, email, phone, password, created_at, updated_at)
+                    VALUES (?, ?, ?, ?, NOW(), NOW())
+                ");
+                $insertStmt->execute([$name, $email, $phone, $hashedPassword]);
+            }
+
+            $customerId = (int)$pdo->lastInsertId();
+
+            $_SESSION['customer_id'] = $customerId;
+            $_SESSION['customer_name'] = $name;
+            $_SESSION['customer_email'] = $email;
+
+            http_response_code(201);
+            echo json_encode([
+                'success' => true,
+                'is_new' => true,
+                'message' => 'Pendaftaran akun dengan Google berhasil!',
+                'customer' => [
+                    'id' => $customerId,
+                    'name' => $name,
+                    'email' => $email,
+                    'phone' => $phone
+                ]
+            ]);
+            exit;
+        }
+    } catch (PDOException $e) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Terjadi kesalahan saat autentikasi Google: ' . $e->getMessage()]);
+        exit;
+    }
 }
 
 // ==========================================
