@@ -6,9 +6,9 @@
 
 // Konfigurasi Database (Sesuaikan dengan kredensial cPanel / Hostinger)
 $dbHost = getenv('DB_HOST') ?: 'localhost';
-$dbName = getenv('DB_NAME') ?: 'u417234509_asianindo';
-$dbUser = getenv('DB_USER') ?: 'u417234509_asianindo';
-$dbPass = getenv('DB_PASS') ?: '';
+$dbName = getenv('DB_NAME') ?: 'u255210891_web_asianindo';
+$dbUser = getenv('DB_USER') ?: 'u255210891_web_asianindo'; // Ganti jika username database berbeda
+$dbPass = getenv('DB_PASS') ?: ''; // Isi dengan password database Hostinger Anda
 
 // Konfigurasi Rekening Pembayaran Resmi CV Asianindo
 define('COMPANY_BANK_NAME', 'Bank BCA');
