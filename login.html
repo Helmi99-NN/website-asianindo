@@ -632,20 +632,28 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ credential: response.credential })
                 });
-                const data = await res.json();
+                
+                const text = await res.text();
+                let data = null;
+                try {
+                    data = JSON.parse(text);
+                } catch (pe) {
+                    console.error("Server raw response:", text);
+                }
 
-                if (data.success || data.status === 'success') {
+                if (data && (data.success || data.status === 'success')) {
                     const msg = data.is_new ? 'Pendaftaran dengan Google berhasil!' : 'Login dengan Google berhasil!';
                     showToast(msg, 'success');
                     setTimeout(() => {
                         window.location.href = getRedirectTarget();
                     }, 1000);
                 } else {
-                    showToast(data.error || data.message || 'Gagal masuk dengan Google.');
+                    const errMsg = (data && (data.error || data.message)) || ('Gagal login Google. ' + (text ? text.substring(0, 100) : ''));
+                    showToast(errMsg);
                 }
             } catch (err) {
                 console.error(err);
-                showToast('Terjadi kesalahan koneksi saat login Google.');
+                showToast('Terjadi kesalahan koneksi: ' + (err.message || ''));
             }
         }
 

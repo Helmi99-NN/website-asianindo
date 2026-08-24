@@ -4,35 +4,48 @@
  * Uses PDO MySQL with utf8mb4 charset
  */
 
+// Cek jika ada config.php terpisah agar tidak tertimpa saat update repository
+if (file_exists(__DIR__ . '/config.php')) {
+    require_once __DIR__ . '/config.php';
+}
+
 // Konfigurasi Database (Sesuaikan dengan kredensial cPanel / Hostinger)
-$dbHost = getenv('DB_HOST') ?: 'localhost';
-$dbName = getenv('DB_NAME') ?: 'u255210891_web_asianindo';
-$dbUser = getenv('DB_USER') ?: 'u255210891_web_asianindo'; // Ganti jika username database berbeda
-$dbPass = getenv('DB_PASS') ?: ''; // Isi dengan password database Hostinger Anda
+$dbHost = defined('DB_HOST') ? DB_HOST : (getenv('DB_HOST') ?: '127.0.0.1');
+$dbName = defined('DB_NAME') ? DB_NAME : (getenv('DB_NAME') ?: 'u255210891_web_asianindo');
+$dbUser = defined('DB_USER') ? DB_USER : (getenv('DB_USER') ?: 'u255210891_web_asianindo');
+$dbPass = defined('DB_PASS') ? DB_PASS : (getenv('DB_PASS') ?: '');
 
 // Konfigurasi Rekening Pembayaran Resmi CV Asianindo
-define('COMPANY_BANK_NAME', 'Bank BCA');
-define('COMPANY_BANK_ACCOUNT', '6670747997');
-define('COMPANY_BANK_HOLDER', 'Iman Anjani Buchory');
-define('COMPANY_WA_NUMBER', '6285335850517');
+if (!defined('COMPANY_BANK_NAME')) define('COMPANY_BANK_NAME', 'Bank BCA');
+if (!defined('COMPANY_BANK_ACCOUNT')) define('COMPANY_BANK_ACCOUNT', '6670747997');
+if (!defined('COMPANY_BANK_HOLDER')) define('COMPANY_BANK_HOLDER', 'Iman Anjani Buchory');
+if (!defined('COMPANY_WA_NUMBER')) define('COMPANY_WA_NUMBER', '6285335850517');
 
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     PDO::ATTR_EMULATE_PREPARES   => false,
+    PDO::ATTR_TIMEOUT            => 5,
 ];
 
 try {
     $pdo = new PDO("mysql:host={$dbHost};dbname={$dbName};charset=utf8mb4", $dbUser, $dbPass, $options);
 } catch (PDOException $e) {
-    if (!defined('CLI_MODE')) {
-        http_response_code(500);
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => false,
-            'error' => 'Koneksi database gagal: ' . $e->getMessage()
-        ]);
-        exit;
+    try {
+        // Coba alternatif host (localhost jika 127.0.0.1 gagal, atau sebaliknya)
+        $altHost = ($dbHost === '127.0.0.1') ? 'localhost' : '127.0.0.1';
+        $pdo = new PDO("mysql:host={$altHost};dbname={$dbName};charset=utf8mb4", $dbUser, $dbPass, $options);
+    } catch (PDOException $e2) {
+        if (!defined('CLI_MODE')) {
+            http_response_code(200); // Kembalikan 200 dengan status error agar terbaca jelas di JSON frontend
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'status' => 'error',
+                'error' => 'Koneksi database gagal: ' . $e2->getMessage()
+            ]);
+            exit;
+        }
     }
 }
 
