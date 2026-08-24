@@ -7,6 +7,10 @@
 // Cek jika ada config.php terpisah agar tidak tertimpa saat update repository
 if (file_exists(__DIR__ . '/config.php')) {
     require_once __DIR__ . '/config.php';
+} elseif (file_exists(__DIR__ . '/../config.php')) {
+    require_once __DIR__ . '/../config.php';
+} elseif (file_exists(__DIR__ . '/../db_config.php')) {
+    require_once __DIR__ . '/../db_config.php';
 }
 
 // Konfigurasi Database (Sesuaikan dengan kredensial cPanel / Hostinger)
