@@ -44,14 +44,15 @@
                     return;
                 }
                 
-                // Pre-fill user data
-                if(dataAuth.user) {
-                    document.getElementById('ship_name').value = dataAuth.user.name || '';
-                    document.getElementById('ship_phone').value = dataAuth.user.phone || '';
-                    document.getElementById('ship_address').value = dataAuth.user.address || '';
-                    document.getElementById('ship_city').value = dataAuth.user.city || '';
-                    document.getElementById('ship_province').value = dataAuth.user.province || '';
-                    document.getElementById('ship_postal').value = dataAuth.user.postal_code || '';
+                // Pre-fill customer data
+                const user = dataAuth.customer || dataAuth.user;
+                if(user) {
+                    if(user.name) document.getElementById('ship_name').value = user.name;
+                    if(user.phone) document.getElementById('ship_phone').value = user.phone;
+                    if(user.address) document.getElementById('ship_address').value = user.address;
+                    if(user.city) document.getElementById('ship_city').value = user.city;
+                    if(user.province) document.getElementById('ship_province').value = user.province;
+                    if(user.postal_code) document.getElementById('ship_postal').value = user.postal_code;
                 }
             } catch(e) {
                 console.error("Auth check failed", e);
@@ -62,56 +63,83 @@
             const directProductId = urlParams.get('product_id');
             
             if (directProductId) {
-                // TODO: fetch product detail if needed. For now assume we pass details or fallback
-                // Here we'd ideally fetch product detail. Let's mock based on params if available
                 checkoutItems = [{
                     product_id: directProductId,
                     product_name: urlParams.get('name') || 'Produk Asianindo',
-                    product_image: urlParams.get('image') || '',
+                    product_image: urlParams.get('image') || 'images/placeholder.webp',
                     price: parseInt(urlParams.get('price')) || 0,
                     quantity: parseInt(urlParams.get('qty')) || 1,
-                    weight_grams: parseInt(urlParams.get('weight')) || 1000
+                    weight_grams: parseInt(urlParams.get('weight')) || 25000
                 }];
             } else {
                 const stored = sessionStorage.getItem('checkout_items');
                 isFromCart = sessionStorage.getItem('is_from_cart') === 'true';
                 if(stored) {
-                    checkoutItems = JSON.parse(stored);
-                } else {
+                    try {
+                        checkoutItems = JSON.parse(stored);
+                    } catch(pe) {
+                        checkoutItems = [];
+                    }
+                }
+                
+                if(!checkoutItems || checkoutItems.length === 0) {
                     window.location.href = 'keranjang.html';
                     return;
                 }
             }
 
+            // Normalize items price & properties
+            checkoutItems = checkoutItems.map(item => {
+                const price = parseInt(item.price ?? item.product_price ?? 0);
+                const qty = parseInt(item.quantity ?? 1);
+                const weight = parseInt(item.weight_grams ?? 25000);
+                return {
+                    ...item,
+                    product_id: item.product_id || item.id || '',
+                    product_name: item.product_name || item.name || 'Produk Asianindo',
+                    product_image: item.product_image || item.image || 'images/placeholder.webp',
+                    price: price,
+                    product_price: price,
+                    quantity: qty,
+                    weight_grams: weight
+                };
+            });
+
             renderItems();
-            calculateTotals();
         }
 
         function renderItems() {
             const container = document.getElementById('order-items');
+            if(!container) return;
             container.innerHTML = '';
             subtotal = 0;
             totalWeight = 0;
 
             checkoutItems.forEach(item => {
-                subtotal += item.price * item.quantity;
-                totalWeight += (item.weight_grams || 0) * item.quantity;
+                const itemPrice = parseInt(item.price || item.product_price || 0);
+                const itemQty = parseInt(item.quantity || 1);
+                const itemWeight = parseInt(item.weight_grams || 25000);
+                
+                subtotal += itemPrice * itemQty;
+                totalWeight += itemWeight * itemQty;
                 
                 container.innerHTML += `
                     <div class="flex gap-4 py-4 border-b border-gray-100 last:border-0">
-                        <img src="${item.product_image || 'https://via.placeholder.com/80'}" class="w-16 h-16 object-cover rounded-lg border">
+                        <img src="${item.product_image || 'images/placeholder.webp'}" class="w-16 h-16 object-cover rounded-lg border">
                         <div class="flex-1">
                             <h4 class="font-medium text-gray-800 line-clamp-2 text-sm">${item.product_name}</h4>
-                            <p class="text-xs text-gray-500 mt-1">Berat: ${((item.weight_grams || 1000) / 1000).toFixed(1)} kg</p>
+                            <p class="text-xs text-gray-500 mt-1">Berat: ${(itemWeight / 1000).toFixed(1)} kg</p>
                             <div class="flex justify-between items-center mt-2">
-                                <span class="font-bold text-primary">${formatRupiah(item.price)}</span>
-                                <span class="text-sm font-medium">x${item.quantity}</span>
+                                <span class="font-bold text-primary">${formatRupiah(itemPrice)}</span>
+                                <span class="text-sm font-medium">x${itemQty}</span>
                             </div>
                         </div>
                     </div>
                 `;
             });
-            document.getElementById('subtotal-display').textContent = formatRupiah(subtotal);
+
+            const subtotalEl = document.getElementById('subtotal-display');
+            if(subtotalEl) subtotalEl.textContent = formatRupiah(subtotal);
             updateShippingCost();
         }
 
@@ -119,6 +147,8 @@
             const province = document.getElementById('ship_province').value;
             if(!province) {
                 shippingCost = 0;
+                const shipEl = document.getElementById('shipping-cost-display');
+                if(shipEl) shipEl.textContent = formatRupiah(0);
                 updateGrandTotal();
                 return;
             }
@@ -129,21 +159,23 @@
             fd.append('province', province);
 
             try {
-                const res = await fetch('order_api.php', { method: 'POST', body: fd });
+                const res = await fetch('order_api.php?action=calculate_shipping', { method: 'POST', body: fd });
                 const data = await res.json();
                 if(data.success) {
-                    shippingCost = data.shipping_cost;
-                    document.getElementById('shipping-cost-display').textContent = formatRupiah(shippingCost);
-                    updateGrandTotal();
+                    shippingCost = parseInt(data.shipping_cost || 0);
+                    const shipEl = document.getElementById('shipping-cost-display');
+                    if(shipEl) shipEl.textContent = formatRupiah(shippingCost);
                 }
             } catch(e) {
                 console.error("Failed to calc shipping", e);
             }
+            updateGrandTotal();
         }
 
         function updateGrandTotal() {
-            const total = subtotal + shippingCost;
-            document.getElementById('grand-total-display').textContent = formatRupiah(total);
+            const total = subtotal + (shippingCost || 0);
+            const grandTotalEl = document.getElementById('grand-total-display');
+            if(grandTotalEl) grandTotalEl.textContent = formatRupiah(total);
         }
 
         async function placeOrder() {
