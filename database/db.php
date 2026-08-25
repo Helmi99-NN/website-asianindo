@@ -13,11 +13,11 @@ if (file_exists(__DIR__ . '/config.php')) {
     require_once __DIR__ . '/../db_config.php';
 }
 
-// Konfigurasi Database (Sesuaikan dengan kredensial cPanel / Hostinger)
-$dbHost = defined('DB_HOST') ? DB_HOST : (getenv('DB_HOST') ?: '127.0.0.1');
-$dbName = defined('DB_NAME') ? DB_NAME : (getenv('DB_NAME') ?: 'u255210891_web_asianindo');
-$dbUser = defined('DB_USER') ? DB_USER : (getenv('DB_USER') ?: 'u255210891_web_asianindo');
-$dbPass = defined('DB_PASS') ? DB_PASS : (getenv('DB_PASS') ?: '');
+// Konfigurasi Database (Mendukung define constant maupun variabel biasa)
+$dbHost = defined('DB_HOST') ? DB_HOST : ($db_host ?? ($dbHost ?? (getenv('DB_HOST') ?: '127.0.0.1')));
+$dbName = defined('DB_NAME') ? DB_NAME : ($db_name ?? ($dbName ?? (getenv('DB_NAME') ?: 'u255210891_web_asianindo')));
+$dbUser = defined('DB_USER') ? DB_USER : ($db_user ?? ($dbUser ?? (getenv('DB_USER') ?: 'u255210891_web_asianindo')));
+$dbPass = defined('DB_PASS') ? DB_PASS : (defined('DB_PASSWORD') ? DB_PASSWORD : ($db_pass ?? ($password ?? ($dbPass ?? (getenv('DB_PASS') ?: '')))));
 
 // Konfigurasi Rekening Pembayaran Resmi CV Asianindo
 if (!defined('COMPANY_BANK_NAME')) define('COMPANY_BANK_NAME', 'Bank BCA');
