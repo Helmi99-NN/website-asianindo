@@ -169,9 +169,9 @@
 
         <!-- Buttons -->
         <div class="flex flex-col gap-3 pb-8">
-            <a id="btn_wa" href="https://wa.me/6285736737773" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-emerald-600/30 text-center transition flex items-center justify-center gap-2">
+            <a id="btn_wa" href="https://wa.me/6285335850517" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-emerald-600/30 text-center transition flex items-center justify-center gap-2">
                 <span class="material-symbols-outlined text-2xl">chat</span>
-                Kirim Konfirmasi ke WhatsApp Admin (085736737773)
+                Kirim Konfirmasi ke WhatsApp Admin (085335850517)
             </a>
 
             <a id="btn_tracking" href="pesanan.html" class="w-full bg-white border border-gray-300 text-gray-700 font-bold py-3 px-4 rounded-xl shadow text-center hover:bg-gray-50 transition">
@@ -243,7 +243,7 @@
                         }
                     }
                     
-                    // Pre-fill WA link to 085736737773
+                    // Pre-fill WA link to 085335850517
                     const waMsg = `*KONFIRMASI PEMBAYARAN - CV ASIANINDO*\n` +
                         `----------------------------------------\n` +
                         `📋 *No. Pesanan:* ${orderNumber}\n` +
@@ -252,7 +252,7 @@
                         `🔗 *Link Pesanan:* https://asianindomachine.com/pembayaran.html?order_number=${orderNumber}\n\n` +
                         `Halo admin CV Asianindo, saya sudah melakukan transfer. Mohon dicek dan diverifikasi. Terima kasih!`;
                     
-                    document.getElementById('btn_wa').href = `https://wa.me/6285736737773?text=${encodeURIComponent(waMsg)}`;
+                    document.getElementById('btn_wa').href = `https://wa.me/6285335850517?text=${encodeURIComponent(waMsg)}`;
 
                     // Handle Uploaded state
                     if (order.payment_status !== 'pending' && order.proof_image) {

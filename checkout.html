@@ -390,8 +390,8 @@
                 if(data.success) {
                     if(isFromCart) sessionStorage.removeItem('checkout_items');
                     
-                    // Build complete order message to WhatsApp 085736737773
-                    const adminWA = '6285736737773';
+                    // Build complete order message to WhatsApp 085335850517
+                    const adminWA = '6285335850517';
                     let itemsSummary = '';
                     checkoutItems.forEach((it, idx) => {
                         itemsSummary += `${idx + 1}. *${it.product_name}*\n   Jumlah: ${it.quantity} unit | Harga: ${formatRupiah((it.price || it.product_price) * it.quantity)}\n`;
