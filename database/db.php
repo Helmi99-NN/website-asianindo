@@ -25,6 +25,12 @@ if (!defined('COMPANY_BANK_ACCOUNT')) define('COMPANY_BANK_ACCOUNT', '6670747997
 if (!defined('COMPANY_BANK_HOLDER')) define('COMPANY_BANK_HOLDER', 'Iman Anjani Buchory');
 if (!defined('COMPANY_WA_NUMBER')) define('COMPANY_WA_NUMBER', '6285335850517');
 
+// Konfigurasi Biteship API & Pengiriman Kargo (Asal: Malang, Jawa Timur)
+if (!defined('BITESHIP_API_KEY')) define('BITESHIP_API_KEY', 'biteship_test.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiV0VCIFRFU1RJTkciLCJ1c2VySWQiOiI2YThkNzkyZGFkM2FmODg2NTI5YzBmOTYiLCJpYXQiOjE3ODc2NTc1MzJ9.V69nD1VUg13NDzRDiFtVITHXupAzJxOQSS7awsWugiQ');
+if (!defined('ORIGIN_POSTAL_CODE')) define('ORIGIN_POSTAL_CODE', 65111);
+if (!defined('ORIGIN_CITY')) define('ORIGIN_CITY', 'Malang');
+if (!defined('ORIGIN_PROVINCE')) define('ORIGIN_PROVINCE', 'Jawa Timur');
+
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

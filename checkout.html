@@ -32,6 +32,8 @@
         let subtotal = 0;
         let totalWeight = 0;
         let shippingCost = 0;
+        let shippingOptions = [];
+        let selectedExpedition = 'Indah Cargo (Cargo Logistik Mesin)';
 
         async function initCheckout() {
             // Check auth
@@ -106,6 +108,7 @@
             });
 
             renderItems();
+            updateShippingOptions();
         }
 
         function renderItems() {
@@ -140,35 +143,124 @@
 
             const subtotalEl = document.getElementById('subtotal-display');
             if(subtotalEl) subtotalEl.textContent = formatRupiah(subtotal);
-            updateShippingCost();
+            updateGrandTotal();
         }
 
-        async function updateShippingCost() {
+        async function updateShippingOptions() {
             const province = document.getElementById('ship_province').value;
+            const city = document.getElementById('ship_city').value;
+            const postalCode = document.getElementById('ship_postal').value;
+            const container = document.getElementById('shipping-options-container');
+
             if(!province) {
                 shippingCost = 0;
+                if(container) {
+                    container.innerHTML = `
+                        <div class="text-center py-6 text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                            <span class="material-symbols-outlined text-3xl mb-1 text-gray-300">map</span>
+                            <p class="text-sm">Pilih Provinsi di atas untuk melihat pilihan ekspedisi & ongkir.</p>
+                        </div>
+                    `;
+                }
                 const shipEl = document.getElementById('shipping-cost-display');
                 if(shipEl) shipEl.textContent = formatRupiah(0);
                 updateGrandTotal();
                 return;
             }
 
+            if(container) {
+                container.innerHTML = `
+                    <div class="flex items-center justify-center gap-3 py-6 text-primary bg-primary/5 rounded-xl border border-primary/20">
+                        <span class="material-symbols-outlined animate-spin">sync</span>
+                        <span class="text-sm font-medium">Menghitung tarif ekspedisi real-time...</span>
+                    </div>
+                `;
+            }
+
             const fd = new FormData();
-            fd.append('action', 'calculate_shipping');
-            fd.append('weight_grams', totalWeight);
+            fd.append('action', 'get_shipping_options');
+            fd.append('weight_grams', totalWeight || 25000);
             fd.append('province', province);
+            fd.append('city', city);
+            fd.append('postal_code', postalCode);
 
             try {
-                const res = await fetch('order_api.php?action=calculate_shipping', { method: 'POST', body: fd });
+                const res = await fetch('order_api.php?action=get_shipping_options', { method: 'POST', body: fd });
                 const data = await res.json();
-                if(data.success) {
-                    shippingCost = parseInt(data.shipping_cost || 0);
-                    const shipEl = document.getElementById('shipping-cost-display');
-                    if(shipEl) shipEl.textContent = formatRupiah(shippingCost);
+                
+                if(data.success && data.options && data.options.length > 0) {
+                    shippingOptions = data.options;
+                    renderShippingOptions();
+                } else {
+                    if(container) {
+                        container.innerHTML = `<p class="text-sm text-red-500">Gagal memuat opsi ekspedisi.</p>`;
+                    }
                 }
             } catch(e) {
                 console.error("Failed to calc shipping", e);
             }
+        }
+
+        function renderShippingOptions() {
+            const container = document.getElementById('shipping-options-container');
+            if(!container || !shippingOptions.length) return;
+
+            let html = '<div class="space-y-3">';
+            shippingOptions.forEach((opt, idx) => {
+                const isSelected = idx === 0; // Default select first
+                if (isSelected) {
+                    shippingCost = opt.price;
+                    selectedExpedition = `${opt.courier_name} (${opt.service_name})`;
+                }
+
+                html += `
+                    <label class="shipping-option-card flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all ${isSelected ? 'border-primary bg-primary/5 shadow-sm' : 'border-gray-200 hover:border-gray-300 bg-white'}" onclick="selectExpedition(${idx})">
+                        <div class="flex items-center gap-3">
+                            <input type="radio" name="courier_choice" value="${idx}" ${isSelected ? 'checked' : ''} class="w-4 h-4 text-primary focus:ring-primary">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-gray-900 text-sm">${opt.courier_name}</span>
+                                    ${opt.is_recommended ? '<span class="text-[10px] uppercase font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">Rekomendasi</span>' : ''}
+                                </div>
+                                <p class="text-xs text-gray-500 mt-0.5">${opt.service_name} • Estimasi ${opt.etd}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-bold text-primary text-sm">${formatRupiah(opt.price)}</span>
+                        </div>
+                    </label>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+
+            const shipEl = document.getElementById('shipping-cost-display');
+            if(shipEl) shipEl.textContent = formatRupiah(shippingCost);
+            updateGrandTotal();
+        }
+
+        function selectExpedition(index) {
+            const opt = shippingOptions[index];
+            if(!opt) return;
+
+            shippingCost = opt.price;
+            selectedExpedition = `${opt.courier_name} (${opt.service_name})`;
+
+            document.querySelectorAll('.shipping-option-card').forEach((card, i) => {
+                const radio = card.querySelector('input[type="radio"]');
+                if (i === index) {
+                    card.classList.remove('border-gray-200', 'hover:border-gray-300', 'bg-white');
+                    card.classList.add('border-primary', 'bg-primary/5', 'shadow-sm');
+                    if(radio) radio.checked = true;
+                } else {
+                    card.classList.remove('border-primary', 'bg-primary/5', 'shadow-sm');
+                    card.classList.add('border-gray-200', 'hover:border-gray-300', 'bg-white');
+                    if(radio) radio.checked = false;
+                }
+            });
+
+            const shipEl = document.getElementById('shipping-cost-display');
+            if(shipEl) shipEl.textContent = formatRupiah(shippingCost);
             updateGrandTotal();
         }
 
@@ -191,8 +283,13 @@
                 }
             }
 
+            if(shippingCost <= 0) {
+                alert('Silakan pilih salah satu ekspedisi pengiriman.');
+                return;
+            }
+
             btn.disabled = true;
-            btn.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">sync</span> Memproses...';
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">sync</span> Memproses Pesanan...';
 
             const fd = new FormData();
             fd.append('action', 'create_order');
@@ -204,14 +301,15 @@
             fd.append('shipping_city', document.getElementById('ship_city').value);
             fd.append('shipping_province', document.getElementById('ship_province').value);
             fd.append('shipping_postal_code', document.getElementById('ship_postal').value);
+            fd.append('shipping_cost', shippingCost);
+            fd.append('expedition', selectedExpedition);
             fd.append('notes', document.getElementById('notes').value);
 
             try {
-                const res = await fetch('order_api.php', { method: 'POST', body: fd });
+                const res = await fetch('order_api.php?action=create_order', { method: 'POST', body: fd });
                 const data = await res.json();
                 
                 if(data.success) {
-                    // Clear session if from cart
                     if(isFromCart) sessionStorage.removeItem('checkout_items');
                     window.location.href = 'pembayaran.html?order_number=' + data.order_number;
                 } else {
@@ -254,7 +352,7 @@
             <div class="flex-1 space-y-6">
                 <!-- Alamat Pengiriman -->
                 <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h2 class="text-lg font-heading font-bold mb-4 flex items-center gap-2">
+                    <h2 class="text-lg font-heading font-bold mb-4 flex items-center gap-2 text-gray-900">
                         <span class="material-symbols-outlined text-primary">location_on</span>
                         Alamat Pengiriman
                     </h2>
@@ -269,37 +367,66 @@
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap</label>
-                            <textarea id="ship_address" rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none" placeholder="Nama Jalan, Gedung, RT/RW"></textarea>
+                            <textarea id="ship_address" rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none" placeholder="Nama Jalan, Gedung, RT/RW, Dusun/Desa"></textarea>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Provinsi</label>
-                            <select id="ship_province" onchange="updateShippingCost()" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none bg-white">
+                            <select id="ship_province" onchange="updateShippingOptions()" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none bg-white font-medium">
                                 <option value="">Pilih Provinsi...</option>
                                 <option value="Jawa Timur">Jawa Timur</option>
                                 <option value="Jawa Tengah">Jawa Tengah</option>
                                 <option value="Jawa Barat">Jawa Barat</option>
                                 <option value="DKI Jakarta">DKI Jakarta</option>
+                                <option value="Banten">Banten</option>
+                                <option value="DI Yogyakarta">DI Yogyakarta</option>
+                                <option value="Bali">Bali</option>
+                                <option value="Nusa Tenggara Barat">Nusa Tenggara Barat</option>
+                                <option value="Nusa Tenggara Timur">Nusa Tenggara Timur</option>
                                 <option value="Sumatera Utara">Sumatera Utara</option>
+                                <option value="Sumatera Barat">Sumatera Barat</option>
                                 <option value="Sumatera Selatan">Sumatera Selatan</option>
+                                <option value="Riau">Riau</option>
+                                <option value="Kepulauan Riau">Kepulauan Riau</option>
+                                <option value="Jambi">Jambi</option>
+                                <option value="Bengkulu">Bengkulu</option>
+                                <option value="Lampung">Lampung</option>
+                                <option value="Kepulauan Bangka Belitung">Kepulauan Bangka Belitung</option>
+                                <option value="Aceh">Aceh</option>
+                                <option value="Kalimantan Barat">Kalimantan Barat</option>
+                                <option value="Kalimantan Tengah">Kalimantan Tengah</option>
+                                <option value="Kalimantan Selatan">Kalimantan Selatan</option>
                                 <option value="Kalimantan Timur">Kalimantan Timur</option>
+                                <option value="Kalimantan Utara">Kalimantan Utara</option>
+                                <option value="Sulawesi Utara">Sulawesi Utara</option>
+                                <option value="Sulawesi Tengah">Sulawesi Tengah</option>
                                 <option value="Sulawesi Selatan">Sulawesi Selatan</option>
+                                <option value="Sulawesi Tenggara">Sulawesi Tenggara</option>
+                                <option value="Gorontalo">Gorontalo</option>
+                                <option value="Sulawesi Barat">Sulawesi Barat</option>
+                                <option value="Maluku">Maluku</option>
+                                <option value="Maluku Utara">Maluku Utara</option>
                                 <option value="Papua">Papua</option>
+                                <option value="Papua Barat">Papua Barat</option>
+                                <option value="Papua Selatan">Papua Selatan</option>
+                                <option value="Papua Tengah">Papua Tengah</option>
+                                <option value="Papua Pegunungan">Papua Pegunungan</option>
+                                <option value="Papua Barat Daya">Papua Barat Daya</option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Kota / Kabupaten</label>
-                            <input type="text" id="ship_city" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none">
+                            <input type="text" id="ship_city" onchange="updateShippingOptions()" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none" placeholder="Contoh: Malang / Surabaya">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Kode Pos</label>
-                            <input type="text" id="ship_postal" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none">
+                            <input type="text" id="ship_postal" onchange="updateShippingOptions()" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none" placeholder="Contoh: 65111">
                         </div>
                     </div>
                 </section>
 
                 <!-- Daftar Pesanan -->
                 <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h2 class="text-lg font-heading font-bold mb-4 flex items-center gap-2">
+                    <h2 class="text-lg font-heading font-bold mb-4 flex items-center gap-2 text-gray-900">
                         <span class="material-symbols-outlined text-primary">inventory_2</span>
                         Daftar Pesanan
                     </h2>
@@ -308,35 +435,44 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Catatan untuk Penjual (Opsional)</label>
-                        <input type="text" id="notes" placeholder="Tinggalkan pesan..." class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none">
+                        <input type="text" id="notes" placeholder="Tinggalkan pesan khusus..." class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none">
                     </div>
                 </section>
 
-                <!-- Pengiriman & Pembayaran -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <h2 class="text-lg font-heading font-bold mb-4 flex items-center gap-2">
+                <!-- Pilihan Ekspedisi Kargo -->
+                <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-heading font-bold flex items-center gap-2 text-gray-900">
                             <span class="material-symbols-outlined text-primary">local_shipping</span>
-                            Metode Pengiriman
+                            Pilihan Ekspedisi Kargo
                         </h2>
-                        <div class="border-2 border-primary rounded-xl p-4 bg-primary/5">
-                            <h3 class="font-bold text-gray-800">Indah Kargo Logistik</h3>
-                            <p class="text-sm text-gray-600 mt-1">Cargo Logistik Mesin Spesialis</p>
+                        <span class="text-xs text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs text-emerald-600">bolt</span> Otomatis Real-Time
+                        </span>
+                    </div>
+
+                    <div id="shipping-options-container">
+                        <!-- Shipping options rendered dynamically -->
+                    </div>
+                </section>
+
+                <!-- Metode Pembayaran -->
+                <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h2 class="text-lg font-heading font-bold mb-4 flex items-center gap-2 text-gray-900">
+                        <span class="material-symbols-outlined text-primary">payments</span>
+                        Metode Pembayaran
+                    </h2>
+                    <div class="border-2 border-primary rounded-xl p-4 bg-primary/5 flex items-center justify-between">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-gray-900 text-sm">Transfer Bank BCA</span>
+                                <span class="text-[10px] bg-primary text-white font-bold px-2 py-0.5 rounded">Manual</span>
+                            </div>
+                            <p class="text-xs text-gray-600 mt-1">No. Rek: <strong class="text-gray-900">6670747997</strong> • a/n Iman Anjani Buchory</p>
                         </div>
-                    </section>
-                    
-                    <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <h2 class="text-lg font-heading font-bold mb-4 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-primary">payments</span>
-                            Metode Pembayaran
-                        </h2>
-                        <div class="border-2 border-primary rounded-xl p-4 bg-primary/5">
-                            <h3 class="font-bold text-gray-800">Transfer Bank (Manual)</h3>
-                            <p class="text-sm text-gray-600 mt-1">Bank BCA - 6670747997</p>
-                            <p class="text-sm text-gray-600">a/n Iman Anjani Buchory</p>
-                        </div>
-                    </section>
-                </div>
+                        <span class="material-symbols-outlined text-primary text-2xl">check_circle</span>
+                    </div>
+                </section>
             </div>
 
             <!-- Right Column (Summary) -->
@@ -354,23 +490,23 @@
                             <span id="shipping-cost-display" class="font-medium text-gray-800">Rp 0</span>
                         </div>
                     </div>
-                    
+
                     <div class="flex justify-between items-center mb-6">
                         <span class="font-bold text-gray-800">Total Pembayaran</span>
                         <span id="grand-total-display" class="text-xl font-heading font-bold text-primary">Rp 0</span>
                     </div>
-                    
-                    <button id="btn-submit" onclick="placeOrder()" class="w-full bg-primary hover:bg-secondary text-white font-bold py-3 px-4 rounded-xl transition shadow-lg shadow-primary/30 flex items-center justify-center">
+
+                    <button id="btn-submit" onclick="placeOrder()" class="w-full bg-primary hover:bg-secondary text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg shadow-primary/30 transition-all flex items-center justify-center">
                         Buat Pesanan
                     </button>
 
-                    <div class="mt-6 space-y-3">
-                        <div class="flex items-center gap-3 text-sm text-gray-600">
-                            <span class="material-symbols-outlined text-green-500">verified_user</span>
+                    <div class="mt-4 space-y-2 text-xs text-gray-500">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-emerald-500 text-sm">verified_user</span>
                             <span>Transaksi Aman & Terpercaya</span>
                         </div>
-                        <div class="flex items-center gap-3 text-sm text-gray-600">
-                            <span class="material-symbols-outlined text-blue-500">workspace_premium</span>
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-emerald-500 text-sm">shield</span>
                             <span>Garansi Resmi 100%</span>
                         </div>
                     </div>
@@ -378,5 +514,6 @@
             </div>
         </div>
     </main>
+
 </body>
 </html>

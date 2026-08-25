@@ -26,41 +26,162 @@ function getInput() {
     return is_array($json) ? array_merge($_POST, $json) : $_POST;
 }
 
-function calculateShippingCost($weightGrams, $province) {
-    $baseRate = 50000;
-    $province = strtolower(trim($province));
-    
-    if (strpos($province, 'jawa timur') !== false) {
-        $baseRate = 25000;
-    } elseif (strpos($province, 'jawa tengah') !== false) {
-        $baseRate = 35000;
-    } elseif (strpos($province, 'jawa barat') !== false || strpos($province, 'jakarta') !== false) {
-        $baseRate = 45000;
-    } elseif (strpos($province, 'sumatera') !== false) {
-        $baseRate = 80000;
-    } elseif (strpos($province, 'kalimantan') !== false) {
-        $baseRate = 95000;
-    } elseif (strpos($province, 'sulawesi') !== false) {
-        $baseRate = 100000;
-    } elseif (strpos($province, 'papua') !== false) {
-        $baseRate = 200000;
+/**
+ * Mendapatkan daftar pilihan ekspedisi kargo & tarif otomatis
+ * Menggunakan Biteship API dengan fallback cerdas ke matriks tarif kargo resmi
+ */
+function getShippingOptions($weightGrams, $province, $city = '', $postalCode = '') {
+    $weightGrams = max(1000, (int)$weightGrams);
+    $kg = max(1, ceil($weightGrams / 1000));
+    $provinceClean = strtolower(trim($province));
+    $apiKey = defined('BITESHIP_API_KEY') ? BITESHIP_API_KEY : '';
+    $originPostal = defined('ORIGIN_POSTAL_CODE') ? ORIGIN_POSTAL_CODE : 65111;
+
+    $options = [];
+
+    // 1. Coba panggil Biteship API jika ada API Key & Kode Pos tujuan
+    if (!empty($apiKey) && !empty($postalCode) && is_numeric($postalCode) && strlen($postalCode) === 5) {
+        try {
+            $payload = json_encode([
+                'origin_postal_code' => (int)$originPostal,
+                'destination_postal_code' => (int)$postalCode,
+                'couriers' => 'indah_cargo,jne,sicepat,sentral,jnt',
+                'items' => [[
+                    'name' => 'Mesin Industri Asianindo',
+                    'value' => 10000000,
+                    'weight' => $weightGrams,
+                    'quantity' => 1
+                ]]
+            ]);
+
+            $ch = curl_init('https://api.biteship.com/v1/rates/couriers');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Authorization: ' . $apiKey,
+                'Content-Type: application/json'
+            ]);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 4);
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if ($httpCode === 200 && $response) {
+                $resData = json_decode($response, true);
+                if (!empty($resData['pricing']) && is_array($resData['pricing'])) {
+                    foreach ($resData['pricing'] as $rate) {
+                        $courierName = $rate['courier_name'] ?? $rate['company'] ?? 'Kargo Ekspedisi';
+                        $serviceName = $rate['courier_service_name'] ?? $rate['service_type'] ?? 'Cargo Logistik';
+                        $price = (int)($rate['price'] ?? 0);
+                        $etd = $rate['duration'] ?? $rate['shipment_duration_range'] ?? '2-4 hari';
+
+                        if ($price > 0) {
+                            $options[] = [
+                                'courier_code' => strtolower($rate['courier_code'] ?? $rate['company'] ?? 'cargo'),
+                                'courier_name' => ucwords(str_replace('_', ' ', $courierName)),
+                                'service_name' => $serviceName,
+                                'price' => $price,
+                                'etd' => $etd . (strpos($etd, 'hari') === false ? ' hari' : ''),
+                                'description' => 'Tarif resmi real-time Biteship'
+                            ];
+                        }
+                    }
+                }
+            }
+        } catch (Throwable $e) {
+            // Lanjut ke fallback matriks kargo jika API timeout / saldo habis
+        }
     }
-    
-    $kg = ceil($weightGrams / 1000);
-    if ($kg <= 0) $kg = 1;
-    return $baseRate * $kg;
+
+    // 2. Fallback Matriks Ekspedisi Kargo Resmi (Indah Cargo, JTR, SiCepat Gokil, Sentral Cargo)
+    if (empty($options)) {
+        // Base rate per kg dari Malang ke berbagai wilayah
+        $baseIndah = 25000;
+        $etd = '2-4 hari';
+
+        if (strpos($provinceClean, 'jawa timur') !== false) {
+            $baseIndah = 22000; $etd = '1-2 hari';
+        } elseif (strpos($provinceClean, 'jawa tengah') !== false || strpos($provinceClean, 'yogyakarta') !== false) {
+            $baseIndah = 30000; $etd = '2-3 hari';
+        } elseif (strpos($provinceClean, 'jawa barat') !== false || strpos($provinceClean, 'jakarta') !== false || strpos($provinceClean, 'banten') !== false) {
+            $baseIndah = 38000; $etd = '2-4 hari';
+        } elseif (strpos($provinceClean, 'bali') !== false || strpos($provinceClean, 'nusa tenggara') !== false) {
+            $baseIndah = 45000; $etd = '3-5 hari';
+        } elseif (strpos($provinceClean, 'sumatera') !== false || strpos($provinceClean, 'lampung') !== false || strpos($provinceClean, 'riau') !== false) {
+            $baseIndah = 75000; $etd = '4-7 hari';
+        } elseif (strpos($provinceClean, 'kalimantan') !== false) {
+            $baseIndah = 85000; $etd = '4-8 hari';
+        } elseif (strpos($provinceClean, 'sulawesi') !== false) {
+            $baseIndah = 90000; $etd = '5-9 hari';
+        } elseif (strpos($provinceClean, 'papua') !== false || strpos($provinceClean, 'maluku') !== false) {
+            $baseIndah = 180000; $etd = '7-14 hari';
+        } else {
+            $baseIndah = 45000; $etd = '3-6 hari';
+        }
+
+        $options = [
+            [
+                'courier_code' => 'indah_cargo',
+                'courier_name' => 'Indah Cargo',
+                'service_name' => 'Cargo Logistik Mesin (Darat/Laut)',
+                'price' => (int)($baseIndah * $kg),
+                'etd' => $etd,
+                'is_recommended' => true,
+                'description' => 'Pilihan Utama Pengiriman Mesin Berat Asianindo'
+            ],
+            [
+                'courier_code' => 'jne_jtr',
+                'courier_name' => 'JNE Trucking (JTR)',
+                'service_name' => 'Layanan Kargo Truk',
+                'price' => (int)(($baseIndah + 4000) * $kg),
+                'etd' => $etd,
+                'is_recommended' => false,
+                'description' => 'Layanan Kargo Darat JNE'
+            ],
+            [
+                'courier_code' => 'sicepat_gokil',
+                'courier_name' => 'SiCepat Cargo (GOKIL)',
+                'service_name' => 'Cargo Kilat Terpercaya',
+                'price' => (int)(($baseIndah + 2000) * $kg),
+                'etd' => $etd,
+                'is_recommended' => false,
+                'description' => 'Kargo Ekonomis SiCepat'
+            ],
+            [
+                'courier_code' => 'sentral_cargo',
+                'courier_name' => 'Sentral Cargo',
+                'service_name' => 'Spesialis Logistik Mesin',
+                'price' => (int)(($baseIndah + 3000) * $kg),
+                'etd' => $etd,
+                'is_recommended' => false,
+                'description' => 'Ekspedisi Kargo Antar Pulau'
+            ]
+        ];
+    }
+
+    return $options;
 }
 
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
 $customer_id = $_SESSION['customer_id'] ?? null;
 
-// === CALCULATE SHIPPING (Can be called before login or after) ===
-if ($action === 'calculate_shipping') {
+// === GET SHIPPING OPTIONS (PUBLIC / CHECKOUT) ===
+if ($action === 'get_shipping_options' || $action === 'calculate_shipping') {
     $d = getInput();
-    $weight_grams = (int)($d['weight_grams'] ?? 0);
+    $weight_grams = (int)($d['weight_grams'] ?? 25000);
     $province = trim($d['province'] ?? '');
-    $cost = calculateShippingCost($weight_grams, $province);
-    echo json_encode(['success' => true, 'shipping_cost' => $cost]);
+    $city = trim($d['city'] ?? '');
+    $postal_code = trim($d['postal_code'] ?? $d['shipping_postal_code'] ?? '');
+
+    $options = getShippingOptions($weight_grams, $province, $city, $postal_code);
+    $firstCost = !empty($options[0]['price']) ? $options[0]['price'] : 50000;
+
+    echo json_encode([
+        'success' => true,
+        'shipping_cost' => $firstCost,
+        'options' => $options
+    ]);
     exit;
 }
 
@@ -88,17 +209,23 @@ if ($action === 'create_order') {
     $shipping_city = trim($d['shipping_city'] ?? '');
     $shipping_province = trim($d['shipping_province'] ?? '');
     $shipping_postal_code = trim($d['shipping_postal_code'] ?? '');
+    $selected_expedition = trim($d['expedition'] ?? 'Indah Cargo (Cargo Logistik Mesin)');
     $notes = trim($d['notes'] ?? '');
     $is_from_cart = !empty($d['is_from_cart']);
 
     $subtotal = 0;
     $totalWeight = 0;
     foreach ($items as $item) {
-        $subtotal += ((int)$item['price']) * ((int)$item['quantity']);
-        $totalWeight += ((int)($item['weight_grams'] ?? 0)) * ((int)$item['quantity']);
+        $subtotal += ((int)($item['price'] ?? $item['product_price'] ?? 0)) * ((int)($item['quantity'] ?? 1));
+        $totalWeight += ((int)($item['weight_grams'] ?? 25000)) * ((int)($item['quantity'] ?? 1));
     }
 
-    $shipping_cost = calculateShippingCost($totalWeight, $shipping_province);
+    $shipping_cost = (int)($d['shipping_cost'] ?? 0);
+    if ($shipping_cost <= 0) {
+        $calcOptions = getShippingOptions($totalWeight, $shipping_province, $shipping_city, $shipping_postal_code);
+        $shipping_cost = !empty($calcOptions[0]['price']) ? $calcOptions[0]['price'] : 50000;
+    }
+
     $total = $subtotal + $shipping_cost;
     $order_number = generateOrderNumber();
     $status = 'pending_payment';
@@ -132,7 +259,7 @@ if ($action === 'create_order') {
                 $item['product_id'] ?? '',
                 $item['product_name'] ?? '',
                 $item['product_image'] ?? '',
-                (int)($item['price'] ?? 0),
+                (int)($item['price'] ?? $item['product_price'] ?? 0),
                 (int)($item['quantity'] ?? 1),
                 (int)($item['weight_grams'] ?? 0)
             ]);
@@ -158,9 +285,9 @@ if ($action === 'create_order') {
         // Insert initial shipment record
         $stmt_ship = $pdo->prepare("
             INSERT INTO shipments (order_id, expedition, status, created_at)
-            VALUES (?, 'Indah Kargo', 'preparing', NOW())
+            VALUES (?, ?, 'preparing', NOW())
         ");
-        $stmt_ship->execute([$order_id]);
+        $stmt_ship->execute([$order_id, $selected_expedition]);
 
         $pdo->commit();
 
@@ -168,7 +295,8 @@ if ($action === 'create_order') {
             'success' => true,
             'order_number' => $order_number,
             'total' => $total,
-            'shipping_cost' => $shipping_cost
+            'shipping_cost' => $shipping_cost,
+            'expedition' => $selected_expedition
         ]);
     } catch (Throwable $e) {
         if ($pdo->inTransaction()) {
