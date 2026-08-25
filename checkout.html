@@ -24,7 +24,7 @@
         }
 
         function formatRupiah(number) {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number || 0);
         }
 
         let checkoutItems = [];
@@ -32,8 +32,11 @@
         let subtotal = 0;
         let totalWeight = 0;
         let shippingCost = 0;
+        let grandTotal = 0;
         let shippingOptions = [];
         let selectedExpedition = 'Indah Cargo (Cargo Logistik Mesin)';
+        let selectedPaymentScheme = 'dp_50'; // 'dp_50' | 'dp_3_stage' | 'full'
+        let currentBillAmount = 0;
 
         async function initCheckout() {
             // Check auth
@@ -264,10 +267,84 @@
             updateGrandTotal();
         }
 
+        function selectPaymentScheme(scheme) {
+            selectedPaymentScheme = scheme;
+
+            ['dp_50', 'dp_3_stage', 'full'].forEach(s => {
+                const card = document.getElementById(`scheme-card-${s}`);
+                const radio = document.getElementById(`scheme-radio-${s}`);
+                if (card) {
+                    if (s === scheme) {
+                        card.classList.remove('border-gray-200', 'hover:border-gray-300', 'bg-white');
+                        card.classList.add('border-primary', 'bg-primary/5', 'shadow-md');
+                        if (radio) radio.checked = true;
+                    } else {
+                        card.classList.remove('border-primary', 'bg-primary/5', 'shadow-md');
+                        card.classList.add('border-gray-200', 'hover:border-gray-300', 'bg-white');
+                        if (radio) radio.checked = false;
+                    }
+                }
+            });
+
+            updateGrandTotal();
+        }
+
         function updateGrandTotal() {
-            const total = subtotal + (shippingCost || 0);
+            grandTotal = subtotal + (shippingCost || 0);
+            
+            // Recalculate scheme amounts in real-time
+            const dp50_1 = Math.round(grandTotal * 0.5);
+            const dp50_2 = grandTotal - dp50_1;
+
+            const dp3_1 = Math.round(grandTotal * 0.3);
+            const dp3_2 = Math.round(grandTotal * 0.4);
+            const dp3_3 = grandTotal - dp3_1 - dp3_2;
+
+            // Update display in Payment Scheme cards
+            const elDp50_1 = document.getElementById('nominal-dp50-1');
+            const elDp50_2 = document.getElementById('nominal-dp50-2');
+            if (elDp50_1) elDp50_1.textContent = formatRupiah(dp50_1);
+            if (elDp50_2) elDp50_2.textContent = formatRupiah(dp50_2);
+
+            const elDp3_1 = document.getElementById('nominal-dp3-1');
+            const elDp3_2 = document.getElementById('nominal-dp3-2');
+            const elDp3_3 = document.getElementById('nominal-dp3-3');
+            if (elDp3_1) elDp3_1.textContent = formatRupiah(dp3_1);
+            if (elDp3_2) elDp3_2.textContent = formatRupiah(dp3_2);
+            if (elDp3_3) elDp3_3.textContent = formatRupiah(dp3_3);
+
+            const elFull = document.getElementById('nominal-full');
+            if (elFull) elFull.textContent = formatRupiah(grandTotal);
+
+            // Determine bill amount based on active scheme
+            let schemeLabel = 'DP 50% & Pelunasan 50%';
+            let billLabel = 'Tagihan Transfer DP Awal (50%)';
+
+            if (selectedPaymentScheme === 'dp_50') {
+                currentBillAmount = dp50_1;
+                schemeLabel = 'DP 50% & Pelunasan 50%';
+                billLabel = 'Tagihan Transfer DP Awal (50%)';
+            } else if (selectedPaymentScheme === 'dp_3_stage') {
+                currentBillAmount = dp3_1;
+                schemeLabel = '3 Tahap (30% - 40% - 30%)';
+                billLabel = 'Tagihan Transfer DP 1 (30%)';
+            } else {
+                currentBillAmount = grandTotal;
+                schemeLabel = 'Pembayaran Penuh 100%';
+                billLabel = 'Total Tagihan Transfer (100%)';
+            }
+
             const grandTotalEl = document.getElementById('grand-total-display');
-            if(grandTotalEl) grandTotalEl.textContent = formatRupiah(total);
+            if(grandTotalEl) grandTotalEl.textContent = formatRupiah(grandTotal);
+
+            const billAmountEl = document.getElementById('current-bill-display');
+            if(billAmountEl) billAmountEl.textContent = formatRupiah(currentBillAmount);
+
+            const billLabelEl = document.getElementById('bill-label-display');
+            if(billLabelEl) billLabelEl.textContent = billLabel;
+
+            const schemeSummaryEl = document.getElementById('selected-scheme-display');
+            if(schemeSummaryEl) schemeSummaryEl.textContent = schemeLabel;
         }
 
         async function placeOrder() {
@@ -303,6 +380,7 @@
             fd.append('shipping_postal_code', document.getElementById('ship_postal').value);
             fd.append('shipping_cost', shippingCost);
             fd.append('expedition', selectedExpedition);
+            fd.append('payment_scheme', selectedPaymentScheme);
             fd.append('notes', document.getElementById('notes').value);
 
             try {
@@ -456,31 +534,129 @@
                     </div>
                 </section>
 
-                <!-- Metode Pembayaran -->
+                <!-- Pilihan Skema Pembayaran (Termin Fabrikasi Mesin) -->
                 <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h2 class="text-lg font-heading font-bold mb-4 flex items-center gap-2 text-gray-900">
-                        <span class="material-symbols-outlined text-primary">payments</span>
-                        Metode Pembayaran
-                    </h2>
-                    <div class="border-2 border-primary rounded-xl p-4 bg-primary/5 flex items-center justify-between">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-heading font-bold flex items-center gap-2 text-gray-900">
+                            <span class="material-symbols-outlined text-primary">payments</span>
+                            Pilihan Skema Pembayaran
+                        </h2>
+                        <span class="text-xs text-primary font-semibold bg-primary/10 px-2.5 py-1 rounded-full">
+                            Fleksibel Sesuai Progres
+                        </span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Opsi 1: DP 50% & Pelunasan 50% -->
+                        <div id="scheme-card-dp_50" onclick="selectPaymentScheme('dp_50')" class="border-2 border-primary bg-primary/5 shadow-md p-4 rounded-xl cursor-pointer transition-all">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" id="scheme-radio-dp_50" name="payment_scheme_choice" value="dp_50" checked class="w-4 h-4 text-primary focus:ring-primary mt-0.5">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-bold text-gray-900 text-sm md:text-base">DP 50% dan Pelunasan 50%</span>
+                                            <span class="text-[10px] uppercase font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">Populer</span>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-0.5">Pembayaran bertahap dalam 2 kali termin</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tahapan DP 50% -->
+                            <div class="mt-3 pt-3 border-t border-purple-200/60 grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+                                <div class="bg-white/80 p-2.5 rounded-lg border border-purple-100">
+                                    <div class="flex justify-between items-center font-semibold text-gray-800">
+                                        <span>• DP Awal (50%)</span>
+                                        <span id="nominal-dp50-1" class="text-primary font-bold">Rp 0</span>
+                                    </div>
+                                    <p class="text-[11px] text-gray-500 mt-1">Pembayaran awal untuk mulai proses fabrikasi mesin.</p>
+                                </div>
+                                <div class="bg-white/80 p-2.5 rounded-lg border border-purple-100">
+                                    <div class="flex justify-between items-center font-semibold text-gray-800">
+                                        <span>• Pelunasan (50%)</span>
+                                        <span id="nominal-dp50-2" class="text-gray-700 font-bold">Rp 0</span>
+                                    </div>
+                                    <p class="text-[11px] text-gray-500 mt-1">Dibayarkan setelah mesin selesai & siap untuk dikirim.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Opsi 2: 3 Tahap Pembayaran -->
+                        <div id="scheme-card-dp_3_stage" onclick="selectPaymentScheme('dp_3_stage')" class="border-2 border-gray-200 hover:border-gray-300 bg-white p-4 rounded-xl cursor-pointer transition-all">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" id="scheme-radio-dp_3_stage" name="payment_scheme_choice" value="dp_3_stage" class="w-4 h-4 text-primary focus:ring-primary mt-0.5">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-bold text-gray-900 text-sm md:text-base">3 Tahap Pembayaran (30% - 40% - 30%)</span>
+                                            <span class="text-[10px] uppercase font-bold bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">Sesuai Progres</span>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-0.5">Pembayaran ringan mengikuti tahapan pengerjaan mesin</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tahapan 3 Stage -->
+                            <div class="mt-3 pt-3 border-t border-gray-100 space-y-2 text-xs">
+                                <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200/60">
+                                    <div class="flex justify-between items-center font-semibold text-gray-800">
+                                        <span>• DP 1 – 30% (Awal)</span>
+                                        <span id="nominal-dp3-1" class="text-primary font-bold">Rp 0</span>
+                                    </div>
+                                    <p class="text-[11px] text-gray-500 mt-1">Pembayaran awal untuk kami mulai proses pengerjaan/fabrikasi mesin.</p>
+                                </div>
+                                <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200/60">
+                                    <div class="flex justify-between items-center font-semibold text-gray-800">
+                                        <span>• DP 2 – 40% (Progres 50%)</span>
+                                        <span id="nominal-dp3-2" class="text-gray-700 font-bold">Rp 0</span>
+                                    </div>
+                                    <p class="text-[11px] text-gray-500 mt-1">Dibayarkan setelah progres pengerjaan mesin mencapai sekitar 50% / setengah jadi.</p>
+                                </div>
+                                <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200/60">
+                                    <div class="flex justify-between items-center font-semibold text-gray-800">
+                                        <span>• Pelunasan – 30% (Selesai)</span>
+                                        <span id="nominal-dp3-3" class="text-gray-700 font-bold">Rp 0</span>
+                                    </div>
+                                    <p class="text-[11px] text-gray-500 mt-1">Dibayarkan setelah mesin selesai dan siap untuk dikirim.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Opsi 3: Pembayaran Penuh 100% -->
+                        <div id="scheme-card-full" onclick="selectPaymentScheme('full')" class="border-2 border-gray-200 hover:border-gray-300 bg-white p-4 rounded-xl cursor-pointer transition-all">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" id="scheme-radio-full" name="payment_scheme_choice" value="full" class="w-4 h-4 text-primary focus:ring-primary">
+                                    <div>
+                                        <span class="font-bold text-gray-900 text-sm md:text-base">Pembayaran Penuh 100% (Lunas di Awal)</span>
+                                        <p class="text-xs text-gray-500 mt-0.5">Langsung melunasi seluruh biaya pesanan dan ongkir</p>
+                                    </div>
+                                </div>
+                                <span id="nominal-full" class="font-bold text-primary text-sm">Rp 0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Info Bank Transfer -->
+                    <div class="mt-5 p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                         <div>
                             <div class="flex items-center gap-2">
                                 <span class="font-bold text-gray-900 text-sm">Transfer Bank BCA</span>
-                                <span class="text-[10px] bg-primary text-white font-bold px-2 py-0.5 rounded">Manual</span>
+                                <span class="text-[10px] bg-primary text-white font-bold px-2 py-0.5 rounded">Rekening Resmi</span>
                             </div>
                             <p class="text-xs text-gray-600 mt-1">No. Rek: <strong class="text-gray-900">6670747997</strong> • a/n Iman Anjani Buchory</p>
                         </div>
-                        <span class="material-symbols-outlined text-primary text-2xl">check_circle</span>
+                        <span class="material-symbols-outlined text-primary text-2xl">account_balance</span>
                     </div>
                 </section>
             </div>
 
             <!-- Right Column (Summary) -->
-            <div class="w-full lg:w-[350px]">
+            <div class="w-full lg:w-[360px]">
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 lg:sticky lg:top-24">
                     <h2 class="text-lg font-heading font-bold mb-4">Ringkasan Belanja</h2>
                     
-                    <div class="space-y-3 mb-6 pb-6 border-b border-gray-100 text-sm">
+                    <div class="space-y-3 mb-5 pb-5 border-b border-gray-100 text-sm">
                         <div class="flex justify-between text-gray-600">
                             <span>Subtotal Produk</span>
                             <span id="subtotal-display" class="font-medium text-gray-800">Rp 0</span>
@@ -489,11 +665,22 @@
                             <span>Total Ongkos Kirim</span>
                             <span id="shipping-cost-display" class="font-medium text-gray-800">Rp 0</span>
                         </div>
+                        <div class="flex justify-between text-gray-600 pt-2 border-t border-dashed">
+                            <span>Total Nilai Pesanan</span>
+                            <span id="grand-total-display" class="font-bold text-gray-900">Rp 0</span>
+                        </div>
                     </div>
 
-                    <div class="flex justify-between items-center mb-6">
-                        <span class="font-bold text-gray-800">Total Pembayaran</span>
-                        <span id="grand-total-display" class="text-xl font-heading font-bold text-primary">Rp 0</span>
+                    <!-- Skema Terpilih & Nominal Transfer Saat Ini -->
+                    <div class="bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20 rounded-xl p-4 mb-6">
+                        <div class="flex items-center justify-between text-xs text-gray-600 mb-1">
+                            <span>Skema Pembayaran:</span>
+                            <strong id="selected-scheme-display" class="text-primary font-bold text-right">DP 50%</strong>
+                        </div>
+                        <div class="mt-2 pt-2 border-t border-primary/20">
+                            <span id="bill-label-display" class="text-xs text-gray-600 font-medium block">Tagihan Transfer Sekarang (DP):</span>
+                            <span id="current-bill-display" class="text-2xl font-heading font-bold text-primary block mt-1">Rp 0</span>
+                        </div>
                     </div>
 
                     <button id="btn-submit" onclick="placeOrder()" class="w-full bg-primary hover:bg-secondary text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg shadow-primary/30 transition-all flex items-center justify-center">
@@ -503,11 +690,11 @@
                     <div class="mt-4 space-y-2 text-xs text-gray-500">
                         <div class="flex items-center gap-2">
                             <span class="material-symbols-outlined text-emerald-500 text-sm">verified_user</span>
-                            <span>Transaksi Aman & Terpercaya</span>
+                            <span>Transaksi Aman & Terverifikasi</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="material-symbols-outlined text-emerald-500 text-sm">shield</span>
-                            <span>Garansi Resmi 100%</span>
+                            <span>Garansi Resmi CV Asianindo</span>
                         </div>
                     </div>
                 </div>

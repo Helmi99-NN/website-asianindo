@@ -227,8 +227,26 @@ if ($action === 'create_order') {
     }
 
     $total = $subtotal + $shipping_cost;
-    $order_number = generateOrderNumber();
-    $status = 'pending_payment';
+    $payment_scheme = trim($d['payment_scheme'] ?? 'dp_50');
+    $initial_amount = $total;
+    $scheme_text = '';
+
+    if ($payment_scheme === 'dp_50') {
+        $dp1 = (int)round($total * 0.5);
+        $dp2 = $total - $dp1;
+        $initial_amount = $dp1;
+        $scheme_text = "Skema Pembayaran: DP 50% + Pelunasan 50%\n• DP Awal (50%): Rp " . number_format($dp1, 0, ',', '.') . " (Mulai Fabrikasi)\n• Pelunasan (50%): Rp " . number_format($dp2, 0, ',', '.') . " (Saat Siap Kirim)";
+    } elseif ($payment_scheme === 'dp_3_stage') {
+        $dp1 = (int)round($total * 0.3);
+        $dp2 = (int)round($total * 0.4);
+        $dp3 = $total - $dp1 - $dp2;
+        $initial_amount = $dp1;
+        $scheme_text = "Skema Pembayaran: 3 Tahap (30% - 40% - 30%)\n• DP 1 (30%): Rp " . number_format($dp1, 0, ',', '.') . " (Mulai Fabrikasi)\n• DP 2 (40%): Rp " . number_format($dp2, 0, ',', '.') . " (Progres ~50%)\n• Pelunasan (30%): Rp " . number_format($dp3, 0, ',', '.') . " (Saat Siap Kirim)";
+    } else {
+        $scheme_text = "Skema Pembayaran: Penuh 100% Lunas (Rp " . number_format($total, 0, ',', '.') . ")";
+    }
+
+    $final_notes = trim($scheme_text . ($notes ? "\n\nCatatan Khusus:\n" . $notes : ''));
 
     try {
         $pdo->beginTransaction();
@@ -242,7 +260,7 @@ if ($action === 'create_order') {
         ");
         $stmt->execute([
             $order_number, $customer_id, $shipping_name, $shipping_phone, $shipping_address,
-            $shipping_city, $shipping_province, $shipping_postal_code, $notes, $subtotal,
+            $shipping_city, $shipping_province, $shipping_postal_code, $final_notes, $subtotal,
             $shipping_cost, $total, $status
         ]);
         $order_id = (int)$pdo->lastInsertId();
@@ -269,7 +287,7 @@ if ($action === 'create_order') {
             }
         }
 
-        // Insert initial payment record
+        // Insert initial payment record with initial DP / bill amount
         $stmt_pay = $pdo->prepare("
             INSERT INTO payments (order_id, bank_name, account_number, account_name, amount, status, created_at)
             VALUES (?, ?, ?, ?, ?, 'pending', NOW())
@@ -279,7 +297,7 @@ if ($action === 'create_order') {
             defined('COMPANY_BANK_NAME') ? COMPANY_BANK_NAME : 'Bank BCA',
             defined('COMPANY_BANK_ACCOUNT') ? COMPANY_BANK_ACCOUNT : '6670747997',
             defined('COMPANY_BANK_HOLDER') ? COMPANY_BANK_HOLDER : 'Iman Anjani Buchory',
-            $total
+            $initial_amount
         ]);
 
         // Insert initial shipment record
@@ -295,6 +313,8 @@ if ($action === 'create_order') {
             'success' => true,
             'order_number' => $order_number,
             'total' => $total,
+            'initial_amount' => $initial_amount,
+            'payment_scheme' => $payment_scheme,
             'shipping_cost' => $shipping_cost,
             'expedition' => $selected_expedition
         ]);

@@ -64,7 +64,7 @@
                 <div class="space-y-4">
                     <div class="flex justify-between items-center">
                         <div>
-                            <span class="text-sm text-gray-500 block">Nomor Rekening</span>
+                            <span class="text-sm text-gray-500 block">Nomor Rekening Tujuan</span>
                             <strong class="text-xl text-gray-800" id="bank_account">6670747997</strong>
                         </div>
                         <button onclick="copyText('bank_account')" class="bg-white text-blue-600 border border-blue-200 flex items-center text-sm px-3 py-1.5 rounded hover:bg-blue-100 transition">
@@ -73,20 +73,30 @@
                     </div>
                     
                     <div>
-                        <span class="text-sm text-gray-500 block">Atas Nama</span>
+                        <span class="text-sm text-gray-500 block">Atas Nama Penerima</span>
                         <strong class="text-gray-800" id="bank_name">Iman Anjani Buchory</strong>
                     </div>
 
                     <div class="flex justify-between items-center border-t border-blue-200 pt-4 mt-2">
                         <div>
-                            <span class="text-sm text-gray-500 block">Total Pembayaran</span>
-                            <strong class="text-2xl text-[#330e7a]" id="total_amount">Rp 0</strong>
+                            <span class="text-xs text-gray-500 block font-semibold uppercase tracking-wider text-purple-900" id="bill_label">Tagihan Transfer Saat Ini</span>
+                            <strong class="text-3xl text-[#330e7a]" id="total_amount">Rp 0</strong>
+                            <span class="text-xs text-gray-500 block mt-1" id="order_total_info">Total Nilai Pesanan: Rp 0</span>
                         </div>
-                        <button onclick="copyText('total_amount')" class="bg-white text-blue-600 border border-blue-200 flex items-center text-sm px-3 py-1.5 rounded hover:bg-blue-100 transition">
-                            <span class="material-symbols-outlined mr-1 text-sm">content_copy</span> Salin
+                        <button onclick="copyText('total_amount')" class="bg-white text-blue-600 border border-blue-200 flex items-center text-sm px-3 py-1.5 rounded hover:bg-blue-100 transition font-bold shadow-sm">
+                            <span class="material-symbols-outlined mr-1 text-sm">content_copy</span> Salin Jumlah
                         </button>
                     </div>
                 </div>
+            </div>
+
+            <!-- Catatan Skema Termin / Tahap Pembayaran -->
+            <div id="scheme_notes_container" class="hidden mb-6 p-4 rounded-lg bg-purple-50 border border-purple-200">
+                <h4 class="text-sm font-bold text-primary flex items-center gap-1.5 mb-2">
+                    <span class="material-symbols-outlined text-base">checklist</span>
+                    Rincian Tahapan Pembayaran:
+                </h4>
+                <pre id="scheme_notes_text" class="text-xs text-gray-700 whitespace-pre-wrap font-sans leading-relaxed"></pre>
             </div>
 
             <div class="text-sm text-gray-600 space-y-2">
@@ -97,7 +107,7 @@
                         <li>Buka aplikasi BCA mobile, pilih m-BCA</li>
                         <li>Pilih menu <strong>m-Transfer</strong> > <strong>Antar Rekening</strong></li>
                         <li>Masukkan nomor rekening <strong>6670747997</strong></li>
-                        <li>Masukkan jumlah <strong>Total Pembayaran</strong></li>
+                        <li>Masukkan jumlah <strong>Tagihan Transfer Saat Ini</strong></li>
                         <li>Pastikan nama penerima <strong>Iman Anjani Buchory</strong></li>
                         <li>Masukkan PIN m-BCA</li>
                     </ol>
@@ -108,7 +118,7 @@
                         <li>Masukkan Kartu ATM BCA dan PIN</li>
                         <li>Pilih <strong>Transaksi Lainnya</strong> > <strong>Transfer</strong> > <strong>Ke Rek BCA</strong></li>
                         <li>Masukkan nomor rekening <strong>6670747997</strong></li>
-                        <li>Masukkan jumlah <strong>Total Pembayaran</strong></li>
+                        <li>Masukkan jumlah <strong>Tagihan Transfer Saat Ini</strong></li>
                         <li>Konfirmasi nama penerima <strong>Iman Anjani Buchory</strong></li>
                     </ol>
                 </details>
@@ -211,10 +221,30 @@
             .then(data => {
                 if (data.success) {
                     const order = data.order;
-                    document.getElementById('total_amount').innerText = formatRupiah(order.total_amount, 'Rp');
+                    const billAmt = order.bill_amount || order.total_amount;
+                    document.getElementById('total_amount').innerText = formatRupiah(billAmt, 'Rp');
+                    
+                    const orderTotalEl = document.getElementById('order_total_info');
+                    if (orderTotalEl) {
+                        if (billAmt < order.total_amount) {
+                            orderTotalEl.innerText = `Total Nilai Pesanan: ${formatRupiah(order.total_amount, 'Rp')}`;
+                            orderTotalEl.classList.remove('hidden');
+                        } else {
+                            orderTotalEl.classList.add('hidden');
+                        }
+                    }
+
+                    if (order.notes && order.notes.includes('Skema Pembayaran:')) {
+                        const schemeCont = document.getElementById('scheme_notes_container');
+                        const schemeText = document.getElementById('scheme_notes_text');
+                        if (schemeCont && schemeText) {
+                            schemeCont.classList.remove('hidden');
+                            schemeText.innerText = order.notes;
+                        }
+                    }
                     
                     // Pre-fill WA
-                    const waText = encodeURIComponent(`Halo CV Asianindo, saya sudah transfer untuk pesanan ${orderNumber}`);
+                    const waText = encodeURIComponent(`Halo CV Asianindo, saya sudah transfer untuk pesanan ${orderNumber} (Jumlah: ${formatRupiah(billAmt, 'Rp')})`);
                     document.getElementById('btn_wa').href = `https://wa.me/6285335850517?text=${waText}`;
 
                     // Handle Uploaded state

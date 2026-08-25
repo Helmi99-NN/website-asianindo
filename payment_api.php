@@ -122,8 +122,8 @@ if ($action === 'get_payment_info') {
 
     try {
         $stmt = $pdo->prepare("
-            SELECT o.id, o.order_number, o.status as order_status, o.total as total_amount, o.created_at,
-                   p.status as payment_status, p.proof_image, p.bank_name, p.account_number, p.account_name
+            SELECT o.id, o.order_number, o.status as order_status, o.total as total_amount, o.notes, o.created_at,
+                   p.amount as bill_amount, p.status as payment_status, p.proof_image, p.bank_name, p.account_number, p.account_name
             FROM orders o
             LEFT JOIN payments p ON o.id = p.order_id
             WHERE o.order_number = ?
@@ -140,12 +140,16 @@ if ($action === 'get_payment_info') {
                 'whatsapp' => defined('COMPANY_WA_NUMBER') ? COMPANY_WA_NUMBER : '6285335850517'
             ];
 
+            $billAmount = !empty($data['bill_amount']) ? (int)$data['bill_amount'] : (int)$data['total_amount'];
+
             echo json_encode([
                 'success' => true,
                 'order' => [
                     'order_number' => $order_number,
                     'total_amount' => (int)$data['total_amount'],
+                    'bill_amount' => $billAmount,
                     'order_status' => $data['order_status'],
+                    'notes' => $data['notes'] ?? '',
                     'created_at' => $data['created_at'],
                     'payment_status' => $data['payment_status'] ?? 'pending',
                     'proof_image' => $data['proof_image'] ?? null
