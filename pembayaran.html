@@ -169,13 +169,13 @@
 
         <!-- Buttons -->
         <div class="flex flex-col gap-3 pb-8">
-            <a id="btn_tracking" href="pesanan.html" class="w-full bg-white border border-gray-300 text-gray-700 font-bold py-3 px-4 rounded-lg shadow text-center hover:bg-gray-50 transition">
-                Lihat Status Pesanan & Tracking
+            <a id="btn_wa" href="https://wa.me/6285736737773" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-emerald-600/30 text-center transition flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-2xl">chat</span>
+                Kirim Konfirmasi ke WhatsApp Admin (085736737773)
             </a>
-            
-            <a id="btn_wa" href="https://wa.me/6285335850517" target="_blank" class="w-full bg-green-500 text-white font-bold py-3 px-4 rounded-lg shadow text-center hover:bg-green-600 transition flex items-center justify-center">
-                <span class="material-symbols-outlined mr-2">chat</span>
-                Hubungi Customer Care
+
+            <a id="btn_tracking" href="pesanan.html" class="w-full bg-white border border-gray-300 text-gray-700 font-bold py-3 px-4 rounded-xl shadow text-center hover:bg-gray-50 transition">
+                Lihat Status Pesanan & Tracking
             </a>
         </div>
     </main>
@@ -194,7 +194,7 @@
         document.getElementById('btn_tracking').href = `pesanan.html?order_number=${orderNumber}`;
 
         function formatRupiah(angka, prefix) {
-            var number_string = angka.toString().replace(/[^,\d]/g, ''),
+            var number_string = (angka || 0).toString().replace(/[^,\d]/g, ''),
             split = number_string.split(','),
             sisa = split[0].length % 3,
             rupiah = split[0].substr(0, sisa),
@@ -243,9 +243,16 @@
                         }
                     }
                     
-                    // Pre-fill WA
-                    const waText = encodeURIComponent(`Halo CV Asianindo, saya sudah transfer untuk pesanan ${orderNumber} (Jumlah: ${formatRupiah(billAmt, 'Rp')})`);
-                    document.getElementById('btn_wa').href = `https://wa.me/6285335850517?text=${waText}`;
+                    // Pre-fill WA link to 085736737773
+                    const waMsg = `*KONFIRMASI PEMBAYARAN - CV ASIANINDO*\n` +
+                        `----------------------------------------\n` +
+                        `📋 *No. Pesanan:* ${orderNumber}\n` +
+                        `💰 *Jumlah Transfer:* ${formatRupiah(billAmt, 'Rp')}\n` +
+                        `🏦 *Bank Tujuan:* BCA 6670747997 a/n Iman Anjani Buchory\n\n` +
+                        `🔗 *Link Pesanan:* https://asianindomachine.com/pembayaran.html?order_number=${orderNumber}\n\n` +
+                        `Halo admin CV Asianindo, saya sudah melakukan transfer. Mohon dicek dan diverifikasi. Terima kasih!`;
+                    
+                    document.getElementById('btn_wa').href = `https://wa.me/6285736737773?text=${encodeURIComponent(waMsg)}`;
 
                     // Handle Uploaded state
                     if (order.payment_status !== 'pending' && order.proof_image) {
@@ -281,24 +288,51 @@
                 }
             });
 
-        // Image Preview
+        // Image Preview & Upload Logic
         const proofInput = document.getElementById('proof_image');
         const submitBtn = document.getElementById('submitBtn');
 
+        function handleSelectedFile(file) {
+            if (!file) return;
+            if (!file.type.match('image.*')) {
+                alert('Silakan pilih file gambar (JPG, PNG, WEBP)');
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Ukuran file maksimal 5MB');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('image_preview').src = e.target.result;
+                document.getElementById('placeholder_container').classList.add('hidden');
+                document.getElementById('preview_container').classList.remove('hidden');
+                document.getElementById('preview_container').classList.add('flex');
+                
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+            reader.readAsDataURL(file);
+        }
+
         proofInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('image_preview').src = e.target.result;
-                    document.getElementById('placeholder_container').classList.add('hidden');
-                    document.getElementById('preview_container').classList.remove('hidden');
-                    document.getElementById('preview_container').classList.add('flex');
-                    
-                    submitBtn.disabled = false;
-                    submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            handleSelectedFile(e.target.files[0]);
+        });
+
+        // Support direct Paste screenshot (Ctrl + V) from clipboard
+        document.addEventListener('paste', function(e) {
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            for (let index in items) {
+                const item = items[index];
+                if (item.kind === 'file' && item.type.includes('image')) {
+                    const blob = item.getAsFile();
+                    const container = new DataTransfer();
+                    container.items.add(blob);
+                    proofInput.files = container.files;
+                    handleSelectedFile(blob);
+                    break;
                 }
-                reader.readAsDataURL(file);
             }
         });
 
@@ -310,7 +344,7 @@
             formData.append('action', 'upload_proof');
             
             submitBtn.disabled = true;
-            document.getElementById('btnText').innerText = 'Mengunggah...';
+            document.getElementById('btnText').innerText = 'Mengunggah Bukti Transfer...';
             document.getElementById('btnLoader').classList.remove('hidden');
 
             fetch('payment_api.php', {
@@ -320,7 +354,7 @@
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    alert('Berhasil: ' + data.message);
+                    alert('Bukti transfer berhasil diunggah!');
                     location.reload();
                 } else {
                     alert('Gagal: ' + data.message);

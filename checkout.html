@@ -389,7 +389,45 @@
                 
                 if(data.success) {
                     if(isFromCart) sessionStorage.removeItem('checkout_items');
-                    window.location.href = 'pembayaran.html?order_number=' + data.order_number;
+                    
+                    // Build complete order message to WhatsApp 085736737773
+                    const adminWA = '6285736737773';
+                    let itemsSummary = '';
+                    checkoutItems.forEach((it, idx) => {
+                        itemsSummary += `${idx + 1}. *${it.product_name}*\n   Jumlah: ${it.quantity} unit | Harga: ${formatRupiah((it.price || it.product_price) * it.quantity)}\n`;
+                    });
+
+                    const waMsg = `*KONFIRMASI PESANAN BARU - CV ASIANINDO*\n` +
+                        `----------------------------------------\n` +
+                        `📋 *No. Pesanan:* ${data.order_number}\n\n` +
+                        `👤 *INFORMASI PEMBELI:*\n` +
+                        `• Nama: ${document.getElementById('ship_name').value}\n` +
+                        `• No. HP/WA: ${document.getElementById('ship_phone').value}\n` +
+                        `• Alamat: ${document.getElementById('ship_address').value}, ${document.getElementById('ship_city').value}, ${document.getElementById('ship_province').value} ${document.getElementById('ship_postal').value}\n\n` +
+                        `📦 *DETAIL PRODUK:*\n` +
+                        itemsSummary + `\n` +
+                        `🚚 *PENGIRIMAN:*\n` +
+                        `• Ekspedisi: ${selectedExpedition}\n` +
+                        `• Ongkos Kirim: ${formatRupiah(shippingCost)}\n\n` +
+                        `💳 *SKEMA PEMBAYARAN:*\n` +
+                        `• Total Nilai Pesanan: ${formatRupiah(data.total)}\n` +
+                        `• *Tagihan Transfer Saat Ini (DP):* *${formatRupiah(data.initial_amount)}*\n` +
+                        `• Rekening: BCA 6670747997 a/n Iman Anjani Buchory\n\n` +
+                        `🔗 *Halaman Konfirmasi & Upload Bukti Transfer:*\n` +
+                        `https://asianindomachine.com/pembayaran.html?order_number=${data.order_number}\n\n` +
+                        `Halo admin CV Asianindo, mohon diproses untuk pesanan ini. Terima kasih!`;
+
+                    const waUrl = `https://wa.me/${adminWA}?text=${encodeURIComponent(waMsg)}`;
+                    
+                    // Simpan link WA di sessionStorage
+                    sessionStorage.setItem('last_order_wa_url', waUrl);
+
+                    // Buka WhatsApp di tab baru dan arahkan halaman ke pembayaran
+                    try {
+                        window.open(waUrl, '_blank');
+                    } catch(e) {}
+                    
+                    window.location.href = 'pembayaran.html?order_number=' + data.order_number + '&send_wa=1';
                 } else {
                     alert('Gagal membuat pesanan: ' + (data.error || 'Unknown error'));
                     btn.disabled = false;
