@@ -35,7 +35,7 @@
         let grandTotal = 0;
         let shippingOptions = [];
         let selectedExpedition = 'Indah Cargo (Cargo Logistik Mesin)';
-        let selectedPaymentScheme = 'dp_50'; // 'dp_50' | 'dp_3_stage' | 'full'
+        let selectedPaymentScheme = 'full'; // 'full' | 'dp_50' | 'dp_3_stage'
         let currentBillAmount = 0;
 
         async function initCheckout() {
@@ -585,11 +585,28 @@
                     </div>
 
                     <div class="space-y-4">
-                        <!-- Opsi 1: DP 50% & Pelunasan 50% -->
-                        <div id="scheme-card-dp_50" onclick="selectPaymentScheme('dp_50')" class="border-2 border-primary bg-primary/5 shadow-md p-4 rounded-xl cursor-pointer transition-all">
+                        <!-- Opsi 1: Pembayaran Penuh 100% -->
+                        <div id="scheme-card-full" onclick="selectPaymentScheme('full')" class="border-2 border-primary bg-primary/5 shadow-md p-4 rounded-xl cursor-pointer transition-all">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" id="scheme-radio-full" name="payment_scheme_choice" value="full" checked class="w-4 h-4 text-primary focus:ring-primary">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-bold text-gray-900 text-sm md:text-base">Pembayaran Penuh 100% (Lunas di Awal)</span>
+                                            <span class="text-[10px] uppercase font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">Lunas</span>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-0.5">Langsung melunasi seluruh biaya pesanan dan ongkir</p>
+                                    </div>
+                                </div>
+                                <span id="nominal-full" class="font-bold text-primary text-sm md:text-base">Rp 0</span>
+                            </div>
+                        </div>
+
+                        <!-- Opsi 2: DP 50% & Pelunasan 50% -->
+                        <div id="scheme-card-dp_50" onclick="selectPaymentScheme('dp_50')" class="border-2 border-gray-200 hover:border-gray-300 bg-white p-4 rounded-xl cursor-pointer transition-all">
                             <div class="flex items-start justify-between">
                                 <div class="flex items-center gap-3">
-                                    <input type="radio" id="scheme-radio-dp_50" name="payment_scheme_choice" value="dp_50" checked class="w-4 h-4 text-primary focus:ring-primary mt-0.5">
+                                    <input type="radio" id="scheme-radio-dp_50" name="payment_scheme_choice" value="dp_50" class="w-4 h-4 text-primary focus:ring-primary mt-0.5">
                                     <div>
                                         <div class="flex items-center gap-2">
                                             <span class="font-bold text-gray-900 text-sm md:text-base">DP 50% dan Pelunasan 50%</span>
@@ -602,14 +619,14 @@
 
                             <!-- Tahapan DP 50% -->
                             <div class="mt-3 pt-3 border-t border-purple-200/60 grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
-                                <div class="bg-white/80 p-2.5 rounded-lg border border-purple-100">
+                                <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200/60">
                                     <div class="flex justify-between items-center font-semibold text-gray-800">
                                         <span>• DP Awal (50%)</span>
                                         <span id="nominal-dp50-1" class="text-primary font-bold">Rp 0</span>
                                     </div>
                                     <p class="text-[11px] text-gray-500 mt-1">Pembayaran awal untuk mulai proses fabrikasi mesin.</p>
                                 </div>
-                                <div class="bg-white/80 p-2.5 rounded-lg border border-purple-100">
+                                <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200/60">
                                     <div class="flex justify-between items-center font-semibold text-gray-800">
                                         <span>• Pelunasan (50%)</span>
                                         <span id="nominal-dp50-2" class="text-gray-700 font-bold">Rp 0</span>
@@ -619,7 +636,7 @@
                             </div>
                         </div>
 
-                        <!-- Opsi 2: 3 Tahap Pembayaran -->
+                        <!-- Opsi 3: 3 Tahap Pembayaran -->
                         <div id="scheme-card-dp_3_stage" onclick="selectPaymentScheme('dp_3_stage')" class="border-2 border-gray-200 hover:border-gray-300 bg-white p-4 rounded-xl cursor-pointer transition-all">
                             <div class="flex items-start justify-between">
                                 <div class="flex items-center gap-3">
@@ -657,20 +674,6 @@
                                     </div>
                                     <p class="text-[11px] text-gray-500 mt-1">Dibayarkan setelah mesin selesai dan siap untuk dikirim.</p>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Opsi 3: Pembayaran Penuh 100% -->
-                        <div id="scheme-card-full" onclick="selectPaymentScheme('full')" class="border-2 border-gray-200 hover:border-gray-300 bg-white p-4 rounded-xl cursor-pointer transition-all">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <input type="radio" id="scheme-radio-full" name="payment_scheme_choice" value="full" class="w-4 h-4 text-primary focus:ring-primary">
-                                    <div>
-                                        <span class="font-bold text-gray-900 text-sm md:text-base">Pembayaran Penuh 100% (Lunas di Awal)</span>
-                                        <p class="text-xs text-gray-500 mt-0.5">Langsung melunasi seluruh biaya pesanan dan ongkir</p>
-                                    </div>
-                                </div>
-                                <span id="nominal-full" class="font-bold text-primary text-sm">Rp 0</span>
                             </div>
                         </div>
                     </div>
