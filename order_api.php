@@ -247,6 +247,8 @@ if ($action === 'create_order') {
     }
 
     $final_notes = trim($scheme_text . ($notes ? "\n\nCatatan Khusus:\n" . $notes : ''));
+    $order_number = generateOrderNumber();
+    $status = 'pending_payment';
 
     try {
         $pdo->beginTransaction();
