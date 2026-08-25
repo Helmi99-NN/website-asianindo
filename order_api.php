@@ -1,24 +1,35 @@
 <?php
-session_start();
-header('Content-Type: application/json');
-require_once 'database/db.php';
+ob_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
 
-if (!function_exists('requireCustomerLogin')) {
-    function requireCustomerLogin() {
-        if (!isset($_SESSION['customer_id'])) {
-            echo json_encode(['success' => false, 'error' => 'Not logged in']);
-            exit;
-        }
-        return $_SESSION['customer_id'];
-    }
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+
+require_once __DIR__ . '/database/db.php';
+$pdo = getDB();
+
+function getInput() {
+    $raw = file_get_contents('php://input');
+    $json = json_decode($raw, true);
+    return is_array($json) ? array_merge($_POST, $json) : $_POST;
 }
 
 function calculateShippingCost($weightGrams, $province) {
-    // Estimasi biaya kirim via Indah Kargo (Cargo Logistik Mesin)
     $baseRate = 50000;
     $province = strtolower(trim($province));
     
-    // Simple logic for illustration
     if (strpos($province, 'jawa timur') !== false) {
         $baseRate = 25000;
     } elseif (strpos($province, 'jawa tengah') !== false) {
@@ -36,184 +47,223 @@ function calculateShippingCost($weightGrams, $province) {
     }
     
     $kg = ceil($weightGrams / 1000);
-    if ($kg == 0) $kg = 1;
+    if ($kg <= 0) $kg = 1;
     return $baseRate * $kg;
 }
 
-function generateOrderNumber() {
-    return 'ASN-' . date('YmdHis') . '-' . rand(1000, 9999);
+$action = $_GET['action'] ?? $_POST['action'] ?? '';
+$customer_id = $_SESSION['customer_id'] ?? null;
+
+// === CALCULATE SHIPPING (Can be called before login or after) ===
+if ($action === 'calculate_shipping') {
+    $d = getInput();
+    $weight_grams = (int)($d['weight_grams'] ?? 0);
+    $province = trim($d['province'] ?? '');
+    $cost = calculateShippingCost($weight_grams, $province);
+    echo json_encode(['success' => true, 'shipping_cost' => $cost]);
+    exit;
 }
 
-$action = $_GET['action'] ?? $_POST['action'] ?? '';
-$customer_id = requireCustomerLogin();
+if (!$customer_id) {
+    echo json_encode(['success' => false, 'error' => 'Silakan login terlebih dahulu.']);
+    exit;
+}
 
-switch ($action) {
-    case 'create_order':
-        $items = isset($_POST['items']) ? json_decode($_POST['items'], true) : [];
-        if (empty($items)) {
-            echo json_encode(['success' => false, 'error' => 'Items are required']);
-            exit;
-        }
+// === CREATE ORDER ===
+if ($action === 'create_order') {
+    $d = getInput();
+    $items = $d['items'] ?? [];
+    if (is_string($items)) {
+        $items = json_decode($items, true) ?: [];
+    }
 
-        $shipping_name = $_POST['shipping_name'] ?? '';
-        $shipping_phone = $_POST['shipping_phone'] ?? '';
-        $shipping_address = $_POST['shipping_address'] ?? '';
-        $shipping_city = $_POST['shipping_city'] ?? '';
-        $shipping_province = $_POST['shipping_province'] ?? '';
-        $shipping_postal_code = $_POST['shipping_postal_code'] ?? '';
-        $notes = $_POST['notes'] ?? '';
-        $is_from_cart = $_POST['is_from_cart'] ?? false;
-        
-        $subtotal = 0;
-        $totalWeight = 0;
+    if (empty($items)) {
+        echo json_encode(['success' => false, 'error' => 'Daftar produk tidak boleh kosong']);
+        exit;
+    }
+
+    $shipping_name = trim($d['shipping_name'] ?? $_SESSION['customer_name'] ?? '');
+    $shipping_phone = trim($d['shipping_phone'] ?? '');
+    $shipping_address = trim($d['shipping_address'] ?? '');
+    $shipping_city = trim($d['shipping_city'] ?? '');
+    $shipping_province = trim($d['shipping_province'] ?? '');
+    $shipping_postal_code = trim($d['shipping_postal_code'] ?? '');
+    $notes = trim($d['notes'] ?? '');
+    $is_from_cart = !empty($d['is_from_cart']);
+
+    $subtotal = 0;
+    $totalWeight = 0;
+    foreach ($items as $item) {
+        $subtotal += ((int)$item['price']) * ((int)$item['quantity']);
+        $totalWeight += ((int)($item['weight_grams'] ?? 0)) * ((int)$item['quantity']);
+    }
+
+    $shipping_cost = calculateShippingCost($totalWeight, $shipping_province);
+    $total = $subtotal + $shipping_cost;
+    $order_number = generateOrderNumber();
+    $status = 'pending_payment';
+
+    try {
+        $pdo->beginTransaction();
+
+        $stmt = $pdo->prepare("
+            INSERT INTO orders (
+                order_number, customer_id, shipping_name, shipping_phone, shipping_address,
+                shipping_city, shipping_province, shipping_postal_code, notes, subtotal,
+                shipping_cost, total, status, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
+        ");
+        $stmt->execute([
+            $order_number, $customer_id, $shipping_name, $shipping_phone, $shipping_address,
+            $shipping_city, $shipping_province, $shipping_postal_code, $notes, $subtotal,
+            $shipping_cost, $total, $status
+        ]);
+        $order_id = (int)$pdo->lastInsertId();
+
+        $stmt_item = $pdo->prepare("
+            INSERT INTO order_items (order_id, product_id, product_name, product_image, price, quantity, weight_grams)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ");
+        $stmt_clear = $pdo->prepare("DELETE FROM cart_items WHERE customer_id = ? AND product_id = ?");
+
         foreach ($items as $item) {
-            $subtotal += $item['price'] * $item['quantity'];
-            $totalWeight += ($item['weight_grams'] ?? 0) * $item['quantity'];
-        }
-        
-        $shipping_cost = calculateShippingCost($totalWeight, $shipping_province);
-        $total = $subtotal + $shipping_cost;
-        $order_number = generateOrderNumber();
-        $status = 'pending_payment';
+            $stmt_item->execute([
+                $order_id,
+                $item['product_id'] ?? '',
+                $item['product_name'] ?? '',
+                $item['product_image'] ?? '',
+                (int)($item['price'] ?? 0),
+                (int)($item['quantity'] ?? 1),
+                (int)($item['weight_grams'] ?? 0)
+            ]);
 
-        $conn->begin_transaction();
-        try {
-            // Insert order
-            $stmt = $conn->prepare("INSERT INTO orders (order_number, customer_id, shipping_name, shipping_phone, shipping_address, shipping_city, shipping_province, shipping_postal_code, notes, subtotal, shipping_cost, total, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-            $stmt->bind_param("sisssssssiiis", $order_number, $customer_id, $shipping_name, $shipping_phone, $shipping_address, $shipping_city, $shipping_province, $shipping_postal_code, $notes, $subtotal, $shipping_cost, $total, $status);
-            $stmt->execute();
-            $order_id = $conn->insert_id;
-
-            // Insert order items
-            $stmt_item = $conn->prepare("INSERT INTO order_items (order_id, product_id, product_name, product_image, price, quantity, weight_grams) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            foreach ($items as $item) {
-                $stmt_item->bind_param("iissiii", $order_id, $item['product_id'], $item['product_name'], $item['product_image'], $item['price'], $item['quantity'], $item['weight_grams']);
-                $stmt_item->execute();
-                
-                // Clear from cart if flag is set
-                if ($is_from_cart) {
-                    $stmt_clear = $conn->prepare("DELETE FROM cart_items WHERE customer_id = ? AND product_id = ?");
-                    $stmt_clear->bind_param("ii", $customer_id, $item['product_id']);
-                    $stmt_clear->execute();
-                }
+            if ($is_from_cart) {
+                $stmt_clear->execute([$customer_id, $item['product_id']]);
             }
-
-            // Insert payment record
-            $bank_name = 'Bank BCA';
-            $acc_num = '6670747997';
-            $acc_name = 'Iman Anjani Buchory';
-            $pay_status = 'pending';
-            $stmt_pay = $conn->prepare("INSERT INTO payments (order_id, bank_name, account_number, account_name, amount, status, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())");
-            $stmt_pay->bind_param("isssis", $order_id, $bank_name, $acc_num, $acc_name, $total, $pay_status);
-            $stmt_pay->execute();
-
-            // Insert shipment record
-            $expedition = 'Indah Kargo';
-            $ship_status = 'preparing';
-            $stmt_ship = $conn->prepare("INSERT INTO shipments (order_id, expedition, status, created_at) VALUES (?, ?, ?, NOW())");
-            $stmt_ship->bind_param("iss", $order_id, $expedition, $ship_status);
-            $stmt_ship->execute();
-
-            $conn->commit();
-            echo json_encode(['success' => true, 'order_number' => $order_number, 'total' => $total, 'shipping_cost' => $shipping_cost]);
-        } catch (Exception $e) {
-            $conn->rollback();
-            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
-        break;
 
-    case 'get_orders':
-        $stmt = $conn->prepare("SELECT * FROM orders WHERE customer_id = ? ORDER BY created_at DESC");
-        $stmt->bind_param("i", $customer_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $orders = [];
-        while ($row = $result->fetch_assoc()) {
-            $orders[] = $row;
+        // Insert initial payment record
+        $stmt_pay = $pdo->prepare("
+            INSERT INTO payments (order_id, bank_name, account_number, account_name, amount, status, created_at)
+            VALUES (?, ?, ?, ?, ?, 'pending', NOW())
+        ");
+        $stmt_pay->execute([
+            $order_id,
+            defined('COMPANY_BANK_NAME') ? COMPANY_BANK_NAME : 'Bank BCA',
+            defined('COMPANY_BANK_ACCOUNT') ? COMPANY_BANK_ACCOUNT : '6670747997',
+            defined('COMPANY_BANK_HOLDER') ? COMPANY_BANK_HOLDER : 'Iman Anjani Buchory',
+            $total
+        ]);
+
+        // Insert initial shipment record
+        $stmt_ship = $pdo->prepare("
+            INSERT INTO shipments (order_id, expedition, status, created_at)
+            VALUES (?, 'Indah Kargo', 'preparing', NOW())
+        ");
+        $stmt_ship->execute([$order_id]);
+
+        $pdo->commit();
+
+        echo json_encode([
+            'success' => true,
+            'order_number' => $order_number,
+            'total' => $total,
+            'shipping_cost' => $shipping_cost
+        ]);
+    } catch (Throwable $e) {
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
         }
+        echo json_encode(['success' => false, 'error' => 'Gagal membuat pesanan: ' . $e->getMessage()]);
+    }
+    exit;
+}
+
+// === GET ORDERS ===
+if ($action === 'get_orders') {
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM orders WHERE customer_id = ? ORDER BY created_at DESC");
+        $stmt->execute([$customer_id]);
+        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode(['success' => true, 'orders' => $orders]);
-        break;
+    } catch (Throwable $e) {
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+    exit;
+}
 
-    case 'get_order_detail':
-        $identifier = $_GET['id'] ?? $_GET['order_number'] ?? '';
-        if (is_numeric($identifier) && !str_contains($identifier, 'ASN-')) {
-            $stmt = $conn->prepare("SELECT * FROM orders WHERE customer_id = ? AND id = ?");
-            $stmt->bind_param("ii", $customer_id, $identifier);
+// === GET ORDER DETAIL ===
+if ($action === 'get_order_detail') {
+    $identifier = trim($_GET['id'] ?? $_GET['order_number'] ?? '');
+    try {
+        if (is_numeric($identifier) && strpos($identifier, 'ASN-') === false) {
+            $stmt = $pdo->prepare("SELECT * FROM orders WHERE customer_id = ? AND id = ? LIMIT 1");
         } else {
-            $stmt = $conn->prepare("SELECT * FROM orders WHERE customer_id = ? AND order_number = ?");
-            $stmt->bind_param("is", $customer_id, $identifier);
+            $stmt = $pdo->prepare("SELECT * FROM orders WHERE customer_id = ? AND order_number = ? LIMIT 1");
         }
-        $stmt->execute();
-        $order = $stmt->get_result()->fetch_assoc();
-        
+        $stmt->execute([$customer_id, $identifier]);
+        $order = $stmt->fetch(PDO::FETCH_ASSOC);
+
         if (!$order) {
-            echo json_encode(['success' => false, 'error' => 'Order not found']);
+            echo json_encode(['success' => false, 'error' => 'Pesanan tidak ditemukan']);
             exit;
         }
-        
+
         $order_id = $order['id'];
-        
-        $stmt_items = $conn->prepare("SELECT * FROM order_items WHERE order_id = ?");
-        $stmt_items->bind_param("i", $order_id);
-        $stmt_items->execute();
-        $items = $stmt_items->get_result()->fetch_all(MYSQLI_ASSOC);
-        
-        $stmt_pay = $conn->prepare("SELECT * FROM payments WHERE order_id = ?");
-        $stmt_pay->bind_param("i", $order_id);
-        $stmt_pay->execute();
-        $payment = $stmt_pay->get_result()->fetch_assoc();
-        
-        $stmt_ship = $conn->prepare("SELECT * FROM shipments WHERE order_id = ?");
-        $stmt_ship->bind_param("i", $order_id);
-        $stmt_ship->execute();
-        $shipment = $stmt_ship->get_result()->fetch_assoc();
-        
+
+        $stmt_items = $pdo->prepare("SELECT * FROM order_items WHERE order_id = ?");
+        $stmt_items->execute([$order_id]);
+        $items = $stmt_items->fetchAll(PDO::FETCH_ASSOC);
+
+        $stmt_pay = $pdo->prepare("SELECT * FROM payments WHERE order_id = ? LIMIT 1");
+        $stmt_pay->execute([$order_id]);
+        $payment = $stmt_pay->fetch(PDO::FETCH_ASSOC);
+
+        $stmt_ship = $pdo->prepare("SELECT * FROM shipments WHERE order_id = ? LIMIT 1");
+        $stmt_ship->execute([$order_id]);
+        $shipment = $stmt_ship->fetch(PDO::FETCH_ASSOC);
+
         echo json_encode([
-            'success' => true, 
-            'order' => $order, 
-            'items' => $items, 
-            'payment' => $payment, 
+            'success' => true,
+            'order' => $order,
+            'items' => $items,
+            'payment' => $payment,
             'shipment' => $shipment
         ]);
-        break;
-
-    case 'calculate_shipping':
-        $weight_grams = $_POST['weight_grams'] ?? 0;
-        $province = $_POST['province'] ?? '';
-        $cost = calculateShippingCost($weight_grams, $province);
-        echo json_encode(['success' => true, 'shipping_cost' => $cost]);
-        break;
-        
-    case 'cancel_order':
-        $order_number = $_POST['order_number'] ?? '';
-        
-        $stmt = $conn->prepare("SELECT id, status FROM orders WHERE customer_id = ? AND order_number = ?");
-        $stmt->bind_param("is", $customer_id, $order_number);
-        $stmt->execute();
-        $order = $stmt->get_result()->fetch_assoc();
-        
-        if (!$order) {
-            echo json_encode(['success' => false, 'error' => 'Order not found']);
-            exit;
-        }
-        
-        if ($order['status'] !== 'pending_payment') {
-            echo json_encode(['success' => false, 'error' => 'Order cannot be cancelled at this stage']);
-            exit;
-        }
-        
-        $status = 'cancelled';
-        $stmt_update = $conn->prepare("UPDATE orders SET status = ? WHERE id = ?");
-        $stmt_update->bind_param("si", $status, $order['id']);
-        if ($stmt_update->execute()) {
-            echo json_encode(['success' => true, 'message' => 'Order cancelled']);
-        } else {
-            echo json_encode(['success' => false, 'error' => 'Failed to cancel order']);
-        }
-        break;
-
-    default:
-        echo json_encode(['success' => false, 'error' => 'Invalid action']);
-        break;
+    } catch (Throwable $e) {
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+    exit;
 }
-?>
+
+// === CANCEL ORDER ===
+if ($action === 'cancel_order') {
+    $d = getInput();
+    $order_number = trim($d['order_number'] ?? '');
+
+    try {
+        $stmt = $pdo->prepare("SELECT id, status FROM orders WHERE customer_id = ? AND order_number = ? LIMIT 1");
+        $stmt->execute([$customer_id, $order_number]);
+        $order = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$order) {
+            echo json_encode(['success' => false, 'error' => 'Pesanan tidak ditemukan']);
+            exit;
+        }
+
+        if ($order['status'] !== 'pending_payment') {
+            echo json_encode(['success' => false, 'error' => 'Pesanan tidak dapat dibatalkan pada tahap ini']);
+            exit;
+        }
+
+        $stmt_update = $pdo->prepare("UPDATE orders SET status = 'cancelled', updated_at = NOW() WHERE id = ?");
+        $stmt_update->execute([$order['id']]);
+
+        echo json_encode(['success' => true, 'message' => 'Pesanan berhasil dibatalkan']);
+    } catch (Throwable $e) {
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+    exit;
+}
+
+echo json_encode(['success' => false, 'error' => 'Invalid action: ' . htmlspecialchars($action)]);

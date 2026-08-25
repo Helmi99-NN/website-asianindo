@@ -1,12 +1,30 @@
 <?php
-session_start();
+ob_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 header('Content-Type: application/json');
-require_once 'database/db.php';
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+
+require_once __DIR__ . '/database/db.php';
+$pdo = getDB();
 
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
 
+// === UPLOAD PAYMENT PROOF ===
 if ($action === 'upload_proof') {
-    $order_number = $_POST['order_number'] ?? '';
+    $order_number = trim($_POST['order_number'] ?? '');
     
     if (empty($order_number)) {
         echo json_encode(['success' => false, 'message' => 'Nomor pesanan wajib diisi.']);
@@ -14,7 +32,7 @@ if ($action === 'upload_proof') {
     }
 
     if (!isset($_FILES['proof_image']) || $_FILES['proof_image']['error'] !== UPLOAD_ERR_OK) {
-        echo json_encode(['success' => false, 'message' => 'Silakan pilih file gambar yang valid.']);
+        echo json_encode(['success' => false, 'message' => 'Silakan pilih file gambar bukti transfer yang valid.']);
         exit;
     }
 
@@ -40,84 +58,107 @@ if ($action === 'upload_proof') {
         mkdir($upload_dir, 0755, true);
     }
 
-    $new_filename = 'proof_' . $order_number . '_' . time() . '.' . $ext;
+    $new_filename = 'proof_' . preg_replace('/[^a-zA-Z0-9_-]/', '', $order_number) . '_' . time() . '.' . $ext;
     $target_path = $upload_dir . $new_filename;
 
     if (move_uploaded_file($file['tmp_name'], $target_path)) {
         $db_path = 'images/payments/' . $new_filename;
 
-        // Check if payment record exists
-        $stmt = $conn->prepare("SELECT id FROM payments WHERE order_number = ?");
-        $stmt->bind_param("s", $order_number);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        
-        if ($res->num_rows > 0) {
-            $stmt = $conn->prepare("UPDATE payments SET proof_image = ?, status = 'uploaded', updated_at = NOW() WHERE order_number = ?");
-            $stmt->bind_param("ss", $db_path, $order_number);
-            $stmt->execute();
-        } else {
-            // If we don't have order_id, let's get it first
-            $stmt = $conn->prepare("SELECT id, total_amount FROM orders WHERE order_number = ?");
-            $stmt->bind_param("s", $order_number);
-            $stmt->execute();
-            $order_res = $stmt->get_result();
-            if ($order_res->num_rows > 0) {
-                $order_data = $order_res->fetch_assoc();
-                $order_id = $order_data['id'];
-                $amount = $order_data['total_amount'];
-                
-                $stmt = $conn->prepare("INSERT INTO payments (order_id, order_number, amount, payment_method, proof_image, status, created_at) VALUES (?, ?, ?, 'transfer', ?, 'uploaded', NOW())");
-                $stmt->bind_param("isds", $order_id, $order_number, $amount, $db_path);
-                $stmt->execute();
+        try {
+            // Find order
+            $stmt = $pdo->prepare("SELECT id, total FROM orders WHERE order_number = ? LIMIT 1");
+            $stmt->execute([$order_number]);
+            $order = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($order) {
+                $order_id = $order['id'];
+
+                // Check payment record
+                $stmt_pay = $pdo->prepare("SELECT id FROM payments WHERE order_id = ? LIMIT 1");
+                $stmt_pay->execute([$order_id]);
+                $pay = $stmt_pay->fetch(PDO::FETCH_ASSOC);
+
+                if ($pay) {
+                    $stmt_update = $pdo->prepare("UPDATE payments SET proof_image = ?, status = 'uploaded' WHERE id = ?");
+                    $stmt_update->execute([$db_path, $pay['id']]);
+                } else {
+                    $stmt_ins = $pdo->prepare("
+                        INSERT INTO payments (order_id, bank_name, account_number, account_name, amount, proof_image, status, created_at)
+                        VALUES (?, ?, ?, ?, ?, ?, 'uploaded', NOW())
+                    ");
+                    $stmt_ins->execute([
+                        $order_id,
+                        defined('COMPANY_BANK_NAME') ? COMPANY_BANK_NAME : 'Bank BCA',
+                        defined('COMPANY_BANK_ACCOUNT') ? COMPANY_BANK_ACCOUNT : '6670747997',
+                        defined('COMPANY_BANK_HOLDER') ? COMPANY_BANK_HOLDER : 'Iman Anjani Buchory',
+                        $order['total'],
+                        $db_path
+                    ]);
+                }
+
+                $stmt_ord = $pdo->prepare("UPDATE orders SET status = 'payment_uploaded', updated_at = NOW() WHERE id = ?");
+                $stmt_ord->execute([$order_id]);
+
+                echo json_encode(['success' => true, 'message' => 'Bukti transfer berhasil diunggah']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Pesanan tidak ditemukan.']);
             }
+        } catch (Throwable $e) {
+            echo json_encode(['success' => false, 'message' => 'Gagal menyimpan bukti: ' . $e->getMessage()]);
         }
-
-        $stmt = $conn->prepare("UPDATE orders SET status = 'payment_uploaded' WHERE order_number = ?");
-        $stmt->bind_param("s", $order_number);
-        $stmt->execute();
-
-        echo json_encode(['success' => true, 'message' => 'Bukti transfer berhasil diunggah']);
     } else {
-        echo json_encode(['success' => false, 'message' => 'Gagal mengunggah file.']);
+        echo json_encode(['success' => false, 'message' => 'Gagal mengunggah file ke server.']);
     }
-} elseif ($action === 'get_payment_info') {
-    $order_number = $_GET['order_number'] ?? '';
+    exit;
+}
+
+// === GET PAYMENT INFO ===
+if ($action === 'get_payment_info') {
+    $order_number = trim($_GET['order_number'] ?? '');
     if (empty($order_number)) {
         echo json_encode(['success' => false, 'message' => 'Nomor pesanan diperlukan.']);
         exit;
     }
 
-    $stmt = $conn->prepare("SELECT o.id, o.status as order_status, o.total_amount, o.created_at, p.status as payment_status, p.proof_image FROM orders o LEFT JOIN payments p ON o.id = p.order_id WHERE o.order_number = ?");
-    $stmt->bind_param("s", $order_number);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    if ($result->num_rows > 0) {
-        $data = $result->fetch_assoc();
-        
-        $bank_info = [
-            'bank_name' => 'BCA',
-            'account_number' => '6670747997',
-            'account_name' => 'Iman Anjani Buchory'
-        ];
-        
-        echo json_encode([
-            'success' => true,
-            'order' => [
-                'order_number' => $order_number,
-                'total_amount' => (float)$data['total_amount'],
-                'order_status' => $data['order_status'],
-                'created_at' => $data['created_at'],
-                'payment_status' => $data['payment_status'] ?? 'pending',
-                'proof_image' => $data['proof_image'] ?? null
-            ],
-            'bank' => $bank_info
-        ]);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Pesanan tidak ditemukan.']);
+    try {
+        $stmt = $pdo->prepare("
+            SELECT o.id, o.order_number, o.status as order_status, o.total as total_amount, o.created_at,
+                   p.status as payment_status, p.proof_image, p.bank_name, p.account_number, p.account_name
+            FROM orders o
+            LEFT JOIN payments p ON o.id = p.order_id
+            WHERE o.order_number = ?
+            LIMIT 1
+        ");
+        $stmt->execute([$order_number]);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($data) {
+            $bank_info = [
+                'bank_name' => $data['bank_name'] ?: (defined('COMPANY_BANK_NAME') ? COMPANY_BANK_NAME : 'Bank BCA'),
+                'account_number' => $data['account_number'] ?: (defined('COMPANY_BANK_ACCOUNT') ? COMPANY_BANK_ACCOUNT : '6670747997'),
+                'account_name' => $data['account_name'] ?: (defined('COMPANY_BANK_HOLDER') ? COMPANY_BANK_HOLDER : 'Iman Anjani Buchory'),
+                'whatsapp' => defined('COMPANY_WA_NUMBER') ? COMPANY_WA_NUMBER : '6285335850517'
+            ];
+
+            echo json_encode([
+                'success' => true,
+                'order' => [
+                    'order_number' => $order_number,
+                    'total_amount' => (int)$data['total_amount'],
+                    'order_status' => $data['order_status'],
+                    'created_at' => $data['created_at'],
+                    'payment_status' => $data['payment_status'] ?? 'pending',
+                    'proof_image' => $data['proof_image'] ?? null
+                ],
+                'bank' => $bank_info
+            ]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Pesanan tidak ditemukan.']);
+        }
+    } catch (Throwable $e) {
+        echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
     }
-} else {
-    echo json_encode(['success' => false, 'message' => 'Invalid action']);
+    exit;
 }
-?>
+
+echo json_encode(['success' => false, 'message' => 'Invalid action']);

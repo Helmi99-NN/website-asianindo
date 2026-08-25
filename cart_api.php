@@ -1,124 +1,178 @@
 <?php
-session_start();
-header('Content-Type: application/json');
-require_once 'database/db.php';
+ob_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
 
-if (!function_exists('requireCustomerLogin')) {
-    function requireCustomerLogin() {
-        if (!isset($_SESSION['customer_id'])) {
-            echo json_encode(['success' => false, 'error' => 'Not logged in']);
-            exit;
-        }
-        return $_SESSION['customer_id'];
-    }
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+
+require_once __DIR__ . '/database/db.php';
+$pdo = getDB();
+
+function getInput() {
+    $raw = file_get_contents('php://input');
+    $json = json_decode($raw, true);
+    return is_array($json) ? array_merge($_POST, $json) : $_POST;
 }
 
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
-$customer_id = isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : null;
+$customer_id = $_SESSION['customer_id'] ?? null;
 
-if ($action == 'get_cart_count') {
+// === GET CART COUNT (PUBLIC / GUEST SUPPORT) ===
+if ($action === 'get_cart_count') {
     if (!$customer_id) {
         echo json_encode(['success' => true, 'count' => 0]);
         exit;
     }
-    $stmt = $conn->prepare("SELECT SUM(quantity) as count FROM cart_items WHERE customer_id = ?");
-    $stmt->bind_param("i", $customer_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-    echo json_encode(['success' => true, 'count' => $row['count'] ? (int)$row['count'] : 0]);
+    try {
+        $stmt = $pdo->prepare("SELECT COALESCE(SUM(quantity), 0) as count FROM cart_items WHERE customer_id = ?");
+        $stmt->execute([$customer_id]);
+        $row = $stmt->fetch();
+        echo json_encode(['success' => true, 'count' => (int)($row['count'] ?? 0)]);
+    } catch (Throwable $e) {
+        echo json_encode(['success' => true, 'count' => 0]);
+    }
     exit;
 }
 
-// Require login for other actions
-$customer_id = requireCustomerLogin();
+// Require login for other cart operations
+if (!$customer_id) {
+    echo json_encode(['success' => false, 'error' => 'Silakan login terlebih dahulu.']);
+    exit;
+}
 
-switch ($action) {
-    case 'get_cart':
-        $stmt = $conn->prepare("SELECT * FROM cart_items WHERE customer_id = ? ORDER BY added_at DESC");
-        $stmt->bind_param("i", $customer_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        $items = [];
+// === GET CART ITEMS ===
+if ($action === 'get_cart') {
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM cart_items WHERE customer_id = ? ORDER BY added_at DESC");
+        $stmt->execute([$customer_id]);
+        $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         $subtotal = 0;
         $total_items = 0;
-        while ($row = $result->fetch_assoc()) {
-            $items[] = $row;
-            $subtotal += $row['product_price'] * $row['quantity'];
-            $total_items += $row['quantity'];
+        foreach ($items as &$item) {
+            $item['id'] = (int)$item['id'];
+            $item['customer_id'] = (int)$item['customer_id'];
+            $item['product_price'] = (int)$item['product_price'];
+            $item['quantity'] = (int)$item['quantity'];
+            $item['weight_grams'] = (int)($item['weight_grams'] ?? 0);
+            $subtotal += $item['product_price'] * $item['quantity'];
+            $total_items += $item['quantity'];
         }
-        
+
         echo json_encode([
             'success' => true,
             'items' => $items,
             'subtotal' => $subtotal,
             'total_items' => $total_items
         ]);
-        break;
+    } catch (Throwable $e) {
+        echo json_encode(['success' => false, 'error' => 'Gagal mengambil data keranjang: ' . $e->getMessage()]);
+    }
+    exit;
+}
 
-    case 'add_to_cart':
-        $product_id = $_POST['product_id'] ?? 0;
-        $product_name = $_POST['product_name'] ?? '';
-        $product_image = $_POST['product_image'] ?? '';
-        $product_price = $_POST['product_price'] ?? 0;
-        $quantity = $_POST['quantity'] ?? 1;
-        $weight_grams = $_POST['weight_grams'] ?? 0;
-        
-        if (!$product_id) {
-            echo json_encode(['success' => false, 'error' => 'Invalid product']);
-            exit;
-        }
+// === ADD TO CART ===
+if ($action === 'add_to_cart') {
+    $d = getInput();
+    $product_id = trim($d['product_id'] ?? '');
+    $product_name = trim($d['product_name'] ?? '');
+    $product_image = trim($d['product_image'] ?? '');
+    $product_price = (int)($d['product_price'] ?? 0);
+    $quantity = max(1, (int)($d['quantity'] ?? 1));
+    $weight_grams = (int)($d['weight_grams'] ?? 0);
 
-        $stmt = $conn->prepare("INSERT INTO cart_items (customer_id, product_id, product_name, product_image, product_price, quantity, weight_grams) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)");
-        $stmt->bind_param("iisssii", $customer_id, $product_id, $product_name, $product_image, $product_price, $quantity, $weight_grams);
-        
-        if ($stmt->execute()) {
-            echo json_encode(['success' => true, 'message' => 'Item added to cart']);
-        } else {
-            echo json_encode(['success' => false, 'error' => 'Database error']);
-        }
-        break;
+    if (!$product_id) {
+        echo json_encode(['success' => false, 'error' => 'ID Produk tidak valid']);
+        exit;
+    }
 
-    case 'update_qty':
-        $product_id = $_POST['product_id'] ?? 0;
-        $quantity = $_POST['quantity'] ?? 0;
-        
+    try {
+        $stmt = $pdo->prepare("
+            INSERT INTO cart_items (customer_id, product_id, product_name, product_image, product_price, quantity, weight_grams, added_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
+            ON DUPLICATE KEY UPDATE
+                quantity = quantity + VALUES(quantity),
+                product_price = VALUES(product_price),
+                product_name = VALUES(product_name),
+                product_image = VALUES(product_image)
+        ");
+        $stmt->execute([$customer_id, $product_id, $product_name, $product_image, $product_price, $quantity, $weight_grams]);
+
+        echo json_encode(['success' => true, 'message' => 'Produk berhasil ditambahkan ke keranjang']);
+    } catch (Throwable $e) {
+        echo json_encode(['success' => false, 'error' => 'Gagal menambahkan ke keranjang: ' . $e->getMessage()]);
+    }
+    exit;
+}
+
+// === UPDATE QTY ===
+if ($action === 'update_qty') {
+    $d = getInput();
+    $product_id = trim($d['product_id'] ?? '');
+    $quantity = (int)($d['quantity'] ?? 0);
+
+    if (!$product_id) {
+        echo json_encode(['success' => false, 'error' => 'ID Produk tidak valid']);
+        exit;
+    }
+
+    try {
         if ($quantity <= 0) {
-            $stmt = $conn->prepare("DELETE FROM cart_items WHERE customer_id = ? AND product_id = ?");
-            $stmt->bind_param("ii", $customer_id, $product_id);
-            $stmt->execute();
+            $stmt = $pdo->prepare("DELETE FROM cart_items WHERE customer_id = ? AND product_id = ?");
+            $stmt->execute([$customer_id, $product_id]);
         } else {
-            $stmt = $conn->prepare("UPDATE cart_items SET quantity = ? WHERE customer_id = ? AND product_id = ?");
-            $stmt->bind_param("iii", $quantity, $customer_id, $product_id);
-            $stmt->execute();
+            $stmt = $pdo->prepare("UPDATE cart_items SET quantity = ? WHERE customer_id = ? AND product_id = ?");
+            $stmt->execute([$quantity, $customer_id, $product_id]);
         }
         echo json_encode(['success' => true]);
-        break;
-
-    case 'remove_item':
-        $product_id = $_POST['product_id'] ?? 0;
-        $stmt = $conn->prepare("DELETE FROM cart_items WHERE customer_id = ? AND product_id = ?");
-        $stmt->bind_param("ii", $customer_id, $product_id);
-        if ($stmt->execute()) {
-            echo json_encode(['success' => true]);
-        } else {
-            echo json_encode(['success' => false, 'error' => 'Failed to remove item']);
-        }
-        break;
-
-    case 'clear_cart':
-        $stmt = $conn->prepare("DELETE FROM cart_items WHERE customer_id = ?");
-        $stmt->bind_param("i", $customer_id);
-        if ($stmt->execute()) {
-            echo json_encode(['success' => true]);
-        } else {
-            echo json_encode(['success' => false, 'error' => 'Failed to clear cart']);
-        }
-        break;
-
-    default:
-        echo json_encode(['success' => false, 'error' => 'Invalid action']);
-        break;
+    } catch (Throwable $e) {
+        echo json_encode(['success' => false, 'error' => 'Gagal mengubah jumlah: ' . $e->getMessage()]);
+    }
+    exit;
 }
-?>
+
+// === REMOVE ITEM ===
+if ($action === 'remove_item') {
+    $d = getInput();
+    $product_id = trim($d['product_id'] ?? '');
+
+    if (!$product_id) {
+        echo json_encode(['success' => false, 'error' => 'ID Produk tidak valid']);
+        exit;
+    }
+
+    try {
+        $stmt = $pdo->prepare("DELETE FROM cart_items WHERE customer_id = ? AND product_id = ?");
+        $stmt->execute([$customer_id, $product_id]);
+        echo json_encode(['success' => true]);
+    } catch (Throwable $e) {
+        echo json_encode(['success' => false, 'error' => 'Gagal menghapus produk: ' . $e->getMessage()]);
+    }
+    exit;
+}
+
+// === CLEAR CART ===
+if ($action === 'clear_cart') {
+    try {
+        $stmt = $pdo->prepare("DELETE FROM cart_items WHERE customer_id = ?");
+        $stmt->execute([$customer_id]);
+        echo json_encode(['success' => true]);
+    } catch (Throwable $e) {
+        echo json_encode(['success' => false, 'error' => 'Gagal mengosongkan keranjang: ' . $e->getMessage()]);
+    }
+    exit;
+}
+
+echo json_encode(['success' => false, 'error' => 'Invalid action: ' . htmlspecialchars($action)]);
