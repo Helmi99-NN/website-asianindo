@@ -122,10 +122,14 @@ if ($action === 'get_payment_info') {
 
     try {
         $stmt = $pdo->prepare("
-            SELECT o.id, o.order_number, o.status as order_status, o.total as total_amount, o.notes, o.created_at,
-                   p.amount as bill_amount, p.status as payment_status, p.proof_image, p.bank_name, p.account_number, p.account_name
+            SELECT o.id, o.order_number, o.customer_id, o.shipping_name, o.shipping_phone, o.shipping_address,
+                   o.shipping_city, o.shipping_province, o.shipping_postal_code, o.shipping_cost, o.subtotal,
+                   o.status as order_status, o.total as total_amount, o.notes, o.created_at,
+                   p.amount as bill_amount, p.status as payment_status, p.proof_image, p.bank_name, p.account_number, p.account_name,
+                   s.expedition
             FROM orders o
             LEFT JOIN payments p ON o.id = p.order_id
+            LEFT JOIN shipments s ON o.id = s.order_id
             WHERE o.order_number = ?
             LIMIT 1
         ");
@@ -133,6 +137,24 @@ if ($action === 'get_payment_info') {
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($data) {
+            // Fetch order items
+            $stmt_items = $pdo->prepare("SELECT product_name, quantity, price, weight_grams FROM order_items WHERE order_id = ?");
+            $stmt_items->execute([$data['id']]);
+            $items = $stmt_items->fetchAll(PDO::FETCH_ASSOC);
+
+            // Fetch customer name/phone if shipping_name is missing
+            $customer_name = $data['shipping_name'];
+            $customer_phone = $data['shipping_phone'];
+            if ((empty($customer_name) || empty($customer_phone)) && !empty($data['customer_id'])) {
+                $stmt_c = $pdo->prepare("SELECT name, phone FROM customers WHERE id = ?");
+                $stmt_c->execute([$data['customer_id']]);
+                $c = $stmt_c->fetch(PDO::FETCH_ASSOC);
+                if ($c) {
+                    if (empty($customer_name)) $customer_name = $c['name'];
+                    if (empty($customer_phone)) $customer_phone = $c['phone'];
+                }
+            }
+
             $bank_info = [
                 'bank_name' => $data['bank_name'] ?: (defined('COMPANY_BANK_NAME') ? COMPANY_BANK_NAME : 'Bank BCA'),
                 'account_number' => $data['account_number'] ?: (defined('COMPANY_BANK_ACCOUNT') ? COMPANY_BANK_ACCOUNT : '6670747997'),
@@ -146,6 +168,16 @@ if ($action === 'get_payment_info') {
                 'success' => true,
                 'order' => [
                     'order_number' => $order_number,
+                    'customer_name' => $customer_name,
+                    'shipping_name' => $customer_name,
+                    'shipping_phone' => $customer_phone,
+                    'shipping_address' => $data['shipping_address'] ?? '',
+                    'shipping_city' => $data['shipping_city'] ?? '',
+                    'shipping_province' => $data['shipping_province'] ?? '',
+                    'shipping_postal_code' => $data['shipping_postal_code'] ?? '',
+                    'shipping_cost' => (int)($data['shipping_cost'] ?? 0),
+                    'expedition' => $data['expedition'] ?: 'Indah Cargo (Cargo Logistik Mesin)',
+                    'items' => $items,
                     'total_amount' => (int)$data['total_amount'],
                     'bill_amount' => $billAmount,
                     'order_status' => $data['order_status'],

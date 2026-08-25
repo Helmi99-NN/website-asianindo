@@ -243,14 +243,42 @@
                         }
                     }
                     
-                    // Pre-fill WA link to 085335850517
+                    // Build complete order message to WhatsApp 085335850517
+                    let itemsSummary = '';
+                    if (order.items && order.items.length > 0) {
+                        order.items.forEach((it, idx) => {
+                            itemsSummary += `${idx + 1}. *${it.product_name}*\n   Jumlah: ${it.quantity} unit | Harga: ${formatRupiah((it.price || 0) * it.quantity, 'Rp')}\n`;
+                        });
+                    } else {
+                        itemsSummary = '• Produk Mesin CV Asianindo\n';
+                    }
+
+                    const custName = order.customer_name || order.shipping_name || '-';
+                    const custPhone = order.shipping_phone || '-';
+                    const fullAddress = [order.shipping_address, order.shipping_city, order.shipping_province, order.shipping_postal_code].filter(Boolean).join(', ');
+                    const expeditionName = order.expedition || 'Indah Cargo (Cargo Logistik Mesin)';
+                    const shippingCostText = formatRupiah(order.shipping_cost || 0, 'Rp');
+
                     const waMsg = `*KONFIRMASI PEMBAYARAN - CV ASIANINDO*\n` +
                         `----------------------------------------\n` +
-                        `📋 *No. Pesanan:* ${orderNumber}\n` +
-                        `💰 *Jumlah Transfer:* ${formatRupiah(billAmt, 'Rp')}\n` +
-                        `🏦 *Bank Tujuan:* BCA 6670747997 a/n Iman Anjani Buchory\n\n` +
-                        `🔗 *Link Pesanan:* https://asianindomachine.com/pembayaran.html?order_number=${orderNumber}\n\n` +
-                        `Halo admin CV Asianindo, saya sudah melakukan transfer. Mohon dicek dan diverifikasi. Terima kasih!`;
+                        `📋 *No. Pesanan:* ${orderNumber}\n\n` +
+                        `👤 *INFORMASI PEMBELI:*\n` +
+                        `• *Nama Pemesan:* ${custName}\n` +
+                        `• *No. HP/WhatsApp:* ${custPhone}\n` +
+                        `• *Alamat Lengkap:* ${fullAddress || '-'}\n\n` +
+                        `📦 *DETAIL PRODUK:*\n` +
+                        itemsSummary + `\n` +
+                        `🚚 *PENGIRIMAN:*\n` +
+                        `• *Ekspedisi:* ${expeditionName}\n` +
+                        `• *Ongkir:* ${shippingCostText}\n\n` +
+                        `💳 *RINCIAN PEMBAYARAN:*\n` +
+                        `• *Total Nilai Pesanan:* ${formatRupiah(order.total_amount, 'Rp')}\n` +
+                        `• *Tagihan Transfer Saat Ini:* *${formatRupiah(billAmt, 'Rp')}*\n` +
+                        `• *Bank Tujuan:* BCA 6670747997 a/n Iman Anjani Buchory\n\n` +
+                        (order.notes ? `📝 *Catatan / Skema:*\n${order.notes}\n\n` : '') +
+                        `🔗 *Link Cek Pesanan & Bukti Transfer:*\n` +
+                        `https://asianindomachine.com/pembayaran.html?order_number=${orderNumber}\n\n` +
+                        `Halo admin CV Asianindo, saya sudah melakukan transfer untuk pesanan di atas. Mohon dicek dan diverifikasi. Terima kasih!`;
                     
                     document.getElementById('btn_wa').href = `https://wa.me/6285335850517?text=${encodeURIComponent(waMsg)}`;
 
