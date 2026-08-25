@@ -53,6 +53,20 @@ try {
     }
 }
 
+// Buat objek koneksi mysqli ($conn) untuk kompatibilitas script yang menggunakan mysqli
+try {
+    $conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
+    if ($conn->connect_error) {
+        $altHost = ($dbHost === '127.0.0.1') ? 'localhost' : '127.0.0.1';
+        $conn = new mysqli($altHost, $dbUser, $dbPass, $dbName);
+    }
+    if ($conn && !$conn->connect_error) {
+        $conn->set_charset("utf8mb4");
+    }
+} catch (Throwable $cte) {
+    $conn = null;
+}
+
 /**
  * Singleton / Getter untuk PDO Instance
  */

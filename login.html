@@ -530,21 +530,23 @@
                     method: 'POST',
                     body: formData
                 });
-                const data = await res.json();
+                const text = await res.text();
+                let data = null;
+                try { data = JSON.parse(text); } catch(e) {}
                 
-                if (data.success || data.status === 'success') {
+                if (data && (data.success || data.status === 'success')) {
                     showToast('Login berhasil! Mengalihkan...', 'success');
                     setTimeout(() => {
                         window.location.href = getRedirectTarget();
                     }, 1000);
                 } else {
-                    showToast(data.error || data.message || 'Login gagal. Periksa email dan password Anda.');
+                    showToast((data && (data.error || data.message)) || ('Login gagal: ' + (text ? text.substring(0, 80) : 'Periksa email dan password Anda.')));
                     btn.disabled = false;
                     loader.classList.add('hidden');
                 }
             } catch (err) {
                 console.error(err);
-                showToast('Terjadi kesalahan pada server.');
+                showToast('Terjadi kesalahan pada server: ' + (err.message || ''));
                 btn.disabled = false;
                 loader.classList.add('hidden');
             }
@@ -586,28 +588,30 @@
             formData.append('address', address);
             formData.append('province', province);
             formData.append('city', city);
-            formData.append('zip', zip);
+            formData.append('postal_code', zip);
 
             try {
                 const res = await fetch('auth_api.php?action=register', {
                     method: 'POST',
                     body: formData
                 });
-                const data = await res.json();
+                const text = await res.text();
+                let data = null;
+                try { data = JSON.parse(text); } catch(e) {}
                 
-                if (data.success || data.status === 'success') {
+                if (data && (data.success || data.status === 'success')) {
                     showToast('Pendaftaran berhasil! Anda akan dialihkan...', 'success');
                     setTimeout(() => {
                         window.location.href = getRedirectTarget();
                     }, 1500);
                 } else {
-                    showToast(data.error || data.message || 'Pendaftaran gagal. Silakan coba lagi.');
+                    showToast((data && (data.error || data.message)) || ('Pendaftaran gagal: ' + (text ? text.substring(0, 80) : 'Silakan coba lagi.')));
                     btn.disabled = false;
                     loader.classList.add('hidden');
                 }
             } catch (err) {
                 console.error(err);
-                showToast('Terjadi kesalahan pada server.');
+                showToast('Terjadi kesalahan pada server: ' + (err.message || ''));
                 btn.disabled = false;
                 loader.classList.add('hidden');
             }

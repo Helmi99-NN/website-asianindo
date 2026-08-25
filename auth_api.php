@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 // Include database connection
 require_once __DIR__ . '/database/db.php';
+$pdo = getDB();
 
 /**
  * Helper to ensure customer is logged in.
