@@ -36,7 +36,7 @@ function requireCustomerLogin() {
         session_start();
     }
     if (empty($_SESSION['customer_id'])) {
-        http_response_code(401);
+        http_response_code(200);
         echo json_encode([
             'success' => false,
             'logged_in' => false,
@@ -61,7 +61,9 @@ function getRequestData() {
     return $_POST;
 }
 
-$action = $_GET['action'] ?? '';
+$action = $_GET['action'] ?? $_POST['action'] ?? '';
+
+try {
 
 // ==========================================
 // 1. REGISTER (POST)
@@ -549,6 +551,14 @@ if ($action === 'change_password') {
 // ==========================================
 // DEFAULT / INVALID ACTION
 // ==========================================
-http_response_code(400);
-echo json_encode(['error' => 'Invalid action']);
+echo json_encode(['success' => false, 'error' => 'Invalid action: ' . htmlspecialchars($action)]);
 exit;
+
+} catch (Throwable $e) {
+    http_response_code(200);
+    echo json_encode([
+        'success' => false,
+        'error' => 'Terjadi kesalahan sistem: ' . $e->getMessage()
+    ]);
+    exit;
+}
