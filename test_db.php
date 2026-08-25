@@ -13,6 +13,7 @@ $debug = [
     'db_config_exists' => file_exists($configPath3),
 ];
 
+define('CLI_MODE', true);
 require_once __DIR__ . '/database/db.php';
 
 $debug['db_host'] = $dbHost ?? 'unset';
@@ -20,6 +21,7 @@ $debug['db_name'] = $dbName ?? 'unset';
 $debug['db_user'] = $dbUser ?? 'unset';
 $debug['is_password_empty'] = empty($dbPass);
 $debug['password_length'] = strlen($dbPass ?? '');
+$debug['database_dir_files'] = is_dir(__DIR__ . '/database') ? scandir(__DIR__ . '/database') : [];
 
 try {
     $pdo = getDB();
