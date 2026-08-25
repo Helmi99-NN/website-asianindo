@@ -4,6 +4,28 @@
  * CV Asianindo E-Commerce System
  * (asianindomachine.com)
  */
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+
+// Global error handler to always return JSON
+set_error_handler(function($severity, $message, $file, $line) {
+    throw new ErrorException($message, 0, $severity, $file, $line);
+});
+
+set_exception_handler(function($e) {
+    if (!headers_sent()) {
+        http_response_code(200);
+        header('Content-Type: application/json');
+    }
+    echo json_encode([
+        'success' => false,
+        'error' => 'Server error: ' . $e->getMessage(),
+        'file' => basename($e->getFile()),
+        'line' => $e->getLine()
+    ]);
+    exit;
+});
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
