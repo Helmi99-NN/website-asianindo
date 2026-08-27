@@ -18,6 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 require_once __DIR__ . '/database/db.php';
+require_once __DIR__ . '/duitku_config.php';
+require_once __DIR__ . '/duitku_api.php';
 $pdo = getDB();
 
 function getInput() {
@@ -228,6 +230,9 @@ if ($action === 'create_order') {
 
     $total = $subtotal + $shipping_cost;
     $payment_scheme = trim($d['payment_scheme'] ?? 'dp_50');
+    $payment_method_code = trim($d['payment_method_code'] ?? $d['payment_method'] ?? 'BC');
+    $payment_gateway = ($payment_method_code === 'MANUAL_BCA' || $d['payment_gateway'] === 'manual_transfer') ? 'manual_transfer' : 'duitku';
+
     $initial_amount = $total;
     $scheme_text = '';
 
@@ -245,6 +250,13 @@ if ($action === 'create_order') {
     } else {
         $scheme_text = "Skema Pembayaran: Penuh 100% Lunas (Rp " . number_format($total, 0, ',', '.') . ")";
     }
+
+    // Hitung Biaya Layanan Duitku (jika bukan manual)
+    $payment_fee = 0;
+    if ($payment_gateway === 'duitku') {
+        $payment_fee = calculateDuitkuFee($payment_method_code, $initial_amount);
+    }
+    $total_bill_amount = $initial_amount + $payment_fee;
 
     $final_notes = trim($scheme_text . ($notes ? "\n\nCatatan Khusus:\n" . $notes : ''));
     $order_number = generateOrderNumber();
@@ -289,17 +301,31 @@ if ($action === 'create_order') {
             }
         }
 
-        // Insert initial payment record with initial DP / bill amount
+        // Pastikan kolom Duitku tersedia
+        ensureDuitkuColumnsExist();
+
+        // Get Channel info
+        $channels = getDuitkuPaymentChannels();
+        $selectedChannelInfo = $channels[$payment_method_code] ?? null;
+        $channelName = $selectedChannelInfo['name'] ?? ($payment_gateway === 'duitku' ? 'Duitku Payment Gateway' : 'Bank BCA');
+
+        // Insert initial payment record
         $stmt_pay = $pdo->prepare("
-            INSERT INTO payments (order_id, bank_name, account_number, account_name, amount, status, created_at)
-            VALUES (?, ?, ?, ?, ?, 'pending', NOW())
+            INSERT INTO payments (
+                order_id, bank_name, account_number, account_name, amount, 
+                payment_gateway, payment_method_code, payment_fee, status, created_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', NOW())
         ");
         $stmt_pay->execute([
             $order_id,
-            defined('COMPANY_BANK_NAME') ? COMPANY_BANK_NAME : 'Bank BCA',
-            defined('COMPANY_BANK_ACCOUNT') ? COMPANY_BANK_ACCOUNT : '6670747997',
-            defined('COMPANY_BANK_HOLDER') ? COMPANY_BANK_HOLDER : 'Iman Anjani Buchory',
-            $initial_amount
+            $channelName,
+            ($payment_gateway === 'manual_transfer') ? (defined('COMPANY_BANK_ACCOUNT') ? COMPANY_BANK_ACCOUNT : '6670747997') : '-',
+            ($payment_gateway === 'manual_transfer') ? (defined('COMPANY_BANK_HOLDER') ? COMPANY_BANK_HOLDER : 'Iman Anjani Buchory') : 'Duitku Gateway (' . $channelName . ')',
+            $total_bill_amount,
+            $payment_gateway,
+            $payment_method_code,
+            $payment_fee
         ]);
 
         // Insert initial shipment record
@@ -311,14 +337,38 @@ if ($action === 'create_order') {
 
         $pdo->commit();
 
+        // Jika metode pembayaran via Duitku, panggil API Inquiry Duitku
+        $duitkuResponse = null;
+        if ($payment_gateway === 'duitku') {
+            $orderPayload = [
+                'id' => $order_id,
+                'order_number' => $order_number,
+                'bill_amount' => $initial_amount,
+                'total' => $total,
+                'shipping_name' => $shipping_name,
+                'shipping_phone' => $shipping_phone
+            ];
+            $customerPayload = [
+                'name' => $shipping_name ?: ($_SESSION['customer_name'] ?? 'Pelanggan'),
+                'email' => $_SESSION['customer_email'] ?? 'pembeli@asianindomachine.com',
+                'phone' => $shipping_phone ?: '081234567890'
+            ];
+            $duitkuResponse = createDuitkuTransaction($orderPayload, $payment_method_code, $customerPayload);
+        }
+
         echo json_encode([
             'success' => true,
             'order_number' => $order_number,
             'total' => $total,
             'initial_amount' => $initial_amount,
+            'payment_fee' => $payment_fee,
+            'total_bill_amount' => $total_bill_amount,
             'payment_scheme' => $payment_scheme,
+            'payment_gateway' => $payment_gateway,
+            'payment_method_code' => $payment_method_code,
             'shipping_cost' => $shipping_cost,
-            'expedition' => $selected_expedition
+            'expedition' => $selected_expedition,
+            'duitku' => $duitkuResponse
         ]);
     } catch (Throwable $e) {
         if ($pdo->inTransaction()) {

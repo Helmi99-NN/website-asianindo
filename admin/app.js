@@ -32,7 +32,10 @@ function adminApp() {
             instagram: '',
             facebook: '',
             maps_url: '',
-            copyright: '© 2024 CV Asianindo Industrial Machinery. All rights reserved.'
+            copyright: '© 2024 CV Asianindo Industrial Machinery. All rights reserved.',
+            duitku_merchant_code: 'D12345',
+            duitku_api_key: '',
+            duitku_environment: 'sandbox'
         },
 
         articles: [],

@@ -117,10 +117,17 @@ DROP TABLE IF EXISTS `payments`;
 CREATE TABLE `payments` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `order_id` INT NOT NULL,
-    `bank_name` VARCHAR(50) NOT NULL,
-    `account_number` VARCHAR(50) NOT NULL,
+    `bank_name` VARCHAR(100) NOT NULL,
+    `account_number` VARCHAR(100) NOT NULL,
     `account_name` VARCHAR(100) NOT NULL,
     `amount` BIGINT NOT NULL,
+    `payment_gateway` VARCHAR(30) DEFAULT 'manual_transfer',
+    `payment_method_code` VARCHAR(30) NULL,
+    `payment_fee` BIGINT DEFAULT 0,
+    `duitku_reference` VARCHAR(100) NULL,
+    `duitku_va_number` VARCHAR(100) NULL,
+    `duitku_payment_url` TEXT NULL,
+    `duitku_qr_string` TEXT NULL,
     `proof_image` VARCHAR(500) NULL,
     `status` ENUM('pending', 'uploaded', 'verified', 'rejected') DEFAULT 'pending',
     `admin_notes` TEXT NULL,
@@ -128,6 +135,8 @@ CREATE TABLE `payments` (
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX `idx_payments_order_id` (`order_id`),
     INDEX `idx_payments_status` (`status`),
+    INDEX `idx_payments_gateway` (`payment_gateway`),
+    INDEX `idx_payments_reference` (`duitku_reference`),
     CONSTRAINT `fk_payments_order` FOREIGN KEY (`order_id`) 
         REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <script src="https://app-sandbox.duitku.com/lib/js/duitku.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -37,6 +38,60 @@
         let selectedExpedition = 'Indah Cargo (Cargo Logistik Mesin)';
         let selectedPaymentScheme = 'full'; // 'full' | 'dp_50' | 'dp_3_stage'
         let currentBillAmount = 0;
+        let selectedPaymentMethod = 'BC'; // 'BC' (BCA VA)
+        let selectedPaymentGateway = 'duitku';
+        let selectedPaymentName = 'BCA Virtual Account';
+        let paymentFee = 3000;
+
+        const paymentChannelsData = {
+            'BC': { name: 'BCA Virtual Account', gateway: 'duitku', type: 'flat', val: 3000 },
+            'M2': { name: 'Mandiri Virtual Account', gateway: 'duitku', type: 'flat', val: 3000 },
+            'BR': { name: 'BRI Virtual Account (BRIVA)', gateway: 'duitku', type: 'flat', val: 3000 },
+            'B1': { name: 'BNI Virtual Account', gateway: 'duitku', type: 'flat', val: 3000 },
+            'BT': { name: 'Permata Virtual Account', gateway: 'duitku', type: 'flat', val: 2500 },
+            'BSI': { name: 'BSI Virtual Account', gateway: 'duitku', type: 'flat', val: 3000 },
+            'C1': { name: 'CIMB Niaga Virtual Account', gateway: 'duitku', type: 'flat', val: 3000 },
+            'NQ': { name: 'QRIS (E-Wallet & M-Banking)', gateway: 'duitku', type: 'percent', percent: 0.7 },
+            'VC': { name: 'Kartu Kredit / Debit Online', gateway: 'duitku', type: 'combo', percent: 2.5, fixed: 2500 },
+            'OV': { name: 'OVO', gateway: 'duitku', type: 'percent', percent: 1.8 },
+            'DA': { name: 'DANA', gateway: 'duitku', type: 'percent', percent: 1.8 },
+            'SP': { name: 'ShopeePay', gateway: 'duitku', type: 'percent', percent: 1.8 },
+            'MANUAL_BCA': { name: 'Transfer Manual Bank BCA', gateway: 'manual_transfer', type: 'flat', val: 0 }
+        };
+
+        function calculateChannelFee(code, amount) {
+            const ch = paymentChannelsData[code];
+            if (!ch) return 3000;
+            if (ch.type === 'flat') return ch.val || 0;
+            if (ch.type === 'percent') return Math.round((amount * ch.percent) / 100);
+            if (ch.type === 'combo') return Math.round((amount * ch.percent) / 100) + (ch.fixed || 0);
+            return 0;
+        }
+
+        function selectPaymentChannel(code) {
+            selectedPaymentMethod = code;
+            const ch = paymentChannelsData[code];
+            if (ch) {
+                selectedPaymentGateway = ch.gateway;
+                selectedPaymentName = ch.name;
+            }
+
+            document.querySelectorAll('.payment-channel-card').forEach(card => {
+                const cardCode = card.getAttribute('data-code');
+                const radio = card.querySelector('input[type="radio"]');
+                if (cardCode === code) {
+                    card.classList.remove('border-gray-200', 'hover:border-gray-300', 'bg-white');
+                    card.classList.add('border-primary', 'bg-primary/5', 'shadow-sm');
+                    if (radio) radio.checked = true;
+                } else {
+                    card.classList.remove('border-primary', 'bg-primary/5', 'shadow-sm');
+                    card.classList.add('border-gray-200', 'hover:border-gray-300', 'bg-white');
+                    if (radio) radio.checked = false;
+                }
+            });
+
+            updateGrandTotal();
+        }
 
         async function initCheckout() {
             // Check auth
@@ -317,22 +372,45 @@
             if (elFull) elFull.textContent = formatRupiah(grandTotal);
 
             // Determine bill amount based on active scheme
-            let schemeLabel = 'DP 50% & Pelunasan 50%';
-            let billLabel = 'Tagihan Transfer DP Awal (50%)';
+            let schemeLabel = 'Pembayaran Penuh 100%';
+            let billLabel = 'Tagihan Pokok (100%)';
 
             if (selectedPaymentScheme === 'dp_50') {
                 currentBillAmount = dp50_1;
                 schemeLabel = 'DP 50% & Pelunasan 50%';
-                billLabel = 'Tagihan Transfer DP Awal (50%)';
+                billLabel = 'Tagihan Pokok DP Awal (50%)';
             } else if (selectedPaymentScheme === 'dp_3_stage') {
                 currentBillAmount = dp3_1;
                 schemeLabel = '3 Tahap (30% - 40% - 30%)';
-                billLabel = 'Tagihan Transfer DP 1 (30%)';
+                billLabel = 'Tagihan Pokok DP 1 (30%)';
             } else {
                 currentBillAmount = grandTotal;
                 schemeLabel = 'Pembayaran Penuh 100%';
-                billLabel = 'Total Tagihan Transfer (100%)';
+                billLabel = 'Tagihan Pokok (100%)';
             }
+
+            // Calculate Payment Fee for selected method
+            paymentFee = calculateChannelFee(selectedPaymentMethod, currentBillAmount);
+            const totalToPayNow = currentBillAmount + paymentFee;
+
+            // Update Channel Fee Badges in UI
+            Object.keys(paymentChannelsData).forEach(code => {
+                const feeBadge = document.getElementById('fee-badge-' + code);
+                if (feeBadge) {
+                    const feeVal = calculateChannelFee(code, currentBillAmount);
+                    if (feeVal === 0) {
+                        feeBadge.textContent = 'Bebas Biaya (Rp 0)';
+                        feeBadge.className = 'text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded';
+                    } else {
+                        const ch = paymentChannelsData[code];
+                        const feeStr = (ch.type === 'percent' || ch.type === 'combo') 
+                            ? `+ ${formatRupiah(feeVal)} (${ch.percent}%)` 
+                            : `+ ${formatRupiah(feeVal)}`;
+                        feeBadge.textContent = feeStr;
+                        feeBadge.className = 'text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded';
+                    }
+                }
+            });
 
             const grandTotalEl = document.getElementById('grand-total-display');
             if(grandTotalEl) grandTotalEl.textContent = formatRupiah(grandTotal);
@@ -345,6 +423,15 @@
 
             const schemeSummaryEl = document.getElementById('selected-scheme-display');
             if(schemeSummaryEl) schemeSummaryEl.textContent = schemeLabel;
+
+            const feeDisplayEl = document.getElementById('payment-fee-display');
+            if(feeDisplayEl) feeDisplayEl.textContent = (paymentFee === 0) ? 'Bebas Biaya (Rp 0)' : ('+ ' + formatRupiah(paymentFee));
+
+            const feeMethodLabelEl = document.getElementById('fee-method-label');
+            if(feeMethodLabelEl) feeMethodLabelEl.textContent = selectedPaymentName;
+
+            const finalTotalDisplayEl = document.getElementById('final-total-pay-display');
+            if(finalTotalDisplayEl) finalTotalDisplayEl.textContent = formatRupiah(totalToPayNow);
         }
 
         async function placeOrder() {
@@ -366,7 +453,7 @@
             }
 
             btn.disabled = true;
-            btn.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">sync</span> Memproses Pesanan...';
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">sync</span> Menghubungkan ke Gateway...';
 
             const fd = new FormData();
             fd.append('action', 'create_order');
@@ -381,6 +468,9 @@
             fd.append('shipping_cost', shippingCost);
             fd.append('expedition', selectedExpedition);
             fd.append('payment_scheme', selectedPaymentScheme);
+            fd.append('payment_method_code', selectedPaymentMethod);
+            fd.append('payment_gateway', selectedPaymentGateway);
+            fd.append('payment_fee', paymentFee);
             fd.append('notes', document.getElementById('notes').value);
 
             try {
@@ -390,50 +480,21 @@
                 if(data.success) {
                     if(isFromCart) sessionStorage.removeItem('checkout_items');
                     
-                    // Build complete order message to WhatsApp 085335850517
-                    const adminWA = '6285335850517';
-                    let itemsSummary = '';
-                    checkoutItems.forEach((it, idx) => {
-                        itemsSummary += `${idx + 1}. *${it.product_name}*\n   Jumlah: ${it.quantity} unit | Harga: ${formatRupiah((it.price || it.product_price) * it.quantity)}\n`;
-                    });
+                    if (data.duitku) {
+                        sessionStorage.setItem('last_duitku_' + data.order_number, JSON.stringify(data.duitku));
+                    }
 
-                    const waMsg = `*KONFIRMASI PESANAN BARU - CV ASIANINDO*\n` +
-                        `----------------------------------------\n` +
-                        `📋 *No. Pesanan:* ${data.order_number}\n\n` +
-                        `👤 *INFORMASI PEMBELI:*\n` +
-                        `• Nama: ${document.getElementById('ship_name').value}\n` +
-                        `• No. HP/WA: ${document.getElementById('ship_phone').value}\n` +
-                        `• Alamat: ${document.getElementById('ship_address').value}, ${document.getElementById('ship_city').value}, ${document.getElementById('ship_province').value} ${document.getElementById('ship_postal').value}\n\n` +
-                        `📦 *DETAIL PRODUK:*\n` +
-                        itemsSummary + `\n` +
-                        `🚚 *PENGIRIMAN:*\n` +
-                        `• Ekspedisi: ${selectedExpedition}\n` +
-                        `• Ongkos Kirim: ${formatRupiah(shippingCost)}\n\n` +
-                        `💳 *SKEMA PEMBAYARAN:*\n` +
-                        `• Total Nilai Pesanan: ${formatRupiah(data.total)}\n` +
-                        `• *Tagihan Transfer Saat Ini (DP):* *${formatRupiah(data.initial_amount)}*\n` +
-                        `• Rekening: BCA 6670747997 a/n Iman Anjani Buchory\n\n` +
-                        `🔗 *Halaman Konfirmasi & Upload Bukti Transfer:*\n` +
-                        `https://asianindomachine.com/pembayaran.html?order_number=${data.order_number}\n\n` +
-                        `Halo admin CV Asianindo, mohon diproses untuk pesanan ini. Terima kasih!`;
-
-                    const waUrl = `https://wa.me/${adminWA}?text=${encodeURIComponent(waMsg)}`;
-                    
-                    // Simpan link WA & pesan lengkap di sessionStorage untuk digunakan setelah upload bukti transfer
-                    sessionStorage.setItem('last_order_wa_url', waUrl);
-                    sessionStorage.setItem('last_order_wa_msg', waMsg);
-
-                    // Arahkan langsung ke halaman pembayaran (tidak buka popup WA agar proses pembayaran & transfer diselesaikan terlebih dahulu)
+                    // Arahkan langsung ke halaman pembayaran
                     window.location.href = 'pembayaran.html?order_number=' + data.order_number;
                 } else {
                     alert('Gagal membuat pesanan: ' + (data.error || 'Unknown error'));
                     btn.disabled = false;
-                    btn.textContent = 'Buat Pesanan';
+                    btn.textContent = 'Buat Pesanan & Bayar';
                 }
             } catch(e) {
                 alert('Terjadi kesalahan jaringan.');
                 btn.disabled = false;
-                btn.textContent = 'Buat Pesanan';
+                btn.textContent = 'Buat Pesanan & Bayar';
             }
         }
 
@@ -677,16 +738,165 @@
                         </div>
                     </div>
 
-                    <!-- Info Bank Transfer -->
-                    <div class="mt-5 p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <span class="font-bold text-gray-900 text-sm">Transfer Bank BCA</span>
-                                <span class="text-[10px] bg-primary text-white font-bold px-2 py-0.5 rounded">Rekening Resmi</span>
-                            </div>
-                            <p class="text-xs text-gray-600 mt-1">No. Rek: <strong class="text-gray-900">6670747997</strong> • a/n Iman Anjani Buchory</p>
+                <!-- Pilihan Metode Pembayaran (Duitku Payment Gateway & Transfer Manual) -->
+                <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-heading font-bold flex items-center gap-2 text-gray-900">
+                            <span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+                            Metode Pembayaran
+                        </h2>
+                        <span class="text-xs text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs text-emerald-600">verified</span> Duitku Payment Gateway
+                        </span>
+                    </div>
+
+                    <p class="text-xs text-gray-500 mb-4">Biaya layanan platform Duitku ditambahkan secara transparan sesuai metode pembayaran yang dipilih.</p>
+
+                    <!-- Group 1: Virtual Account Bank (Otomatis) -->
+                    <div class="mb-5">
+                        <div class="flex items-center justify-between mb-2.5">
+                            <span class="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-primary text-base">account_balance</span>
+                                Virtual Account Bank (Verifikasi Otomatis 24 Jam)
+                            </span>
+                            <span class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">Biaya Flat Rp 3.000</span>
                         </div>
-                        <span class="material-symbols-outlined text-primary text-2xl">account_balance</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <!-- BCA VA -->
+                            <div data-code="BC" onclick="selectPaymentChannel('BC')" class="payment-channel-card border-2 border-primary bg-primary/5 shadow-sm p-3 rounded-xl cursor-pointer transition-all flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment_channel_choice" value="BC" checked class="w-4 h-4 text-primary focus:ring-primary">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" alt="BCA VA" class="h-5 w-12 object-contain">
+                                    <div>
+                                        <span class="font-bold text-gray-900 text-xs block">BCA Virtual Account</span>
+                                        <span class="text-[10px] text-gray-500">m-BCA, KlikBCA, ATM</span>
+                                    </div>
+                                </div>
+                                <span id="fee-badge-BC" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 3.000</span>
+                            </div>
+
+                            <!-- Mandiri VA -->
+                            <div data-code="M2" onclick="selectPaymentChannel('M2')" class="payment-channel-card border-2 border-gray-200 hover:border-gray-300 bg-white p-3 rounded-xl cursor-pointer transition-all flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment_channel_choice" value="M2" class="w-4 h-4 text-primary focus:ring-primary">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg" alt="Mandiri VA" class="h-5 w-12 object-contain">
+                                    <div>
+                                        <span class="font-bold text-gray-900 text-xs block">Mandiri Virtual Account</span>
+                                        <span class="text-[10px] text-gray-500">Livin' by Mandiri, ATM</span>
+                                    </div>
+                                </div>
+                                <span id="fee-badge-M2" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 3.000</span>
+                            </div>
+
+                            <!-- BRI VA -->
+                            <div data-code="BR" onclick="selectPaymentChannel('BR')" class="payment-channel-card border-2 border-gray-200 hover:border-gray-300 bg-white p-3 rounded-xl cursor-pointer transition-all flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment_channel_choice" value="BR" class="w-4 h-4 text-primary focus:ring-primary">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg" alt="BRI VA" class="h-5 w-12 object-contain">
+                                    <div>
+                                        <span class="font-bold text-gray-900 text-xs block">BRI Virtual Account (BRIVA)</span>
+                                        <span class="text-[10px] text-gray-500">BRImo, ATM BRI</span>
+                                    </div>
+                                </div>
+                                <span id="fee-badge-BR" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 3.000</span>
+                            </div>
+
+                            <!-- BNI VA -->
+                            <div data-code="B1" onclick="selectPaymentChannel('B1')" class="payment-channel-card border-2 border-gray-200 hover:border-gray-300 bg-white p-3 rounded-xl cursor-pointer transition-all flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment_channel_choice" value="B1" class="w-4 h-4 text-primary focus:ring-primary">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/f0/BNI_logo.svg" alt="BNI VA" class="h-5 w-12 object-contain">
+                                    <div>
+                                        <span class="font-bold text-gray-900 text-xs block">BNI Virtual Account</span>
+                                        <span class="text-[10px] text-gray-500">BNI Mobile, ATM BNI</span>
+                                    </div>
+                                </div>
+                                <span id="fee-badge-B1" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 3.000</span>
+                            </div>
+
+                            <!-- Permata VA -->
+                            <div data-code="BT" onclick="selectPaymentChannel('BT')" class="payment-channel-card border-2 border-gray-200 hover:border-gray-300 bg-white p-3 rounded-xl cursor-pointer transition-all flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment_channel_choice" value="BT" class="w-4 h-4 text-primary focus:ring-primary">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/PermataBank_logo.svg" alt="Permata VA" class="h-5 w-12 object-contain">
+                                    <div>
+                                        <span class="font-bold text-gray-900 text-xs block">Permata Virtual Account</span>
+                                        <span class="text-[10px] text-gray-500">PermataME / Semua Bank (ALTO)</span>
+                                    </div>
+                                </div>
+                                <span id="fee-badge-BT" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 2.500</span>
+                            </div>
+
+                            <!-- BSI VA -->
+                            <div data-code="BSI" onclick="selectPaymentChannel('BSI')" class="payment-channel-card border-2 border-gray-200 hover:border-gray-300 bg-white p-3 rounded-xl cursor-pointer transition-all flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment_channel_choice" value="BSI" class="w-4 h-4 text-primary focus:ring-primary">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Bank_Syariah_Indonesia.svg" alt="BSI VA" class="h-5 w-12 object-contain">
+                                    <div>
+                                        <span class="font-bold text-gray-900 text-xs block">BSI Virtual Account</span>
+                                        <span class="text-[10px] text-gray-500">BSI Mobile, ATM BSI</span>
+                                    </div>
+                                </div>
+                                <span id="fee-badge-BSI" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 3.000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Group 2: QRIS & Kartu Kredit -->
+                    <div class="mb-5">
+                        <span class="text-xs font-bold text-gray-700 uppercase tracking-wider block mb-2.5 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-primary text-base">qr_code_2</span>
+                            QRIS & Kartu Kredit
+                        </span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <!-- QRIS -->
+                            <div data-code="NQ" onclick="selectPaymentChannel('NQ')" class="payment-channel-card border-2 border-gray-200 hover:border-gray-300 bg-white p-3 rounded-xl cursor-pointer transition-all flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment_channel_choice" value="NQ" class="w-4 h-4 text-primary focus:ring-primary">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" alt="QRIS" class="h-5 w-12 object-contain">
+                                    <div>
+                                        <span class="font-bold text-gray-900 text-xs block">QRIS (Instant Scan)</span>
+                                        <span class="text-[10px] text-gray-500">GoPay, OVO, Dana, BCA Mobile</span>
+                                    </div>
+                                </div>
+                                <span id="fee-badge-NQ" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ 0,7%</span>
+                            </div>
+
+                            <!-- Kartu Kredit -->
+                            <div data-code="VC" onclick="selectPaymentChannel('VC')" class="payment-channel-card border-2 border-gray-200 hover:border-gray-300 bg-white p-3 rounded-xl cursor-pointer transition-all flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment_channel_choice" value="VC" class="w-4 h-4 text-primary focus:ring-primary">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/Visa_2021.svg" alt="Credit Card" class="h-5 w-12 object-contain">
+                                    <div>
+                                        <span class="font-bold text-gray-900 text-xs block">Kartu Kredit / Debit</span>
+                                        <span class="text-[10px] text-gray-500">Visa, Mastercard, JCB</span>
+                                    </div>
+                                </div>
+                                <span id="fee-badge-VC" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ 2,5% + Rp 2.500</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Group 3: Transfer Manual Bebas Biaya -->
+                    <div>
+                        <span class="text-xs font-bold text-gray-700 uppercase tracking-wider block mb-2.5 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-emerald-600 text-base">savings</span>
+                            Transfer Bank Manual (Bebas Biaya Admin / Rp 0)
+                        </span>
+                        <div data-code="MANUAL_BCA" onclick="selectPaymentChannel('MANUAL_BCA')" class="payment-channel-card border-2 border-gray-200 hover:border-gray-300 bg-white p-3.5 rounded-xl cursor-pointer transition-all flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <input type="radio" name="payment_channel_choice" value="MANUAL_BCA" class="w-4 h-4 text-primary focus:ring-primary">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" alt="BCA Manual" class="h-5 w-12 object-contain">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-gray-900 text-xs">Transfer Rekening Resmi BCA CV Asianindo</span>
+                                        <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.2 rounded">Bebas Biaya</span>
+                                    </div>
+                                    <p class="text-[11px] text-gray-500 mt-0.5">No. Rek: <strong class="text-gray-900">6670747997</strong> a/n Iman Anjani Buchory (Upload bukti transfer manual)</p>
+                                </div>
+                            </div>
+                            <span id="fee-badge-MANUAL_BCA" class="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Rp 0</span>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -696,7 +906,7 @@
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 lg:sticky lg:top-24">
                     <h2 class="text-lg font-heading font-bold mb-4">Ringkasan Belanja</h2>
                     
-                    <div class="space-y-3 mb-5 pb-5 border-b border-gray-100 text-sm">
+                    <div class="space-y-3 mb-4 pb-4 border-b border-gray-100 text-sm">
                         <div class="flex justify-between text-gray-600">
                             <span>Subtotal Produk</span>
                             <span id="subtotal-display" class="font-medium text-gray-800">Rp 0</span>
@@ -712,25 +922,35 @@
                     </div>
 
                     <!-- Skema Terpilih & Nominal Transfer Saat Ini -->
-                    <div class="bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20 rounded-xl p-4 mb-6">
+                    <div class="bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20 rounded-xl p-4 mb-5">
                         <div class="flex items-center justify-between text-xs text-gray-600 mb-1">
                             <span>Skema Pembayaran:</span>
-                            <strong id="selected-scheme-display" class="text-primary font-bold text-right">DP 50%</strong>
+                            <strong id="selected-scheme-display" class="text-primary font-bold text-right">Pembayaran Penuh 100%</strong>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-600 mb-1">
+                            <span>Metode Terpilih:</span>
+                            <strong id="fee-method-label" class="text-gray-800 font-semibold text-right truncate max-w-[180px]">BCA Virtual Account</strong>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-600 mb-2">
+                            <span>Biaya Layanan Platform:</span>
+                            <strong id="payment-fee-display" class="text-primary font-bold text-right">+ Rp 3.000</strong>
                         </div>
                         <div class="mt-2 pt-2 border-t border-primary/20">
-                            <span id="bill-label-display" class="text-xs text-gray-600 font-medium block">Tagihan Transfer Sekarang (DP):</span>
-                            <span id="current-bill-display" class="text-2xl font-heading font-bold text-primary block mt-1">Rp 0</span>
+                            <span id="bill-label-display" class="text-xs text-gray-600 font-medium block">Total Tagihan Sekarang:</span>
+                            <span id="final-total-pay-display" class="text-2xl font-heading font-bold text-primary block mt-1">Rp 0</span>
+                            <span id="current-bill-display" class="hidden">Rp 0</span>
                         </div>
                     </div>
 
-                    <button id="btn-submit" onclick="placeOrder()" class="w-full bg-primary hover:bg-secondary text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg shadow-primary/30 transition-all flex items-center justify-center">
-                        Buat Pesanan
+                    <button id="btn-submit" onclick="placeOrder()" class="w-full bg-primary hover:bg-secondary text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg shadow-primary/30 transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-lg">lock</span>
+                        Buat Pesanan & Bayar
                     </button>
 
                     <div class="mt-4 space-y-2 text-xs text-gray-500">
                         <div class="flex items-center gap-2">
                             <span class="material-symbols-outlined text-emerald-500 text-sm">verified_user</span>
-                            <span>Transaksi Aman & Terverifikasi</span>
+                            <span>Transaksi Aman & Enkripsi Duitku</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="material-symbols-outlined text-emerald-500 text-sm">shield</span>

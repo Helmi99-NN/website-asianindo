@@ -553,9 +553,35 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             <div class="form-group"><label class="form-label">Teks Copyright Footer</label><input type="text" x-model="settings.copyright" class="form-input"></div>
         </div>
 
-        <!-- System Settings -->
+        <!-- Duitku Payment Gateway Settings -->
         <div class="card card-body mb-6">
-            <h3 class="section-title"><i class="fas fa-server text-indigo-500"></i> Konfigurasi Sistem</h3>
+            <h3 class="section-title"><i class="fas fa-credit-card text-purple-600"></i> Payment Gateway Duitku</h3>
+            <p class="text-xs text-gray-500 mb-4">Integrasi pembayaran otomatis Virtual Account (BCA, Mandiri, BRI, BNI, BSI, Permata), QRIS, & Kartu Kredit. Biaya fee dibebankan ke pembeli.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="form-group">
+                    <label class="form-label">Merchant Code Duitku</label>
+                    <input type="text" x-model="settings.duitku_merchant_code" class="form-input" placeholder="Misal: D12345">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">API Key Duitku</label>
+                    <input type="password" x-model="settings.duitku_api_key" class="form-input" placeholder="Masukkan Merchant API Key">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mode Lingkungan (Environment)</label>
+                    <select x-model="settings.duitku_environment" class="form-input">
+                        <option value="sandbox">Sandbox (Testing / Uji Coba)</option>
+                        <option value="production">Production (Live Transaksi Nyata)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">URL Callback / Webhook (Salin ke Dashboard Duitku)</label>
+                    <div class="flex gap-2">
+                        <input type="text" readonly :value="window.location.origin + '/duitku_callback.php'" class="form-input bg-gray-100 text-xs font-mono select-all">
+                        <button type="button" @click="copyToClipboard(window.location.origin + '/duitku_callback.php')" class="btn-secondary text-xs px-3" title="Salin Callback URL"><i class="fas fa-copy"></i></button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <button @click="saveModule('settings')" class="btn-success"><i class="fas fa-save"></i> Simpan Pengaturan</button>
@@ -801,6 +827,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 <tr>
                     <th class="p-4 font-medium">No. Pesanan / Tgl</th>
                     <th class="p-4 font-medium">Pelanggan</th>
+                    <th class="p-4 font-medium">Metode Pembayaran</th>
                     <th class="p-4 font-medium text-right">Total</th>
                     <th class="p-4 font-medium text-center">Status</th>
                     <th class="p-4 font-medium text-center">Aksi</th>
@@ -817,7 +844,17 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                             <div class="font-medium" x-text="o.customer_name"></div>
                             <div class="text-xs text-gray-500" x-text="o.item_count + ' Item'"></div>
                         </td>
-                        <td class="p-4 text-right font-bold" x-text="formatRupiah(o.total_amount)"></td>
+                        <td class="p-4">
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-xs font-semibold text-gray-800" x-text="o.bank_name || 'Bank BCA'"></span>
+                                <span x-show="o.payment_gateway === 'duitku'" class="text-[10px] bg-purple-100 text-primary font-bold px-1.5 py-0.5 rounded">Duitku</span>
+                            </div>
+                            <div class="text-[11px] text-gray-400 mt-0.5" x-show="o.payment_fee > 0" x-text="'Fee: ' + formatRupiah(o.payment_fee)"></div>
+                        </td>
+                        <td class="p-4 text-right">
+                            <div class="font-bold text-gray-900" x-text="formatRupiah(o.total_amount || o.total)"></div>
+                            <div class="text-[11px] text-gray-400" x-show="o.bill_amount && o.bill_amount !== o.total" x-text="'Tagihan: ' + formatRupiah(o.bill_amount)"></div>
+                        </td>
                         <td class="p-4 text-center">
                             <span class="px-2.5 py-1 text-[11px] font-bold rounded-full"
                                   :class="getOrderStatusBadgeClass(o.status)"
@@ -845,7 +882,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     </tr>
                 </template>
                 <tr x-show="orders.length === 0">
-                    <td colspan="5" class="p-8 text-center text-gray-400">Tidak ada data pesanan.</td>
+                    <td colspan="6" class="p-8 text-center text-gray-400">Tidak ada data pesanan.</td>
                 </tr>
             </tbody>
         </table>
@@ -976,10 +1013,18 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     </div>
 
                     <div class="card card-body p-4 border border-gray-200 shadow-none">
-                        <h4 class="font-bold text-sm uppercase text-gray-500 mb-3 border-b pb-2">Logistik</h4>
-                        <p class="text-sm text-gray-700 font-semibold">Kurir: <span class="font-normal" x-text="activeOrder?.shipping_courier"></span></p>
+                        <h4 class="font-bold text-sm uppercase text-gray-500 mb-3 border-b pb-2">Logistik & Pengiriman</h4>
+                        <p class="text-sm text-gray-700 font-semibold">Kurir: <span class="font-normal" x-text="activeOrder?.shipping_courier || activeOrder?.shipment?.expedition || 'Indah Cargo'"></span></p>
                         <p class="text-sm text-gray-700 font-semibold mt-1">Resi: <span class="font-normal text-blue-600" x-text="activeOrder?.shipment?.tracking_number || 'Belum ada'"></span></p>
                         <p class="text-sm text-gray-700 font-semibold mt-1">Status: <span class="font-normal uppercase" x-text="activeOrder?.shipment?.status || '-'"></span></p>
+                    </div>
+
+                    <div class="card card-body p-4 border border-gray-200 shadow-none">
+                        <h4 class="font-bold text-sm uppercase text-gray-500 mb-3 border-b pb-2">Pembayaran</h4>
+                        <p class="text-sm text-gray-700 font-semibold">Metode: <span class="font-normal" x-text="activeOrder?.payment?.bank_name || activeOrder?.payment?.payment_method || 'Bank BCA'"></span></p>
+                        <p class="text-sm text-gray-700 font-semibold mt-1" x-show="activeOrder?.payment?.duitku_va_number">No. VA: <span class="font-normal text-primary font-mono" x-text="activeOrder?.payment?.duitku_va_number"></span></p>
+                        <p class="text-sm text-gray-700 font-semibold mt-1" x-show="activeOrder?.payment?.duitku_reference">Ref Duitku: <span class="font-normal text-gray-600 font-mono text-xs" x-text="activeOrder?.payment?.duitku_reference"></span></p>
+                        <p class="text-sm text-gray-700 font-semibold mt-1">Status Bayar: <span class="font-bold uppercase text-xs px-2 py-0.5 rounded" :class="activeOrder?.payment?.status === 'verified' ? 'bg-green-100 text-green-700' : (activeOrder?.payment?.status === 'uploaded' ? 'bg-orange-100 text-orange-700' : 'bg-yellow-100 text-yellow-700')" x-text="activeOrder?.payment?.status || 'pending'"></span></p>
                     </div>
                 </div>
 
@@ -1003,22 +1048,26 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                         </td>
                                         <td class="p-3 text-center text-gray-600" x-text="formatRupiah(item.price)"></td>
                                         <td class="p-3 text-center text-gray-600" x-text="item.quantity"></td>
-                                        <td class="p-3 text-right font-medium text-gray-800" x-text="formatRupiah(item.subtotal)"></td>
+                                        <td class="p-3 text-right font-medium text-gray-800" x-text="formatRupiah(item.subtotal || (item.price * item.quantity))"></td>
                                     </tr>
                                 </template>
                             </tbody>
                             <tfoot class="bg-gray-50 border-t">
                                 <tr>
                                     <td colspan="3" class="p-3 text-right text-gray-600">Subtotal Produk</td>
-                                    <td class="p-3 text-right font-medium text-gray-800" x-text="formatRupiah(activeOrder?.total_amount - activeOrder?.shipping_cost)"></td>
+                                    <td class="p-3 text-right font-medium text-gray-800" x-text="formatRupiah((activeOrder?.total_amount || activeOrder?.total) - activeOrder?.shipping_cost)"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="3" class="p-3 text-right text-gray-600 border-none pt-0">Ongkos Kirim</td>
                                     <td class="p-3 text-right font-medium text-gray-800 border-none pt-0" x-text="formatRupiah(activeOrder?.shipping_cost)"></td>
                                 </tr>
+                                <tr x-show="activeOrder?.payment?.payment_fee > 0">
+                                    <td colspan="3" class="p-3 text-right text-gray-600 border-none pt-0">Biaya Layanan Payment Gateway</td>
+                                    <td class="p-3 text-right font-medium text-purple-700 border-none pt-0" x-text="formatRupiah(activeOrder?.payment?.payment_fee)"></td>
+                                </tr>
                                 <tr>
-                                    <td colspan="3" class="p-3 text-right font-bold text-primary text-base">Total Pesanan</td>
-                                    <td class="p-3 text-right font-bold text-primary text-base" x-text="formatRupiah(activeOrder?.total_amount)"></td>
+                                    <td colspan="3" class="p-3 text-right font-bold text-primary text-base">Total Tagihan Dibayar</td>
+                                    <td class="p-3 text-right font-bold text-primary text-base" x-text="formatRupiah(activeOrder?.payment?.amount || activeOrder?.total_amount || activeOrder?.total)"></td>
                                 </tr>
                             </tfoot>
                         </table>

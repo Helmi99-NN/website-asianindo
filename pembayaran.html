@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script src="https://app-sandbox.duitku.com/lib/js/duitku.js"></script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; }
@@ -57,48 +58,90 @@
             </div>
         </div>
 
-        <!-- Instruksi Pembayaran -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6">
-            <h3 class="text-base sm:text-lg font-bold text-gray-900 border-b border-gray-100 pb-3 mb-4 flex items-center gap-2">
-                <span class="material-symbols-outlined text-primary text-xl sm:text-2xl">account_balance</span>
-                Transfer Bank BCA
-            </h3>
+        <!-- Instruksi Pembayaran (Dinamis: Duitku VA / QRIS / CC / Manual Transfer) -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6" id="payment_card_container">
+            <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
+                <h3 class="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2" id="method_title">
+                    <span class="material-symbols-outlined text-primary text-xl sm:text-2xl" id="method_icon">account_balance</span>
+                    <span id="method_name_display">Transfer Pembayaran</span>
+                </h3>
+                <span id="gateway_badge" class="text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-100 text-primary flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs">verified</span> Otomatis 24 Jam
+                </span>
+            </div>
             
-            <div class="mb-4 sm:mb-6 bg-blue-50/70 p-3.5 sm:p-5 rounded-2xl border border-blue-100">
+            <!-- Box Detail Rekening / VA / QRIS -->
+            <div class="mb-4 sm:mb-6 bg-gradient-to-br from-purple-50/70 to-blue-50/50 p-3.5 sm:p-5 rounded-2xl border border-purple-100">
                 <div class="flex items-center justify-between mb-3">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" alt="BCA" class="h-6 sm:h-8">
-                    <span class="text-[11px] sm:text-xs font-semibold px-2 py-0.5 rounded-md bg-blue-100 text-blue-800">Transfer Manual</span>
+                    <div class="flex items-center gap-2" id="channel_logo_container">
+                        <img id="channel_logo" src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" alt="Bank Logo" class="h-6 sm:h-8 object-contain">
+                    </div>
+                    <span id="channel_tag" class="text-[11px] sm:text-xs font-semibold px-2 py-0.5 rounded-md bg-primary/10 text-primary">Virtual Account</span>
                 </div>
                 
                 <div class="space-y-3.5">
-                    <div class="flex items-center justify-between gap-2">
+                    <!-- Nomor Rekening / VA -->
+                    <div id="account_number_row" class="flex items-center justify-between gap-2">
                         <div>
-                            <span class="text-xs text-gray-500 block">Nomor Rekening Tujuan</span>
+                            <span class="text-xs text-gray-500 block" id="account_label">Nomor Virtual Account (VA)</span>
                             <strong class="text-lg sm:text-2xl text-gray-900 font-bold tracking-wider" id="bank_account">6670747997</strong>
                         </div>
-                        <button onclick="copyText('bank_account')" class="bg-white text-blue-600 border border-blue-200 hover:bg-blue-50 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1 shadow-2xs transition active:scale-95 flex-shrink-0">
+                        <button onclick="copyText('bank_account', 'Nomor Rekening / VA')" class="bg-white text-primary border border-purple-200 hover:bg-purple-50 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1 shadow-2xs transition active:scale-95 flex-shrink-0">
                             <span class="material-symbols-outlined text-sm">content_copy</span> Salin
                         </button>
                     </div>
                     
-                    <div>
-                        <span class="text-xs text-gray-500 block">Atas Nama Penerima</span>
-                        <strong class="text-sm sm:text-base text-gray-900 font-semibold" id="bank_name">Iman Anjani Buchory</strong>
+                    <!-- Atas Nama / Channel Name -->
+                    <div id="account_name_row">
+                        <span class="text-xs text-gray-500 block" id="holder_label">Nama Pembayaran</span>
+                        <strong class="text-sm sm:text-base text-gray-900 font-semibold" id="bank_name">CV Asianindo</strong>
                     </div>
 
-                    <div class="border-t border-blue-200/80 pt-3.5 mt-2">
-                        <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-purple-900 block mb-1" id="bill_label">Tagihan Transfer Saat Ini</span>
+                    <!-- Box QRIS Image (Khusus jika metode QRIS) -->
+                    <div id="qris_container" class="hidden text-center py-3 bg-white rounded-xl border border-purple-100 p-4">
+                        <span class="text-xs text-gray-600 font-medium block mb-2">Scan QRIS menggunakan BCA Mobile, GoPay, OVO, DANA, ShopeePay:</span>
+                        <div class="flex justify-center mb-2">
+                            <img id="qris_image" src="" alt="QRIS Code" class="max-w-[220px] rounded-lg shadow-sm border border-gray-200">
+                        </div>
+                        <span class="text-[11px] text-gray-400">QRIS akan kadaluarsa dalam 24 jam</span>
+                    </div>
+
+                    <!-- Total Nominal Tagihan -->
+                    <div class="border-t border-purple-200/80 pt-3.5 mt-2">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-purple-900" id="bill_label">Total Tagihan Transfer Saat Ini</span>
+                            <span id="fee_info_badge" class="text-[11px] text-gray-500 font-medium hidden">Termasuk Biaya Platform</span>
+                        </div>
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                             <div>
                                 <strong class="text-2xl sm:text-3xl font-extrabold text-[#330e7a] tracking-tight block" id="total_amount">Rp 0</strong>
                                 <span class="text-xs text-gray-500 block mt-0.5" id="order_total_info">Total Nilai Pesanan: Rp 0</span>
                             </div>
-                            <button onclick="copyText('total_amount')" class="w-full sm:w-auto bg-[#330e7a] hover:bg-[#4a2c91] text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 shadow-sm transition active:scale-95 flex-shrink-0">
+                            <button onclick="copyText('total_amount', 'Jumlah Tagihan')" class="w-full sm:w-auto bg-[#330e7a] hover:bg-[#4a2c91] text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 shadow-sm transition active:scale-95 flex-shrink-0">
                                 <span class="material-symbols-outlined text-base">content_copy</span> Salin Jumlah
                             </button>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Realtime Verification Pulsing Notice (Khusus Duitku Otomatis) -->
+            <div id="duitku_auto_notice" class="hidden mb-4 sm:mb-6 p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-3">
+                <span class="relative flex h-3 w-3 flex-shrink-0">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                </span>
+                <p class="text-xs text-emerald-900 font-medium leading-relaxed">
+                    <strong>Verifikasi Otomatis Aktif:</strong> Begitu Anda mentransfer ke nomor Virtual Account di atas, sistem akan memverifikasi dalam beberapa detik tanpa perlu upload bukti transfer.
+                </p>
+            </div>
+
+            <!-- Tombol Buka Pop-up Duitku jika ada Payment URL -->
+            <div id="duitku_pop_container" class="hidden mb-4 sm:mb-6 text-center">
+                <button id="btn_open_duitku_pop" class="w-full bg-primary hover:bg-secondary text-white font-bold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-xs sm:text-sm">
+                    <span class="material-symbols-outlined text-base">open_in_new</span>
+                    Buka Halaman Pembayaran Duitku
+                </button>
             </div>
 
             <!-- Catatan Skema Termin / Tahap Pembayaran -->
@@ -111,74 +154,51 @@
             </div>
 
             <!-- Petunjuk Transfer (BCA & Beda Bank) -->
-            <div class="text-xs sm:text-sm text-gray-600 space-y-2">
+            <div class="text-xs sm:text-sm text-gray-600 space-y-2" id="transfer_instructions">
                 <h4 class="font-bold text-gray-800 mb-2">Petunjuk & Cara Pembayaran:</h4>
                 
-                <!-- m-BCA -->
-                <details class="group bg-gray-50 rounded-xl p-3 cursor-pointer border border-gray-100">
+                <!-- m-BCA / Mobile Banking -->
+                <details class="group bg-gray-50 rounded-xl p-3 cursor-pointer border border-gray-100" open>
                     <summary class="font-semibold flex justify-between items-center text-xs sm:text-sm">
-                        <span>m-BCA (Mobile Banking BCA)</span>
+                        <span id="guide_title_1">Mobile Banking (m-Banking / Livin / BRImo / BNI Mobile)</span>
                         <span class="material-symbols-outlined group-open:rotate-180 transition text-base">expand_more</span>
                     </summary>
-                    <ol class="list-decimal pl-4 mt-2 space-y-1 text-xs text-gray-600 leading-relaxed">
-                        <li>Buka aplikasi BCA mobile, pilih <strong>m-BCA</strong></li>
-                        <li>Pilih menu <strong>m-Transfer</strong> > <strong>Antar Rekening</strong></li>
-                        <li>Masukkan nomor rekening tujuan <strong>6670747997</strong></li>
-                        <li>Masukkan nominal sesuai <strong>Tagihan Transfer Saat Ini</strong></li>
-                        <li>Pastikan nama penerima <strong>Iman Anjani Buchory</strong></li>
-                        <li>Masukkan PIN m-BCA dan simpan bukti transfer</li>
+                    <ol class="list-decimal pl-4 mt-2 space-y-1 text-xs text-gray-600 leading-relaxed" id="guide_steps_1">
+                        <li>Buka aplikasi Mobile Banking pilihan Anda</li>
+                        <li>Pilih menu <strong>Transfer</strong> > <strong>Virtual Account / Antar Rekening</strong></li>
+                        <li>Masukkan nomor tujuan yang tertera di atas</li>
+                        <li>Masukkan nominal sesuai <strong>Total Tagihan Transfer</strong></li>
+                        <li>Konfirmasi rincian pembayaran dan masukkan PIN Anda</li>
                     </ol>
                 </details>
 
-                <!-- ATM BCA -->
+                <!-- ATM -->
                 <details class="group bg-gray-50 rounded-xl p-3 cursor-pointer border border-gray-100">
                     <summary class="font-semibold flex justify-between items-center text-xs sm:text-sm">
-                        <span>ATM BCA</span>
+                        <span>ATM Bank / Antar Bank</span>
                         <span class="material-symbols-outlined group-open:rotate-180 transition text-base">expand_more</span>
                     </summary>
                     <ol class="list-decimal pl-4 mt-2 space-y-1 text-xs text-gray-600 leading-relaxed">
-                        <li>Masukkan Kartu ATM BCA dan PIN Anda</li>
-                        <li>Pilih <strong>Transaksi Lainnya</strong> > <strong>Transfer</strong> > <strong>Ke Rek BCA</strong></li>
-                        <li>Masukkan nomor rekening <strong>6670747997</strong></li>
-                        <li>Masukkan nominal sesuai <strong>Tagihan Transfer Saat Ini</strong></li>
-                        <li>Konfirmasi nama penerima <strong>Iman Anjani Buchory</strong></li>
-                        <li>Simpan struk ATM sebagai bukti pembayaran</li>
-                    </ol>
-                </details>
-
-                <!-- Transfer Beda Bank -->
-                <details class="group bg-purple-50/60 rounded-xl p-3 cursor-pointer border border-purple-100">
-                    <summary class="font-semibold flex justify-between items-center text-xs sm:text-sm text-purple-950">
-                        <span class="flex items-center gap-1.5">
-                            <span class="material-symbols-outlined text-base text-[#330e7a]">account_balance</span>
-                            Transfer Beda Bank (BRI, Mandiri, BNI, BSI, dll)
-                        </span>
-                        <span class="material-symbols-outlined group-open:rotate-180 transition text-base">expand_more</span>
-                    </summary>
-                    <ol class="list-decimal pl-4 mt-2 space-y-1 text-xs text-gray-700 leading-relaxed">
-                        <li>Buka aplikasi Mobile Banking / ATM bank Anda (BRImo, Livin' Mandiri, BNI Mobile, BSI Mobile, dll)</li>
-                        <li>Pilih menu <strong>Transfer Antar Bank / Ke Bank Lain</strong></li>
-                        <li>Pilih Bank Tujuan: <strong>BCA / Bank Central Asia</strong> (Kode Bank: <strong>014</strong>)</li>
-                        <li>Masukkan Nomor Rekening: <strong>6670747997</strong></li>
-                        <li>Masukkan Nominal Transfer sesuai <strong>Tagihan Transfer Saat Ini</strong></li>
-                        <li>Pilih Layanan Transfer: <strong>BI-FAST</strong> (biaya hemat Rp 2.500) atau <strong>Realtime Online</strong></li>
-                        <li>Pastikan Nama Penerima tertera: <strong>Iman Anjani Buchory</strong></li>
-                        <li>Selesaikan transfer & simpan tangkapan layar (screenshot) bukti transfer</li>
+                        <li>Masukkan kartu ATM dan PIN Anda</li>
+                        <li>Pilih menu <strong>Transaksi Lainnya</strong> > <strong>Transfer</strong> > <strong>Ke Rekening / Virtual Account</strong></li>
+                        <li>Masukkan nomor tujuan yang tertera di atas</li>
+                        <li>Pastikan jumlah transfer tepat sesuai tagihan</li>
+                        <li>Simpan struk ATM sebagai bukti transaksi</li>
                     </ol>
                 </details>
             </div>
         </div>
 
-        <!-- Upload Form Card -->
+        <!-- Upload Form Card (Khusus Manual Transfer atau Fallback) -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 mb-8" id="upload_section">
             <h3 class="text-base sm:text-lg font-bold text-gray-900 border-b border-gray-100 pb-3 mb-4 flex items-center gap-2">
                 <span class="material-symbols-outlined text-[#330e7a] text-xl sm:text-2xl">upload_file</span>
-                Upload Bukti Pembayaran
+                <span id="upload_section_title">Upload Bukti Pembayaran</span>
             </h3>
             
             <!-- Initial Upload Form -->
             <div id="upload_form_container">
-                <p class="text-gray-600 mb-4 text-xs sm:text-sm leading-relaxed">Silakan upload foto atau screenshot bukti transfer Anda agar pesanan dapat segera diproses.</p>
+                <p class="text-gray-600 mb-4 text-xs sm:text-sm leading-relaxed" id="upload_desc">Silakan upload foto atau screenshot bukti transfer Anda agar pesanan dapat segera diproses.</p>
                 <form id="uploadForm">
                     <input type="hidden" id="order_number_input" name="order_number">
                     
@@ -218,6 +238,11 @@
 
                 <!-- Tombol Konfirmasi WhatsApp (Muncul otomatis setelah upload sukses) -->
                 <a id="btn_wa" href="https://wa.me/6285335850517" target="_blank" class="w-full bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-emerald-600/25 text-center transition flex items-center justify-center gap-2.5 text-xs sm:text-sm active:scale-98">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133-.298-.347-.446-.52-.149-.174-.198-.298-.298-.497-.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074-.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413-.248-.694-.248-1.289-.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    <span>Konfirmasi ke Admin WhatsApp (085335850517)</span>
+                </a>
+            </div>
+        </div>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133-.298-.347-.446-.52-.149-.174-.198-.298-.298-.497-.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074-.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413-.248-.694-.248-1.289-.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                     <span>Konfirmasi ke Admin WhatsApp (085335850517)</span>
                 </a>
@@ -324,12 +349,55 @@
             document.body.removeChild(textArea);
         }
 
+        const channelLogos = {
+            'BC': 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg',
+            'M2': 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg',
+            'BR': 'https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg',
+            'B1': 'https://upload.wikimedia.org/wikipedia/commons/f/f0/BNI_logo.svg',
+            'BT': 'https://upload.wikimedia.org/wikipedia/commons/7/7b/PermataBank_logo.svg',
+            'BSI': 'https://upload.wikimedia.org/wikipedia/commons/a/a0/Bank_Syariah_Indonesia.svg',
+            'C1': 'https://upload.wikimedia.org/wikipedia/commons/1/15/CIMB_Niaga_logo.svg',
+            'NQ': 'https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg',
+            'VC': 'https://upload.wikimedia.org/wikipedia/commons/d/d6/Visa_2021.svg',
+            'OV': 'https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo_purple.svg',
+            'DA': 'https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg',
+            'SP': 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Shopee_logo.svg',
+            'MANUAL_BCA': 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg'
+        };
+
+        let statusPollTimer = null;
+
+        function checkPaymentStatusLive(orderNum) {
+            fetch(`duitku_api.php?action=check_status&order_number=${orderNum}`)
+                .then(r => r.json())
+                .then(res => {
+                    if (res.is_paid || (res.data && res.data.statusCode === '00')) {
+                        if (statusPollTimer) clearInterval(statusPollTimer);
+                        showToast('Pembayaran Berhasil Diterima! Mengalihkan ke detail pesanan...', true);
+                        setTimeout(() => {
+                            window.location.href = `pesanan.html?order_number=${orderNum}`;
+                        }, 1200);
+                    }
+                })
+                .catch(() => {});
+        }
+
         // Fetch Order Data
         fetch(`payment_api.php?action=get_payment_info&order_number=${orderNumber}`)
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     const order = data.order;
+                    const isPaid = (order.order_status === 'payment_verified' || order.payment_status === 'verified');
+
+                    if (isPaid) {
+                        showToast('Pesanan ini telah lunas / terverifikasi.', true);
+                        setTimeout(() => {
+                            window.location.href = `pesanan.html?order_number=${orderNumber}`;
+                        }, 1000);
+                        return;
+                    }
+
                     const billAmt = order.bill_amount || order.total_amount;
                     document.getElementById('total_amount').innerText = formatRupiah(billAmt, 'Rp');
                     
@@ -341,6 +409,84 @@
                         } else {
                             orderTotalEl.classList.add('hidden');
                         }
+                    }
+
+                    // Render Channel details
+                    const channelCode = order.payment_method_code || 'BC';
+                    const isDuitku = (order.payment_gateway === 'duitku');
+                    const logoUrl = channelLogos[channelCode] || 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg';
+                    
+                    const logoEl = document.getElementById('channel_logo');
+                    if (logoEl) logoEl.src = logoUrl;
+
+                    const titleEl = document.getElementById('method_name_display');
+                    if (titleEl) titleEl.innerText = order.bank_name || 'Pembayaran Duitku';
+
+                    const tagEl = document.getElementById('channel_tag');
+                    if (tagEl) {
+                        tagEl.innerText = isDuitku ? (channelCode === 'NQ' ? 'QRIS Instant' : (channelCode === 'VC' ? 'Kartu Kredit' : 'Virtual Account')) : 'Transfer Manual';
+                    }
+
+                    const badgeEl = document.getElementById('gateway_badge');
+                    if (badgeEl) {
+                        badgeEl.innerHTML = isDuitku ? '<span class="material-symbols-outlined text-xs">verified</span> Otomatis 24 Jam' : '<span class="material-symbols-outlined text-xs">schedule</span> Manual Admin';
+                    }
+
+                    // Nomor VA / Rekening
+                    const vaNumber = order.duitku_va_number || order.account_number || '6670747997';
+                    document.getElementById('bank_account').innerText = vaNumber;
+                    document.getElementById('bank_name').innerText = order.account_name || 'CV Asianindo';
+
+                    if (isDuitku) {
+                        document.getElementById('account_label').innerText = (channelCode === 'NQ') ? 'Kode Referensi Transaksi' : 'Nomor Virtual Account (VA)';
+                        document.getElementById('duitku_auto_notice').classList.remove('hidden');
+                        document.getElementById('upload_section').classList.add('hidden'); // Sembunyikan form upload manual karena Duitku otomatis
+
+                        if (order.payment_fee > 0) {
+                            const feeBadge = document.getElementById('fee_info_badge');
+                            if (feeBadge) {
+                                feeBadge.innerText = `Termasuk Biaya Platform (+${formatRupiah(order.payment_fee, 'Rp')})`;
+                                feeBadge.classList.remove('hidden');
+                            }
+                        }
+
+                        // Pop-up Duitku button jika ada payment_url
+                        if (order.duitku_payment_url) {
+                            const popCont = document.getElementById('duitku_pop_container');
+                            const popBtn = document.getElementById('btn_open_duitku_pop');
+                            if (popCont && popBtn) {
+                                popCont.classList.remove('hidden');
+                                popBtn.onclick = function() {
+                                    if (typeof duitku !== 'undefined' && order.duitku_reference) {
+                                        duitku.checkout(order.duitku_reference, {
+                                            successEvent: function(result){
+                                                window.location.href = `pesanan.html?order_number=${orderNumber}`;
+                                            },
+                                            pendingEvent: function(result){
+                                                showToast('Menunggu pembayaran diselesaikan...');
+                                            },
+                                            errorEvent: function(result){
+                                                showToast('Pembayaran gagal atau dibatalkan', false);
+                                            },
+                                            closeEvent: function(){
+                                                // closed pop
+                                            }
+                                        });
+                                    } else {
+                                        window.open(order.duitku_payment_url, '_blank');
+                                    }
+                                };
+                            }
+                        }
+
+                        // Start Polling
+                        statusPollTimer = setInterval(() => checkPaymentStatusLive(orderNumber), 4000);
+
+                    } else {
+                        // Manual Transfer BCA
+                        document.getElementById('account_label').innerText = 'Nomor Rekening BCA Tujuan';
+                        document.getElementById('duitku_auto_notice').classList.add('hidden');
+                        document.getElementById('upload_section').classList.remove('hidden');
                     }
 
                     if (order.notes && order.notes.includes('Skema Pembayaran:')) {
@@ -383,11 +529,11 @@
                         `💳 *RINCIAN PEMBAYARAN:*\n` +
                         `• *Total Nilai Pesanan:* ${formatRupiah(order.total_amount, 'Rp')}\n` +
                         `• *Tagihan Transfer Saat Ini:* *${formatRupiah(billAmt, 'Rp')}*\n` +
-                        `• *Bank Tujuan:* BCA 6670747997 a/n Iman Anjani Buchory\n\n` +
+                        `• *Metode:* ${order.bank_name} (${vaNumber})\n\n` +
                         (order.notes ? `📝 *Catatan / Skema:*\n${order.notes}\n\n` : '') +
-                        `🔗 *Link Cek Pesanan & Bukti Transfer:*\n` +
+                        `🔗 *Link Cek Pesanan:*\n` +
                         `https://asianindomachine.com/pembayaran.html?order_number=${orderNumber}\n\n` +
-                        `Halo admin CV Asianindo, saya sudah melakukan transfer untuk pesanan di atas. Mohon dicek dan diverifikasi. Terima kasih!`;
+                        `Halo admin CV Asianindo, saya sedang melakukan transaksi pembayaran untuk pesanan di atas. Mohon bantuannya jika ada kendala. Terima kasih!`;
                     
                     document.getElementById('btn_wa').href = `https://wa.me/6285335850517?text=${encodeURIComponent(waMsg)}`;
 

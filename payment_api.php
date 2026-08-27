@@ -126,6 +126,7 @@ if ($action === 'get_payment_info') {
                    o.shipping_city, o.shipping_province, o.shipping_postal_code, o.shipping_cost, o.subtotal,
                    o.status as order_status, o.total as total_amount, o.notes, o.created_at,
                    p.amount as bill_amount, p.status as payment_status, p.proof_image, p.bank_name, p.account_number, p.account_name,
+                   p.payment_gateway, p.payment_method_code, p.payment_fee, p.duitku_reference, p.duitku_va_number, p.duitku_payment_url, p.duitku_qr_string,
                    s.expedition
             FROM orders o
             LEFT JOIN payments p ON o.id = p.order_id
@@ -183,6 +184,16 @@ if ($action === 'get_payment_info') {
                     'order_status' => $data['order_status'],
                     'notes' => $data['notes'] ?? '',
                     'created_at' => $data['created_at'],
+                    'payment_gateway' => $data['payment_gateway'] ?? 'manual_transfer',
+                    'payment_method_code' => $data['payment_method_code'] ?? 'BC',
+                    'payment_fee' => (int)($data['payment_fee'] ?? 0),
+                    'duitku_reference' => $data['duitku_reference'] ?? null,
+                    'duitku_va_number' => $data['duitku_va_number'] ?? null,
+                    'duitku_payment_url' => $data['duitku_payment_url'] ?? null,
+                    'duitku_qr_string' => $data['duitku_qr_string'] ?? null,
+                    'bank_name' => $data['bank_name'] ?? 'Bank BCA',
+                    'account_number' => $data['account_number'] ?? '6670747997',
+                    'account_name' => $data['account_name'] ?? 'Iman Anjani Buchory',
                     'payment_status' => $data['payment_status'] ?? 'pending',
                     'proof_image' => $data['proof_image'] ?? null
                 ],
