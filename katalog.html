@@ -741,15 +741,33 @@
         };
 
         // Fetch live server-side product views
-        fetch('admin/api.php?action=get_product_views')
-            .then(res => res.json())
-            .then(data => {
-                if (data && data.success && data.product_views) {
-                    productViews = { ...productViews, ...data.product_views };
-                    updateView(); // Re-sort with live view counts
-                }
-            })
-            .catch(err => console.log('Live views fetch fallback', err));
+        function fetchLiveViews() {
+            fetch('admin/api.php?action=get_product_views&v=' + new Date().getTime())
+                .then(res => res.json())
+                .then(data => {
+                    let viewsObj = null;
+                    if (data && data.product_views) viewsObj = data.product_views;
+                    else if (data && data.analytics && data.analytics.product_views) viewsObj = data.analytics.product_views;
+                    else if (data && typeof data === 'object' && !data.error && !Array.isArray(data)) viewsObj = data;
+                    
+                    if (viewsObj && typeof viewsObj === 'object') {
+                        productViews = { ...productViews, ...viewsObj };
+                        render(); // Re-render with live view counts
+                    }
+                })
+                .catch(() => {
+                    fetch('admin/api.php?action=get_analytics&v=' + new Date().getTime())
+                        .then(r => r.json())
+                        .then(d => {
+                            if (d && d.product_views) {
+                                productViews = { ...productViews, ...d.product_views };
+                                render();
+                            }
+                        })
+                        .catch(() => {});
+                });
+        }
+        fetchLiveViews();
 
         // Asynchronously load the latest products to bypass CDN cache
         fetch('data/products.json?v=' + new Date().getTime())
@@ -758,7 +776,7 @@
                 if (data && Array.isArray(data) && data.length > 0) {
                     products = data;
                     window.CATALOG_PRODUCTS = data;
-                    updateView(); // Re-render with fresh data
+                    render(); // Re-render with fresh data
                 }
             })
             .catch(err => console.error("Failed to fetch live products", err));
@@ -869,10 +887,38 @@
         // ============================
 
         function getProductScore(p) {
-            const vId = (productViews[p.id] || 0);
-            const vSlug = (p.slug && productViews[p.slug]) ? productViews[p.slug] : 0;
-            const vBase = (p.views || 0);
-            return Math.max(vId, vSlug, vId + vSlug) + vBase;
+            if (!p) return 0;
+            let count = 0;
+            
+            // 1. Direct ID match
+            if (p.id !== undefined && p.id !== null) {
+                if (productViews[p.id]) count = Math.max(count, Number(productViews[p.id]) || 0);
+                if (productViews[String(p.id)]) count = Math.max(count, Number(productViews[String(p.id)]) || 0);
+            }
+            
+            // 2. Slug match
+            if (p.slug && productViews[p.slug]) {
+                count = Math.max(count, Number(productViews[p.slug]) || 0);
+            }
+            
+            // 3. Exact Name match
+            if (p.name && productViews[p.name]) {
+                count = Math.max(count, Number(productViews[p.name]) || 0);
+            }
+            
+            // 4. Normalized / Partial Name match
+            if (p.name) {
+                const normName = p.name.trim().toLowerCase();
+                for (let k in productViews) {
+                    const normK = k.trim().toLowerCase();
+                    if (normK === normName || normName.includes(normK) || normK.includes(normName)) {
+                        count = Math.max(count, Number(productViews[k]) || 0);
+                    }
+                }
+            }
+            
+            const baseViews = Number(p.views) || 0;
+            return count + baseViews;
         }
 
         function getFilteredProducts() {
@@ -1063,7 +1109,7 @@
             else urlParams.delete('price');
 
             const sort = document.getElementById('sort-select').value;
-            if (sort !== "newest") urlParams.set('sort', sort);
+            if (sort !== "most-viewed") urlParams.set('sort', sort);
             else urlParams.delete('sort');
 
             if (currentPage !== 1) urlParams.set('page', currentPage);
@@ -1273,6 +1319,8 @@
             const urlSort = urlParams.get('sort');
             if (urlSort) {
                 document.getElementById('sort-select').value = urlSort;
+            } else {
+                document.getElementById('sort-select').value = 'most-viewed';
             }
 
             const urlPage = urlParams.get('page');
@@ -1289,8 +1337,14 @@
                 document.getElementById('price-range').value = state.price;
                 document.getElementById('price-label').textContent = parseInt(state.price) >= 200 ? 'Semua Harga' : `Maks Rp ${state.price} Juta`;
             }
-            if (state.sort) document.getElementById('sort-select').value = state.sort;
+            if (state.sort && state.sort !== 'newest') {
+                document.getElementById('sort-select').value = state.sort;
+            } else {
+                document.getElementById('sort-select').value = 'most-viewed';
+            }
             if (state.page) currentPage = state.page;
+        } else {
+            document.getElementById('sort-select').value = 'most-viewed';
         }
 
         render();
