@@ -95,14 +95,14 @@
                         "caption": ["Inter"]
                     },
                     "fontSize": {
-                        "headline-md": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
-                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
-                        "headline-sm": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
-                        "headline-lg": ["40px", { "lineHeight": "1.15", "fontWeight": "700" }],
-                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
-                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["clamp(20px, 4vw, 32px)", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-lg-mobile": ["clamp(20px, 4.5vw, 32px)", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-sm": ["clamp(17px, 3.5vw, 24px)", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "headline-lg": ["clamp(22px, 5vw, 40px)", { "lineHeight": "1.15", "fontWeight": "700" }],
+                        "display-lg": ["clamp(26px, 6vw, 48px)", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["clamp(15px, 2.5vw, 18px)", { "lineHeight": "1.6", "fontWeight": "400" }],
                         "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600" }],
-                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["clamp(14px, 2vw, 16px)", { "lineHeight": "1.6", "fontWeight": "400" }],
                         "caption": ["12px", { "lineHeight": "1.4", "fontWeight": "500" }]
                     }
                 }
@@ -288,12 +288,14 @@
     <!-- ============================================ -->
     <!-- HEADER -->
     <!-- ============================================ -->
+    <!-- HEADER -->
+    <!-- ============================================ -->
     <header class="bg-white shadow-sm border-b border-primary/10 sticky top-0 z-50" id="main-header">
-        <div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-20">
+        <div class="flex justify-between items-center w-full px-3 sm:px-6 max-w-container-max mx-auto h-16 sm:h-20">
             <!-- Brand -->
-            <a class="font-headline-md text-headline-md font-bold text-primary tracking-tight flex items-center gap-2" href="index.html">
-                <img src="images/logo_asianindo.webp" alt="CV Asianindo" class="h-14 object-contain" />
-                <span>CV Asianindo</span>
+            <a class="font-bold text-primary tracking-tight flex items-center gap-1.5 sm:gap-2 shrink-0 min-w-0" href="index.html">
+                <img src="images/logo_asianindo.webp" alt="CV Asianindo" class="h-9 sm:h-12 object-contain shrink-0" />
+                <span class="text-base sm:text-xl font-bold font-heading truncate">CV Asianindo</span>
             </a>
             <!-- Desktop Nav -->
             <nav class="hidden md:flex items-center gap-md">
@@ -301,17 +303,17 @@
                 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors px-2 py-1 rounded" href="about.html">Tentang Kami</a>
                 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors px-2 py-1 rounded" href="katalog.html">Katalog</a>
                 <a class="font-label-md text-label-md text-primary border-b-2 border-primary font-bold pb-1" href="blog.html">Artikel</a>
-                <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors px-2 py-1 rounded" href="blog.html">Kontak</a>
+                <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors px-2 py-1 rounded" href="kontak.html">Kontak</a>
             </nav>
             <!-- Actions -->
-            <div class="flex items-center gap-2 md:gap-3">
-                <a href="keranjang.html" class="relative p-2 text-primary hover:bg-primary/5 rounded-xl transition-colors" title="Keranjang Belanja">
-                    <span class="material-symbols-outlined text-[24px] md:text-[26px]">shopping_bag</span>
-                    <span class="cart-count-badge absolute top-1 right-1 w-5 h-5 bg-rose-500 text-white text-[10px] font-black rounded-full items-center justify-center hidden">0</span>
+            <div class="flex items-center gap-1 sm:gap-2 md:gap-3 shrink-0">
+                <a href="keranjang.html" class="relative p-1.5 sm:p-2 text-primary hover:bg-primary/5 rounded-xl transition-colors" title="Keranjang Belanja">
+                    <span class="material-symbols-outlined text-[22px] sm:text-[26px]">shopping_bag</span>
+                    <span class="cart-count-badge absolute top-0.5 right-0.5 w-4 h-4 sm:w-5 sm:h-5 bg-rose-500 text-white text-[9px] sm:text-[10px] font-black rounded-full items-center justify-center hidden">0</span>
                 </a>
                 <div id="header-auth-container" class="flex items-center">
-                    <a href="login.html" class="flex items-center gap-1.5 bg-primary/5 hover:bg-primary/10 border border-primary/20 text-primary px-3 py-1.5 md:px-3.5 md:py-2 rounded-xl text-xs md:text-sm font-semibold transition-all">
-                        <span class="material-symbols-outlined text-[18px]">person</span>
+                    <a href="login.html" class="flex items-center gap-1 bg-primary/5 hover:bg-primary/10 border border-primary/20 text-primary px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-xs md:text-sm font-semibold transition-all shrink-0">
+                        <span class="material-symbols-outlined text-[16px] sm:text-[18px]">person</span>
                         <span class="hidden sm:inline">Masuk</span>
                     </a>
                 </div>
@@ -319,44 +321,45 @@
                     <span class="material-symbols-outlined" style="font-size: 16px;">chat</span>
                     Konsultasi Gratis
                 </a>
-                <button class="md:hidden text-primary p-2 hover:bg-primary/5 rounded-lg" id="mobile-nav-btn">
-                    <span class="material-symbols-outlined text-[28px]">menu</span>
+                <button class="md:hidden text-primary p-1.5 hover:bg-primary/5 rounded-lg shrink-0" id="mobile-nav-btn">
+                    <span class="material-symbols-outlined text-[26px]">menu</span>
                 </button>
             </div>
         </div>
     </header>
-<!-- Mobile Nav Drawer -->
+
+    <!-- Mobile Nav Drawer -->
     <div class="fixed inset-0 z-[60] hidden" id="mobile-nav-overlay">
         <div class="absolute inset-0 bg-black/50" id="mobile-nav-backdrop"></div>
         <div class="absolute inset-y-0 left-0 w-72 bg-surface shadow-2xl transform transition-transform duration-300 flex flex-col border-r border-outline-variant/30" id="mobile-nav-drawer">
-            <div class="px-6 py-6 border-b border-outline-variant/20 flex items-center justify-between">
-                <span class="font-headline-sm text-headline-sm text-primary font-bold flex items-center gap-2">
-                <img src="images/logo_asianindo.webp" alt="CV Asianindo" class="h-14 object-contain" />
-                <span>CV Asianindo</span>
-            </span>
+            <div class="px-5 py-4 border-b border-outline-variant/20 flex items-center justify-between">
+                <span class="text-lg text-primary font-bold flex items-center gap-2">
+                    <img src="images/logo_asianindo.webp" alt="CV Asianindo" class="h-9 object-contain" />
+                    <span>CV Asianindo</span>
+                </span>
                 <button class="text-on-surface-variant p-1 hover:bg-surface-container-high rounded-lg" id="close-mobile-nav">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
             <nav class="flex flex-col gap-1 py-4 px-3 flex-1">
-                <a class="text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3.5 flex items-center gap-3 transition-colors font-label-md text-label-md" href="index.html">
+                <a class="text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3 flex items-center gap-3 transition-colors font-label-md text-label-md" href="index.html">
                     <span class="material-symbols-outlined" style="font-size: 22px;">home</span> Beranda
                 </a>
-                <a class="text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3.5 flex items-center gap-3 transition-colors font-label-md text-label-md" href="about.html">
+                <a class="text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3 flex items-center gap-3 transition-colors font-label-md text-label-md" href="about.html">
                     <span class="material-symbols-outlined" style="font-size: 22px;">info</span> Tentang Kami
                 </a>
-                <a class="text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3.5 flex items-center gap-3 transition-colors font-label-md text-label-md" href="katalog.html">
+                <a class="text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3 flex items-center gap-3 transition-colors font-label-md text-label-md" href="katalog.html">
                     <span class="material-symbols-outlined" style="font-size: 22px;">precision_manufacturing</span> Katalog Mesin
                 </a>
-                <a class="bg-primary-container text-on-primary-container rounded-xl px-4 py-3.5 flex items-center gap-3 font-label-md text-label-md" href="blog.html">
+                <a class="bg-primary-container text-on-primary-container rounded-xl px-4 py-3 flex items-center gap-3 font-label-md text-label-md" href="blog.html">
                     <span class="material-symbols-outlined" style="font-size: 22px;">newspaper</span> Artikel
                 </a>
-                <a class="text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3.5 flex items-center gap-3 transition-colors font-label-md text-label-md" href="blog.html">
+                <a class="text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-3 flex items-center gap-3 transition-colors font-label-md text-label-md" href="kontak.html">
                     <span class="material-symbols-outlined" style="font-size: 22px;">call</span> Kontak
                 </a>
             </nav>
             <div class="px-4 pb-6">
-                <a class="btn-gradient text-white px-6 py-3.5 rounded-xl font-label-md text-label-md flex items-center justify-center gap-2 w-full" href="https://wa.me/6285335850517" target="_blank">
+                <a class="btn-gradient text-white px-5 py-3 rounded-xl font-label-md text-xs sm:text-sm flex items-center justify-center gap-2 w-full shadow-md" href="https://wa.me/6285335850517" target="_blank">
                     <span class="material-symbols-outlined" style="font-size: 18px;">chat</span>
                     Konsultasi Gratis
                 </a>

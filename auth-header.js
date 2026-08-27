@@ -132,12 +132,12 @@ async function initAuthHeader() {
             const firstName = data.customer.name.split(' ')[0];
             container.innerHTML = `
                 <div class="relative group">
-                    <button class="flex items-center gap-2 bg-primary/5 hover:bg-primary/10 border border-primary/20 text-primary px-3.5 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all">
-                        <div class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">
+                    <button class="flex items-center gap-1 sm:gap-2 bg-primary/5 hover:bg-primary/10 border border-primary/20 text-primary px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs md:text-sm font-semibold transition-all shrink-0">
+                        <div class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary text-white flex items-center justify-center text-[10px] sm:text-xs font-bold shrink-0">
                             ${firstName.charAt(0).toUpperCase()}
                         </div>
-                        <span class="max-w-[100px] md:max-w-[120px] truncate">${firstName}</span>
-                        <span class="material-symbols-outlined text-[18px]">expand_more</span>
+                        <span class="max-w-[50px] sm:max-w-[100px] md:max-w-[120px] truncate">${firstName}</span>
+                        <span class="material-symbols-outlined text-[14px] sm:text-[18px]">expand_more</span>
                     </button>
                     <div class="absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-xl border border-outline-variant/20 py-2 hidden group-hover:block transition-all z-50">
                         <div class="px-4 py-2 border-b border-outline-variant/15 text-xs text-on-surface-variant">
@@ -165,8 +165,8 @@ async function initAuthHeader() {
             `;
         } else {
             container.innerHTML = `
-                <a href="login.html" class="flex items-center gap-1.5 bg-primary/5 hover:bg-primary/10 border border-primary/20 text-primary px-3.5 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all">
-                    <span class="material-symbols-outlined text-[18px]">person</span>
+                <a href="login.html" class="flex items-center gap-1 bg-primary/5 hover:bg-primary/10 border border-primary/20 text-primary px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-xs md:text-sm font-semibold transition-all shrink-0">
+                    <span class="material-symbols-outlined text-[16px] sm:text-[18px]">person</span>
                     <span>Masuk</span>
                 </a>
             `;

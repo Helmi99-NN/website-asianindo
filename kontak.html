@@ -162,14 +162,14 @@
         });
     </script>
 </head>
-<body class="bg-surface text-on-surface font-sans antialiased min-h-screen flex flex-col selection:bg-primary-container selection:text-white">
+<body class="bg-surface text-on-surface font-sans antialiased min-h-screen flex flex-col selection:bg-primary-container selection:text-white overflow-x-hidden">
 
     <!-- Header / Navbar -->
     <header class="bg-surface/80 backdrop-blur-md sticky top-0 z-50 border-b border-outline-variant/30 shadow-sm transition-all duration-300" id="main-header">
-        <div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-20">
-            <a href="index.html" class="font-headline-md text-primary flex items-center gap-2">
-                <img src="images/logo_asianindo.webp" alt="CV Asianindo" class="h-14 object-contain" />
-                <span>CV Asianindo</span>
+        <div class="flex justify-between items-center w-full px-3 sm:px-6 max-w-container-max mx-auto h-16 sm:h-20">
+            <a href="index.html" class="font-bold text-primary tracking-tight flex items-center gap-1.5 sm:gap-2 shrink-0 min-w-0">
+                <img src="images/logo_asianindo.webp" alt="CV Asianindo" class="h-9 sm:h-12 object-contain shrink-0" />
+                <span class="text-base sm:text-xl font-bold font-heading truncate">CV Asianindo</span>
             </a>
             
             <nav class="hidden md:flex gap-lg items-center">
@@ -180,14 +180,14 @@
                 <a href="kontak.html" class="text-primary border-b-2 border-primary font-bold pb-1 font-label-md transition-all duration-200">Kontak</a>
             </nav>
 
-            <div class="flex items-center gap-2 md:gap-3">
-                <a href="keranjang.html" class="relative p-2 text-primary hover:bg-primary/5 rounded-xl transition-colors" title="Keranjang Belanja">
-                    <span class="material-symbols-outlined text-[24px] md:text-[26px]">shopping_bag</span>
-                    <span class="cart-count-badge absolute top-1 right-1 w-5 h-5 bg-rose-500 text-white text-[10px] font-black rounded-full items-center justify-center hidden">0</span>
+            <div class="flex items-center gap-1 sm:gap-2 md:gap-3 shrink-0">
+                <a href="keranjang.html" class="relative p-1.5 sm:p-2 text-primary hover:bg-primary/5 rounded-xl transition-colors" title="Keranjang Belanja">
+                    <span class="material-symbols-outlined text-[22px] sm:text-[26px]">shopping_bag</span>
+                    <span class="cart-count-badge absolute top-0.5 right-0.5 w-4 h-4 sm:w-5 sm:h-5 bg-rose-500 text-white text-[9px] sm:text-[10px] font-black rounded-full items-center justify-center hidden">0</span>
                 </a>
                 <div id="header-auth-container" class="flex items-center">
-                    <a href="login.html" class="flex items-center gap-1.5 bg-primary/5 hover:bg-primary/10 border border-primary/20 text-primary px-3 py-1.5 md:px-3.5 md:py-2 rounded-xl text-xs md:text-sm font-semibold transition-all">
-                        <span class="material-symbols-outlined text-[18px]">person</span>
+                    <a href="login.html" class="flex items-center gap-1 bg-primary/5 hover:bg-primary/10 border border-primary/20 text-primary px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-xs md:text-sm font-semibold transition-all shrink-0">
+                        <span class="material-symbols-outlined text-[16px] sm:text-[18px]">person</span>
                         <span class="hidden sm:inline">Masuk</span>
                     </a>
                 </div>
@@ -195,8 +195,8 @@
                     <span class="material-symbols-outlined" style="font-size: 16px;">chat</span>
                     Konsultasi Gratis
                 </a>
-                <button class="md:hidden text-primary p-2 hover:bg-primary/5 rounded-lg transition-colors" id="mobile-menu-btn">
-                    <span class="material-symbols-outlined">menu</span>
+                <button class="md:hidden text-primary p-1.5 hover:bg-primary/5 rounded-lg transition-colors shrink-0" id="mobile-menu-btn">
+                    <span class="material-symbols-outlined text-[26px]">menu</span>
                 </button>
             </div>
         </div>
