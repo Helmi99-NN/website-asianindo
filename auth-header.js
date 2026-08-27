@@ -119,6 +119,45 @@ window.buyNow = async function(product, qty = 1) {
     }
 };
 
+// Inject Dropdown Styles once
+(function injectDropdownStyles() {
+    if (document.getElementById('user-dropdown-style')) return;
+    const style = document.createElement('style');
+    style.id = 'user-dropdown-style';
+    style.textContent = `
+        .user-dropdown-container {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+        .user-dropdown-bubble {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            padding-top: 6px;
+            width: 13.5rem;
+            z-index: 99999;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-4px) scale(0.96);
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s;
+            pointer-events: none;
+        }
+        .user-dropdown-container.is-active .user-dropdown-bubble,
+        .user-dropdown-container:hover .user-dropdown-bubble {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) scale(1) !important;
+            pointer-events: auto !important;
+        }
+        .user-dropdown-container.is-active #user-dropdown-chevron,
+        .user-dropdown-container:hover #user-dropdown-chevron {
+            transform: rotate(180deg);
+        }
+    `;
+    document.head.appendChild(style);
+})();
+
 // Initialize Auth Header & User Dropdowns
 async function initAuthHeader() {
     try {
@@ -131,19 +170,17 @@ async function initAuthHeader() {
         if (data.logged_in && data.customer) {
             const firstName = data.customer.name.split(' ')[0];
             container.innerHTML = `
-                <div id="user-dropdown-wrapper" class="relative group">
-                    <button type="button" onclick="toggleUserMenu(event)" class="flex items-center gap-1 sm:gap-2 bg-primary/5 hover:bg-primary/10 border border-primary/20 text-primary px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs md:text-sm font-semibold transition-all shrink-0 cursor-pointer select-none active:scale-98">
+                <div id="user-dropdown-wrapper" class="user-dropdown-container">
+                    <button type="button" id="user-dropdown-btn" class="flex items-center gap-1 sm:gap-2 bg-primary/5 hover:bg-primary/10 border border-primary/20 text-primary px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs md:text-sm font-semibold transition-all shrink-0 cursor-pointer select-none active:scale-98">
                         <div class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary text-white flex items-center justify-center text-[10px] sm:text-xs font-bold shrink-0 shadow-sm">
                             ${firstName.charAt(0).toUpperCase()}
                         </div>
                         <span class="max-w-[50px] sm:max-w-[100px] md:max-w-[120px] truncate">${firstName}</span>
-                        <span id="user-dropdown-chevron" class="material-symbols-outlined text-[14px] sm:text-[18px] transition-transform duration-200">expand_more</span>
+                        <span id="user-dropdown-chevron" class="material-symbols-outlined text-[14px] sm:text-[18px] transition-transform duration-200 pointer-events-none">expand_more</span>
                     </button>
 
-                    <!-- Dropdown bridge wrapper (pt-2 creates continuous hover area without gap) -->
-                    <div id="user-dropdown-menu" 
-                         class="absolute right-0 top-full pt-2 w-52 z-50 hidden opacity-0 scale-95 translate-y-1 transition-all duration-150 origin-top-right group-hover:block group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0"
-                         onclick="event.stopPropagation()">
+                    <!-- Bubble Menu with seamless padding bridge -->
+                    <div id="user-dropdown-menu" class="user-dropdown-bubble">
                         <div class="bg-white rounded-2xl shadow-2xl border border-outline-variant/20 py-2 overflow-hidden ring-1 ring-black/5">
                             <div class="px-4 py-2.5 bg-surface-container-low/60 border-b border-outline-variant/15 text-xs text-on-surface-variant">
                                 <span class="text-[11px] text-gray-500 font-medium">Halo,</span>
@@ -174,6 +211,8 @@ async function initAuthHeader() {
                     </div>
                 </div>
             `;
+
+            attachUserDropdownEvents();
         } else {
             container.innerHTML = `
                 <a href="login.html" class="flex items-center gap-1 bg-primary/5 hover:bg-primary/10 border border-primary/20 text-primary px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-xs md:text-sm font-semibold transition-all shrink-0">
@@ -187,48 +226,56 @@ async function initAuthHeader() {
     }
 }
 
-// User Menu Toggle Handler
-window.toggleUserMenu = function(event) {
-    if (event) event.stopPropagation();
+// Attach User Dropdown Events
+function attachUserDropdownEvents() {
+    const wrapper = document.getElementById('user-dropdown-wrapper');
+    const btn = document.getElementById('user-dropdown-btn');
     const menu = document.getElementById('user-dropdown-menu');
-    const chevron = document.getElementById('user-dropdown-chevron');
-    if (!menu) return;
+    if (!wrapper || !btn || !menu) return;
 
-    const isHidden = menu.classList.contains('hidden');
-    if (isHidden) {
-        menu.classList.remove('hidden');
-        requestAnimationFrame(() => {
-            menu.classList.remove('opacity-0', 'scale-95', 'translate-y-1');
-            menu.classList.add('opacity-100', 'scale-100', 'translate-y-0');
-        });
-        if (chevron) chevron.classList.add('rotate-180');
-    } else {
-        window.closeUserMenu();
-    }
-};
+    let isLocked = false;
+    let hoverTimeout = null;
 
-window.closeUserMenu = function() {
-    const menu = document.getElementById('user-dropdown-menu');
-    const chevron = document.getElementById('user-dropdown-chevron');
-    if (!menu) return;
-
-    menu.classList.remove('opacity-100', 'scale-100', 'translate-y-0');
-    menu.classList.add('opacity-0', 'scale-95', 'translate-y-1');
-    if (chevron) chevron.classList.remove('rotate-180');
-    setTimeout(() => {
-        if (menu.classList.contains('opacity-0')) {
-            menu.classList.add('hidden');
+    // Toggle on Button Click
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        isLocked = !isLocked;
+        if (isLocked) {
+            wrapper.classList.add('is-active');
+        } else {
+            wrapper.classList.remove('is-active');
         }
-    }, 150);
-};
+    });
 
-// Global click outside listener to close dropdown
-document.addEventListener('click', (e) => {
-    const dropdownWrapper = document.getElementById('user-dropdown-wrapper');
-    if (dropdownWrapper && !dropdownWrapper.contains(e.target)) {
-        window.closeUserMenu();
-    }
-});
+    // Hover Enter
+    wrapper.addEventListener('mouseenter', () => {
+        if (hoverTimeout) clearTimeout(hoverTimeout);
+        wrapper.classList.add('is-active');
+    });
+
+    // Hover Leave (Graceful Delay)
+    wrapper.addEventListener('mouseleave', () => {
+        if (hoverTimeout) clearTimeout(hoverTimeout);
+        if (!isLocked) {
+            hoverTimeout = setTimeout(() => {
+                wrapper.classList.remove('is-active');
+            }, 300); // 300ms buffer allows smooth mouse movement
+        }
+    });
+
+    // Prevent closing when clicking inside the bubble
+    menu.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    // Close when clicking anywhere outside
+    document.addEventListener('click', (e) => {
+        if (!wrapper.contains(e.target)) {
+            isLocked = false;
+            wrapper.classList.remove('is-active');
+        }
+    });
+}
 
 async function handleLogout() {
     if (confirm('Apakah Anda yakin ingin keluar?')) {
