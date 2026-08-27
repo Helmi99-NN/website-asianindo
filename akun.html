@@ -405,10 +405,14 @@
                 }
 
                 currentCustomer = data.customer;
-                const firstName = data.customer.name.split(' ')[0];
-                document.getElementById('user-greeting-name').innerText = data.customer.name;
-                document.getElementById('user-greeting-email').innerText = data.customer.email;
-                document.getElementById('user-avatar-large').innerText = firstName.charAt(0).toUpperCase();
+                const firstName = (data.customer.name || 'Pengguna').split(' ')[0];
+                const greetName = document.getElementById('user-greeting-name');
+                const greetEmail = document.getElementById('user-greeting-email');
+                const avatarLarge = document.getElementById('user-avatar-large');
+
+                if (greetName) greetName.innerText = data.customer.name || 'Pelanggan';
+                if (greetEmail) greetEmail.innerText = data.customer.email || '-';
+                if (avatarLarge) avatarLarge.innerText = firstName.charAt(0).toUpperCase();
 
                 await Promise.all([loadProfile(), loadOrders()]);
 
@@ -418,7 +422,7 @@
                     switchTab(hash);
                 }
             } catch (e) {
-                window.location.href = 'login.html?redirect=akun.html';
+                console.error('Account init failed:', e);
             }
         }
 
@@ -428,24 +432,33 @@
                 const data = await res.json();
                 if (data.success && data.customer) {
                     const c = data.customer;
-                    document.getElementById('view-nama').innerText = c.name || '-';
-                    document.getElementById('view-email').innerText = c.email || '-';
-                    document.getElementById('view-phone').innerText = c.phone || '-';
-                    document.getElementById('view-city').innerText = c.city || '-';
-                    document.getElementById('view-address').innerText = c.address || '-';
-                    document.getElementById('view-province').innerText = c.province || '-';
-                    document.getElementById('view-postal').innerText = c.postal_code || '-';
+                    const setTxt = (id, val) => {
+                        const el = document.getElementById(id);
+                        if (el) el.innerText = (val && val !== '-' && val.trim() !== '') ? val : '- Belum diisi -';
+                    };
+                    const setVal = (id, val) => {
+                        const el = document.getElementById(id);
+                        if (el) el.value = (val && val !== '-') ? val : '';
+                    };
 
-                    document.getElementById('edit-nama').value = c.name || '';
-                    document.getElementById('edit-email').value = c.email || '';
-                    document.getElementById('edit-phone').value = c.phone || '';
-                    document.getElementById('edit-city').value = c.city || '';
-                    document.getElementById('edit-address').value = c.address || '';
-                    document.getElementById('edit-province').value = c.province || '';
-                    document.getElementById('edit-postal').value = c.postal_code || '';
+                    setTxt('view-nama', c.name);
+                    setTxt('view-email', c.email);
+                    setTxt('view-phone', c.phone);
+                    setTxt('view-city', c.city);
+                    setTxt('view-address', c.address);
+                    setTxt('view-province', c.province);
+                    setTxt('view-postal', c.postal_code);
+
+                    setVal('edit-nama', c.name);
+                    setVal('edit-email', c.email);
+                    setVal('edit-phone', c.phone);
+                    setVal('edit-city', c.city);
+                    setVal('edit-address', c.address);
+                    setVal('edit-province', c.province);
+                    setVal('edit-postal', c.postal_code);
                 }
             } catch (e) {
-                showToast('Gagal memuat rincian profil', false);
+                console.error('Failed to load profile:', e);
             }
         }
 
@@ -498,147 +511,220 @@
                 btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">save</span> Simpan Perubahan';
             }
         }
-
         async function loadOrders() {
             try {
-                                    <a href="pesanan.html?id=${order.id}" class="w-full md:w-auto text-center px-5 py-2 border-2 border-primary text-primary font-medium rounded-lg hover:bg-primary hover:text-white transition">Lihat Detail</a>
+                const res = await fetch('order_api.php?action=get_orders');
+                const data = await res.json();
+
+                const container = document.getElementById('orders-list-container');
+                const badge = document.getElementById('orders-badge-count');
+
+                if (data.success && data.orders && data.orders.length > 0) {
+                    allOrders = data.orders;
+                    if (badge) {
+                        badge.innerText = allOrders.length;
+                        badge.classList.remove('hidden');
+                    }
+                    renderOrders(allOrders);
+                } else {
+                    allOrders = [];
+                    if (container) {
+                        container.innerHTML = `
+                            <div class="text-center py-16 px-4 bg-gray-50/80 rounded-2xl border border-dashed border-gray-200">
+                                <div class="w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-3">
+                                    <span class="material-symbols-outlined text-3xl">receipt_long</span>
                                 </div>
+                                <h3 class="font-bold text-gray-800 text-sm sm:text-base font-heading">Belum Ada Pesanan</h3>
+                                <p class="text-gray-500 text-xs sm:text-sm mt-1 max-w-sm mx-auto">Anda belum pernah melakukan pemesanan mesin. Temukan mesin industri terbaik di katalog kami.</p>
+                                <a href="katalog.html" class="inline-flex items-center gap-1.5 mt-5 bg-primary hover:bg-primary-container text-white px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm shadow-md transition">
+                                    <span class="material-symbols-outlined text-[18px]">storefront</span>
+                                    <span>Lihat Katalog Mesin</span>
+                                </a>
                             </div>
                         `;
-                        container.insertAdjacentHTML('beforeend', orderCard);
-                    });
-                } else {
-                    container.innerHTML = `<p class="text-red-500 text-center py-4">${data.message || 'Gagal memuat pesanan'}</p>`;
+                    }
                 }
-            } catch (error) {
-                console.error('Failed to load orders:', error);
-                document.getElementById('orders-container').innerHTML = '<p class="text-red-500 text-center py-4">Terjadi kesalahan saat memuat pesanan.</p>';
+            } catch (e) {
+                const container = document.getElementById('orders-list-container');
+                if (container) container.innerHTML = '<div class="text-center text-xs text-rose-500 py-8">Gagal memuat data pesanan.</div>';
             }
         }
 
-        async function changePassword(event) {
-            event.preventDefault();
-            
-            const current = document.getElementById('current-password').value;
-            const newPass = document.getElementById('new-password').value;
-            const confirm = document.getElementById('confirm-password').value;
-            const msgDiv = document.getElementById('password-msg');
-            
-            msgDiv.classList.remove('hidden', 'bg-red-50', 'text-red-600', 'border', 'border-red-200', 'bg-green-50', 'text-green-600', 'border-green-200');
-            
-            if (newPass !== confirm) {
-                msgDiv.textContent = 'Password baru dan konfirmasi tidak cocok.';
-                msgDiv.classList.add('bg-red-50', 'text-red-600', 'border', 'border-red-200');
+        function filterOrders(filter) {
+            document.querySelectorAll('.order-filter-btn').forEach(btn => {
+                if (btn.getAttribute('data-filter') === filter) {
+                    btn.className = 'order-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-primary text-white shadow-xs';
+                } else {
+                    btn.className = 'order-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap text-gray-600 hover:bg-gray-100';
+                }
+            });
+
+            if (filter === 'all') {
+                renderOrders(allOrders);
+            } else {
+                const filtered = allOrders.filter(o => o.status === filter);
+                renderOrders(filtered);
+            }
+        }
+
+        function renderOrders(orders) {
+            const container = document.getElementById('orders-list-container');
+            if (!container) return;
+
+            if (!orders || orders.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-gray-400 bg-gray-50 rounded-2xl border border-gray-100">
+                        <span class="material-symbols-outlined text-4xl mb-1">search_off</span>
+                        <p class="text-xs sm:text-sm">Tidak ada pesanan dengan status ini.</p>
+                    </div>
+                `;
                 return;
             }
-            
-            const btn = document.getElementById('btn-save-password');
-            btn.disabled = true;
-            btn.textContent = 'Menyimpan...';
-            
-            const formData = new FormData();
-            formData.append('current_password', current);
-            formData.append('new_password', newPass);
-            
-            try {
-                const response = await fetch(`${API_URL_AUTH}?action=change_password`, {
-                    method: 'POST',
-                    body: formData
-                });
-                const data = await response.json();
-                
-                if (data.status === 'success') {
-                    msgDiv.textContent = 'Password berhasil diubah.';
-                    msgDiv.classList.add('bg-green-50', 'text-green-600', 'border', 'border-green-200');
-                    document.getElementById('password-form').reset();
-                    showToast('Password berhasil diubah', 'success');
-                } else {
-                    msgDiv.textContent = data.message || 'Gagal mengubah password.';
-                    msgDiv.classList.add('bg-red-50', 'text-red-600', 'border', 'border-red-200');
+
+            let html = '';
+            orders.forEach(order => {
+                const orderNum = order.order_number;
+                const totalText = formatRupiah(order.total_amount || order.total || 0);
+                const dateText = order.created_at ? new Date(order.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-';
+
+                let statusBadge = '';
+                let actionBtn = '';
+
+                switch (order.status) {
+                    case 'pending_payment':
+                        statusBadge = '<span class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200 px-2.5 py-1 rounded-full text-[11px] font-bold"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Menunggu Pembayaran</span>';
+                        actionBtn = `
+                            <a href="pembayaran.html?order_number=${orderNum}" class="bg-primary hover:bg-primary-container text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-1">
+                                <span>Bayar Sekarang</span>
+                                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                            </a>
+                        `;
+                        break;
+                    case 'payment_uploaded':
+                        statusBadge = '<span class="inline-flex items-center gap-1 bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full text-[11px] font-bold"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>Verifikasi Pembayaran</span>';
+                        actionBtn = `
+                            <a href="pesanan.html?order_number=${orderNum}" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1">
+                                <span>Detail & Tracking</span>
+                            </a>
+                        `;
+                        break;
+                    case 'processing':
+                    case 'payment_verified':
+                        statusBadge = '<span class="inline-flex items-center gap-1 bg-indigo-50 text-indigo-700 border border-indigo-200 px-2.5 py-1 rounded-full text-[11px] font-bold"><span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>Sedang Dipersiapkan</span>';
+                        actionBtn = `
+                            <a href="pesanan.html?order_number=${orderNum}" class="bg-primary hover:bg-primary-container text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-1">
+                                <span>Lacak Pesanan</span>
+                            </a>
+                        `;
+                        break;
+                    case 'shipped':
+                        statusBadge = '<span class="inline-flex items-center gap-1 bg-purple-50 text-purple-700 border border-purple-200 px-2.5 py-1 rounded-full text-[11px] font-bold"><span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>Dalam Pengiriman</span>';
+                        actionBtn = `
+                            <a href="pesanan.html?order_number=${orderNum}" class="bg-primary hover:bg-primary-container text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-1">
+                                <span>Lacak Resi Ekspedisi</span>
+                            </a>
+                        `;
+                        break;
+                    case 'completed':
+                    case 'delivered':
+                        statusBadge = '<span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full text-[11px] font-bold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Selesai</span>';
+                        actionBtn = `
+                            <a href="pesanan.html?order_number=${orderNum}" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1">
+                                <span>Lihat Rincian</span>
+                            </a>
+                        `;
+                        break;
+                    default:
+                        statusBadge = '<span class="inline-flex items-center gap-1 bg-rose-50 text-rose-700 border border-rose-200 px-2.5 py-1 rounded-full text-[11px] font-bold">Dibatalkan</span>';
+                        actionBtn = '';
                 }
-            } catch (error) {
-                console.error('Failed to change password:', error);
-                msgDiv.textContent = 'Terjadi kesalahan jaringan.';
-                msgDiv.classList.add('bg-red-50', 'text-red-600', 'border', 'border-red-200');
+
+                const waInquiry = `https://wa.me/6285335850517?text=${encodeURIComponent(`Halo CV Asianindo, saya ingin menanyakan status pesanan nomor: ${orderNum}`)}`;
+
+                html += `
+                    <div class="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-5 shadow-xs transition-all hover:border-primary/30">
+                        <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-gray-100 text-xs text-gray-500">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-gray-900 font-mono text-xs sm:text-sm">${orderNum}</span>
+                                <button type="button" onclick="copyOrderNumber('${orderNum}')" class="text-primary hover:text-primary-container p-0.5" title="Salin No. Pesanan">
+                                    <span class="material-symbols-outlined text-[16px]">content_copy</span>
+                                </button>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span>${dateText}</span>
+                                <div>${statusBadge}</div>
+                            </div>
+                        </div>
+
+                        <div class="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <div class="text-[11px] text-gray-400 font-medium uppercase tracking-wider">Penerima & Ekspedisi</div>
+                                <div class="font-bold text-gray-800 text-xs sm:text-sm mt-0.5">${order.shipping_name || (currentCustomer ? currentCustomer.name : 'Pelanggan')} (${order.shipping_phone || '-'})</div>
+                                <div class="text-xs text-gray-500 truncate max-w-md">${order.shipping_city || ''}, ${order.shipping_province || ''} • ${order.expedition || 'Indah Cargo'}</div>
+                            </div>
+                            <div class="text-left sm:text-right">
+                                <div class="text-[11px] text-gray-400 font-medium uppercase tracking-wider">Total Nilai Pesanan</div>
+                                <div class="font-black text-primary text-sm sm:text-lg font-heading mt-0.5">${totalText}</div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-gray-100">
+                            <a href="${waInquiry}" target="_blank" class="inline-flex items-center gap-1.5 text-emerald-600 hover:text-emerald-700 font-bold text-xs py-1">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298-.298-.497-.099-.198-.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074-.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413-.248-.694-.248-1.289-.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                <span>Tanya Pesanan di WhatsApp</span>
+                            </a>
+                            <div class="flex items-center gap-2">
+                                ${actionBtn}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        async function changePassword(e) {
+            e.preventDefault();
+            const cur = document.getElementById('cur_pass').value;
+            const np = document.getElementById('new_pass').value;
+            const cp = document.getElementById('confirm_pass').value;
+
+            if (np !== cp) {
+                showToast('Konfirmasi password baru tidak cocok!', false);
+                return;
+            }
+
+            const btn = document.getElementById('btn-save-pass');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">autorenew</span> Memproses...';
+
+            const fd = new FormData();
+            fd.append('current_password', cur);
+            fd.append('new_password', np);
+
+            try {
+                const res = await fetch('auth_api.php?action=change_password', { method: 'POST', body: fd });
+                const data = await res.json();
+
+                if (data.success) {
+                    showToast('Password berhasil diubah!');
+                    document.getElementById('cur_pass').value = '';
+                    document.getElementById('new_pass').value = '';
+                    document.getElementById('confirm_pass').value = '';
+                } else {
+                    showToast(data.error || 'Gagal mengubah password', false);
+                }
+            } catch (err) {
+                showToast('Terjadi kesalahan jaringan', false);
             } finally {
                 btn.disabled = false;
-                btn.textContent = 'Simpan Password';
+                btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">lock_reset</span> Perbarui Password';
             }
         }
 
-        async function logout() {
-            if (confirm('Apakah Anda yakin ingin keluar dari akun?')) {
-                try {
-                    const response = await fetch(`${API_URL_AUTH}?action=logout`);
-                    const data = await response.json();
-                    
-                    if (data.status === 'success') {
-                        window.location.href = 'index.html';
-                    } else {
-                        // Force redirect anyway on error
-                        window.location.href = 'index.html';
-                    }
-                } catch (error) {
-                    console.error('Logout failed:', error);
-                    window.location.href = 'index.html'; 
-                }
-            }
-        }
-
-        function handleHashChange() {
-            const hash = window.location.hash || '#profil';
-            const tabName = hash.replace('#', '');
-            
-            if (['profil', 'pesanan', 'password'].includes(tabName)) {
-                switchTab(tabName, false);
-            }
-        }
-
-        function switchTab(tabName, updateHash = true) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            
-            document.querySelectorAll('[id^="tab-btn-"]').forEach(el => {
-                el.classList.remove('tab-active');
-                el.classList.add('tab-inactive');
-            });
-            
-            const contentEl = document.getElementById(`section-${tabName}`);
-            if (contentEl) {
-                contentEl.classList.remove('hidden');
-            }
-            
-            const tabBtn = document.getElementById(`tab-btn-${tabName}`);
-            if (tabBtn) {
-                tabBtn.classList.remove('tab-inactive');
-                tabBtn.classList.add('tab-active');
-            }
-            
-            if (updateHash) {
-                window.location.hash = tabName;
-            }
-        }
-
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const msgEl = document.getElementById('toast-message');
-            const icon = toast.querySelector('.material-symbols-outlined');
-            
-            msgEl.textContent = message;
-            
-            if (type === 'error') {
-                toast.classList.replace('bg-gray-800', 'bg-red-600');
-                icon.textContent = 'error';
-            } else {
-                toast.classList.replace('bg-red-600', 'bg-gray-800');
-                icon.textContent = 'check_circle';
-            }
-            
-            toast.classList.remove('translate-y-full', 'opacity-0');
-            
-            setTimeout(() => {
-                toast.classList.add('translate-y-full', 'opacity-0');
-            }, 3000);
-        }
+        window.onload = initAccountPage;
     </script>
+    <script src="auth-header.js?v=20260827_2"></script>
 </body>
 </html>
