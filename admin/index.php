@@ -10,6 +10,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <title>Asianindo CMS Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.13.3/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
@@ -207,7 +208,13 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         </div>
     </div>
     
-
+    <!-- Analytics Chart -->
+    <div class="card mb-8">
+        <div class="card-header"><h3 class="font-bold text-gray-700"><i class="fas fa-chart-line text-blue-500 mr-2"></i>Tren Pengunjung & Interaksi (30 Hari Terakhir)</h3></div>
+        <div class="card-body p-4 relative" style="height: 350px;">
+            <canvas id="analyticsChart"></canvas>
+        </div>
+    </div>
     
     <!-- Popular Products Table -->
     <div class="card">

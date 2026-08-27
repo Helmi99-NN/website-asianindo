@@ -92,10 +92,21 @@ if ($action === 'track_event') {
         if (is_array($parsed)) $data = array_merge($data, $parsed);
     }
     
-    if ($event === 'visitor') $data['visitors']++;
-    elseif ($event === 'wa_click') $data['wa_clicks']++;
-    elseif ($event === 'message') $data['messages']++;
-    elseif ($event === 'product_view' && $productId) {
+    if (!isset($data['history'])) $data['history'] = [];
+    $today = date('Y-m-d');
+    if (!isset($data['history'][$today])) {
+        $data['history'][$today] = ['visitors' => 0, 'wa_clicks' => 0];
+    }
+    
+    if ($event === 'visitor') {
+        $data['visitors']++;
+        $data['history'][$today]['visitors']++;
+    } elseif ($event === 'wa_click') {
+        $data['wa_clicks']++;
+        $data['history'][$today]['wa_clicks']++;
+    } elseif ($event === 'message') {
+        $data['messages']++;
+    } elseif ($event === 'product_view' && $productId) {
         if (!isset($data['product_views'][$productId])) {
             $data['product_views'][$productId] = 0;
         }

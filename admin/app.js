@@ -9,6 +9,7 @@ function adminApp() {
 
         // Data Models
         analytics: { visitors: 0, wa_clicks: 0, messages: 0, product_views: {} },
+        chartInstance: null,
         products: [],
         searchQuery: '',
         articleSearch: '',
@@ -192,7 +193,79 @@ function adminApp() {
         },
 
         async loadAnalytics() {
-            try { let r = await fetch('api.php?action=get_analytics'); this.analytics = await r.json(); } catch(e) {}
+            try { 
+                let r = await fetch('api.php?action=get_analytics'); 
+                this.analytics = await r.json(); 
+                this.$nextTick(() => { this.renderChart(); });
+            } catch(e) {}
+        },
+
+        renderChart() {
+            let ctx = document.getElementById('analyticsChart');
+            if(!ctx) return;
+            
+            let labels = [];
+            let visitorsData = [];
+            let waData = [];
+            
+            // Get last 30 days
+            let today = new Date();
+            for(let i = 29; i >= 0; i--) {
+                let d = new Date(today);
+                d.setDate(d.getDate() - i);
+                let dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+                let displayDate = d.toLocaleDateString('id-ID', {day: 'numeric', month: 'short'});
+                labels.push(displayDate);
+                
+                if(this.analytics.history && this.analytics.history[dateStr]) {
+                    visitorsData.push(this.analytics.history[dateStr].visitors || 0);
+                    waData.push(this.analytics.history[dateStr].wa_clicks || 0);
+                } else {
+                    visitorsData.push(0);
+                    waData.push(0);
+                }
+            }
+
+            if(this.chartInstance) {
+                this.chartInstance.destroy();
+            }
+
+            this.chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Pengunjung',
+                            data: visitorsData,
+                            borderColor: '#3b82f6', // blue-500
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Klik WA',
+                            data: waData,
+                            borderColor: '#22c55e', // green-500
+                            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { precision: 0 } }
+                    }
+                }
+            });
         },
 
         async loadProducts() {
