@@ -15,6 +15,12 @@
 </head>
 <body class="bg-[#f8f9fa] text-gray-800 antialiased min-h-screen flex flex-col">
 
+    <!-- Elegant Floating Toast Notification -->
+    <div id="elegantToast" class="fixed top-5 left-1/2 -translate-x-1/2 z-[9999] transition-all duration-300 transform -translate-y-16 opacity-0 pointer-events-none flex items-center gap-2.5 px-5 py-3 rounded-full bg-gray-900/95 backdrop-blur-md text-white text-xs sm:text-sm font-semibold shadow-2xl border border-white/10 max-w-[90vw]">
+        <span id="elegantToastIcon" class="material-symbols-outlined text-emerald-400 text-lg sm:text-xl">check_circle</span>
+        <span id="elegantToastMsg" class="truncate">Teks berhasil disalin</span>
+    </div>
+
     <!-- Header -->
     <header class="gradient-primary text-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 sm:py-3.5 flex items-center justify-between max-w-3xl">
@@ -104,41 +110,75 @@
                 <pre id="scheme_notes_text" class="text-xs text-gray-700 whitespace-pre-wrap font-sans leading-relaxed"></pre>
             </div>
 
+            <!-- Petunjuk Transfer (BCA & Beda Bank) -->
             <div class="text-xs sm:text-sm text-gray-600 space-y-2">
-                <h4 class="font-bold text-gray-800">Petunjuk Transfer:</h4>
+                <h4 class="font-bold text-gray-800 mb-2">Petunjuk & Cara Pembayaran:</h4>
+                
+                <!-- m-BCA -->
                 <details class="group bg-gray-50 rounded-xl p-3 cursor-pointer border border-gray-100">
-                    <summary class="font-semibold flex justify-between items-center text-xs sm:text-sm">m-BCA (Mobile Banking) <span class="material-symbols-outlined group-open:rotate-180 transition text-base">expand_more</span></summary>
+                    <summary class="font-semibold flex justify-between items-center text-xs sm:text-sm">
+                        <span>m-BCA (Mobile Banking BCA)</span>
+                        <span class="material-symbols-outlined group-open:rotate-180 transition text-base">expand_more</span>
+                    </summary>
                     <ol class="list-decimal pl-4 mt-2 space-y-1 text-xs text-gray-600 leading-relaxed">
                         <li>Buka aplikasi BCA mobile, pilih <strong>m-BCA</strong></li>
                         <li>Pilih menu <strong>m-Transfer</strong> > <strong>Antar Rekening</strong></li>
-                        <li>Masukkan nomor rekening <strong>6670747997</strong></li>
-                        <li>Masukkan jumlah nominal <strong>Tagihan Transfer Saat Ini</strong></li>
+                        <li>Masukkan nomor rekening tujuan <strong>6670747997</strong></li>
+                        <li>Masukkan nominal sesuai <strong>Tagihan Transfer Saat Ini</strong></li>
                         <li>Pastikan nama penerima <strong>Iman Anjani Buchory</strong></li>
-                        <li>Masukkan PIN m-BCA</li>
+                        <li>Masukkan PIN m-BCA dan simpan bukti transfer</li>
                     </ol>
                 </details>
+
+                <!-- ATM BCA -->
                 <details class="group bg-gray-50 rounded-xl p-3 cursor-pointer border border-gray-100">
-                    <summary class="font-semibold flex justify-between items-center text-xs sm:text-sm">ATM BCA <span class="material-symbols-outlined group-open:rotate-180 transition text-base">expand_more</span></summary>
+                    <summary class="font-semibold flex justify-between items-center text-xs sm:text-sm">
+                        <span>ATM BCA</span>
+                        <span class="material-symbols-outlined group-open:rotate-180 transition text-base">expand_more</span>
+                    </summary>
                     <ol class="list-decimal pl-4 mt-2 space-y-1 text-xs text-gray-600 leading-relaxed">
-                        <li>Masukkan Kartu ATM BCA dan PIN</li>
+                        <li>Masukkan Kartu ATM BCA dan PIN Anda</li>
                         <li>Pilih <strong>Transaksi Lainnya</strong> > <strong>Transfer</strong> > <strong>Ke Rek BCA</strong></li>
                         <li>Masukkan nomor rekening <strong>6670747997</strong></li>
-                        <li>Masukkan jumlah nominal <strong>Tagihan Transfer Saat Ini</strong></li>
+                        <li>Masukkan nominal sesuai <strong>Tagihan Transfer Saat Ini</strong></li>
                         <li>Konfirmasi nama penerima <strong>Iman Anjani Buchory</strong></li>
+                        <li>Simpan struk ATM sebagai bukti pembayaran</li>
+                    </ol>
+                </details>
+
+                <!-- Transfer Beda Bank -->
+                <details class="group bg-purple-50/60 rounded-xl p-3 cursor-pointer border border-purple-100">
+                    <summary class="font-semibold flex justify-between items-center text-xs sm:text-sm text-purple-950">
+                        <span class="flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-base text-[#330e7a]">account_balance</span>
+                            Transfer Beda Bank (BRI, Mandiri, BNI, BSI, dll)
+                        </span>
+                        <span class="material-symbols-outlined group-open:rotate-180 transition text-base">expand_more</span>
+                    </summary>
+                    <ol class="list-decimal pl-4 mt-2 space-y-1 text-xs text-gray-700 leading-relaxed">
+                        <li>Buka aplikasi Mobile Banking / ATM bank Anda (BRImo, Livin' Mandiri, BNI Mobile, BSI Mobile, dll)</li>
+                        <li>Pilih menu <strong>Transfer Antar Bank / Ke Bank Lain</strong></li>
+                        <li>Pilih Bank Tujuan: <strong>BCA / Bank Central Asia</strong> (Kode Bank: <strong>014</strong>)</li>
+                        <li>Masukkan Nomor Rekening: <strong>6670747997</strong></li>
+                        <li>Masukkan Nominal Transfer sesuai <strong>Tagihan Transfer Saat Ini</strong></li>
+                        <li>Pilih Layanan Transfer: <strong>BI-FAST</strong> (biaya hemat Rp 2.500) atau <strong>Realtime Online</strong></li>
+                        <li>Pastikan Nama Penerima tertera: <strong>Iman Anjani Buchory</strong></li>
+                        <li>Selesaikan transfer & simpan tangkapan layar (screenshot) bukti transfer</li>
                     </ol>
                 </details>
             </div>
         </div>
 
-        <!-- Upload Form -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6" id="upload_section">
+        <!-- Upload Form Card -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 mb-8" id="upload_section">
             <h3 class="text-base sm:text-lg font-bold text-gray-900 border-b border-gray-100 pb-3 mb-4 flex items-center gap-2">
                 <span class="material-symbols-outlined text-[#330e7a] text-xl sm:text-2xl">upload_file</span>
                 Upload Bukti Pembayaran
             </h3>
             
+            <!-- Initial Upload Form -->
             <div id="upload_form_container">
-                <p class="text-gray-600 mb-4 text-xs sm:text-sm leading-relaxed">Pastikan foto bukti transfer terlihat jelas agar pesanan Anda dapat segera diproses.</p>
+                <p class="text-gray-600 mb-4 text-xs sm:text-sm leading-relaxed">Silakan upload foto atau screenshot bukti transfer Anda agar pesanan dapat segera diproses.</p>
                 <form id="uploadForm">
                     <input type="hidden" id="order_number_input" name="order_number">
                     
@@ -156,33 +196,34 @@
                     </label>
 
                     <button type="submit" id="submitBtn" class="w-full mt-4 sm:mt-6 gradient-primary text-white font-bold py-3 sm:py-3.5 px-4 rounded-xl shadow-md hover:shadow-lg transition flex justify-center items-center opacity-50 cursor-not-allowed text-sm sm:text-base active:scale-98" disabled>
-                        <span id="btnText">Konfirmasi & Kirim Bukti Transfer</span>
+                        <span id="btnText">Upload Bukti Pembayaran</span>
                         <span id="btnLoader" class="material-symbols-outlined animate-spin hidden ml-2">autorenew</span>
                     </button>
                 </form>
             </div>
             
-            <div id="uploaded_success" class="hidden text-center py-6">
-                <span class="material-symbols-outlined text-green-500 text-5xl sm:text-6xl mb-2">verified</span>
-                <h4 class="text-base sm:text-lg font-bold text-gray-800">Bukti Transfer Berhasil Terkirim!</h4>
-                <p class="text-gray-600 mt-2 text-xs sm:text-sm leading-relaxed">Bukti transfer Anda sedang diverifikasi oleh admin. Kami akan memproses pesanan Anda secepatnya.</p>
-                <div class="mt-4">
-                    <img id="uploaded_preview" class="max-h-48 mx-auto rounded-xl shadow-sm object-contain">
+            <!-- Success State: Bukti Terkirim + WhatsApp Confirmation Button -->
+            <div id="uploaded_success" class="hidden text-center py-4">
+                <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 mb-3">
+                    <span class="material-symbols-outlined text-3xl">verified</span>
                 </div>
+                <h4 class="text-base sm:text-lg font-bold text-gray-900">Bukti Transfer Berhasil Diunggah!</h4>
+                <p class="text-gray-600 mt-1.5 text-xs sm:text-sm leading-relaxed max-w-md mx-auto">
+                    Bukti transfer Anda telah kami terima dan sedang diverifikasi oleh admin. Silakan konfirmasi ke WhatsApp untuk mempercepat proses fabrikasi & pengiriman mesin.
+                </p>
+                
+                <div class="mt-4 mb-5">
+                    <img id="uploaded_preview" class="max-h-48 mx-auto rounded-xl shadow-sm border border-gray-200 object-contain">
+                </div>
+
+                <!-- Tombol Konfirmasi WhatsApp (Muncul otomatis setelah upload sukses) -->
+                <a id="btn_wa" href="https://wa.me/6285335850517" target="_blank" class="w-full bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-emerald-600/25 text-center transition flex items-center justify-center gap-2.5 text-xs sm:text-sm active:scale-98">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133-.298-.347-.446-.52-.149-.174-.198-.298-.298-.497-.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074-.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413-.248-.694-.248-1.289-.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    <span>Konfirmasi ke Admin WhatsApp (085335850517)</span>
+                </a>
             </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="flex flex-col gap-2.5 sm:gap-3 pb-8">
-            <a id="btn_wa" href="https://wa.me/6285335850517" target="_blank" class="w-full bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold py-3.5 px-4 rounded-xl shadow-md shadow-emerald-600/20 text-center transition flex items-center justify-center gap-2 text-xs sm:text-sm active:scale-98">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133-.298-.347-.446-.52-.149-.174-.198-.298-.298-.497-.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074-.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413-.248-.694-.248-1.289-.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                <span>Kirim Konfirmasi ke WhatsApp (085335850517)</span>
-            </a>
-
-            <a id="btn_tracking" href="pesanan.html" class="w-full bg-white border border-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl shadow-2xs text-center hover:bg-gray-50 transition text-xs sm:text-sm active:scale-98">
-                Lihat Status Pesanan & Tracking
-            </a>
-        </div>
     </main>
 
     <script>
@@ -190,13 +231,12 @@
         const orderNumber = urlParams.get('order_number');
         
         if (!orderNumber) {
-            alert('Nomor pesanan tidak ditemukan.');
-            window.location.href = 'index.html';
+            showToast('Nomor pesanan tidak ditemukan.', false);
+            setTimeout(() => { window.location.href = 'index.html'; }, 1500);
         }
 
-        document.getElementById('display_order_number').innerText = orderNumber;
-        document.getElementById('order_number_input').value = orderNumber;
-        document.getElementById('btn_tracking').href = `pesanan.html?order_number=${orderNumber}`;
+        document.getElementById('display_order_number').innerText = orderNumber || '-';
+        document.getElementById('order_number_input').value = orderNumber || '';
 
         function formatRupiah(angka, prefix) {
             var number_string = (angka || 0).toString().replace(/[^,\d]/g, ''),
@@ -212,12 +252,76 @@
             return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
         }
 
+        // Elegant Toast notification
+        function showToast(message, isSuccess = true) {
+            const toast = document.getElementById('elegantToast');
+            const toastMsg = document.getElementById('elegantToastMsg');
+            const toastIcon = document.getElementById('elegantToastIcon');
+            
+            if (!toast || !toastMsg) return;
+            
+            toastMsg.innerText = message;
+            if (toastIcon) {
+                toastIcon.innerText = isSuccess ? 'check_circle' : 'info';
+                toastIcon.className = `material-symbols-outlined text-lg sm:text-xl ${isSuccess ? 'text-emerald-400' : 'text-amber-400'}`;
+            }
+            
+            toast.classList.remove('-translate-y-16', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('-translate-y-16', 'opacity-0', 'pointer-events-none');
+            }, 2500);
+        }
+
+        // Copy Text Helper
         function copyText(elementId) {
-            let text = document.getElementById(elementId).innerText;
-            if(elementId === 'total_amount') text = text.replace(/[^0-9]/g, '');
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Teks disalin: ' + text);
-            });
+            const el = document.getElementById(elementId);
+            if (!el) return;
+
+            let text = el.innerText.trim();
+            let toastLabel = 'Teks';
+
+            if (elementId === 'total_amount') {
+                const rawDigits = text.replace(/[^0-9]/g, '');
+                text = rawDigits;
+                toastLabel = 'Nominal Rp ' + formatRupiah(rawDigits);
+            } else if (elementId === 'bank_account') {
+                toastLabel = 'Nomor rekening BCA ' + text;
+            } else if (elementId === 'display_order_number') {
+                toastLabel = 'Nomor pesanan ' + text;
+            }
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast(`${toastLabel} berhasil disalin!`);
+                }).catch(() => {
+                    fallbackCopyText(text, toastLabel);
+                });
+            } else {
+                fallbackCopyText(text, toastLabel);
+            }
+        }
+
+        function fallbackCopyText(text, toastLabel) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+            textArea.style.opacity = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast(`${toastLabel} berhasil disalin!`);
+            } catch (err) {
+                showToast('Gagal menyalin teks', false);
+            }
+            document.body.removeChild(textArea);
         }
 
         // Fetch Order Data
@@ -317,7 +421,7 @@
                     }, 1000);
 
                 } else {
-                    alert(data.message);
+                    showToast(data.message || 'Gagal memuat informasi pesanan', false);
                 }
             });
 
@@ -328,11 +432,11 @@
         function handleSelectedFile(file) {
             if (!file) return;
             if (!file.type.match('image.*')) {
-                alert('Silakan pilih file gambar (JPG, PNG, WEBP)');
+                showToast('Silakan pilih file gambar (JPG, PNG, WEBP)', false);
                 return;
             }
             if (file.size > 5 * 1024 * 1024) {
-                alert('Ukuran file maksimal 5MB');
+                showToast('Ukuran file maksimal 5MB', false);
                 return;
             }
 
@@ -364,6 +468,7 @@
                     container.items.add(blob);
                     proofInput.files = container.files;
                     handleSelectedFile(blob);
+                    showToast('Screenshot berhasil ditempel!');
                     break;
                 }
             }
@@ -387,20 +492,27 @@
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    alert('Bukti transfer berhasil diunggah!');
-                    location.reload();
+                    showToast('Bukti transfer berhasil diunggah!');
+                    document.getElementById('upload_form_container').classList.add('hidden');
+                    document.getElementById('uploaded_success').classList.remove('hidden');
+                    if (data.image_url) {
+                        document.getElementById('uploaded_preview').src = data.image_url;
+                    } else {
+                        const previewSrc = document.getElementById('image_preview').src;
+                        if (previewSrc) document.getElementById('uploaded_preview').src = previewSrc;
+                    }
                 } else {
-                    alert('Gagal: ' + data.message);
+                    showToast('Gagal: ' + data.message, false);
                     submitBtn.disabled = false;
-                    document.getElementById('btnText').innerText = 'Konfirmasi & Kirim Bukti Transfer';
+                    document.getElementById('btnText').innerText = 'Upload Bukti Pembayaran';
                     document.getElementById('btnLoader').classList.add('hidden');
                 }
             })
             .catch(err => {
                 console.error(err);
-                alert('Terjadi kesalahan jaringan.');
+                showToast('Terjadi kesalahan jaringan.', false);
                 submitBtn.disabled = false;
-                document.getElementById('btnText').innerText = 'Konfirmasi & Kirim Bukti Transfer';
+                document.getElementById('btnText').innerText = 'Upload Bukti Pembayaran';
                 document.getElementById('btnLoader').classList.add('hidden');
             });
         });

@@ -99,7 +99,7 @@ if ($action === 'upload_proof') {
                 $stmt_ord = $pdo->prepare("UPDATE orders SET status = 'payment_uploaded', updated_at = NOW() WHERE id = ?");
                 $stmt_ord->execute([$order_id]);
 
-                echo json_encode(['success' => true, 'message' => 'Bukti transfer berhasil diunggah']);
+                echo json_encode(['success' => true, 'message' => 'Bukti transfer berhasil diunggah', 'image_url' => $db_path]);
             } else {
                 echo json_encode(['success' => false, 'message' => 'Pesanan tidak ditemukan.']);
             }
