@@ -375,54 +375,7 @@ if ($action === 'get_analytics') {
     exit;
 }
 
-function getAccountSize() {
-    $dir = isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'] ? dirname($_SERVER['DOCUMENT_ROOT']) : realpath(__DIR__ . '/../');
-    
-    // Try shell_exec (fastest for Hostinger/Linux)
-    if (function_exists('shell_exec')) {
-        $output = @shell_exec('du -sb ' . escapeshellarg($dir) . ' 2>/dev/null');
-        if ($output) {
-            $parts = preg_split('/\s+/', trim($output));
-            if (is_numeric($parts[0])) {
-                return (float)$parts[0];
-            }
-        }
-    }
-    
-    // Fallback to PHP recursion
-    $size = 0;
-    try {
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::CATCH_GET_CHILD
-        );
-        foreach ($iterator as $file) {
-            if ($file->isFile()) {
-                $size += $file->getSize();
-            }
-        }
-    } catch (Exception $e) {}
-    return $size;
-}
 
-if ($action === 'get_storage') {
-    $settings = getJson('settings', []);
-    // Default to 100GB which is Hostinger Premium default, user can change in settings
-    $total_gb = isset($settings['storage_quota_gb']) ? (float)$settings['storage_quota_gb'] : 100.0;
-    $total_bytes = $total_gb * 1073741824;
-    
-    $used_bytes = getAccountSize();
-    $free_bytes = max(0, $total_bytes - $used_bytes);
-    
-    echo json_encode([
-        'total_gb' => $total_gb,
-        'free_gb' => round($free_bytes / 1073741824, 2),
-        'used_gb' => round($used_bytes / 1073741824, 3),
-        'used_mb' => round($used_bytes / 1048576, 2),
-        'percent_used' => $total_bytes > 0 ? round(($used_bytes / $total_bytes) * 100, 1) : 0
-    ]);
-    exit;
-}
 
 // Media Library Endpoints
 if ($action === 'get_media') {

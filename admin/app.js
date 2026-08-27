@@ -9,7 +9,6 @@ function adminApp() {
 
         // Data Models
         analytics: { visitors: 0, wa_clicks: 0, messages: 0, product_views: {} },
-        storage: { total_gb: 0, free_gb: 0, used_gb: 0, percent_used: 0 },
         products: [],
         searchQuery: '',
         articleSearch: '',
@@ -180,7 +179,6 @@ function adminApp() {
         async loadAllData() {
             await Promise.all([
                 this.loadAnalytics(),
-                this.loadStorage(),
                 this.loadProducts(),
                 this.loadMedia(),
                 this.loadModule('settings'),
@@ -195,10 +193,6 @@ function adminApp() {
 
         async loadAnalytics() {
             try { let r = await fetch('api.php?action=get_analytics'); this.analytics = await r.json(); } catch(e) {}
-        },
-
-        async loadStorage() {
-            try { let r = await fetch('api.php?action=get_storage'); this.storage = await r.json(); } catch(e) {}
         },
 
         async loadProducts() {
@@ -219,7 +213,6 @@ function adminApp() {
                 let res = await r.json();
                 if(res.success) {
                     this.loadMedia();
-                    this.loadStorage(); // Update storage stats
                 }
             } catch(e) {}
         },
@@ -236,7 +229,6 @@ function adminApp() {
             }
             this.isUploadingMedia = false;
             this.loadMedia();
-            this.loadStorage(); // Update storage stats
             event.target.value = ''; 
         },
         copyToClipboard(text) {
