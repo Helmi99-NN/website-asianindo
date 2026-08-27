@@ -419,15 +419,12 @@
 
                     const waUrl = `https://wa.me/${adminWA}?text=${encodeURIComponent(waMsg)}`;
                     
-                    // Simpan link WA di sessionStorage
+                    // Simpan link WA & pesan lengkap di sessionStorage untuk digunakan setelah upload bukti transfer
                     sessionStorage.setItem('last_order_wa_url', waUrl);
+                    sessionStorage.setItem('last_order_wa_msg', waMsg);
 
-                    // Buka WhatsApp di tab baru dan arahkan halaman ke pembayaran
-                    try {
-                        window.open(waUrl, '_blank');
-                    } catch(e) {}
-                    
-                    window.location.href = 'pembayaran.html?order_number=' + data.order_number + '&send_wa=1';
+                    // Arahkan langsung ke halaman pembayaran (tidak buka popup WA agar proses pembayaran & transfer diselesaikan terlebih dahulu)
+                    window.location.href = 'pembayaran.html?order_number=' + data.order_number;
                 } else {
                     alert('Gagal membuat pesanan: ' + (data.error || 'Unknown error'));
                     btn.disabled = false;
