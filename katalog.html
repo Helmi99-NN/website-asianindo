@@ -419,8 +419,9 @@
                         </button>
                         <!-- Sort -->
                         <select class="px-4 py-3 rounded-xl border border-outline-variant/40 bg-white text-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-on-surface shadow-ambient font-label-md min-w-[160px]" id="sort-select">
+                            <option value="most-viewed" selected>Paling Sering Dibuka (Terpopuler)</option>
                             <option value="newest">Terbaru</option>
-                            <option value="popular">Paling Populer</option>
+                            <option value="popular">Ulasan Terbanyak</option>
                             <option value="price-low">Harga Terendah</option>
                             <option value="price-high">Harga Tertinggi</option>
                             <option value="capacity-high">Kapasitas Terbesar</option>
@@ -712,9 +713,43 @@
         'use strict';
 
         // ============================
-        // PRODUCT DATA
+        // PRODUCT DATA & VIEW TRACKING
         // ============================
         let products = window.CATALOG_PRODUCTS || [];
+        let productViews = {};
+
+        // Load local views from localStorage
+        try {
+            const localViews = JSON.parse(localStorage.getItem('asianindo_product_views') || '{}');
+            productViews = { ...localViews };
+        } catch(e) {}
+
+        // Global click handler to track product open immediately
+        window.trackProductOpen = function(productId) {
+            try {
+                let localViews = JSON.parse(localStorage.getItem('asianindo_product_views') || '{}');
+                localViews[productId] = (localViews[productId] || 0) + 1;
+                localStorage.setItem('asianindo_product_views', JSON.stringify(localViews));
+                productViews[productId] = (productViews[productId] || 0) + 1;
+                
+                fetch('admin/api.php?action=track_event', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ event: 'product_view', product_id: productId })
+                }).catch(() => {});
+            } catch(e) {}
+        };
+
+        // Fetch live server-side product views
+        fetch('admin/api.php?action=get_product_views')
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.success && data.product_views) {
+                    productViews = { ...productViews, ...data.product_views };
+                    updateView(); // Re-sort with live view counts
+                }
+            })
+            .catch(err => console.log('Live views fetch fallback', err));
 
         // Asynchronously load the latest products to bypass CDN cache
         fetch('data/products.json?v=' + new Date().getTime())
@@ -755,6 +790,7 @@
             const priceDisplay = p.priceDisplay || (p.price ? 'Rp ' + p.price.toLocaleString('id-ID') : 'Hubungi Kami');
             const waMsg = p.waMsg || ('Halo, saya tertarik dengan ' + (p.name || ''));
             const waUrl = `https://wa.me/6285335850517?text=${encodeURIComponent(waMsg)}`;
+            const pTarget = p.slug || p.id;
             return `
             <article class="product-card bg-white rounded-2xl border border-outline-variant/15 overflow-hidden flex flex-col group">
                 <div class="aspect-[4/3] bg-surface-container-low relative overflow-hidden group/gallery">
@@ -764,12 +800,12 @@
                         </style>
                         ${p.images && p.images.length > 0 
                             ? p.images.map(img => `
-                                <a href="product.html?id=${p.slug || p.id}" class="w-full h-full flex-shrink-0 snap-center relative block">
+                                <a href="product.html?id=${pTarget}" onclick="window.trackProductOpen('${pTarget}')" class="w-full h-full flex-shrink-0 snap-center relative block">
                                     <img src="${img}" class="product-img w-full h-full object-contain p-4 mix-blend-multiply" alt="${p.name}" loading="lazy" />
                                 </a>
                               `).join('')
                             : `
-                                <a href="product.html?id=${p.slug || p.id}" class="w-full h-full flex-shrink-0 snap-center relative block">
+                                <a href="product.html?id=${pTarget}" onclick="window.trackProductOpen('${pTarget}')" class="w-full h-full flex-shrink-0 snap-center relative block">
                                     <img src="images/placeholder.webp" class="product-img w-full h-full object-contain p-4 mix-blend-multiply" alt="${p.name}" loading="lazy" />
                                 </a>
                               `
@@ -782,7 +818,7 @@
                     <div class="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-lg text-primary font-caption border border-primary/15 text-[10px] sm:text-xs shadow-sm pointer-events-none">${p.subCategory}</div>
                 </div>
                 <div class="p-3 sm:p-5 flex flex-col flex-grow gap-1.5 sm:gap-2.5">
-                    <a href="product.html?id=${p.slug || p.id}" class="hover:text-primary transition-colors"><h3 class="font-headline-sm text-sm sm:text-[17px] font-bold text-on-surface line-clamp-2 leading-snug">${p.name}</h3></a>
+                    <a href="product.html?id=${pTarget}" onclick="window.trackProductOpen('${pTarget}')" class="hover:text-primary transition-colors"><h3 class="font-headline-sm text-sm sm:text-[17px] font-bold text-on-surface line-clamp-2 leading-snug">${p.name}</h3></a>
                     <div class="flex items-center gap-1.5 mt-0.5 sm:mt-1">
                         <span class="material-symbols-outlined text-primary text-sm sm:text-base">scale</span>
                         <span class="text-on-surface-variant text-[11px] sm:text-xs font-medium truncate">${(p.capacity || '').replace(/<[^>]*>?/gm, '')}</span>
@@ -829,8 +865,15 @@
         }
 
         // ============================
-        // FILTER LOGIC
+        // FILTER & SORT LOGIC
         // ============================
+
+        function getProductScore(p) {
+            const vId = (productViews[p.id] || 0);
+            const vSlug = (p.slug && productViews[p.slug]) ? productViews[p.slug] : 0;
+            const vBase = (p.views || 0);
+            return Math.max(vId, vSlug, vId + vSlug) + vBase;
+        }
 
         function getFilteredProducts() {
             const search = document.getElementById('search-input').value.toLowerCase().trim();
@@ -865,11 +908,31 @@
             // Sort
             const sort = document.getElementById('sort-select').value;
             switch (sort) {
+                case 'most-viewed':
+                    filtered.sort((a, b) => {
+                        const viewsA = getProductScore(a);
+                        const viewsB = getProductScore(b);
+                        if (viewsB !== viewsA) {
+                            return viewsB - viewsA; // Paling sering dibuka paling atas
+                        }
+                        const scoreA = (a.reviews || 0) * 10 + (a.rating || 5);
+                        const scoreB = (b.reviews || 0) * 10 + (b.rating || 5);
+                        return scoreB - scoreA;
+                    });
+                    break;
                 case 'price-low': filtered.sort((a, b) => a.price - b.price); break;
                 case 'price-high': filtered.sort((a, b) => b.price - a.price); break;
-                case 'popular': filtered.sort((a, b) => b.reviews - a.reviews); break;
+                case 'popular': filtered.sort((a, b) => (b.reviews || 0) - (a.reviews || 0)); break;
                 case 'capacity-high': filtered.sort((a, b) => (b.capacitySize === 'large' ? 3 : b.capacitySize === 'medium' ? 2 : 1) - (a.capacitySize === 'large' ? 3 : a.capacitySize === 'medium' ? 2 : 1)); break;
-                default: break; // newest = original order
+                case 'newest': break; // original order
+                default:
+                    filtered.sort((a, b) => {
+                        const viewsA = getProductScore(a);
+                        const viewsB = getProductScore(b);
+                        if (viewsB !== viewsA) return viewsB - viewsA;
+                        return (b.reviews || 0) - (a.reviews || 0);
+                    });
+                    break;
             }
 
             return filtered;
@@ -1059,7 +1122,7 @@
             document.querySelectorAll('.filter-sub, .filter-cap').forEach(c => c.checked = false);
             priceRange.value = 200;
             priceLabel.textContent = 'Rp 200 Juta';
-            document.getElementById('sort-select').value = 'newest';
+            document.getElementById('sort-select').value = 'most-viewed';
             updateView();
         }
 

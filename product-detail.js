@@ -30,6 +30,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
+    // Record product view locally & to server analytics
+    try {
+        const pKey = product.id || product.slug || productId;
+        let localViews = JSON.parse(localStorage.getItem('asianindo_product_views') || '{}');
+        localViews[pKey] = (localViews[pKey] || 0) + 1;
+        if (product.slug && product.id && product.slug !== product.id) {
+            localViews[product.slug] = localViews[pKey];
+            localViews[product.id] = localViews[pKey];
+        }
+        localStorage.setItem('asianindo_product_views', JSON.stringify(localViews));
+        
+        fetch('admin/api.php?action=track_event', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ event: 'product_view', product_id: pKey })
+        }).catch(() => {});
+    } catch(e) {}
+
     // Populate data
     if (typeof window.updateSEO === 'function') {
         window.updateSEO(product.meta_title || `${product.name} - CV Asianindo`, product.meta_description || product.description || product.desc);

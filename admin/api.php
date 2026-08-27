@@ -57,6 +57,20 @@ if ($action === 'get_public') {
     exit;
 }
 
+if ($action === 'get_product_views') {
+    header('Content-Type: application/json');
+    $analyticsFile = __DIR__ . '/../data/analytics.json';
+    $views = [];
+    if (file_exists($analyticsFile)) {
+        $parsed = json_decode(file_get_contents($analyticsFile), true);
+        if (isset($parsed['product_views']) && is_array($parsed['product_views'])) {
+            $views = $parsed['product_views'];
+        }
+    }
+    echo json_encode(['success' => true, 'product_views' => $views]);
+    exit;
+}
+
 if ($action === 'track_event') {
     // Only accept POST
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
