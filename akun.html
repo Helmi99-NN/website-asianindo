@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Akun Saya - CV Asianindo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -14,6 +16,14 @@
                     colors: {
                         primary: '#330e7a',
                         'primary-container': '#4a2c91',
+                        'primary-fixed': '#eaddff',
+                        'on-primary-fixed': '#24005a',
+                        'surface-container-low': '#f7f2fa',
+                        'surface-container': '#f3edf7',
+                        'surface-container-high': '#ece6f0',
+                        'on-surface': '#1d1b20',
+                        'on-surface-variant': '#49454f',
+                        'outline-variant': '#cac4d0',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -24,471 +34,473 @@
         }
     </script>
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; }
-        .tab-active { background-color: #f3f4f6; color: #330e7a; font-weight: 600; border-left: 4px solid #330e7a; }
-        .tab-inactive { color: #4b5563; border-left: 4px solid transparent; }
-        .tab-inactive:hover { background-color: #f9fafb; color: #330e7a; }
-        
-        /* Mobile tab styling */
-        @media (max-width: 768px) {
-            .tab-active { border-left: none; border-bottom: 3px solid #330e7a; }
-            .tab-inactive { border-left: none; border-bottom: 3px solid transparent; }
+        :root {
+            --font-body: clamp(0.8125rem, 0.77rem + 0.22vw, 0.9375rem);
+            --font-h1: clamp(1.25rem, 1.1rem + 0.8vw, 1.875rem);
+            --font-h2: clamp(1.1rem, 1.0rem + 0.55vw, 1.5rem);
         }
+        body { font-size: var(--font-body); font-family: 'Inter', sans-serif; }
+        .font-heading { font-family: 'Outfit', sans-serif; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+<body class="bg-[#f8f9fa] text-on-surface flex flex-col min-h-screen antialiased">
 
-    <!-- Header -->
-    <header class="bg-primary text-white sticky top-0 z-50 shadow-md">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-heading font-bold flex items-center gap-2">
-                <span class="material-symbols-outlined text-3xl">precision_manufacturing</span>
-                CV Asianindo
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-5 right-5 z-[100] transform -translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl text-white text-xs sm:text-sm font-medium backdrop-blur-md">
+        <span id="toast-icon" class="material-symbols-outlined text-[20px]">check_circle</span>
+        <span id="toast-msg">Notifikasi</span>
+    </div>
+
+    <!-- Header Navbar -->
+    <header class="bg-white text-primary sticky top-0 border-b border-primary/10 shadow-xs z-40 transition-all duration-300">
+        <div class="flex justify-between items-center w-full px-3 sm:px-6 max-w-7xl mx-auto h-16 sm:h-20">
+            <a class="font-bold text-primary tracking-tight flex items-center gap-1.5 sm:gap-2 shrink-0 min-w-0" href="index.html">
+                <img src="images/logo_asianindo.webp" alt="CV Asianindo" class="h-9 sm:h-12 object-contain shrink-0" />
+                <span class="text-base sm:text-xl font-bold font-heading truncate">CV Asianindo</span>
             </a>
             
-            <nav class="hidden md:flex space-x-6 items-center">
-                <a href="index.html" class="hover:text-gray-300 transition">Beranda</a>
-                <a href="katalog.html" class="hover:text-gray-300 transition">Katalog</a>
-                <a href="tentang.html" class="hover:text-gray-300 transition">Tentang Kami</a>
-                <a href="kontak.html" class="hover:text-gray-300 transition">Kontak</a>
+            <nav class="hidden md:flex gap-6 items-center">
+                <a class="text-on-surface-variant hover:text-primary transition-colors text-xs lg:text-sm font-medium" href="index.html">Beranda</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors text-xs lg:text-sm font-medium" href="katalog.html">Katalog</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors text-xs lg:text-sm font-medium" href="about.html">Tentang Kami</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors text-xs lg:text-sm font-medium" href="blog.html">Artikel</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors text-xs lg:text-sm font-medium" href="kontak.html">Kontak</a>
             </nav>
 
-            <div class="flex items-center gap-4">
-                <a href="keranjang.html" class="relative hover:text-gray-300 transition">
-                    <span class="material-symbols-outlined">shopping_cart</span>
-                    <span id="cart-badge" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+            <div class="flex items-center gap-1 sm:gap-2 md:gap-3 shrink-0">
+                <a href="keranjang.html" class="relative p-1.5 sm:p-2 text-primary hover:bg-primary/5 rounded-xl transition-colors" title="Keranjang Belanja">
+                    <span class="material-symbols-outlined text-[22px] sm:text-[26px]">shopping_bag</span>
+                    <span class="cart-count-badge absolute top-0.5 right-0.5 w-4 h-4 sm:w-5 sm:h-5 bg-rose-500 text-white text-[9px] sm:text-[10px] font-black rounded-full items-center justify-center hidden">0</span>
                 </a>
-                <div class="hidden md:flex items-center gap-2" id="header-user-info">
-                    <span class="material-symbols-outlined">account_circle</span>
-                    <span id="header-user-name" class="font-medium">Memuat...</span>
+                <div id="header-auth-container" class="flex items-center">
+                    <!-- Injected by auth-header.js -->
                 </div>
-                
-                <button class="md:hidden text-white" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
-                    <span class="material-symbols-outlined text-3xl">menu</span>
-                </button>
-            </div>
-        </div>
-        
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-primary-container p-4">
-            <a href="index.html" class="block py-2">Beranda</a>
-            <a href="katalog.html" class="block py-2">Katalog</a>
-            <a href="tentang.html" class="block py-2">Tentang Kami</a>
-            <a href="kontak.html" class="block py-2">Kontak</a>
-            <div class="border-t border-white/20 mt-2 pt-2">
-                <span id="mobile-user-name" class="block py-2 font-medium text-white">Memuat...</span>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-grow container mx-auto px-4 py-8">
+    <!-- Main Content Layout -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-3 sm:px-6 py-6 sm:py-10">
         
-        <div class="flex flex-col md:flex-row gap-6">
-            <!-- Sidebar / Tabs -->
-            <div class="w-full md:w-64 shrink-0">
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden flex flex-row md:flex-col overflow-x-auto md:overflow-x-visible pb-2 md:pb-0">
-                    <a href="#profil" onclick="switchTab('profil')" id="tab-btn-profil" class="tab-active flex items-center gap-3 px-5 py-4 whitespace-nowrap transition-colors">
-                        <span class="material-symbols-outlined">person</span>
-                        Profil Saya
-                    </a>
-                    <a href="#pesanan" onclick="switchTab('pesanan')" id="tab-btn-pesanan" class="tab-inactive flex items-center gap-3 px-5 py-4 whitespace-nowrap transition-colors">
-                        <span class="material-symbols-outlined">receipt_long</span>
-                        Pesanan Saya
-                    </a>
-                    <a href="keranjang.html" class="tab-inactive flex items-center gap-3 px-5 py-4 whitespace-nowrap transition-colors">
-                        <span class="material-symbols-outlined">shopping_cart</span>
-                        Keranjang
-                    </a>
-                    <a href="#password" onclick="switchTab('password')" id="tab-btn-password" class="tab-inactive flex items-center gap-3 px-5 py-4 whitespace-nowrap transition-colors">
-                        <span class="material-symbols-outlined">lock</span>
-                        Ubah Password
-                    </a>
-                    <a href="#" onclick="logout()" class="text-red-600 hover:bg-red-50 flex items-center gap-3 px-5 py-4 whitespace-nowrap transition border-l-4 border-transparent md:border-b-0 border-b-3 mt-auto md:border-t md:border-gray-100">
-                        <span class="material-symbols-outlined">logout</span>
-                        Keluar
+        <!-- Welcome Banner -->
+        <div class="bg-gradient-to-r from-[#2D2354] to-[#4A2C91] rounded-2xl sm:rounded-3xl p-5 sm:p-8 text-white shadow-xl mb-6 sm:mb-8 relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
+                <div class="flex items-center gap-3.5 sm:gap-5">
+                    <div id="user-avatar-large" class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center text-xl sm:text-2xl font-bold font-heading shadow-inner">
+                        U
+                    </div>
+                    <div>
+                        <div class="text-xs sm:text-sm text-purple-200 font-medium">Selamat Datang,</div>
+                        <h1 id="user-greeting-name" class="text-lg sm:text-2xl font-bold font-heading tracking-tight mt-0.5">Memuat Profil...</h1>
+                        <p id="user-greeting-email" class="text-xs sm:text-sm text-purple-200/80 mt-0.5">-</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 pt-2 sm:pt-0">
+                    <a href="katalog.html" class="bg-white/15 hover:bg-white/25 text-white border border-white/20 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 backdrop-blur-sm">
+                        <span class="material-symbols-outlined text-[18px]">storefront</span>
+                        <span>Belanja Katalog</span>
                     </a>
                 </div>
             </div>
+        </div>
 
-            <!-- Content Area -->
-            <div class="flex-grow bg-white rounded-xl shadow-sm p-6 min-h-[400px]">
+        <div class="flex flex-col lg:flex-row gap-6 sm:gap-8 items-start">
+            
+            <!-- Sidebar Navigation -->
+            <aside class="w-full lg:w-64 shrink-0 bg-white rounded-2xl sm:rounded-3xl shadow-xs border border-gray-200/80 p-2 sm:p-3 overflow-hidden">
+                <div class="flex lg:flex-col overflow-x-auto lg:overflow-x-visible gap-1.5 no-scrollbar">
+                    <button type="button" onclick="switchTab('profil')" id="tab-btn-profil" class="flex-1 lg:flex-none flex items-center gap-2.5 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left whitespace-nowrap bg-primary text-white shadow-sm shadow-primary/20">
+                        <span class="material-symbols-outlined text-[20px]">person</span>
+                        <span>Profil Saya</span>
+                    </button>
+                    <button type="button" onclick="switchTab('pesanan')" id="tab-btn-pesanan" class="flex-1 lg:flex-none flex items-center gap-2.5 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left whitespace-nowrap text-gray-600 hover:bg-gray-100/80">
+                        <span class="material-symbols-outlined text-[20px]">receipt_long</span>
+                        <span>Pesanan Saya</span>
+                        <span id="orders-badge-count" class="ml-auto bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full hidden">0</span>
+                    </button>
+                    <a href="keranjang.html" class="flex-1 lg:flex-none flex items-center gap-2.5 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left whitespace-nowrap text-gray-600 hover:bg-gray-100/80">
+                        <span class="material-symbols-outlined text-[20px]">shopping_cart</span>
+                        <span>Keranjang Belanja</span>
+                    </a>
+                    <button type="button" onclick="switchTab('password')" id="tab-btn-password" class="flex-1 lg:flex-none flex items-center gap-2.5 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left whitespace-nowrap text-gray-600 hover:bg-gray-100/80">
+                        <span class="material-symbols-outlined text-[20px]">lock_reset</span>
+                        <span>Ubah Password</span>
+                    </button>
+                    <div class="hidden lg:block border-t border-gray-100 my-1.5"></div>
+                    <button type="button" onclick="handleLogout()" class="flex-1 lg:flex-none flex items-center gap-2.5 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left whitespace-nowrap text-rose-600 hover:bg-rose-50 cursor-pointer">
+                        <span class="material-symbols-outlined text-[20px]">logout</span>
+                        <span>Keluar</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Panel Content -->
+            <section class="flex-1 w-full bg-white rounded-2xl sm:rounded-3xl shadow-xs border border-gray-200/80 p-5 sm:p-8 min-h-[460px]">
                 
-                <!-- Section: Profil Saya -->
-                <div id="section-profil" class="tab-content block">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-heading font-bold text-gray-800">Profil Saya</h2>
-                        <button id="btn-edit-profil" onclick="toggleEditProfile()" class="text-primary hover:text-primary-container font-medium flex items-center gap-1 transition-colors">
-                            <span class="material-symbols-outlined text-sm">edit</span> Edit Profil
+                <!-- Tab 1: Profil Saya -->
+                <div id="section-profil" class="space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-gray-100">
+                        <div>
+                            <h2 class="text-base sm:text-xl font-bold font-heading text-gray-900">Informasi Akun & Pengiriman</h2>
+                            <p class="text-xs sm:text-sm text-gray-500 mt-0.5">Kelola data identitas dan alamat pengiriman mesin Anda.</p>
+                        </div>
+                        <button type="button" id="btn-toggle-edit" onclick="toggleEditProfile()" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-primary bg-primary/5 hover:bg-primary/10 border border-primary/20 px-4 py-2 rounded-xl transition-all self-start sm:self-auto">
+                            <span class="material-symbols-outlined text-[16px]">edit</span>
+                            <span id="btn-edit-text">Edit Profil</span>
                         </button>
                     </div>
 
-                    <div id="profile-view" class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-4">
-                            <div>
-                                <p class="text-sm text-gray-500 mb-1">Nama Lengkap</p>
-                                <p class="font-medium text-gray-800" id="view-nama">-</p>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500 mb-1">Email</p>
-                                <p class="font-medium text-gray-800" id="view-email">-</p>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500 mb-1">Nomor Telepon</p>
-                                <p class="font-medium text-gray-800" id="view-telepon">-</p>
-                            </div>
-                            <div class="md:col-span-2">
-                                <p class="text-sm text-gray-500 mb-1">Alamat Lengkap</p>
-                                <p class="font-medium text-gray-800" id="view-alamat">-</p>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500 mb-1">Kota</p>
-                                <p class="font-medium text-gray-800" id="view-kota">-</p>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500 mb-1">Provinsi</p>
-                                <p class="font-medium text-gray-800" id="view-provinsi">-</p>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500 mb-1">Kode Pos</p>
-                                <p class="font-medium text-gray-800" id="view-kodepos">-</p>
-                            </div>
+                    <!-- View Mode -->
+                    <div id="profile-view-mode" class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                        <div class="bg-gray-50/80 p-4 rounded-2xl border border-gray-100">
+                            <div class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Nama Lengkap</div>
+                            <div id="view-nama" class="font-bold text-gray-800 text-sm sm:text-base">-</div>
+                        </div>
+                        <div class="bg-gray-50/80 p-4 rounded-2xl border border-gray-100">
+                            <div class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Email Terdaftar</div>
+                            <div id="view-email" class="font-bold text-gray-800 text-sm sm:text-base">-</div>
+                        </div>
+                        <div class="bg-gray-50/80 p-4 rounded-2xl border border-gray-100">
+                            <div class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Nomor WhatsApp / HP</div>
+                            <div id="view-phone" class="font-bold text-gray-800 text-sm sm:text-base">-</div>
+                        </div>
+                        <div class="bg-gray-50/80 p-4 rounded-2xl border border-gray-100">
+                            <div class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Kota / Kabupaten</div>
+                            <div id="view-city" class="font-bold text-gray-800 text-sm sm:text-base">-</div>
+                        </div>
+                        <div class="bg-gray-50/80 p-4 rounded-2xl border border-gray-100 sm:col-span-2">
+                            <div class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Alamat Pengiriman Lengkap</div>
+                            <div id="view-address" class="font-medium text-gray-800 text-xs sm:text-sm leading-relaxed">-</div>
+                        </div>
+                        <div class="bg-gray-50/80 p-4 rounded-2xl border border-gray-100">
+                            <div class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Provinsi</div>
+                            <div id="view-province" class="font-bold text-gray-800 text-sm sm:text-base">-</div>
+                        </div>
+                        <div class="bg-gray-50/80 p-4 rounded-2xl border border-gray-100">
+                            <div class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Kode Pos</div>
+                            <div id="view-postal" class="font-bold text-gray-800 text-sm sm:text-base">-</div>
                         </div>
                     </div>
 
-                    <form id="profile-edit" class="space-y-4 hidden" onsubmit="saveProfile(event)">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Edit Form Mode -->
+                    <form id="profile-edit-mode" onsubmit="saveProfile(event)" class="hidden space-y-4 pt-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                                <input type="text" id="input-nama" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" required>
+                                <label class="block text-xs font-bold text-gray-700 mb-1">Nama Lengkap *</label>
+                                <input type="text" id="edit-nama" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent text-xs sm:text-sm font-medium">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                                <input type="email" id="input-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed" readonly>
-                                <p class="text-xs text-gray-500 mt-1">Email tidak dapat diubah.</p>
+                                <label class="block text-xs font-bold text-gray-700 mb-1">Email (Tidak dapat diubah)</label>
+                                <input type="email" id="edit-email" readonly class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-100 text-gray-500 text-xs sm:text-sm cursor-not-allowed">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon</label>
-                                <input type="tel" id="input-telepon" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
-                            </div>
-                            <div class="md:col-span-2">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap</label>
-                                <textarea id="input-alamat" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"></textarea>
+                                <label class="block text-xs font-bold text-gray-700 mb-1">Nomor WhatsApp / HP *</label>
+                                <input type="tel" id="edit-phone" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent text-xs sm:text-sm font-medium">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Kota</label>
-                                <input type="text" id="input-kota" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                                <label class="block text-xs font-bold text-gray-700 mb-1">Kota / Kabupaten *</label>
+                                <input type="text" id="edit-city" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent text-xs sm:text-sm font-medium">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-bold text-gray-700 mb-1">Alamat Lengkap Pengiriman *</label>
+                                <textarea id="edit-address" rows="3" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent text-xs sm:text-sm font-medium" placeholder="Nama Jalan, No. Rumah, RT/RW, Kecamatan"></textarea>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Provinsi</label>
-                                <input type="text" id="input-provinsi" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                                <label class="block text-xs font-bold text-gray-700 mb-1">Provinsi *</label>
+                                <input type="text" id="edit-province" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent text-xs sm:text-sm font-medium">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Kode Pos</label>
-                                <input type="text" id="input-kodepos" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                                <label class="block text-xs font-bold text-gray-700 mb-1">Kode Pos *</label>
+                                <input type="text" id="edit-postal" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent text-xs sm:text-sm font-medium">
                             </div>
                         </div>
-                        <div class="flex justify-end gap-3 pt-4 border-t mt-6">
-                            <button type="button" onclick="toggleEditProfile()" class="px-5 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition">Batal</button>
-                            <button type="submit" id="btn-save-profile" class="px-5 py-2 bg-primary text-white font-medium rounded-lg hover:bg-primary-container transition">Simpan Profil</button>
+                        <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+                            <button type="button" onclick="toggleEditProfile()" class="px-5 py-2.5 rounded-xl border border-gray-300 text-gray-700 font-semibold text-xs sm:text-sm hover:bg-gray-50 transition">
+                                Batal
+                            </button>
+                            <button type="submit" id="btn-save-profile" class="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-container text-white font-bold text-xs sm:text-sm shadow-md transition flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[18px]">save</span>
+                                <span>Simpan Perubahan</span>
+                            </button>
                         </div>
                     </form>
                 </div>
 
-                <!-- Section: Pesanan Saya -->
-                <div id="section-pesanan" class="tab-content hidden">
-                    <h2 class="text-2xl font-heading font-bold text-gray-800 mb-6">Pesanan Saya</h2>
-                    
-                    <div id="orders-container" class="space-y-4">
-                        <div class="text-center py-12 text-gray-500">
-                            <span class="material-symbols-outlined text-4xl mb-2 animate-spin">sync</span>
-                            <p>Memuat pesanan...</p>
+                <!-- Tab 2: Pesanan Saya -->
+                <div id="section-pesanan" class="hidden space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-gray-100">
+                        <div>
+                            <h2 class="text-base sm:text-xl font-bold font-heading text-gray-900">Riwayat Pesanan</h2>
+                            <p class="text-xs sm:text-sm text-gray-500 mt-0.5">Pantau status pembayaran, proses fabrikasi, dan resi ekspedisi.</p>
+                        </div>
+                    </div>
+
+                    <!-- Orders Filter Tabs -->
+                    <div class="flex overflow-x-auto gap-2 pb-2 no-scrollbar border-b border-gray-100">
+                        <button type="button" onclick="filterOrders('all')" class="order-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-primary text-white shadow-xs" data-filter="all">Semua</button>
+                        <button type="button" onclick="filterOrders('pending_payment')" class="order-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap text-gray-600 hover:bg-gray-100" data-filter="pending_payment">Belum Bayar</button>
+                        <button type="button" onclick="filterOrders('payment_uploaded')" class="order-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap text-gray-600 hover:bg-gray-100" data-filter="payment_uploaded">Verifikasi</button>
+                        <button type="button" onclick="filterOrders('processing')" class="order-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap text-gray-600 hover:bg-gray-100" data-filter="processing">Diproses</button>
+                        <button type="button" onclick="filterOrders('shipped')" class="order-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap text-gray-600 hover:bg-gray-100" data-filter="shipped">Dikirim</button>
+                        <button type="button" onclick="filterOrders('completed')" class="order-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap text-gray-600 hover:bg-gray-100" data-filter="completed">Selesai</button>
+                    </div>
+
+                    <!-- Orders Container -->
+                    <div id="orders-list-container" class="space-y-4">
+                        <div class="text-center py-12 text-gray-400">
+                            <span class="material-symbols-outlined animate-spin text-3xl mb-2 text-primary">autorenew</span>
+                            <p class="text-xs sm:text-sm">Memuat pesanan Anda...</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Section: Ubah Password -->
-                <div id="section-password" class="tab-content hidden">
-                    <h2 class="text-2xl font-heading font-bold text-gray-800 mb-6">Ubah Password</h2>
-                    
-                    <form id="password-form" class="max-w-md space-y-5" onsubmit="changePassword(event)">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Password Saat Ini</label>
-                            <input type="password" id="current-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Password Baru</label>
-                            <input type="password" id="new-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" required minlength="6">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password Baru</label>
-                            <input type="password" id="confirm-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" required minlength="6">
-                        </div>
-                        
-                        <div id="password-msg" class="text-sm font-medium hidden p-3 rounded-lg"></div>
+                <!-- Tab 3: Ubah Password -->
+                <div id="section-password" class="hidden space-y-6 max-w-lg">
+                    <div class="pb-4 border-b border-gray-100">
+                        <h2 class="text-base sm:text-xl font-bold font-heading text-gray-900">Ubah Password</h2>
+                        <p class="text-xs sm:text-sm text-gray-500 mt-0.5">Pastikan password baru Anda memiliki minimal 6 karakter kombinasi.</p>
+                    </div>
 
-                        <div class="pt-4 border-t">
-                            <button type="submit" id="btn-save-password" class="px-5 py-2 bg-primary text-white font-medium rounded-lg hover:bg-primary-container transition w-full md:w-auto">Simpan Password</button>
+                    <form onsubmit="changePassword(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">Password Saat Ini *</label>
+                            <div class="relative">
+                                <input type="password" id="cur_pass" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent text-xs sm:text-sm font-medium pr-10">
+                                <button type="button" onclick="togglePassVisibility('cur_pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                    <span class="material-symbols-outlined text-[18px]">visibility</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">Password Baru * (Min. 6 Karakter)</label>
+                            <div class="relative">
+                                <input type="password" id="new_pass" minlength="6" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent text-xs sm:text-sm font-medium pr-10">
+                                <button type="button" onclick="togglePassVisibility('new_pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                    <span class="material-symbols-outlined text-[18px]">visibility</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">Konfirmasi Password Baru *</label>
+                            <div class="relative">
+                                <input type="password" id="confirm_pass" minlength="6" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent text-xs sm:text-sm font-medium pr-10">
+                                <button type="button" onclick="togglePassVisibility('confirm_pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                    <span class="material-symbols-outlined text-[18px]">visibility</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-100">
+                            <button type="submit" id="btn-save-pass" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-container text-white font-bold text-xs sm:text-sm shadow-md transition flex items-center justify-center gap-1.5">
+                                <span class="material-symbols-outlined text-[18px]">lock_reset</span>
+                                <span>Perbarui Password</span>
+                            </button>
                         </div>
                     </form>
                 </div>
 
-            </div>
+            </section>
         </div>
+
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-300 py-10 mt-auto">
-        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-                <h3 class="text-xl font-heading font-bold text-white mb-4 flex items-center gap-2">
-                    <span class="material-symbols-outlined">precision_manufacturing</span>
-                    CV Asianindo
-                </h3>
-                <p class="text-sm">Penyedia mesin industri berkualitas tinggi untuk kebutuhan bisnis Anda.</p>
+    <footer class="bg-[#181126] text-gray-300 py-8 mt-auto border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm">
+            <div class="flex items-center gap-2">
+                <span class="font-bold text-white font-heading">CV Asianindo</span>
+                <span class="text-gray-500">•</span>
+                <span>Pabrikasi Mesin Industri & Pertanian</span>
             </div>
-            <div>
-                <h4 class="text-lg font-heading font-bold text-white mb-4">Kontak</h4>
-                <p class="text-sm flex items-center gap-2 mb-2"><span class="material-symbols-outlined text-sm">phone</span> WhatsApp: 6285335850517</p>
-                <p class="text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">email</span> info@asianindomachine.com</p>
+            <div class="text-gray-400 text-center sm:text-right">
+                &copy; 2026 CV Asianindo. Seluruh hak cipta dilindungi.
             </div>
-            <div>
-                <h4 class="text-lg font-heading font-bold text-white mb-4">Pembayaran</h4>
-                <p class="text-sm mb-1">BCA 6670747997</p>
-                <p class="text-sm">a/n Iman Anjani Buchory</p>
-            </div>
-        </div>
-        <div class="container mx-auto px-4 mt-8 pt-4 border-t border-gray-800 text-center text-sm">
-            &copy; 2026 CV Asianindo. All rights reserved.
         </div>
     </footer>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-4 right-4 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-full opacity-0 transition duration-300 z-50 flex items-center gap-2 font-medium">
-        <span class="material-symbols-outlined text-xl">info</span>
-        <span id="toast-message">Message</span>
-    </div>
-
     <script>
-        const API_URL_AUTH = 'auth_api.php';
-        const API_URL_ORDER = 'order_api.php';
-        let isEditingProfile = false;
+        let allOrders = [];
+        let currentCustomer = null;
+        let isEditMode = false;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            checkSession();
-            handleHashChange();
-            window.addEventListener('hashchange', handleHashChange);
-        });
+        function showToast(message, isSuccess = true) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            const toastIcon = document.getElementById('toast-icon');
+            if (!toast || !toastMsg) return;
 
-        async function checkSession() {
-            try {
-                const response = await fetch(`${API_URL_AUTH}?action=check_session`);
-                const data = await response.json();
-                
-                if (data.status === 'success' && data.logged_in) {
-                    const name = data.user.name;
-                    document.getElementById('header-user-name').textContent = name;
-                    document.getElementById('mobile-user-name').textContent = `Halo, ${name}`;
-                    
-                    loadProfile();
-                    loadOrders();
-                    updateCartBadge();
-                } else {
-                    window.location.href = 'login.html?redirect=akun.html';
-                }
-            } catch (error) {
-                console.error('Session check failed:', error);
-                window.location.href = 'login.html';
+            toastMsg.innerText = message;
+            toastIcon.innerText = isSuccess ? 'check_circle' : 'error';
+            toast.className = `fixed top-5 right-5 z-[100] transform transition-all duration-300 flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl text-white text-xs sm:text-sm font-medium backdrop-blur-md ${isSuccess ? 'bg-emerald-600' : 'bg-rose-600'}`;
+            
+            toast.classList.remove('-translate-y-20', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('-translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        function formatRupiah(num) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num || 0);
+        }
+
+        function copyOrderNumber(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`No. pesanan ${text} berhasil disalin!`);
+            }).catch(() => {
+                showToast('Gagal menyalin teks', false);
+            });
+        }
+
+        function togglePassVisibility(id, btn) {
+            const input = document.getElementById(id);
+            if (!input) return;
+            const icon = btn.querySelector('span');
+            if (input.type === 'password') {
+                input.type = 'text';
+                if (icon) icon.innerText = 'visibility_off';
+            } else {
+                input.type = 'password';
+                if (icon) icon.innerText = 'visibility';
             }
         }
 
-        function updateCartBadge() {
-            const cart = JSON.parse(localStorage.getItem('asianindo_cart') || '[]');
-            const badge = document.getElementById('cart-badge');
-            
-            if (cart.length > 0) {
-                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-                badge.textContent = totalItems;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
+        // Tab Navigation
+        function switchTab(tabId) {
+            const tabs = ['profil', 'pesanan', 'password'];
+            tabs.forEach(t => {
+                const sec = document.getElementById(`section-${t}`);
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if (sec) sec.classList.add('hidden');
+                if (btn) {
+                    btn.className = 'flex-1 lg:flex-none flex items-center gap-2.5 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left whitespace-nowrap text-gray-600 hover:bg-gray-100/80';
+                }
+            });
+
+            const activeSec = document.getElementById(`section-${tabId}`);
+            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+            if (activeSec) activeSec.classList.remove('hidden');
+            if (activeBtn) {
+                activeBtn.className = 'flex-1 lg:flex-none flex items-center gap-2.5 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left whitespace-nowrap bg-primary text-white shadow-sm shadow-primary/20';
+            }
+
+            window.location.hash = tabId;
+        }
+
+        // Check customer session and load data
+        async function initAccountPage() {
+            try {
+                const res = await fetch('auth_api.php?action=check_session');
+                const data = await res.json();
+
+                if (!data.logged_in || !data.customer) {
+                    window.location.href = 'login.html?redirect=akun.html';
+                    return;
+                }
+
+                currentCustomer = data.customer;
+                const firstName = data.customer.name.split(' ')[0];
+                document.getElementById('user-greeting-name').innerText = data.customer.name;
+                document.getElementById('user-greeting-email').innerText = data.customer.email;
+                document.getElementById('user-avatar-large').innerText = firstName.charAt(0).toUpperCase();
+
+                await Promise.all([loadProfile(), loadOrders()]);
+
+                // Support hash navigation
+                const hash = window.location.hash.replace('#', '');
+                if (hash && ['profil', 'pesanan', 'password'].includes(hash)) {
+                    switchTab(hash);
+                }
+            } catch (e) {
+                window.location.href = 'login.html?redirect=akun.html';
             }
         }
 
         async function loadProfile() {
             try {
-                const response = await fetch(`${API_URL_AUTH}?action=get_profile`);
-                const data = await response.json();
-                
-                if (data.status === 'success') {
-                    const user = data.data;
-                    
-                    // Populate view
-                    document.getElementById('view-nama').textContent = user.name || '-';
-                    document.getElementById('view-email').textContent = user.email || '-';
-                    document.getElementById('view-telepon').textContent = user.phone || '-';
-                    document.getElementById('view-alamat').textContent = user.address || '-';
-                    document.getElementById('view-kota').textContent = user.city || '-';
-                    document.getElementById('view-provinsi').textContent = user.province || '-';
-                    document.getElementById('view-kodepos').textContent = user.postal_code || '-';
-                    
-                    // Populate form
-                    document.getElementById('input-nama').value = user.name || '';
-                    document.getElementById('input-email').value = user.email || '';
-                    document.getElementById('input-telepon').value = user.phone || '';
-                    document.getElementById('input-alamat').value = user.address || '';
-                    document.getElementById('input-kota').value = user.city || '';
-                    document.getElementById('input-provinsi').value = user.province || '';
-                    document.getElementById('input-kodepos').value = user.postal_code || '';
+                const res = await fetch('auth_api.php?action=get_profile');
+                const data = await res.json();
+                if (data.success && data.customer) {
+                    const c = data.customer;
+                    document.getElementById('view-nama').innerText = c.name || '-';
+                    document.getElementById('view-email').innerText = c.email || '-';
+                    document.getElementById('view-phone').innerText = c.phone || '-';
+                    document.getElementById('view-city').innerText = c.city || '-';
+                    document.getElementById('view-address').innerText = c.address || '-';
+                    document.getElementById('view-province').innerText = c.province || '-';
+                    document.getElementById('view-postal').innerText = c.postal_code || '-';
+
+                    document.getElementById('edit-nama').value = c.name || '';
+                    document.getElementById('edit-email').value = c.email || '';
+                    document.getElementById('edit-phone').value = c.phone || '';
+                    document.getElementById('edit-city').value = c.city || '';
+                    document.getElementById('edit-address').value = c.address || '';
+                    document.getElementById('edit-province').value = c.province || '';
+                    document.getElementById('edit-postal').value = c.postal_code || '';
                 }
-            } catch (error) {
-                console.error('Failed to load profile:', error);
-                showToast('Gagal memuat profil', 'error');
+            } catch (e) {
+                showToast('Gagal memuat rincian profil', false);
             }
         }
 
         function toggleEditProfile() {
-            isEditingProfile = !isEditingProfile;
-            const viewDiv = document.getElementById('profile-view');
-            const editDiv = document.getElementById('profile-edit');
-            const btn = document.getElementById('btn-edit-profil');
-            
-            if (isEditingProfile) {
-                viewDiv.classList.add('hidden');
-                editDiv.classList.remove('hidden');
-                btn.classList.add('hidden');
+            isEditMode = !isEditMode;
+            const viewMode = document.getElementById('profile-view-mode');
+            const editMode = document.getElementById('profile-edit-mode');
+            const btnText = document.getElementById('btn-edit-text');
+
+            if (isEditMode) {
+                viewMode.classList.add('hidden');
+                editMode.classList.remove('hidden');
+                btnText.innerText = 'Batal Edit';
             } else {
-                viewDiv.classList.remove('hidden');
-                editDiv.classList.add('hidden');
-                btn.classList.remove('hidden');
-                loadProfile(); // Reset fields if cancelled
+                viewMode.classList.remove('hidden');
+                editMode.classList.add('hidden');
+                btnText.innerText = 'Edit Profil';
             }
         }
 
-        async function saveProfile(event) {
-            event.preventDefault();
+        async function saveProfile(e) {
+            e.preventDefault();
             const btn = document.getElementById('btn-save-profile');
             btn.disabled = true;
-            btn.textContent = 'Menyimpan...';
-            
-            const formData = new FormData();
-            formData.append('name', document.getElementById('input-nama').value);
-            formData.append('phone', document.getElementById('input-telepon').value);
-            formData.append('address', document.getElementById('input-alamat').value);
-            formData.append('city', document.getElementById('input-kota').value);
-            formData.append('province', document.getElementById('input-provinsi').value);
-            formData.append('postal_code', document.getElementById('input-kodepos').value);
-            
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">autorenew</span> Menyimpan...';
+
+            const fd = new FormData();
+            fd.append('name', document.getElementById('edit-nama').value.trim());
+            fd.append('phone', document.getElementById('edit-phone').value.trim());
+            fd.append('city', document.getElementById('edit-city').value.trim());
+            fd.append('address', document.getElementById('edit-address').value.trim());
+            fd.append('province', document.getElementById('edit-province').value.trim());
+            fd.append('postal_code', document.getElementById('edit-postal').value.trim());
+
             try {
-                const response = await fetch(`${API_URL_AUTH}?action=update_profile`, {
-                    method: 'POST',
-                    body: formData
-                });
-                const data = await response.json();
-                
-                if (data.status === 'success') {
-                    showToast('Profil berhasil diperbarui', 'success');
+                const res = await fetch('auth_api.php?action=update_profile', { method: 'POST', body: fd });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Profil berhasil diperbarui!');
                     toggleEditProfile();
-                    
-                    // Update header name if changed
-                    const newName = document.getElementById('input-nama').value;
-                    document.getElementById('header-user-name').textContent = newName;
-                    document.getElementById('mobile-user-name').textContent = `Halo, ${newName}`;
+                    await loadProfile();
+                    document.getElementById('user-greeting-name').innerText = document.getElementById('edit-nama').value.trim();
                 } else {
-                    showToast(data.message || 'Gagal memperbarui profil', 'error');
+                    showToast(data.error || 'Gagal menyimpan profil', false);
                 }
-            } catch (error) {
-                console.error('Failed to update profile:', error);
-                showToast('Terjadi kesalahan', 'error');
+            } catch (err) {
+                showToast('Terjadi kesalahan jaringan', false);
             } finally {
                 btn.disabled = false;
-                btn.textContent = 'Simpan Profil';
+                btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">save</span> Simpan Perubahan';
             }
         }
 
         async function loadOrders() {
             try {
-                const response = await fetch(`${API_URL_ORDER}?action=get_orders`);
-                const data = await response.json();
-                
-                const container = document.getElementById('orders-container');
-                container.innerHTML = '';
-                
-                if (data.status === 'success') {
-                    const orders = data.data;
-                    
-                    if (!orders || orders.length === 0) {
-                        container.innerHTML = `
-                            <div class="text-center py-12 border border-dashed border-gray-300 rounded-xl bg-gray-50">
-                                <span class="material-symbols-outlined text-5xl text-gray-400 mb-3 block">shopping_bag</span>
-                                <h3 class="text-lg font-heading font-medium text-gray-800 mb-2">Belum ada pesanan</h3>
-                                <p class="text-gray-500 mb-6">Anda belum pernah melakukan pesanan. Ayo mulai belanja!</p>
-                                <a href="katalog.html" class="inline-block px-6 py-2.5 bg-primary text-white font-medium rounded-lg hover:bg-primary-container transition">Mulai Belanja</a>
-                            </div>
-                        `;
-                        return;
-                    }
-                    
-                    orders.forEach(order => {
-                        // Format currency
-                        const total = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(order.total_amount);
-                        
-                        // Format date
-                        const date = new Date(order.created_at).toLocaleDateString('id-ID', { 
-                            day: 'numeric', month: 'long', year: 'numeric'
-                        });
-                        
-                        // Badge color
-                        let badgeClass = '';
-                        let statusText = '';
-                        switch (order.status) {
-                            case 'pending': 
-                                badgeClass = 'bg-yellow-100 text-yellow-800 border-yellow-200';
-                                statusText = 'Menunggu Pembayaran';
-                                break;
-                            case 'processing': 
-                                badgeClass = 'bg-blue-100 text-blue-800 border-blue-200';
-                                statusText = 'Diproses';
-                                break;
-                            case 'shipped': 
-                                badgeClass = 'bg-green-100 text-green-800 border-green-200';
-                                statusText = 'Dikirim';
-                                break;
-                            case 'completed': 
-                                badgeClass = 'bg-green-100 text-green-800 border-green-200';
-                                statusText = 'Selesai';
-                                break;
-                            case 'cancelled': 
-                                badgeClass = 'bg-red-100 text-red-800 border-red-200';
-                                statusText = 'Dibatalkan';
-                                break;
-                            default: 
-                                badgeClass = 'bg-gray-100 text-gray-800 border-gray-200';
-                                statusText = order.status;
-                        }
-                        
-                        const orderCard = `
-                            <div class="border border-gray-200 rounded-xl p-5 hover:border-primary/30 hover:shadow-md transition bg-white">
-                                <div class="flex flex-col md:flex-row justify-between md:items-center gap-3 border-b border-gray-100 pb-4 mb-4">
-                                    <div>
-                                        <p class="text-xs text-gray-500 mb-1">Tanggal Belanja</p>
-                                        <p class="font-medium text-sm text-gray-800">${date}</p>
-                                    </div>
-                                    <div class="flex flex-col md:items-end">
-                                        <p class="text-xs text-gray-500 mb-1 hidden md:block">Status</p>
-                                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold border ${badgeClass}">${statusText}</span>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                                    <div>
-                                        <p class="text-sm text-gray-500 mb-1">Nomor Pesanan</p>
-                                        <p class="font-medium text-primary">${order.order_number}</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-sm text-gray-500 mb-1">Total Belanja</p>
-                                        <p class="font-bold text-lg text-gray-800">${total}</p>
-                                    </div>
                                     <a href="pesanan.html?id=${order.id}" class="w-full md:w-auto text-center px-5 py-2 border-2 border-primary text-primary font-medium rounded-lg hover:bg-primary hover:text-white transition">Lihat Detail</a>
                                 </div>
                             </div>

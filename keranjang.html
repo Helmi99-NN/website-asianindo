@@ -2,18 +2,23 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Keranjang Belanja - CV Asianindo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         primary: '#330e7a',
-                        secondary: '#4a2c91',
+                        'primary-container': '#4a2c91',
+                        'on-surface': '#1d1b20',
+                        'on-surface-variant': '#49454f',
+                        'outline-variant': '#cac4d0',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -22,43 +27,156 @@
                 }
             }
         }
+    </script>
+    <style>
+        :root {
+            --font-body: clamp(0.8125rem, 0.77rem + 0.22vw, 0.9375rem);
+        }
+        body { font-size: var(--font-body); font-family: 'Inter', sans-serif; }
+        .font-heading { font-family: 'Outfit', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#f8f9fa] text-on-surface flex flex-col min-h-screen pb-32 antialiased">
+
+    <!-- Header Navbar -->
+    <header class="bg-white text-primary sticky top-0 border-b border-primary/10 shadow-xs z-40 transition-all duration-300">
+        <div class="flex justify-between items-center w-full px-3 sm:px-6 max-w-5xl mx-auto h-16 sm:h-20">
+            <div class="flex items-center gap-3">
+                <button type="button" onclick="window.history.back()" class="p-2 text-primary hover:bg-primary/5 rounded-xl transition-colors" title="Kembali">
+                    <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+                </button>
+                <a class="font-bold text-primary tracking-tight flex items-center gap-1.5 sm:gap-2 shrink-0 min-w-0" href="index.html">
+                    <img src="images/logo_asianindo.webp" alt="CV Asianindo" class="h-8 sm:h-10 object-contain shrink-0" />
+                    <span class="text-base sm:text-lg font-bold font-heading truncate">Keranjang Belanja</span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <a href="katalog.html" class="text-primary hover:bg-primary/5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[18px]">storefront</span>
+                    <span class="hidden sm:inline">Katalog</span>
+                </a>
+                <div id="header-auth-container" class="flex items-center">
+                    <!-- Injected by auth-header.js -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-5xl mx-auto w-full px-3 sm:px-6 py-6 sm:py-8 flex-grow">
         
-        // Format Rupiah
+        <!-- Loading State -->
+        <div id="loading-state" class="text-center py-20">
+            <span class="material-symbols-outlined animate-spin text-4xl text-primary mb-3">autorenew</span>
+            <p class="text-xs sm:text-sm text-gray-500 font-medium">Memuat keranjang Anda...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden flex flex-col items-center justify-center py-16 sm:py-24 bg-white rounded-3xl border border-gray-200/80 p-6 text-center shadow-xs">
+            <div class="w-20 h-20 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-4">
+                <span class="material-symbols-outlined text-4xl">remove_shopping_cart</span>
+            </div>
+            <h2 class="text-lg sm:text-xl font-bold font-heading text-gray-800 mb-1">Keranjang Belanja Masih Kosong</h2>
+            <p class="text-xs sm:text-sm text-gray-500 max-w-sm mb-6">Pilih mesin industri berkualitas tinggi sesuai kebutuhan usaha Anda langsung dari katalog Asianindo.</p>
+            <a href="katalog.html" class="bg-primary hover:bg-primary-container text-white px-6 py-3 rounded-xl font-bold text-xs sm:text-sm shadow-md transition flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">storefront</span>
+                <span>Mulai Belanja di Katalog</span>
+            </a>
+        </div>
+
+        <!-- Cart Content -->
+        <div id="cart-items-container" class="hidden space-y-4">
+            <!-- Select All Header Card -->
+            <div class="flex items-center justify-between bg-white px-4 sm:px-6 py-3.5 rounded-2xl border border-gray-200/80 shadow-xs">
+                <label class="flex items-center gap-3 cursor-pointer select-none">
+                    <input type="checkbox" id="select-all-top" class="w-4 h-4 sm:w-5 sm:h-5 text-primary rounded focus:ring-primary cursor-pointer accent-[#330e7a]" onchange="toggleSelectAll(this.checked)">
+                    <span class="font-bold text-xs sm:text-sm text-gray-800">Pilih Semua Produk</span>
+                </label>
+                <button type="button" onclick="clearCart()" class="text-xs text-rose-600 hover:text-rose-700 font-semibold flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]">delete_sweep</span>
+                    <span>Kosongkan</span>
+                </button>
+            </div>
+
+            <!-- Items List -->
+            <div id="cart-items-list" class="space-y-3"></div>
+        </div>
+
+    </main>
+
+    <!-- Sticky Checkout Bottom Bar -->
+    <div id="checkout-bar" class="hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-2xl z-40">
+        <div class="max-w-5xl mx-auto px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+                <label class="flex items-center gap-2 cursor-pointer select-none">
+                    <input type="checkbox" id="select-all-bottom" class="w-4 h-4 sm:w-5 sm:h-5 text-primary rounded focus:ring-primary cursor-pointer accent-[#330e7a]" onchange="toggleSelectAll(this.checked)">
+                    <span class="text-xs sm:text-sm font-semibold text-gray-700 hidden sm:inline">Semua</span>
+                </label>
+            </div>
+            
+            <div class="flex items-center gap-3 sm:gap-6">
+                <div class="text-right">
+                    <span class="text-[10px] sm:text-xs text-gray-400 font-medium block">Total Pembayaran</span>
+                    <span id="total-price" class="text-sm sm:text-xl font-bold font-heading text-primary">Rp 0</span>
+                </div>
+                <button id="checkout-btn" onclick="proceedToCheckout()" class="bg-primary hover:bg-primary-container text-white font-bold py-2.5 sm:py-3 px-5 sm:px-8 rounded-xl shadow-md transition active:scale-95 disabled:opacity-50 text-xs sm:text-sm flex items-center gap-1.5">
+                    <span>Checkout</span>
+                    <span id="checkout-count-badge">(0)</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cartItems = [];
+
         function formatRupiah(number) {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number || 0);
         }
 
-        async function checkLogin() {
+        async function checkLoginAndLoad() {
             try {
-                const res = await fetch('auth_api.php?action=get_profile');
-                if(!res.ok) throw new Error();
+                const res = await fetch('auth_api.php?action=check_session');
                 const data = await res.json();
-                if(!data.success) {
+                
+                if (!data.logged_in) {
                     window.location.href = 'login.html?redirect=keranjang.html';
+                    return;
                 }
-            } catch(e) {
+
+                await loadCart();
+            } catch (e) {
                 window.location.href = 'login.html?redirect=keranjang.html';
             }
         }
 
-        let cartItems = [];
-
         async function loadCart() {
-            const res = await fetch('cart_api.php?action=get_cart');
-            const data = await res.json();
-            const container = document.getElementById('cart-items-container');
-            const emptyState = document.getElementById('empty-state');
-            
-            if(data.success && data.items.length > 0) {
-                cartItems = data.items.map(item => ({...item, selected: true}));
-                emptyState.classList.add('hidden');
-                container.classList.remove('hidden');
-                document.getElementById('checkout-bar').classList.remove('hidden');
-                renderCart();
-            } else {
-                emptyState.classList.remove('hidden');
-                container.classList.add('hidden');
-                document.getElementById('checkout-bar').classList.add('hidden');
+            try {
+                const res = await fetch('cart_api.php?action=get_cart');
+                const data = await res.json();
+                
+                const loading = document.getElementById('loading-state');
+                const emptyState = document.getElementById('empty-state');
+                const container = document.getElementById('cart-items-container');
+                const checkoutBar = document.getElementById('checkout-bar');
+
+                if (loading) loading.classList.add('hidden');
+
+                if (data.success && data.items && data.items.length > 0) {
+                    cartItems = data.items.map(item => ({ ...item, selected: true }));
+                    emptyState.classList.add('hidden');
+                    container.classList.remove('hidden');
+                    checkoutBar.classList.remove('hidden');
+                    renderCart();
+                } else {
+                    cartItems = [];
+                    emptyState.classList.remove('hidden');
+                    container.classList.add('hidden');
+                    checkoutBar.classList.add('hidden');
+                }
+            } catch (e) {
+                document.getElementById('loading-state').innerHTML = '<p class="text-rose-500 text-xs">Gagal memuat keranjang belanja.</p>';
             }
         }
 
@@ -66,7 +184,7 @@
             const listContainer = document.getElementById('cart-items-list');
             if (!listContainer) return;
             listContainer.innerHTML = '';
-            
+
             let allSelected = cartItems.length > 0 && cartItems.every(i => i.selected);
             const selectAllTop = document.getElementById('select-all-top');
             const selectAllBottom = document.getElementById('select-all-bottom');
@@ -75,33 +193,35 @@
 
             cartItems.forEach((item, index) => {
                 const prodIdSafe = String(item.product_id).replace(/'/g, "\\'");
+                const itemImg = item.product_image || 'images/placeholder.webp';
+
                 listContainer.innerHTML += `
-                    <div class="flex items-start gap-3 sm:gap-4 bg-white p-3.5 sm:p-4 rounded-2xl shadow-xs border border-gray-100 mb-3 sm:mb-4">
-                        <div class="flex items-center pt-2">
-                            <input type="checkbox" class="w-4 h-4 sm:w-5 sm:h-5 text-primary rounded focus:ring-primary item-checkbox cursor-pointer" data-index="${index}" ${item.selected ? 'checked' : ''}>
+                    <div class="flex items-start gap-3 sm:gap-4 bg-white p-3.5 sm:p-5 rounded-2xl border border-gray-200/80 shadow-xs transition hover:border-primary/30">
+                        <div class="flex items-center pt-3 sm:pt-4">
+                            <input type="checkbox" class="w-4 h-4 sm:w-5 sm:h-5 rounded text-primary focus:ring-primary item-checkbox cursor-pointer accent-[#330e7a]" data-index="${index}" ${item.selected ? 'checked' : ''}>
                         </div>
-                        <img src="${item.product_image || 'images/placeholder.webp'}" alt="${item.product_name}" class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-xl border border-gray-100 flex-shrink-0">
+                        <img src="${itemImg}" alt="${item.product_name}" class="w-16 h-16 sm:w-24 sm:h-24 object-cover rounded-xl border border-gray-100 shrink-0">
                         <div class="flex-1 min-w-0">
                             <div class="flex justify-between items-start gap-2">
-                                <h3 class="font-heading font-semibold text-gray-800 line-clamp-2 text-xs sm:text-sm leading-snug">${item.product_name}</h3>
-                                <button onclick="removeItem('${prodIdSafe}')" class="text-gray-400 hover:text-red-500 p-1 transition flex-shrink-0" title="Hapus">
-                                    <span class="material-symbols-outlined text-lg">delete</span>
+                                <h3 class="font-bold text-gray-900 line-clamp-2 text-xs sm:text-sm font-heading leading-snug">${item.product_name}</h3>
+                                <button type="button" onclick="removeItem('${prodIdSafe}')" class="text-gray-400 hover:text-rose-600 p-1 transition shrink-0" title="Hapus produk">
+                                    <span class="material-symbols-outlined text-[18px] sm:text-[20px]">delete</span>
                                 </button>
                             </div>
-                            <div class="flex flex-wrap items-center justify-between gap-2 mt-2 pt-1">
-                                <p class="text-primary font-bold text-xs sm:text-base">${formatRupiah(item.product_price)}</p>
-                                <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-white">
-                                    <button onclick="updateQty(${index}, ${item.quantity - 1})" class="px-2.5 py-0.5 sm:py-1 hover:bg-gray-100 font-bold text-gray-600 text-xs sm:text-sm">-</button>
-                                    <input type="number" value="${item.quantity}" readonly class="w-9 sm:w-12 text-center text-xs sm:text-sm font-medium focus:outline-none border-x border-gray-200 bg-gray-50/50 py-0.5">
-                                    <button onclick="updateQty(${index}, ${item.quantity + 1})" class="px-2.5 py-0.5 sm:py-1 hover:bg-gray-100 font-bold text-gray-600 text-xs sm:text-sm">+</button>
+                            <div class="text-[11px] text-gray-400 mt-0.5">Estimasi Bobot: ${(item.weight_grams ? (item.weight_grams/1000).toFixed(1) : 25)} kg</div>
+                            <div class="flex flex-wrap items-center justify-between gap-2 mt-3 pt-2 border-t border-gray-50">
+                                <p class="text-primary font-extrabold text-xs sm:text-base font-heading">${formatRupiah(item.product_price)}</p>
+                                <div class="flex items-center border border-gray-300 rounded-xl overflow-hidden bg-white shadow-xs">
+                                    <button type="button" onclick="updateQty(${index}, ${item.quantity - 1})" class="px-3 py-1 hover:bg-gray-100 font-bold text-gray-600 text-xs sm:text-sm active:scale-95">-</button>
+                                    <input type="text" value="${item.quantity}" readonly class="w-9 sm:w-12 text-center text-xs sm:text-sm font-bold border-x border-gray-200 bg-gray-50/50 py-1 select-none">
+                                    <button type="button" onclick="updateQty(${index}, ${item.quantity + 1})" class="px-3 py-1 hover:bg-gray-100 font-bold text-gray-600 text-xs sm:text-sm active:scale-95">+</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 `;
             });
-            
-            // Add listeners to checkboxes
+
             document.querySelectorAll('.item-checkbox').forEach(cb => {
                 cb.addEventListener('change', (e) => {
                     const idx = e.target.getAttribute('data-index');
@@ -109,11 +229,15 @@
                     updateSummary();
                 });
             });
+
             updateSummary();
         }
 
         async function updateQty(index, newQty) {
-            if (newQty < 1) return;
+            if (newQty < 1) {
+                removeItem(cartItems[index].product_id);
+                return;
+            }
             const item = cartItems[index];
             const fd = new FormData();
             fd.append('action', 'update_qty');
@@ -123,6 +247,7 @@
             await fetch('cart_api.php?action=update_qty', { method: 'POST', body: fd });
             item.quantity = newQty;
             renderCart();
+            if (typeof updateCartCountBadge === 'function') updateCartCountBadge();
         }
 
         async function removeItem(productId) {
@@ -131,7 +256,15 @@
             fd.append('action', 'remove_item');
             fd.append('product_id', productId);
             await fetch('cart_api.php?action=remove_item', { method: 'POST', body: fd });
-            loadCart();
+            await loadCart();
+            if (typeof updateCartCountBadge === 'function') updateCartCountBadge();
+        }
+
+        async function clearCart() {
+            if (!confirm('Apakah Anda yakin ingin mengosongkan seluruh isi keranjang?')) return;
+            await fetch('cart_api.php?action=clear_cart', { method: 'POST' });
+            await loadCart();
+            if (typeof updateCartCountBadge === 'function') updateCartCountBadge();
         }
 
         function toggleSelectAll(checked) {
@@ -143,27 +276,20 @@
             let total = 0;
             let count = 0;
             cartItems.forEach(i => {
-                if(i.selected) {
+                if (i.selected) {
                     total += i.product_price * i.quantity;
                     count++;
                 }
             });
-            
+
             const totalPriceEl = document.getElementById('total-price');
             const checkoutBtn = document.getElementById('checkout-btn');
+            const checkoutCountBadge = document.getElementById('checkout-count-badge');
+
             if (totalPriceEl) totalPriceEl.textContent = formatRupiah(total);
-            if (checkoutBtn) {
-                checkoutBtn.textContent = `Checkout (${count})`;
-                checkoutBtn.disabled = count === 0;
-                if(count === 0) {
-                    checkoutBtn.classList.remove('bg-primary', 'hover:bg-secondary');
-                    checkoutBtn.classList.add('bg-gray-400');
-                } else {
-                    checkoutBtn.classList.remove('bg-gray-400');
-                    checkoutBtn.classList.add('bg-primary', 'hover:bg-secondary');
-                }
-            }
-            
+            if (checkoutCountBadge) checkoutCountBadge.textContent = `(${count})`;
+            if (checkoutBtn) checkoutBtn.disabled = count === 0;
+
             let allSelected = cartItems.length > 0 && cartItems.every(i => i.selected);
             const selectAllTop = document.getElementById('select-all-top');
             const selectAllBottom = document.getElementById('select-all-bottom');
@@ -173,69 +299,14 @@
 
         function proceedToCheckout() {
             const selectedItems = cartItems.filter(i => i.selected);
-            if(selectedItems.length === 0) return;
+            if (selectedItems.length === 0) return;
             sessionStorage.setItem('checkout_items', JSON.stringify(selectedItems));
             sessionStorage.setItem('is_from_cart', 'true');
             window.location.href = 'checkout.html';
         }
 
-        window.onload = () => {
-            loadCart();
-        };
+        window.onload = checkLoginAndLoad;
     </script>
-</head>
-<body class="bg-[#f8f9fa] text-gray-800 font-sans pb-28 antialiased">
-
-    <!-- Header -->
-    <header class="sticky top-0 z-50 bg-primary text-white shadow-md">
-        <div class="container mx-auto px-4 h-14 sm:h-16 flex items-center gap-3 sm:gap-4 max-w-4xl">
-            <button onclick="window.history.back()" class="hover:bg-secondary p-1.5 sm:p-2 rounded-full transition-colors">
-                <span class="material-symbols-outlined text-xl sm:text-2xl">arrow_back</span>
-            </button>
-            <h1 class="text-base sm:text-xl font-heading font-semibold flex-1">Keranjang Saya</h1>
-        </div>
-    </header>
-
-    <main class="container mx-auto px-3 sm:px-4 mt-4 sm:mt-6 max-w-4xl min-h-[60vh]">
-        <!-- Empty State -->
-        <div id="empty-state" class="hidden flex flex-col items-center justify-center py-16 sm:py-20">
-            <span class="material-symbols-outlined text-6xl sm:text-8xl text-gray-300 mb-4">shopping_cart</span>
-            <h2 class="text-xl sm:text-2xl font-heading font-bold text-gray-700 mb-2">Keranjang belanja kosong</h2>
-            <p class="text-xs sm:text-sm text-gray-500 mb-6 text-center">Yuk, isi dengan mesin industri terbaik dari Asianindo!</p>
-            <a href="katalog.html" class="bg-primary text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-medium shadow-md shadow-primary/20 hover:bg-secondary transition text-xs sm:text-sm">Mulai Belanja</a>
-        </div>
-
-        <!-- Cart Content -->
-        <div id="cart-items-container" class="hidden">
-            <!-- Select All Top -->
-            <div class="flex items-center gap-3 bg-white p-3.5 sm:p-4 rounded-2xl shadow-xs border border-gray-100 mb-3 sm:mb-4">
-                <input type="checkbox" id="select-all-top" class="w-4 h-4 sm:w-5 sm:h-5 text-primary rounded focus:ring-primary cursor-pointer" onchange="toggleSelectAll(this.checked)">
-                <label for="select-all-top" class="font-medium cursor-pointer text-xs sm:text-sm">Pilih Semua</label>
-            </div>
-            <!-- Items rendered here -->
-            <div id="cart-items-list"></div>
-        </div>
-    </main>
-
-    <!-- Sticky Checkout Bar -->
-    <div id="checkout-bar" class="hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-xl z-40">
-        <div class="container mx-auto px-3 sm:px-4 py-2.5 sm:py-3.5 max-w-4xl flex items-center justify-between gap-2 sm:gap-4">
-            <div class="flex items-center gap-2">
-                <input type="checkbox" id="select-all-bottom" class="w-4 h-4 sm:w-5 sm:h-5 text-primary rounded focus:ring-primary cursor-pointer" onchange="toggleSelectAll(this.checked)">
-                <label for="select-all-bottom" class="text-xs sm:text-sm font-medium text-gray-700">Semua</label>
-            </div>
-            
-            <div class="flex items-center gap-2.5 sm:gap-6 flex-1 justify-end">
-                <div class="text-right">
-                    <p class="text-[10px] sm:text-xs text-gray-500">Total Pembayaran</p>
-                    <p id="total-price" class="text-sm sm:text-lg font-heading font-extrabold text-primary">Rp 0</p>
-                </div>
-                <button id="checkout-btn" onclick="proceedToCheckout()" class="bg-primary hover:bg-secondary text-white font-bold py-2.5 sm:py-3 px-4 sm:px-8 rounded-xl transition shadow-md shadow-primary/20 disabled:opacity-50 text-xs sm:text-sm active:scale-95">
-                    Checkout (0)
-                </button>
-            </div>
-        </div>
-    </div>
-
+    <script src="auth-header.js?v=20260827_2"></script>
 </body>
 </html>
