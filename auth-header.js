@@ -131,35 +131,46 @@ async function initAuthHeader() {
         if (data.logged_in && data.customer) {
             const firstName = data.customer.name.split(' ')[0];
             container.innerHTML = `
-                <div class="relative group">
-                    <button class="flex items-center gap-1 sm:gap-2 bg-primary/5 hover:bg-primary/10 border border-primary/20 text-primary px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs md:text-sm font-semibold transition-all shrink-0">
-                        <div class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary text-white flex items-center justify-center text-[10px] sm:text-xs font-bold shrink-0">
+                <div id="user-dropdown-wrapper" class="relative group">
+                    <button type="button" onclick="toggleUserMenu(event)" class="flex items-center gap-1 sm:gap-2 bg-primary/5 hover:bg-primary/10 border border-primary/20 text-primary px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs md:text-sm font-semibold transition-all shrink-0 cursor-pointer select-none active:scale-98">
+                        <div class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary text-white flex items-center justify-center text-[10px] sm:text-xs font-bold shrink-0 shadow-sm">
                             ${firstName.charAt(0).toUpperCase()}
                         </div>
                         <span class="max-w-[50px] sm:max-w-[100px] md:max-w-[120px] truncate">${firstName}</span>
-                        <span class="material-symbols-outlined text-[14px] sm:text-[18px]">expand_more</span>
+                        <span id="user-dropdown-chevron" class="material-symbols-outlined text-[14px] sm:text-[18px] transition-transform duration-200">expand_more</span>
                     </button>
-                    <div class="absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-xl border border-outline-variant/20 py-2 hidden group-hover:block transition-all z-50">
-                        <div class="px-4 py-2 border-b border-outline-variant/15 text-xs text-on-surface-variant">
-                            Halo, <strong class="text-primary block text-sm font-bold truncate">${data.customer.name}</strong>
+
+                    <!-- Dropdown bridge wrapper (pt-2 creates continuous hover area without gap) -->
+                    <div id="user-dropdown-menu" 
+                         class="absolute right-0 top-full pt-2 w-52 z-50 hidden opacity-0 scale-95 translate-y-1 transition-all duration-150 origin-top-right group-hover:block group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0"
+                         onclick="event.stopPropagation()">
+                        <div class="bg-white rounded-2xl shadow-2xl border border-outline-variant/20 py-2 overflow-hidden ring-1 ring-black/5">
+                            <div class="px-4 py-2.5 bg-surface-container-low/60 border-b border-outline-variant/15 text-xs text-on-surface-variant">
+                                <span class="text-[11px] text-gray-500 font-medium">Halo,</span>
+                                <strong class="text-primary block text-sm font-bold truncate mt-0.5">${data.customer.name}</strong>
+                            </div>
+                            <div class="py-1">
+                                <a href="akun.html" class="flex items-center gap-2.5 px-4 py-2.5 text-xs font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors">
+                                    <span class="material-symbols-outlined text-[18px] text-primary">person</span>
+                                    Profil Saya
+                                </a>
+                                <a href="akun.html#pesanan" class="flex items-center gap-2.5 px-4 py-2.5 text-xs font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors">
+                                    <span class="material-symbols-outlined text-[18px] text-primary">package_2</span>
+                                    Pesanan Saya
+                                </a>
+                                <a href="keranjang.html" class="flex items-center gap-2.5 px-4 py-2.5 text-xs font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors">
+                                    <span class="material-symbols-outlined text-[18px] text-primary">shopping_cart</span>
+                                    Keranjang Belanja
+                                </a>
+                            </div>
+                            <div class="border-t border-outline-variant/15 my-1"></div>
+                            <div class="px-1 pb-1">
+                                <button type="button" onclick="handleLogout()" class="w-full text-left flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer">
+                                    <span class="material-symbols-outlined text-[18px]">logout</span>
+                                    Keluar
+                                </button>
+                            </div>
                         </div>
-                        <a href="akun.html" class="flex items-center gap-2.5 px-4 py-2.5 text-xs text-on-surface hover:bg-surface-container-high transition-colors">
-                            <span class="material-symbols-outlined text-[18px] text-primary">person</span>
-                            Profil Saya
-                        </a>
-                        <a href="akun.html#pesanan" class="flex items-center gap-2.5 px-4 py-2.5 text-xs text-on-surface hover:bg-surface-container-high transition-colors">
-                            <span class="material-symbols-outlined text-[18px] text-primary">package_2</span>
-                            Pesanan Saya
-                        </a>
-                        <a href="keranjang.html" class="flex items-center gap-2.5 px-4 py-2.5 text-xs text-on-surface hover:bg-surface-container-high transition-colors">
-                            <span class="material-symbols-outlined text-[18px] text-primary">shopping_cart</span>
-                            Keranjang Belanja
-                        </a>
-                        <div class="border-t border-outline-variant/15 my-1"></div>
-                        <button onclick="handleLogout()" class="w-full text-left flex items-center gap-2.5 px-4 py-2.5 text-xs text-rose-600 hover:bg-rose-50 transition-colors">
-                            <span class="material-symbols-outlined text-[18px]">logout</span>
-                            Keluar
-                        </button>
                     </div>
                 </div>
             `;
@@ -175,6 +186,49 @@ async function initAuthHeader() {
         // Silently fail if error
     }
 }
+
+// User Menu Toggle Handler
+window.toggleUserMenu = function(event) {
+    if (event) event.stopPropagation();
+    const menu = document.getElementById('user-dropdown-menu');
+    const chevron = document.getElementById('user-dropdown-chevron');
+    if (!menu) return;
+
+    const isHidden = menu.classList.contains('hidden');
+    if (isHidden) {
+        menu.classList.remove('hidden');
+        requestAnimationFrame(() => {
+            menu.classList.remove('opacity-0', 'scale-95', 'translate-y-1');
+            menu.classList.add('opacity-100', 'scale-100', 'translate-y-0');
+        });
+        if (chevron) chevron.classList.add('rotate-180');
+    } else {
+        window.closeUserMenu();
+    }
+};
+
+window.closeUserMenu = function() {
+    const menu = document.getElementById('user-dropdown-menu');
+    const chevron = document.getElementById('user-dropdown-chevron');
+    if (!menu) return;
+
+    menu.classList.remove('opacity-100', 'scale-100', 'translate-y-0');
+    menu.classList.add('opacity-0', 'scale-95', 'translate-y-1');
+    if (chevron) chevron.classList.remove('rotate-180');
+    setTimeout(() => {
+        if (menu.classList.contains('opacity-0')) {
+            menu.classList.add('hidden');
+        }
+    }, 150);
+};
+
+// Global click outside listener to close dropdown
+document.addEventListener('click', (e) => {
+    const dropdownWrapper = document.getElementById('user-dropdown-wrapper');
+    if (dropdownWrapper && !dropdownWrapper.contains(e.target)) {
+        window.closeUserMenu();
+    }
+});
 
 async function handleLogout() {
     if (confirm('Apakah Anda yakin ingin keluar?')) {
