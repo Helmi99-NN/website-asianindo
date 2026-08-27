@@ -43,7 +43,7 @@ function adminApp() {
             hero_image: '',
             stats: [
                 { value: '500+', label: 'Mesin Terjual' },
-                { value: '10+', label: 'Tahun Pengalaman' },
+                { value: '9+', label: 'Tahun Pengalaman' },
                 { value: '100%', label: 'Garansi Service' }
             ],
             about_badge: 'Tentang Kami',
