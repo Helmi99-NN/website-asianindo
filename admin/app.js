@@ -33,9 +33,9 @@ function adminApp() {
             facebook: '',
             maps_url: '',
             copyright: '© 2024 CV Asianindo Industrial Machinery. All rights reserved.',
-            duitku_merchant_code: 'D12345',
-            duitku_api_key: '',
-            duitku_environment: 'sandbox'
+            midtrans_server_key: 'SB-Mid-server-TEST_DUMMY_KEY_123456',
+            midtrans_client_key: 'SB-Mid-client-TEST_DUMMY_KEY_123456',
+            midtrans_environment: 'sandbox'
         },
 
         articles: [],

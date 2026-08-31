@@ -179,7 +179,7 @@ if ($action === 'get_admin_orders') {
                c.name as customer_name, c.email as customer_email,
                (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) as item_count,
                p.status as payment_status, p.bank_name, p.payment_gateway, p.payment_method_code, 
-               p.payment_fee, p.amount as bill_amount, p.duitku_reference,
+               p.payment_fee, p.amount as bill_amount, p.midtrans_transaction_id, p.midtrans_snap_token,
                s.status as shipment_status
         FROM orders o
         JOIN customers c ON o.customer_id = c.id

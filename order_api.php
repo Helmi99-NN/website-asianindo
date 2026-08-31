@@ -18,8 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 require_once __DIR__ . '/database/db.php';
-require_once __DIR__ . '/duitku_config.php';
-require_once __DIR__ . '/duitku_api.php';
+require_once __DIR__ . '/midtrans_config.php';
+require_once __DIR__ . '/midtrans_api.php';
 $pdo = getDB();
 
 function getInput() {
@@ -251,10 +251,10 @@ if ($action === 'create_order') {
         $scheme_text = "Skema Pembayaran: Penuh 100% Lunas (Rp " . number_format($total, 0, ',', '.') . ")";
     }
 
-    // Hitung Biaya Layanan Duitku (jika bukan manual)
+    // Hitung Biaya Layanan Midtrans (jika bukan manual)
     $payment_fee = 0;
-    if ($payment_gateway === 'duitku') {
-        $payment_fee = calculateDuitkuFee($payment_method_code, $initial_amount);
+    if ($payment_gateway === 'midtrans') {
+        $payment_fee = calculateMidtransFee($payment_method_code, $initial_amount);
     }
     $total_bill_amount = $initial_amount + $payment_fee;
 
@@ -301,31 +301,62 @@ if ($action === 'create_order') {
             }
         }
 
-        // Pastikan kolom Duitku tersedia
-        ensureDuitkuColumnsExist();
+        // Pastikan kolom Midtrans tersedia
+        ensureMidtransColumnsExist($pdo);
 
         // Get Channel info
-        $channels = getDuitkuPaymentChannels();
+        $channels = getMidtransPaymentChannels();
         $selectedChannelInfo = $channels[$payment_method_code] ?? null;
-        $channelName = $selectedChannelInfo['name'] ?? ($payment_gateway === 'duitku' ? 'Duitku Payment Gateway' : 'Bank BCA');
+        $channelName = $selectedChannelInfo['name'] ?? ($payment_gateway === 'midtrans' ? 'Midtrans Payment Gateway' : 'Bank BCA');
+
+        // Jika metode pembayaran via Midtrans, panggil API Snap Token Midtrans
+        $midtransResponse = null;
+        $snapToken = null;
+        $redirectUrl = null;
+
+        if ($payment_gateway === 'midtrans') {
+            $orderPayload = [
+                'id' => $order_id,
+                'order_number' => $order_number,
+                'bill_amount' => $initial_amount,
+                'total' => $total,
+                'subtotal' => $subtotal,
+                'shipping_cost' => $shipping_cost,
+                'expedition' => $selected_expedition,
+                'items' => $items,
+                'shipping_name' => $shipping_name,
+                'shipping_phone' => $shipping_phone
+            ];
+            $customerPayload = [
+                'name' => $shipping_name ?: ($_SESSION['customer_name'] ?? 'Pelanggan'),
+                'email' => $_SESSION['customer_email'] ?? 'pembeli@asianindomachine.com',
+                'phone' => $shipping_phone ?: '081234567890'
+            ];
+            $midtransResponse = createMidtransSnapToken($orderPayload, $payment_method_code, $customerPayload);
+            if ($midtransResponse && !empty($midtransResponse['snap_token'])) {
+                $snapToken = $midtransResponse['snap_token'];
+                $redirectUrl = $midtransResponse['redirect_url'] ?? null;
+            }
+        }
 
         // Insert initial payment record
         $stmt_pay = $pdo->prepare("
             INSERT INTO payments (
                 order_id, bank_name, account_number, account_name, amount, 
-                payment_gateway, payment_method_code, payment_fee, status, created_at
+                payment_gateway, payment_method_code, payment_fee, midtrans_snap_token, status, created_at
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', NOW())
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', NOW())
         ");
         $stmt_pay->execute([
             $order_id,
             $channelName,
             ($payment_gateway === 'manual_transfer') ? (defined('COMPANY_BANK_ACCOUNT') ? COMPANY_BANK_ACCOUNT : '6670747997') : '-',
-            ($payment_gateway === 'manual_transfer') ? (defined('COMPANY_BANK_HOLDER') ? COMPANY_BANK_HOLDER : 'Iman Anjani Buchory') : 'Duitku Gateway (' . $channelName . ')',
+            ($payment_gateway === 'manual_transfer') ? (defined('COMPANY_BANK_HOLDER') ? COMPANY_BANK_HOLDER : 'Iman Anjani Buchory') : 'Midtrans Gateway (' . $channelName . ')',
             $total_bill_amount,
             $payment_gateway,
             $payment_method_code,
-            $payment_fee
+            $payment_fee,
+            $snapToken
         ]);
 
         // Insert initial shipment record
@@ -336,25 +367,6 @@ if ($action === 'create_order') {
         $stmt_ship->execute([$order_id, $selected_expedition]);
 
         $pdo->commit();
-
-        // Jika metode pembayaran via Duitku, panggil API Inquiry Duitku
-        $duitkuResponse = null;
-        if ($payment_gateway === 'duitku') {
-            $orderPayload = [
-                'id' => $order_id,
-                'order_number' => $order_number,
-                'bill_amount' => $initial_amount,
-                'total' => $total,
-                'shipping_name' => $shipping_name,
-                'shipping_phone' => $shipping_phone
-            ];
-            $customerPayload = [
-                'name' => $shipping_name ?: ($_SESSION['customer_name'] ?? 'Pelanggan'),
-                'email' => $_SESSION['customer_email'] ?? 'pembeli@asianindomachine.com',
-                'phone' => $shipping_phone ?: '081234567890'
-            ];
-            $duitkuResponse = createDuitkuTransaction($orderPayload, $payment_method_code, $customerPayload);
-        }
 
         echo json_encode([
             'success' => true,
@@ -368,7 +380,9 @@ if ($action === 'create_order') {
             'payment_method_code' => $payment_method_code,
             'shipping_cost' => $shipping_cost,
             'expedition' => $selected_expedition,
-            'duitku' => $duitkuResponse
+            'snap_token' => $snapToken,
+            'redirect_url' => $redirectUrl,
+            'midtrans' => $midtransResponse
         ]);
     } catch (Throwable $e) {
         if ($pdo->inTransaction()) {

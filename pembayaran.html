@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <script src="https://app-sandbox.duitku.com/lib/js/duitku.js"></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-TEST_DUMMY_KEY_123456"></script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; }
@@ -368,10 +368,10 @@
         let statusPollTimer = null;
 
         function checkPaymentStatusLive(orderNum) {
-            fetch(`duitku_api.php?action=check_status&order_number=${orderNum}`)
+            fetch(`midtrans_api.php?action=check_status&order_number=${orderNum}`)
                 .then(r => r.json())
                 .then(res => {
-                    if (res.is_paid || (res.data && res.data.statusCode === '00')) {
+                    if (res.is_paid || res.transaction_status === 'settlement' || res.transaction_status === 'capture') {
                         if (statusPollTimer) clearInterval(statusPollTimer);
                         showToast('Pembayaran Berhasil Diterima! Mengalihkan ke detail pesanan...', true);
                         setTimeout(() => {
@@ -413,34 +413,34 @@
 
                     // Render Channel details
                     const channelCode = order.payment_method_code || 'BC';
-                    const isDuitku = (order.payment_gateway === 'duitku');
+                    const isMidtrans = (order.payment_gateway === 'midtrans');
                     const logoUrl = channelLogos[channelCode] || 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg';
                     
                     const logoEl = document.getElementById('channel_logo');
                     if (logoEl) logoEl.src = logoUrl;
 
                     const titleEl = document.getElementById('method_name_display');
-                    if (titleEl) titleEl.innerText = order.bank_name || 'Pembayaran Duitku';
+                    if (titleEl) titleEl.innerText = order.bank_name || 'Midtrans Gateway';
 
                     const tagEl = document.getElementById('channel_tag');
                     if (tagEl) {
-                        tagEl.innerText = isDuitku ? (channelCode === 'NQ' ? 'QRIS Instant' : (channelCode === 'VC' ? 'Kartu Kredit' : 'Virtual Account')) : 'Transfer Manual';
+                        tagEl.innerText = isMidtrans ? (channelCode === 'NQ' ? 'QRIS Instant' : (channelCode === 'VC' ? 'Kartu Kredit' : 'Virtual Account')) : 'Transfer Manual';
                     }
 
                     const badgeEl = document.getElementById('gateway_badge');
                     if (badgeEl) {
-                        badgeEl.innerHTML = isDuitku ? '<span class="material-symbols-outlined text-xs">verified</span> Otomatis 24 Jam' : '<span class="material-symbols-outlined text-xs">schedule</span> Manual Admin';
+                        badgeEl.innerHTML = isMidtrans ? '<span class="material-symbols-outlined text-xs">verified</span> Otomatis 24 Jam' : '<span class="material-symbols-outlined text-xs">schedule</span> Manual Admin';
                     }
 
                     // Nomor VA / Rekening
-                    const vaNumber = order.duitku_va_number || order.account_number || '6670747997';
+                    const vaNumber = order.account_number || '6670747997';
                     document.getElementById('bank_account').innerText = vaNumber;
                     document.getElementById('bank_name').innerText = order.account_name || 'CV Asianindo';
 
-                    if (isDuitku) {
+                    if (isMidtrans) {
                         document.getElementById('account_label').innerText = (channelCode === 'NQ') ? 'Kode Referensi Transaksi' : 'Nomor Virtual Account (VA)';
                         document.getElementById('duitku_auto_notice').classList.remove('hidden');
-                        document.getElementById('upload_section').classList.add('hidden'); // Sembunyikan form upload manual karena Duitku otomatis
+                        document.getElementById('upload_section').classList.add('hidden'); // Sembunyikan form upload manual karena Midtrans otomatis
 
                         if (order.payment_fee > 0) {
                             const feeBadge = document.getElementById('fee_info_badge');
@@ -450,38 +450,36 @@
                             }
                         }
 
-                        // Pop-up Duitku button jika ada payment_url
-                        if (order.duitku_payment_url) {
+                        // Trigger Midtrans Snap Popup button jika ada snap_token
+                        if (order.midtrans_snap_token) {
                             const popCont = document.getElementById('duitku_pop_container');
                             const popBtn = document.getElementById('btn_open_duitku_pop');
                             if (popCont && popBtn) {
                                 popCont.classList.remove('hidden');
+                                popBtn.innerHTML = '<span class="material-symbols-outlined text-lg">payments</span> Bayar Sekarang (Pop-up Midtrans Snap)';
                                 popBtn.onclick = function() {
-                                    if (typeof duitku !== 'undefined' && order.duitku_reference) {
-                                        duitku.checkout(order.duitku_reference, {
-                                            successEvent: function(result){
+                                    if (typeof snap !== 'undefined') {
+                                        snap.pay(order.midtrans_snap_token, {
+                                            onSuccess: function(result){
                                                 window.location.href = `pesanan.html?order_number=${orderNumber}`;
                                             },
-                                            pendingEvent: function(result){
+                                            onPending: function(result){
                                                 showToast('Menunggu pembayaran diselesaikan...');
                                             },
-                                            errorEvent: function(result){
+                                            onError: function(result){
                                                 showToast('Pembayaran gagal atau dibatalkan', false);
                                             },
-                                            closeEvent: function(){
+                                            onClose: function(){
                                                 // closed pop
                                             }
                                         });
-                                    } else {
-                                        window.open(order.duitku_payment_url, '_blank');
                                     }
                                 };
                             }
                         }
 
-                        // Start Polling
+                        // Polling otomatis setiap 4 detik untuk update status real-time
                         statusPollTimer = setInterval(() => checkPaymentStatusLive(orderNumber), 4000);
-
                     } else {
                         // Manual Transfer BCA
                         document.getElementById('account_label').innerText = 'Nomor Rekening BCA Tujuan';

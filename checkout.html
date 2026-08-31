@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
-    <script src="https://app-sandbox.duitku.com/lib/js/duitku.js"></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-TEST_DUMMY_KEY_123456"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -39,23 +39,21 @@
         let selectedPaymentScheme = 'full'; // 'full' | 'dp_50' | 'dp_3_stage'
         let currentBillAmount = 0;
         let selectedPaymentMethod = 'BC'; // 'BC' (BCA VA)
-        let selectedPaymentGateway = 'duitku';
+        let selectedPaymentGateway = 'midtrans';
         let selectedPaymentName = 'BCA Virtual Account';
-        let paymentFee = 3000;
+        let paymentFee = 4000;
 
         const paymentChannelsData = {
-            'BC': { name: 'BCA Virtual Account', gateway: 'duitku', type: 'flat', val: 3000 },
-            'M2': { name: 'Mandiri Virtual Account', gateway: 'duitku', type: 'flat', val: 3000 },
-            'BR': { name: 'BRI Virtual Account (BRIVA)', gateway: 'duitku', type: 'flat', val: 3000 },
-            'B1': { name: 'BNI Virtual Account', gateway: 'duitku', type: 'flat', val: 3000 },
-            'BT': { name: 'Permata Virtual Account', gateway: 'duitku', type: 'flat', val: 2500 },
-            'BSI': { name: 'BSI Virtual Account', gateway: 'duitku', type: 'flat', val: 3000 },
-            'C1': { name: 'CIMB Niaga Virtual Account', gateway: 'duitku', type: 'flat', val: 3000 },
-            'NQ': { name: 'QRIS (E-Wallet & M-Banking)', gateway: 'duitku', type: 'percent', percent: 0.7 },
-            'VC': { name: 'Kartu Kredit / Debit Online', gateway: 'duitku', type: 'combo', percent: 2.5, fixed: 2500 },
-            'OV': { name: 'OVO', gateway: 'duitku', type: 'percent', percent: 1.8 },
-            'DA': { name: 'DANA', gateway: 'duitku', type: 'percent', percent: 1.8 },
-            'SP': { name: 'ShopeePay', gateway: 'duitku', type: 'percent', percent: 1.8 },
+            'BC': { name: 'BCA Virtual Account', gateway: 'midtrans', type: 'flat', val: 4000 },
+            'M2': { name: 'Mandiri Virtual Account', gateway: 'midtrans', type: 'flat', val: 4000 },
+            'BR': { name: 'BRI Virtual Account (BRIVA)', gateway: 'midtrans', type: 'flat', val: 4000 },
+            'B1': { name: 'BNI Virtual Account', gateway: 'midtrans', type: 'flat', val: 4000 },
+            'BT': { name: 'Permata Virtual Account', gateway: 'midtrans', type: 'flat', val: 4000 },
+            'C1': { name: 'CIMB Niaga Virtual Account', gateway: 'midtrans', type: 'flat', val: 4000 },
+            'NQ': { name: 'QRIS (Gopay, ShopeePay, m-Banking)', gateway: 'midtrans', type: 'percent', percent: 0.7 },
+            'VC': { name: 'Kartu Kredit / Debit Online', gateway: 'midtrans', type: 'combo', percent: 2.9, fixed: 2000 },
+            'GP': { name: 'GoPay Direct', gateway: 'midtrans', type: 'percent', percent: 2.0 },
+            'SP': { name: 'ShopeePay Direct', gateway: 'midtrans', type: 'percent', percent: 2.0 },
             'MANUAL_BCA': { name: 'Transfer Manual Bank BCA', gateway: 'manual_transfer', type: 'flat', val: 0 }
         };
 
@@ -480,12 +478,28 @@
                 if(data.success) {
                     if(isFromCart) sessionStorage.removeItem('checkout_items');
                     
-                    if (data.duitku) {
-                        sessionStorage.setItem('last_duitku_' + data.order_number, JSON.stringify(data.duitku));
-                    }
+                    const orderNum = data.order_number;
+                    const snapToken = data.snap_token;
 
-                    // Arahkan langsung ke halaman pembayaran
-                    window.location.href = 'pembayaran.html?order_number=' + data.order_number;
+                    if (typeof snap !== 'undefined' && snapToken) {
+                        snap.pay(snapToken, {
+                            onSuccess: function(result) {
+                                window.location.href = 'pesanan.html?order_number=' + orderNum;
+                            },
+                            onPending: function(result) {
+                                window.location.href = 'pembayaran.html?order_number=' + orderNum;
+                            },
+                            onError: function(result) {
+                                alert('Pembayaran gagal atau dibatalkan.');
+                                window.location.href = 'pembayaran.html?order_number=' + orderNum;
+                            },
+                            onClose: function() {
+                                window.location.href = 'pembayaran.html?order_number=' + orderNum;
+                            }
+                        });
+                    } else {
+                        window.location.href = 'pembayaran.html?order_number=' + orderNum;
+                    }
                 } else {
                     alert('Gagal membuat pesanan: ' + (data.error || 'Unknown error'));
                     btn.disabled = false;
@@ -738,7 +752,7 @@
                         </div>
                     </div>
 
-                <!-- Pilihan Metode Pembayaran (Duitku Payment Gateway & Transfer Manual) -->
+                <!-- Pilihan Metode Pembayaran (Midtrans Payment Gateway & Transfer Manual) -->
                 <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-lg font-heading font-bold flex items-center gap-2 text-gray-900">
@@ -746,11 +760,11 @@
                             Metode Pembayaran
                         </h2>
                         <span class="text-xs text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full flex items-center gap-1">
-                            <span class="material-symbols-outlined text-xs text-emerald-600">verified</span> Duitku Payment Gateway
+                            <span class="material-symbols-outlined text-xs text-emerald-600">verified</span> Midtrans Payment Gateway
                         </span>
                     </div>
 
-                    <p class="text-xs text-gray-500 mb-4">Biaya layanan platform Duitku ditambahkan secara transparan sesuai metode pembayaran yang dipilih.</p>
+                    <p class="text-xs text-gray-500 mb-4">Biaya layanan platform Midtrans ditambahkan secara transparan sesuai metode pembayaran yang dipilih.</p>
 
                     <!-- Group 1: Virtual Account Bank (Otomatis) -->
                     <div class="mb-5">
@@ -759,7 +773,7 @@
                                 <span class="material-symbols-outlined text-primary text-base">account_balance</span>
                                 Virtual Account Bank (Verifikasi Otomatis 24 Jam)
                             </span>
-                            <span class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">Biaya Flat Rp 3.000</span>
+                            <span class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">Biaya Flat Rp 4.000</span>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                             <!-- BCA VA -->
@@ -772,7 +786,7 @@
                                         <span class="text-[10px] text-gray-500">m-BCA, KlikBCA, ATM</span>
                                     </div>
                                 </div>
-                                <span id="fee-badge-BC" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 3.000</span>
+                                <span id="fee-badge-BC" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 4.000</span>
                             </div>
 
                             <!-- Mandiri VA -->
@@ -785,7 +799,7 @@
                                         <span class="text-[10px] text-gray-500">Livin' by Mandiri, ATM</span>
                                     </div>
                                 </div>
-                                <span id="fee-badge-M2" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 3.000</span>
+                                <span id="fee-badge-M2" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 4.000</span>
                             </div>
 
                             <!-- BRI VA -->
@@ -798,7 +812,7 @@
                                         <span class="text-[10px] text-gray-500">BRImo, ATM BRI</span>
                                     </div>
                                 </div>
-                                <span id="fee-badge-BR" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 3.000</span>
+                                <span id="fee-badge-BR" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 4.000</span>
                             </div>
 
                             <!-- BNI VA -->
@@ -811,7 +825,7 @@
                                         <span class="text-[10px] text-gray-500">BNI Mobile, ATM BNI</span>
                                     </div>
                                 </div>
-                                <span id="fee-badge-B1" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 3.000</span>
+                                <span id="fee-badge-B1" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 4.000</span>
                             </div>
 
                             <!-- Permata VA -->
@@ -824,20 +838,20 @@
                                         <span class="text-[10px] text-gray-500">PermataME / Semua Bank (ALTO)</span>
                                     </div>
                                 </div>
-                                <span id="fee-badge-BT" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 2.500</span>
+                                <span id="fee-badge-BT" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 4.000</span>
                             </div>
 
-                            <!-- BSI VA -->
-                            <div data-code="BSI" onclick="selectPaymentChannel('BSI')" class="payment-channel-card border-2 border-gray-200 hover:border-gray-300 bg-white p-3 rounded-xl cursor-pointer transition-all flex items-center justify-between">
+                            <!-- CIMB VA -->
+                            <div data-code="C1" onclick="selectPaymentChannel('C1')" class="payment-channel-card border-2 border-gray-200 hover:border-gray-300 bg-white p-3 rounded-xl cursor-pointer transition-all flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <input type="radio" name="payment_channel_choice" value="BSI" class="w-4 h-4 text-primary focus:ring-primary">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Bank_Syariah_Indonesia.svg" alt="BSI VA" class="h-5 w-12 object-contain">
+                                    <input type="radio" name="payment_channel_choice" value="C1" class="w-4 h-4 text-primary focus:ring-primary">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/15/CIMB_Niaga_logo.svg" alt="CIMB VA" class="h-5 w-12 object-contain">
                                     <div>
-                                        <span class="font-bold text-gray-900 text-xs block">BSI Virtual Account</span>
-                                        <span class="text-[10px] text-gray-500">BSI Mobile, ATM BSI</span>
+                                        <span class="font-bold text-gray-900 text-xs block">CIMB Niaga Virtual Account</span>
+                                        <span class="text-[10px] text-gray-500">OCTO Mobile, ATM CIMB</span>
                                     </div>
                                 </div>
-                                <span id="fee-badge-BSI" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 3.000</span>
+                                <span id="fee-badge-C1" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ Rp 4.000</span>
                             </div>
                         </div>
                     </div>
@@ -856,7 +870,7 @@
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" alt="QRIS" class="h-5 w-12 object-contain">
                                     <div>
                                         <span class="font-bold text-gray-900 text-xs block">QRIS (Instant Scan)</span>
-                                        <span class="text-[10px] text-gray-500">GoPay, OVO, Dana, BCA Mobile</span>
+                                        <span class="text-[10px] text-gray-500">GoPay, OVO, Dana, ShopeePay</span>
                                     </div>
                                 </div>
                                 <span id="fee-badge-NQ" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ 0,7%</span>
@@ -872,7 +886,7 @@
                                         <span class="text-[10px] text-gray-500">Visa, Mastercard, JCB</span>
                                     </div>
                                 </div>
-                                <span id="fee-badge-VC" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ 2,5% + Rp 2.500</span>
+                                <span id="fee-badge-VC" class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+ 2,9% + Rp 2.000</span>
                             </div>
                         </div>
                     </div>

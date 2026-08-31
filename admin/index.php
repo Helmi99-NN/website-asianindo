@@ -553,32 +553,32 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             <div class="form-group"><label class="form-label">Teks Copyright Footer</label><input type="text" x-model="settings.copyright" class="form-input"></div>
         </div>
 
-        <!-- Duitku Payment Gateway Settings -->
+        <!-- Midtrans Payment Gateway Settings -->
         <div class="card card-body mb-6">
-            <h3 class="section-title"><i class="fas fa-credit-card text-purple-600"></i> Payment Gateway Duitku</h3>
-            <p class="text-xs text-gray-500 mb-4">Integrasi pembayaran otomatis Virtual Account (BCA, Mandiri, BRI, BNI, BSI, Permata), QRIS, & Kartu Kredit. Biaya fee dibebankan ke pembeli.</p>
+            <h3 class="section-title"><i class="fas fa-credit-card text-purple-600"></i> Payment Gateway Midtrans</h3>
+            <p class="text-xs text-gray-500 mb-4">Integrasi pembayaran otomatis Virtual Account (BCA, Mandiri, BRI, BNI, Permata, CIMB), QRIS (GoPay, ShopeePay, m-Banking), & Kartu Kredit. Biaya fee dibebankan ke pembeli.</p>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div class="form-group">
-                    <label class="form-label">Merchant Code Duitku</label>
-                    <input type="text" x-model="settings.duitku_merchant_code" class="form-input" placeholder="Misal: D12345">
+                    <label class="form-label">Midtrans Server Key</label>
+                    <input type="password" x-model="settings.midtrans_server_key" class="form-input" placeholder="SB-Mid-server-xxxx... atau Mid-server-xxxx...">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">API Key Duitku</label>
-                    <input type="password" x-model="settings.duitku_api_key" class="form-input" placeholder="Masukkan Merchant API Key">
+                    <label class="form-label">Midtrans Client Key</label>
+                    <input type="text" x-model="settings.midtrans_client_key" class="form-input" placeholder="SB-Mid-client-xxxx... atau Mid-client-xxxx...">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Mode Lingkungan (Environment)</label>
-                    <select x-model="settings.duitku_environment" class="form-input">
+                    <select x-model="settings.midtrans_environment" class="form-input">
                         <option value="sandbox">Sandbox (Testing / Uji Coba)</option>
                         <option value="production">Production (Live Transaksi Nyata)</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">URL Callback / Webhook (Salin ke Dashboard Duitku)</label>
+                    <label class="form-label">URL Notification / Webhook (Salin ke Dashboard Midtrans)</label>
                     <div class="flex gap-2">
-                        <input type="text" readonly :value="window.location.origin + '/duitku_callback.php'" class="form-input bg-gray-100 text-xs font-mono select-all">
-                        <button type="button" @click="copyToClipboard(window.location.origin + '/duitku_callback.php')" class="btn-secondary text-xs px-3" title="Salin Callback URL"><i class="fas fa-copy"></i></button>
+                        <input type="text" readonly :value="window.location.origin + '/midtrans_callback.php'" class="form-input bg-gray-100 text-xs font-mono select-all">
+                        <button type="button" @click="copyToClipboard(window.location.origin + '/midtrans_callback.php')" class="btn-secondary text-xs px-3" title="Salin Webhook URL"><i class="fas fa-copy"></i></button>
                     </div>
                 </div>
             </div>
@@ -847,7 +847,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         <td class="p-4">
                             <div class="flex items-center gap-1.5">
                                 <span class="text-xs font-semibold text-gray-800" x-text="o.bank_name || 'Bank BCA'"></span>
-                                <span x-show="o.payment_gateway === 'duitku'" class="text-[10px] bg-purple-100 text-primary font-bold px-1.5 py-0.5 rounded">Duitku</span>
+                                <span x-show="o.payment_gateway === 'midtrans'" class="text-[10px] bg-purple-100 text-primary font-bold px-1.5 py-0.5 rounded">Midtrans</span>
                             </div>
                             <div class="text-[11px] text-gray-400 mt-0.5" x-show="o.payment_fee > 0" x-text="'Fee: ' + formatRupiah(o.payment_fee)"></div>
                         </td>
@@ -1022,8 +1022,8 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     <div class="card card-body p-4 border border-gray-200 shadow-none">
                         <h4 class="font-bold text-sm uppercase text-gray-500 mb-3 border-b pb-2">Pembayaran</h4>
                         <p class="text-sm text-gray-700 font-semibold">Metode: <span class="font-normal" x-text="activeOrder?.payment?.bank_name || activeOrder?.payment?.payment_method || 'Bank BCA'"></span></p>
-                        <p class="text-sm text-gray-700 font-semibold mt-1" x-show="activeOrder?.payment?.duitku_va_number">No. VA: <span class="font-normal text-primary font-mono" x-text="activeOrder?.payment?.duitku_va_number"></span></p>
-                        <p class="text-sm text-gray-700 font-semibold mt-1" x-show="activeOrder?.payment?.duitku_reference">Ref Duitku: <span class="font-normal text-gray-600 font-mono text-xs" x-text="activeOrder?.payment?.duitku_reference"></span></p>
+                        <p class="text-sm text-gray-700 font-semibold mt-1" x-show="activeOrder?.payment?.midtrans_transaction_id">Tx ID Midtrans: <span class="font-normal text-primary font-mono text-xs" x-text="activeOrder?.payment?.midtrans_transaction_id"></span></p>
+                        <p class="text-sm text-gray-700 font-semibold mt-1" x-show="activeOrder?.payment?.midtrans_snap_token">Snap Token: <span class="font-normal text-gray-600 font-mono text-xs truncate max-w-[200px] inline-block" x-text="activeOrder?.payment?.midtrans_snap_token"></span></p>
                         <p class="text-sm text-gray-700 font-semibold mt-1">Status Bayar: <span class="font-bold uppercase text-xs px-2 py-0.5 rounded" :class="activeOrder?.payment?.status === 'verified' ? 'bg-green-100 text-green-700' : (activeOrder?.payment?.status === 'uploaded' ? 'bg-orange-100 text-orange-700' : 'bg-yellow-100 text-yellow-700')" x-text="activeOrder?.payment?.status || 'pending'"></span></p>
                     </div>
                 </div>
