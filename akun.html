@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
-    <script src="wilayah-indonesia.js?v=3.1"></script>
+    <script src="wilayah-indonesia.js?v=4.0"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -214,6 +214,14 @@
                                     <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">arrow_drop_down</span>
                                 </div>
                                 <div id="dropdown-edit-city" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-2xl max-h-56 overflow-y-auto z-[9999] py-1 divide-y divide-gray-50"></div>
+                            </div>
+                            <div class="relative z-20">
+                                <label class="block text-xs font-bold text-gray-700 mb-1">Kecamatan</label>
+                                <div class="relative">
+                                    <input type="text" id="edit-district" autocomplete="off" class="w-full pl-4 pr-10 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent text-xs sm:text-sm font-medium bg-white" placeholder="Ketik nama kecamatan...">
+                                    <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">arrow_drop_down</span>
+                                </div>
+                                <div id="dropdown-edit-district" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-2xl max-h-56 overflow-y-auto z-[9999] py-1 divide-y divide-gray-50"></div>
                             </div>
                             <div class="sm:col-span-2">
                                 <label class="block text-xs font-bold text-gray-700 mb-1">Alamat Lengkap Pengiriman *</label>
@@ -465,7 +473,7 @@
                     setVal('edit-postal', c.postal_code);
 
                     if (typeof setupSearchableWilayah === 'function') {
-                        setupSearchableWilayah('edit-province', 'edit-city', c.province || '', c.city || '');
+                        setupSearchableWilayah('edit-province', 'edit-city', 'edit-district', c.province || '', c.city || '', c.district || '');
                     }
                 }
             } catch (e) {
@@ -500,7 +508,12 @@
             fd.append('name', document.getElementById('edit-nama').value.trim());
             fd.append('phone', document.getElementById('edit-phone').value.trim());
             fd.append('city', document.getElementById('edit-city').value.trim());
-            fd.append('address', document.getElementById('edit-address').value.trim());
+            let editFullAddr = document.getElementById('edit-address').value.trim();
+            const editDist = document.getElementById('edit-district') ? document.getElementById('edit-district').value.trim() : '';
+            if (editDist && !editFullAddr.toLowerCase().includes(editDist.toLowerCase())) {
+                editFullAddr = editFullAddr ? `${editFullAddr}, Kec. ${editDist}` : `Kec. ${editDist}`;
+            }
+            fd.append('address', editFullAddr);
             fd.append('province', document.getElementById('edit-province').value.trim());
             fd.append('postal_code', document.getElementById('edit-postal').value.trim());
 

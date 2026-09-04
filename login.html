@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <script src="wilayah-indonesia.js?v=3.1"></script>
+    <script src="wilayah-indonesia.js?v=4.0"></script>
     
     <script>
         tailwind.config = {
@@ -226,10 +226,14 @@
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                <div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 relative z-20">
+                                <div class="relative">
                                     <label for="reg-district" class="block text-xs font-medium text-slate-700 mb-1">Kecamatan (Opsional)</label>
-                                    <input type="text" id="reg-district" class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm shadow-sm" placeholder="Nama Kecamatan">
+                                    <div class="relative">
+                                        <input type="text" id="reg-district" autocomplete="off" class="block w-full pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm shadow-sm bg-white" placeholder="Ketik nama kecamatan...">
+                                        <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-lg">arrow_drop_down</span>
+                                    </div>
+                                    <div id="dropdown-reg-district" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-2xl max-h-56 overflow-y-auto z-[9999] py-1 divide-y divide-gray-50"></div>
                                 </div>
                                 <div>
                                     <label for="reg-zip" class="block text-xs font-medium text-slate-700 mb-1">Kode Pos (Opsional)</label>
@@ -407,7 +411,7 @@
                 loginForm.classList.add('hidden');
 
                 if (typeof setupSearchableWilayah === 'function') {
-                    setupSearchableWilayah('reg-province', 'reg-city');
+                    setupSearchableWilayah('reg-province', 'reg-city', 'reg-district');
                 }
             }
         }
@@ -672,7 +676,7 @@
         // Initialize Searchable Wilayah Dropdown on Page Load
         window.addEventListener('load', () => {
             if (typeof setupSearchableWilayah === 'function') {
-                setupSearchableWilayah('reg-province', 'reg-city');
+                setupSearchableWilayah('reg-province', 'reg-city', 'reg-district');
             }
         });
     </script>
