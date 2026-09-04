@@ -327,13 +327,97 @@ if ($action === 'update_order_status') {
 if ($action === 'get_ecommerce_stats') {
     $db = getDB();
     $stats = [
-        'total_orders' => $db->query("SELECT COUNT(*) FROM orders")->fetchColumn(),
-        'pending_payment' => $db->query("SELECT COUNT(*) FROM orders WHERE status = 'pending_payment'")->fetchColumn(),
-        'pending_verifications' => $db->query("SELECT COUNT(*) FROM orders WHERE status = 'payment_uploaded'")->fetchColumn(),
-        'active_shipments' => $db->query("SELECT COUNT(*) FROM shipments WHERE status IN ('preparing', 'shipped', 'in_transit')")->fetchColumn(),
-        'total_sales' => $db->query("SELECT SUM(total_amount) FROM orders WHERE status NOT IN ('cancelled', 'pending_payment', 'payment_uploaded')")->fetchColumn() ?? 0
+        'total_orders' => (int)$db->query("SELECT COUNT(*) FROM orders")->fetchColumn(),
+        'pending_payment' => (int)$db->query("SELECT COUNT(*) FROM orders WHERE status = 'pending_payment'")->fetchColumn(),
+        'pending_verifications' => (int)$db->query("SELECT COUNT(*) FROM orders WHERE status = 'payment_uploaded'")->fetchColumn(),
+        'active_shipments' => (int)$db->query("SELECT COUNT(*) FROM shipments WHERE status IN ('preparing', 'shipped', 'in_transit')")->fetchColumn(),
+        'total_sales' => (int)($db->query("SELECT SUM(total) FROM orders WHERE status NOT IN ('cancelled', 'pending_payment', 'payment_uploaded')")->fetchColumn() ?? 0),
+        'total_customers' => (int)$db->query("SELECT COUNT(*) FROM customers")->fetchColumn()
     ];
     echo json_encode($stats);
+    exit;
+}
+
+if ($action === 'get_admin_customers') {
+    $db = getDB();
+    $search = trim($_GET['search'] ?? '');
+    
+    $where = [];
+    $params = [];
+    if ($search !== '') {
+        $where[] = "(c.name LIKE ? OR c.email LIKE ? OR c.phone LIKE ? OR c.city LIKE ? OR c.province LIKE ?)";
+        $term = "%$search%";
+        $params = [$term, $term, $term, $term, $term];
+    }
+    $whereClause = count($where) > 0 ? 'WHERE ' . implode(' AND ', $where) : '';
+    
+    $sql = "
+        SELECT c.id, c.name, c.email, c.phone, c.address, c.city, c.province, c.postal_code, c.created_at,
+               COUNT(o.id) as order_count,
+               COALESCE(SUM(CASE WHEN o.status NOT IN ('cancelled', 'pending_payment') THEN o.total ELSE 0 END), 0) as total_spent,
+               MAX(o.created_at) as last_order_date
+        FROM customers c
+        LEFT JOIN orders o ON c.id = o.customer_id
+        $whereClause
+        GROUP BY c.id
+        ORDER BY c.created_at DESC
+    ";
+    $stmt = $db->prepare($sql);
+    $stmt->execute($params);
+    echo json_encode($stmt->fetchAll());
+    exit;
+}
+
+if ($action === 'get_admin_customer_detail') {
+    $db = getDB();
+    $customer_id = (int)($_GET['customer_id'] ?? 0);
+    if (!$customer_id) {
+        http_response_code(400); echo json_encode(['error' => 'Missing customer ID']); exit;
+    }
+    
+    $stmt = $db->prepare("
+        SELECT id, name, email, phone, address, city, province, postal_code, created_at
+        FROM customers
+        WHERE id = ?
+    ");
+    $stmt->execute([$customer_id]);
+    $customer = $stmt->fetch();
+    if (!$customer) {
+        http_response_code(404); echo json_encode(['error' => 'Customer not found']); exit;
+    }
+    
+    $stmtOrders = $db->prepare("
+        SELECT o.id, o.order_number, o.status, o.total, o.created_at,
+               (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) as item_count
+        FROM orders o
+        WHERE o.customer_id = ?
+        ORDER BY o.created_at DESC
+    ");
+    $stmtOrders->execute([$customer_id]);
+    $customer['orders'] = $stmtOrders->fetchAll();
+    
+    echo json_encode($customer);
+    exit;
+}
+
+if ($action === 'delete_customer') {
+    $db = getDB();
+    $input = json_decode(file_get_contents('php://input'), true);
+    $customer_id = (int)($input['customer_id'] ?? 0);
+    if (!$customer_id) {
+        http_response_code(400); echo json_encode(['error' => 'ID Pelanggan tidak valid']); exit;
+    }
+    
+    $stmt = $db->prepare("SELECT COUNT(*) FROM orders WHERE customer_id = ?");
+    $stmt->execute([$customer_id]);
+    $orderCount = (int)$stmt->fetchColumn();
+    if ($orderCount > 0) {
+        http_response_code(400); echo json_encode(['error' => 'Pelanggan memiliki pesanan aktif dan tidak dapat dihapus.']); exit;
+    }
+    
+    $del = $db->prepare("DELETE FROM customers WHERE id = ?");
+    $del->execute([$customer_id]);
+    echo json_encode(['success' => true]);
     exit;
 }
 

@@ -119,7 +119,7 @@ function adminApp() {
 
         // E-Commerce
         orders: [],
-        ecommerceStats: { total_orders: 0, pending_payment: 0, pending_verifications: 0, active_shipments: 0, total_sales: 0 },
+        ecommerceStats: { total_orders: 0, pending_payment: 0, pending_verifications: 0, active_shipments: 0, total_sales: 0, total_customers: 0 },
         orderSearch: '',
         orderFilter: 'all',
         activeOrder: null,
@@ -129,6 +129,13 @@ function adminApp() {
         paymentNotes: '',
         orderStatusUpdate: '',
         shipmentForm: { expedition: 'Indah Kargo', tracking_number: '', status: 'preparing', estimated_arrival: '', notes: '' },
+
+        // Pelanggan / Customers
+        customers: [],
+        customerSearch: '',
+        selectedCustomer: null,
+        showCustomerModal: false,
+        isLoadingCustomer: false,
 
         // ==================== INITIALIZATION ====================
         initApp() {
@@ -176,6 +183,8 @@ function adminApp() {
             } else if (view === 'shipments') {
                 this.orderFilter = 'processing'; // or something to show shippable orders
                 this.loadOrders();
+            } else if (view === 'customers') {
+                this.loadCustomers();
             }
         },
 
@@ -191,7 +200,8 @@ function adminApp() {
                 this.loadModule('about'),
                 this.loadModule('contact'),
                 this.loadEcommerceStats(),
-                this.loadOrders()
+                this.loadOrders(),
+                this.loadCustomers()
             ]);
         },
 
@@ -517,6 +527,68 @@ function adminApp() {
         formatRupiah(amount) {
             if (!amount) return 'Rp 0';
             return 'Rp ' + Number(amount).toLocaleString('id-ID');
+        },
+
+        // ==================== CUSTOMER MANAGEMENT ====================
+        async loadCustomers() {
+            try {
+                let url = 'api.php?action=get_admin_customers';
+                if (this.customerSearch) {
+                    url += '&search=' + encodeURIComponent(this.customerSearch);
+                }
+                let res = await fetch(url);
+                this.customers = await res.json();
+            } catch(e) {
+                console.error('Failed to load customers:', e);
+            }
+        },
+
+        filteredCustomers() {
+            if (!Array.isArray(this.customers)) return [];
+            if (!this.customerSearch) return this.customers;
+            const q = this.customerSearch.toLowerCase().trim();
+            return this.customers.filter(c => 
+                (c.name && c.name.toLowerCase().includes(q)) ||
+                (c.email && c.email.toLowerCase().includes(q)) ||
+                (c.phone && c.phone.includes(q)) ||
+                (c.city && c.city.toLowerCase().includes(q)) ||
+                (c.province && c.province.toLowerCase().includes(q))
+            );
+        },
+
+        async openCustomerModal(c) {
+            this.selectedCustomer = { ...c, orders: [] };
+            this.showCustomerModal = true;
+            try {
+                let res = await fetch(`api.php?action=get_admin_customer_detail&customer_id=${c.id}`);
+                let data = await res.json();
+                if (data && data.id) {
+                    this.selectedCustomer = data;
+                }
+            } catch(e) {
+                console.error('Failed to load customer detail:', e);
+            }
+        },
+
+        async deleteCustomer(id, name) {
+            if (!confirm(`Yakin ingin menghapus akun pelanggan "${name}"? Tindakan ini tidak dapat dibatalkan.`)) return;
+            try {
+                let res = await fetch('api.php?action=delete_customer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ customer_id: id })
+                });
+                let data = await res.json();
+                if (data.success) {
+                    alert('Akun pelanggan berhasil dihapus!');
+                    this.loadCustomers();
+                    this.loadEcommerceStats();
+                } else {
+                    alert(data.error || 'Gagal menghapus pelanggan');
+                }
+            } catch(e) {
+                alert('Terjadi kesalahan jaringan');
+            }
         },
 
         // ==================== PRODUCT CRUD ====================

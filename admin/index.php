@@ -133,6 +133,12 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         <span x-show="ecommerceStats.active_shipments > 0" class="ml-auto bg-blue-500 text-white text-[10px] px-1.5 py-0.5 rounded-full" x-text="ecommerceStats.active_shipments"></span>
                     </a></li>
                     
+                    <!-- Pelanggan -->
+                    <li><a href="#" @click.prevent="changeView('customers')" :class="currentView==='customers' ? 'bg-primary text-white shadow-md' : 'text-gray-300 hover:bg-sidebar-hover'" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm">
+                        <i class="fas fa-users w-5 text-center"></i> Data Pelanggan
+                        <span x-show="ecommerceStats.total_customers > 0" class="ml-auto bg-purple-500/80 text-white text-[10px] px-1.5 py-0.5 rounded-full" x-text="ecommerceStats.total_customers"></span>
+                    </a></li>
+                    
                     <li class="pt-4 pb-1 px-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Halaman Web</li>
                     
                     <!-- Beranda -->
@@ -189,22 +195,26 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 <!-- 1. DASHBOARD -->
 <!-- ================================================================ -->
 <div x-show="currentView==='dashboard'">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-        <div class="card p-5 border-l-4 border-l-blue-500 flex items-center gap-4">
-            <div class="w-11 h-11 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center"><i class="fas fa-eye text-lg"></i></div>
-            <div><p class="text-xs text-gray-500 font-medium">Total Pengunjung</p><p class="text-2xl font-bold" x-text="analytics.visitors||0"></p></div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+        <div class="card p-4 border-l-4 border-l-blue-500 flex items-center gap-3">
+            <div class="w-10 h-10 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center"><i class="fas fa-eye text-base"></i></div>
+            <div><p class="text-xs text-gray-500 font-medium">Pengunjung</p><p class="text-xl font-bold" x-text="analytics.visitors||0"></p></div>
         </div>
-        <div class="card p-5 border-l-4 border-l-green-500 flex items-center gap-4">
-            <div class="w-11 h-11 bg-green-50 text-green-500 rounded-full flex items-center justify-center"><i class="fab fa-whatsapp text-lg"></i></div>
-            <div><p class="text-xs text-gray-500 font-medium">Klik WA / Telepon</p><p class="text-2xl font-bold" x-text="analytics.wa_clicks||0"></p></div>
+        <div class="card p-4 border-l-4 border-l-green-500 flex items-center gap-3">
+            <div class="w-10 h-10 bg-green-50 text-green-500 rounded-full flex items-center justify-center"><i class="fab fa-whatsapp text-base"></i></div>
+            <div><p class="text-xs text-gray-500 font-medium">Klik WA</p><p class="text-xl font-bold" x-text="analytics.wa_clicks||0"></p></div>
         </div>
-        <div class="card p-5 border-l-4 border-l-purple-500 flex items-center gap-4">
-            <div class="w-11 h-11 bg-purple-50 text-purple-500 rounded-full flex items-center justify-center"><i class="fas fa-box text-lg"></i></div>
-            <div><p class="text-xs text-gray-500 font-medium">Total Produk</p><p class="text-2xl font-bold" x-text="products.length"></p></div>
+        <div class="card p-4 border-l-4 border-l-purple-500 flex items-center gap-3">
+            <div class="w-10 h-10 bg-purple-50 text-purple-500 rounded-full flex items-center justify-center"><i class="fas fa-box text-base"></i></div>
+            <div><p class="text-xs text-gray-500 font-medium">Total Produk</p><p class="text-xl font-bold" x-text="products.length"></p></div>
         </div>
-        <div class="card p-5 border-l-4 border-l-amber-500 flex items-center gap-4">
-            <div class="w-11 h-11 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center"><i class="fas fa-newspaper text-lg"></i></div>
-            <div><p class="text-xs text-gray-500 font-medium">Total Artikel</p><p class="text-2xl font-bold" x-text="articles.length"></p></div>
+        <div class="card p-4 border-l-4 border-l-amber-500 flex items-center gap-3">
+            <div class="w-10 h-10 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center"><i class="fas fa-newspaper text-base"></i></div>
+            <div><p class="text-xs text-gray-500 font-medium">Total Artikel</p><p class="text-xl font-bold" x-text="articles.length"></p></div>
+        </div>
+        <div class="card p-4 border-l-4 border-l-emerald-500 flex items-center gap-3 cursor-pointer hover:bg-emerald-50/20 transition-colors" @click="changeView('customers')">
+            <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center"><i class="fas fa-users text-base"></i></div>
+            <div><p class="text-xs text-gray-500 font-medium">Pelanggan</p><p class="text-xl font-bold text-emerald-600" x-text="ecommerceStats.total_customers||0"></p></div>
         </div>
     </div>
     
@@ -1087,6 +1097,194 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         <button @click="updateOrderStatus()" class="btn-primary text-sm"><i class="fas fa-sync-alt"></i> Update Status</button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- DATA PELANGGAN TERDAFTAR -->
+<!-- ================================================================ -->
+<div x-show="currentView === 'customers'" x-cloak>
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+        <div>
+            <h2 class="text-xl font-bold flex items-center gap-2 text-gray-800">
+                <i class="fas fa-users text-primary"></i>
+                <span>Data Pelanggan Terdaftar</span>
+                <span class="text-xs bg-purple-100 text-primary font-bold px-2.5 py-0.5 rounded-full" x-text="(customers ? customers.length : 0) + ' Akun'"></span>
+            </h2>
+            <p class="text-xs text-gray-500 mt-1">Daftar pelanggan yang telah membuat akun di website CV Asianindo.</p>
+        </div>
+        <div class="relative w-full md:w-80">
+            <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
+            <input type="text" x-model="customerSearch" @input.debounce.300ms="loadCustomers()" placeholder="Cari nama, email, HP, kota..." class="form-input !pl-10">
+        </div>
+    </div>
+
+    <!-- Stats Summary Pill -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-purple-50 text-primary flex items-center justify-center text-lg"><i class="fas fa-user-check"></i></div>
+            <div>
+                <p class="text-xs text-gray-500 font-medium">Total Akun Terdaftar</p>
+                <p class="text-xl font-bold text-gray-800" x-text="ecommerceStats.total_customers || (customers ? customers.length : 0)"></p>
+            </div>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-green-50 text-green-600 flex items-center justify-center text-lg"><i class="fab fa-whatsapp"></i></div>
+            <div>
+                <p class="text-xs text-gray-500 font-medium">Kontak WhatsApp Terhubung</p>
+                <p class="text-xl font-bold text-gray-800" x-text="customers.filter(c => c.phone).length"></p>
+            </div>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-lg"><i class="fas fa-shopping-bag"></i></div>
+            <div>
+                <p class="text-xs text-gray-500 font-medium">Pelanggan Telah Bertransaksi</p>
+                <p class="text-xl font-bold text-gray-800" x-text="customers.filter(c => Number(c.order_count) > 0).length"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card overflow-x-auto">
+        <table class="w-full text-sm text-left whitespace-nowrap">
+            <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
+                <tr>
+                    <th class="p-4 font-medium w-12 text-center">No</th>
+                    <th class="p-4 font-medium">Pelanggan</th>
+                    <th class="p-4 font-medium">Kontak WhatsApp / Telp</th>
+                    <th class="p-4 font-medium">Alamat / Wilayah</th>
+                    <th class="p-4 font-medium text-center">Total Order</th>
+                    <th class="p-4 font-medium text-center">Tgl Daftar</th>
+                    <th class="p-4 font-medium text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                <template x-for="(c, idx) in filteredCustomers()" :key="c.id">
+                    <tr class="hover:bg-primary-50/30 transition-colors">
+                        <td class="p-4 text-center text-gray-400 font-medium" x-text="idx + 1"></td>
+                        <td class="p-4">
+                            <div class="font-bold text-gray-800 flex items-center gap-2.5">
+                                <span class="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center flex-shrink-0" x-text="c.name ? c.name.charAt(0).toUpperCase() : 'U'"></span>
+                                <div>
+                                    <div class="text-sm font-semibold" x-text="c.name"></div>
+                                    <div class="text-xs text-gray-500 font-normal mt-0.5" x-text="c.email"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex items-center gap-2">
+                                <span class="font-medium text-gray-700" x-text="c.phone || '-'"></span>
+                                <a x-show="c.phone" :href="'https://wa.me/' + (c.phone.startsWith('0') ? '62' + c.phone.slice(1) : c.phone.replace(/[^0-9]/g, ''))" target="_blank" class="inline-flex items-center gap-1 text-[11px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold hover:bg-green-200 transition-colors" title="Hubungi via WhatsApp">
+                                    <i class="fab fa-whatsapp text-xs"></i> Chat
+                                </a>
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            <div class="text-xs font-semibold text-gray-800 truncate max-w-xs" x-text="c.city ? (c.city + (c.province ? ', ' + c.province : '')) : (c.address || '-')"></div>
+                            <div class="text-[11px] text-gray-400 truncate max-w-xs mt-0.5" x-show="c.address" x-text="c.address"></div>
+                            <div class="text-[11px] font-mono text-primary font-semibold mt-0.5" x-show="c.postal_code" x-text="'Kode Pos: ' + c.postal_code"></div>
+                        </td>
+                        <td class="p-4 text-center">
+                            <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold" :class="Number(c.order_count) > 0 ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500'" x-text="(c.order_count || 0) + ' Order'"></span>
+                            <div class="text-[11px] text-gray-500 mt-0.5 font-medium" x-show="Number(c.total_spent) > 0" x-text="formatRupiah(c.total_spent)"></div>
+                        </td>
+                        <td class="p-4 text-center text-xs text-gray-500" x-text="formatDate(c.created_at)"></td>
+                        <td class="p-4 text-center">
+                            <div class="flex items-center justify-center gap-1.5">
+                                <button @click="openCustomerModal(c)" class="btn-secondary !py-1.5 !px-2.5 text-xs text-primary hover:bg-primary-50" title="Lihat Detail Profil">
+                                    <i class="fas fa-eye mr-1"></i> Detail
+                                </button>
+                                <button x-show="Number(c.order_count) === 0" @click="deleteCustomer(c.id, c.name)" class="text-red-400 hover:text-red-600 p-1.5 text-xs" title="Hapus Akun">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </template>
+                <tr x-show="filteredCustomers().length === 0">
+                    <td colspan="7" class="p-12 text-center text-gray-400">
+                        <i class="fas fa-user-slash text-3xl mb-2 text-gray-300"></i>
+                        <p class="text-sm font-medium">Tidak ada data pelanggan yang cocok.</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal Detail Pelanggan -->
+<div x-show="showCustomerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" style="display: none;" x-cloak>
+    <div @click.away="showCustomerModal = false" class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 relative">
+        <button @click="showCustomerModal = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-100">
+            <i class="fas fa-times text-lg"></i>
+        </button>
+
+        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100">
+            <div class="w-12 h-12 rounded-full bg-primary/10 text-primary font-bold text-xl flex items-center justify-center" x-text="selectedCustomer?.name ? selectedCustomer.name.charAt(0).toUpperCase() : 'U'"></div>
+            <div>
+                <h3 class="text-lg font-bold text-gray-900" x-text="selectedCustomer?.name"></h3>
+                <p class="text-xs text-gray-500" x-text="'Terdaftar sejak ' + formatDate(selectedCustomer?.created_at)"></p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <p class="text-xs text-gray-500 font-medium mb-1">Email</p>
+                <p class="text-sm font-semibold text-gray-800 break-all" x-text="selectedCustomer?.email || '-'"></p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <p class="text-xs text-gray-500 font-medium mb-1">Nomor HP / WhatsApp</p>
+                <div class="flex items-center justify-between">
+                    <p class="text-sm font-semibold text-gray-800" x-text="selectedCustomer?.phone || '-'"></p>
+                    <a x-show="selectedCustomer?.phone" :href="'https://wa.me/' + (selectedCustomer.phone.startsWith('0') ? '62' + selectedCustomer.phone.slice(1) : selectedCustomer.phone.replace(/[^0-9]/g, ''))" target="_blank" class="text-xs bg-green-600 text-white px-2.5 py-1 rounded-lg font-medium flex items-center gap-1 hover:bg-green-700">
+                        <i class="fab fa-whatsapp"></i> Chat
+                    </a>
+                </div>
+            </div>
+            <div class="md:col-span-2 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <p class="text-xs text-gray-500 font-medium mb-1">Alamat Lengkap Pengiriman</p>
+                <p class="text-sm text-gray-800" x-text="selectedCustomer?.address || 'Belum ada alamat disimpan'"></p>
+                <div class="flex flex-wrap gap-2 mt-2" x-show="selectedCustomer?.city || selectedCustomer?.province || selectedCustomer?.postal_code">
+                    <span class="text-xs bg-white px-2.5 py-1 rounded border text-gray-600" x-show="selectedCustomer?.city" x-text="selectedCustomer?.city"></span>
+                    <span class="text-xs bg-white px-2.5 py-1 rounded border text-gray-600" x-show="selectedCustomer?.province" x-text="selectedCustomer?.province"></span>
+                    <span class="text-xs bg-purple-100 text-primary font-mono font-bold px-2.5 py-1 rounded" x-show="selectedCustomer?.postal_code" x-text="'Kode Pos: ' + selectedCustomer?.postal_code"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Riwayat Pesanan Pelanggan -->
+        <div>
+            <h4 class="font-bold text-sm text-gray-800 mb-3 flex items-center gap-2">
+                <i class="fas fa-history text-primary"></i> Riwayat Pesanan Pelanggan
+            </h4>
+            <div class="border rounded-xl overflow-hidden">
+                <table class="w-full text-xs text-left">
+                    <thead class="bg-gray-50 text-gray-500 uppercase">
+                        <tr>
+                            <th class="p-3">No. Pesanan</th>
+                            <th class="p-3">Tanggal</th>
+                            <th class="p-3 text-right">Total</th>
+                            <th class="p-3 text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <template x-for="ord in (selectedCustomer?.orders || [])" :key="ord.id">
+                            <tr>
+                                <td class="p-3 font-bold text-primary" x-text="ord.order_number"></td>
+                                <td class="p-3 text-gray-500" x-text="formatDate(ord.created_at)"></td>
+                                <td class="p-3 text-right font-bold" x-text="formatRupiah(ord.total)"></td>
+                                <td class="p-3 text-center">
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold" :class="getOrderStatusBadgeClass(ord.status)" x-text="getOrderStatusLabel(ord.status)"></span>
+                                </td>
+                            </tr>
+                        </template>
+                        <tr x-show="!selectedCustomer?.orders || selectedCustomer.orders.length === 0">
+                            <td colspan="4" class="p-6 text-center text-gray-400">Pelanggan ini belum pernah membuat pesanan.</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
