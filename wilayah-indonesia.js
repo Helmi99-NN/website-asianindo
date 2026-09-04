@@ -312,52 +312,13 @@ function setupSearchableWilayah(provInputId, cityInputId, defaultProv = '', defa
     if (defaultProv) provInput.value = defaultProv;
     if (defaultCity) cityInput.value = defaultCity;
 
-    // 1. Native Datalist Support (Jaminan 100% muncul opsi di HP/Browser)
-    let cityDatalist = document.getElementById(`datalist-${cityInputId}`);
-    if (!cityDatalist) {
-        cityDatalist = document.createElement('datalist');
-        cityDatalist.id = `datalist-${cityInputId}`;
-        document.body.appendChild(cityDatalist);
-    }
-    cityInput.setAttribute('list', cityDatalist.id);
-
-    let provDatalist = document.getElementById(`datalist-${provInputId}`);
-    if (!provDatalist) {
-        provDatalist = document.createElement('datalist');
-        provDatalist.id = `datalist-${provInputId}`;
-        document.body.appendChild(provDatalist);
-    }
-    provInput.setAttribute('list', provDatalist.id);
-
-    // Isi opsi Provinsi di datalist
-    provDatalist.innerHTML = '';
-    Object.keys(WILAYAH_INDONESIA).forEach(p => {
-        const opt = document.createElement('option');
-        opt.value = p;
-        provDatalist.appendChild(opt);
-    });
-
-    // Fungsi update opsi Kota di datalist
-    function updateCityDatalist(selectedProv = '') {
-        cityDatalist.innerHTML = '';
-        if (selectedProv && WILAYAH_INDONESIA[selectedProv]) {
-            WILAYAH_INDONESIA[selectedProv].forEach(c => {
-                const opt = document.createElement('option');
-                opt.value = c;
-                cityDatalist.appendChild(opt);
-            });
-        } else {
-            Object.entries(WILAYAH_INDONESIA).forEach(([prov, cities]) => {
-                cities.forEach(c => {
-                    const opt = document.createElement('option');
-                    opt.value = c;
-                    opt.label = prov;
-                    cityDatalist.appendChild(opt);
-                });
-            });
-        }
-    }
-    updateCityDatalist(defaultProv || provInput.value);
+    // Pastikan tidak ada native datalist yang memicu popup bawaan browser saat klik
+    provInput.removeAttribute('list');
+    cityInput.removeAttribute('list');
+    const oldCityDl = document.getElementById(`datalist-${cityInputId}`);
+    if (oldCityDl) oldCityDl.remove();
+    const oldProvDl = document.getElementById(`datalist-${provInputId}`);
+    if (oldProvDl) oldProvDl.remove();
 
     // Deteksi otomatis Provinsi saat Kota diketik/dipilih
     function checkCityProvinceMatch(val) {
@@ -367,7 +328,6 @@ function setupSearchableWilayah(provInputId, cityInputId, defaultProv = '', defa
             if (cities.some(c => c.toLowerCase() === v)) {
                 if (provInput.value !== prov) {
                     provInput.value = prov;
-                    updateCityDatalist(prov);
                     if (typeof onSelectCallback === 'function') onSelectCallback();
                 }
                 break;
@@ -383,11 +343,10 @@ function setupSearchableWilayah(provInputId, cityInputId, defaultProv = '', defa
     });
 
     provInput.addEventListener('change', function() {
-        updateCityDatalist(this.value);
         if (typeof onSelectCallback === 'function') onSelectCallback();
     });
 
-    // 2. Custom Floating Dropdown (Visual UI dengan efek hover)
+    // Custom Floating Dropdown (Visual UI)
     if (!provDropdown || !cityDropdown) return;
 
     function closeAll() {
@@ -407,12 +366,18 @@ function setupSearchableWilayah(provInputId, cityInputId, defaultProv = '', defa
         if (e.key === 'Escape') closeAll();
     });
 
-    // Render Dropdown Provinsi
+    // Render Dropdown Provinsi (Hanya muncul saat ada karakter yang diketik)
     function renderProvinces(q = '') {
+        const search = q.toLowerCase().trim();
+        if (search === '') {
+            provDropdown.classList.add('hidden');
+            provDropdown.innerHTML = '';
+            return;
+        }
+
         provDropdown.innerHTML = '';
         const provinces = Object.keys(WILAYAH_INDONESIA);
-        const search = q.toLowerCase().trim();
-        const filtered = search === '' ? provinces : provinces.filter(p => p.toLowerCase().includes(search));
+        const filtered = provinces.filter(p => p.toLowerCase().includes(search));
 
         if (filtered.length === 0) {
             provDropdown.innerHTML = '<div class="px-3.5 py-2.5 text-xs text-gray-400 italic">Provinsi tidak ditemukan</div>';
@@ -434,7 +399,6 @@ function setupSearchableWilayah(provInputId, cityInputId, defaultProv = '', defa
                     e.stopPropagation();
                 }
                 provInput.value = p;
-                updateCityDatalist(p);
                 provDropdown.classList.add('hidden');
 
                 if (cityInput.value) {
@@ -455,16 +419,25 @@ function setupSearchableWilayah(provInputId, cityInputId, defaultProv = '', defa
         provDropdown.classList.remove('hidden');
     }
 
+    // Saat fokus/klik pertama: jangan tampilkan opsi
     provInput.addEventListener('focus', function() {
         cityDropdown.classList.add('hidden');
-        renderProvinces(this.value);
     });
+
+    // Opsi hanya muncul saat huruf pertama mulai diketik
     provInput.addEventListener('input', function() {
         renderProvinces(this.value);
     });
 
-    // Render Dropdown Kota / Kabupaten
+    // Render Dropdown Kota / Kabupaten (Hanya muncul saat ada karakter yang diketik)
     function renderCities(q = '') {
+        const search = q.toLowerCase().trim();
+        if (search === '') {
+            cityDropdown.classList.add('hidden');
+            cityDropdown.innerHTML = '';
+            return;
+        }
+
         cityDropdown.innerHTML = '';
         const curProv = provInput.value.trim();
         let list = [];
@@ -477,10 +450,7 @@ function setupSearchableWilayah(provInputId, cityInputId, defaultProv = '', defa
             });
         }
 
-        const search = q.toLowerCase().trim();
-        const filtered = search === '' 
-            ? list.slice(0, 50)
-            : list.filter(item => item.city.toLowerCase().includes(search) || item.province.toLowerCase().includes(search));
+        const filtered = list.filter(item => item.city.toLowerCase().includes(search) || item.province.toLowerCase().includes(search));
 
         if (filtered.length === 0) {
             cityDropdown.innerHTML = '<div class="px-3.5 py-2.5 text-xs text-gray-400 italic">Kota / Kabupaten tidak ditemukan</div>';
@@ -508,7 +478,6 @@ function setupSearchableWilayah(provInputId, cityInputId, defaultProv = '', defa
                 cityInput.value = item.city;
                 if (provInput.value !== item.province) {
                     provInput.value = item.province;
-                    updateCityDatalist(item.province);
                 }
                 cityDropdown.classList.add('hidden');
                 if (typeof onSelectCallback === 'function') onSelectCallback();
@@ -523,10 +492,12 @@ function setupSearchableWilayah(provInputId, cityInputId, defaultProv = '', defa
         cityDropdown.classList.remove('hidden');
     }
 
+    // Saat fokus/klik pertama: jangan tampilkan opsi
     cityInput.addEventListener('focus', function() {
         provDropdown.classList.add('hidden');
-        renderCities(this.value);
     });
+
+    // Opsi hanya muncul saat huruf pertama mulai diketik
     cityInput.addEventListener('input', function() {
         renderCities(this.value);
     });
