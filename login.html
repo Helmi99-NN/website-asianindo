@@ -208,17 +208,21 @@
                         
                         <div class="space-y-3.5">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                <div>
+                                <div class="relative">
                                     <label for="reg-province" class="block text-xs font-medium text-slate-700 mb-1">Provinsi</label>
-                                    <select id="reg-province" class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm shadow-sm bg-white">
-                                        <option value="">-- Pilih Provinsi --</option>
-                                    </select>
+                                    <div class="relative">
+                                        <input type="text" id="reg-province" autocomplete="off" class="block w-full pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm shadow-sm bg-white" placeholder="Ketik / Pilih Provinsi...">
+                                        <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-lg">arrow_drop_down</span>
+                                    </div>
+                                    <div id="dropdown-reg-province" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-xl max-h-52 overflow-y-auto z-50 py-1 divide-y divide-gray-50"></div>
                                 </div>
-                                <div>
+                                <div class="relative">
                                     <label for="reg-city" class="block text-xs font-medium text-slate-700 mb-1">Kota / Kabupaten</label>
-                                    <select id="reg-city" disabled class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm shadow-sm bg-gray-100 cursor-not-allowed">
-                                        <option value="">-- Pilih Kota / Kabupaten --</option>
-                                    </select>
+                                    <div class="relative">
+                                        <input type="text" id="reg-city" autocomplete="off" class="block w-full pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm shadow-sm bg-white" placeholder="Ketik kota (misal: Malang)...">
+                                        <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-lg">arrow_drop_down</span>
+                                    </div>
+                                    <div id="dropdown-reg-city" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-xl max-h-52 overflow-y-auto z-50 py-1 divide-y divide-gray-50"></div>
                                 </div>
                             </div>
 
@@ -661,10 +665,10 @@
             }
         }
 
-        // Initialize Wilayah Cascading Dropdown on Page Load
+        // Initialize Searchable Wilayah Dropdown on Page Load
         window.addEventListener('load', () => {
-            if (typeof initWilayahDropdown === 'function') {
-                initWilayahDropdown('reg-province', 'reg-city');
+            if (typeof setupSearchableWilayah === 'function') {
+                setupSearchableWilayah('reg-province', 'reg-city');
             }
         });
     </script>
