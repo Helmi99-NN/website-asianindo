@@ -16,6 +16,19 @@ function adminApp() {
         mediaItems: [],
         isUploadingMedia: false,
         mediaSearch: '',
+
+        // Mass / Bulk Product Update States (Shopee Concept)
+        selectedProductIds: [],
+        productCategoryFilter: '',
+        showBulkModal: false,
+        bulkActiveTab: 'download',
+        bulkExportScope: 'selected',
+        bulkCategoryFilter: 'all',
+        bulkFileName: '',
+        bulkPreviewData: [],
+        bulkStats: { total: 0, changed: 0, unchanged: 0, errors: 0 },
+        bulkShowOnlyChanged: false,
+        isProcessingBulk: false,
         
         settings: {
             company_name: 'CV Asianindo',
@@ -591,12 +604,484 @@ function adminApp() {
             }
         },
 
-        // ==================== PRODUCT CRUD ====================
+        // ==================== PRODUCT CRUD & BULK UPDATE (ALA SHOPEE) ====================
         filteredProducts() {
             let list = Array.isArray(this.products) ? this.products : Object.values(this.products);
             list = list.filter(p => p && typeof p === 'object');
-            if (!this.searchQuery) return list;
-            return list.filter(p => (p.name || '').toLowerCase().includes(this.searchQuery.toLowerCase()));
+            if (this.productCategoryFilter) {
+                list = list.filter(p => p.category === this.productCategoryFilter);
+            }
+            if (this.searchQuery) {
+                let q = this.searchQuery.toLowerCase();
+                list = list.filter(p => (p.name || '').toLowerCase().includes(q) || String(p.id || '').toLowerCase().includes(q));
+            }
+            return list;
+        },
+
+        toggleSelectAll(checked) {
+            let visibleProducts = this.filteredProducts();
+            if (checked) {
+                let ids = visibleProducts.map(p => String(p.id));
+                this.selectedProductIds = Array.from(new Set([...this.selectedProductIds, ...ids]));
+            } else {
+                let visibleIds = new Set(visibleProducts.map(p => String(p.id)));
+                this.selectedProductIds = this.selectedProductIds.filter(id => !visibleIds.has(String(id)));
+            }
+        },
+
+        isAllSelected() {
+            let visible = this.filteredProducts();
+            if (!visible.length) return false;
+            return visible.every(p => this.selectedProductIds.includes(String(p.id)));
+        },
+
+        openBulkModal(tab = 'download', scope = null) {
+            this.bulkActiveTab = tab;
+            if (scope) {
+                this.bulkExportScope = scope;
+            } else {
+                this.bulkExportScope = this.selectedProductIds.length > 0 ? 'selected' : 'all';
+            }
+            this.showBulkModal = true;
+        },
+
+        getExportProductsCount() {
+            if (this.bulkExportScope === 'selected') {
+                return this.selectedProductIds.length;
+            }
+            if (this.bulkCategoryFilter && this.bulkCategoryFilter !== 'all') {
+                return this.products.filter(p => p && p.category === this.bulkCategoryFilter).length;
+            }
+            return this.products.length;
+        },
+
+        exportBulkTemplate(format = 'xlsx') {
+            let itemsToExport = [];
+            if (this.bulkExportScope === 'selected') {
+                let idSet = new Set(this.selectedProductIds.map(String));
+                itemsToExport = this.products.filter(p => p && idSet.has(String(p.id)));
+            } else {
+                itemsToExport = [...this.products];
+                if (this.bulkCategoryFilter && this.bulkCategoryFilter !== 'all') {
+                    itemsToExport = itemsToExport.filter(p => p && p.category === this.bulkCategoryFilter);
+                }
+            }
+
+            if (itemsToExport.length === 0) {
+                alert('Tidak ada produk yang dipilih untuk diunduh.');
+                return;
+            }
+
+            const headers = [
+                'ID Produk (Jangan Diubah)',
+                'Nama Produk',
+                'Harga (Rp)',
+                'Kategori',
+                'Sub Kategori',
+                'Kapasitas',
+                'Ukuran Kapasitas (small/medium/large)',
+                'Rentang Harga',
+                'Deskripsi Produk'
+            ];
+
+            const rows = [headers];
+            itemsToExport.forEach(p => {
+                let rawDesc = p.desc || p.description || '';
+                let cleanDesc = rawDesc.replace(/<[^>]*>/g, '').trim();
+
+                rows.push([
+                    String(p.id || ''),
+                    p.name || '',
+                    Number(p.price) || 0,
+                    p.category || '',
+                    p.subCategory || '',
+                    p.capacity || '',
+                    p.capacitySize || 'medium',
+                    p.priceRange || '',
+                    cleanDesc
+                ]);
+            });
+
+            const now = new Date();
+            const dateStr = now.getFullYear() + String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
+
+            if (format === 'csv') {
+                let csvContent = '\uFEFF';
+                rows.forEach(row => {
+                    let formattedRow = row.map(val => {
+                        let s = String(val ?? '');
+                        if (s.includes('"') || s.includes(',') || s.includes('\n') || s.includes('\r')) {
+                            return '"' + s.replace(/"/g, '""') + '"';
+                        }
+                        return s;
+                    }).join(',');
+                    csvContent += formattedRow + '\r\n';
+                });
+
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `template_update_produk_asianindo_${dateStr}.csv`;
+                link.click();
+                return;
+            }
+
+            if (typeof XLSX === 'undefined') {
+                alert('Library Excel belum siap. Silakan refresh halaman.');
+                return;
+            }
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(rows);
+
+            ws['!cols'] = [
+                { wch: 22 }, // ID Produk
+                { wch: 45 }, // Nama Produk
+                { wch: 18 }, // Harga (Rp)
+                { wch: 20 }, // Kategori
+                { wch: 18 }, // Sub Kategori
+                { wch: 22 }, // Kapasitas
+                { wch: 25 }, // Ukuran Kapasitas
+                { wch: 25 }, // Rentang Harga
+                { wch: 60 }  // Deskripsi Produk
+            ];
+
+            XLSX.utils.book_append_sheet(wb, ws, 'DATA_PRODUK');
+
+            const guideRows = [
+                ['PETUNJUK UPDATE PRODUK MASSAL (ALA SHOPEE) - CV ASIANINDO'],
+                [''],
+                ['1. Kolom ID Produk (Jangan Diubah)', 'Penanda unik produk. JANGAN menghapus atau mengubah angka pada kolom ini.'],
+                ['2. Kolom Harga (Rp)', 'Wajib berupa angka bulat murni tanpa titik, koma, atau teks "Rp" (contoh: 25000000).'],
+                ['3. Kolom Nama Produk', 'Nama lengkap produk/mesin.'],
+                ['4. Kolom Kategori', 'Pilihan: Mesin Industri, Mesin Pengolahan, Mesin Pengemasan, Mesin Pertanian, Mesin Lainnya.'],
+                ['5. Kolom Ukuran Kapasitas', 'Pilihan: small, medium, atau large.'],
+                ['6. Foto & Video', 'Foto dan video produk Anda tetap tersimpan aman di server dan tidak akan terhapus saat melakukan update massal text/harga.'],
+                ['7. Cara Upload', 'Setelah selesai mengubah data di Excel, simpan file (.xlsx atau .csv) lalu buka CMS Asianindo > Update Massal > Tab Unggah & Tinjau Perubahan.']
+            ];
+            const wsGuide = XLSX.utils.aoa_to_sheet(guideRows);
+            wsGuide['!cols'] = [{ wch: 35 }, { wch: 85 }];
+            XLSX.utils.book_append_sheet(wb, wsGuide, 'PETUNJUK_PENGISIAN');
+
+            XLSX.writeFile(wb, `template_update_produk_asianindo_${dateStr}.xlsx`);
+        },
+
+        handleBulkExcelDrop(e) {
+            let dt = e.dataTransfer;
+            let files = dt.files;
+            if (files && files.length > 0) {
+                this.parseExcelFile(files[0]);
+            }
+        },
+
+        handleBulkExcelUpload(e) {
+            let files = e.target.files;
+            if (files && files.length > 0) {
+                this.parseExcelFile(files[0]);
+            }
+        },
+
+        resetBulkUpload() {
+            this.bulkFileName = '';
+            this.bulkPreviewData = [];
+            this.bulkStats = { total: 0, changed: 0, unchanged: 0, errors: 0 };
+        },
+
+        parseExcelFile(file) {
+            if (!file) return;
+            this.bulkFileName = file.name;
+            this.bulkStats = { total: 0, changed: 0, unchanged: 0, errors: 0 };
+            this.bulkPreviewData = [];
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    if (typeof XLSX === 'undefined') {
+                        alert('Library XLSX belum termuat. Periksa koneksi internet dan refresh halaman.');
+                        return;
+                    }
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    let sheetName = workbook.SheetNames.includes('DATA_PRODUK') ? 'DATA_PRODUK' : workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
+
+                    if (!rows || rows.length < 2) {
+                        alert('File Excel kosong atau tidak memiliki baris data.');
+                        return;
+                    }
+
+                    // 1. Locate header row
+                    let headerIndex = -1;
+                    for (let r = 0; r < Math.min(rows.length, 10); r++) {
+                        const rowStr = rows[r].map(c => String(c).toLowerCase()).join(' ');
+                        if (rowStr.includes('id') && (rowStr.includes('nama') || rowStr.includes('harga') || rowStr.includes('kategori'))) {
+                            headerIndex = r;
+                            break;
+                        }
+                    }
+
+                    if (headerIndex === -1) {
+                        headerIndex = 0;
+                    }
+
+                    const headers = rows[headerIndex].map(h => String(h).trim().toLowerCase());
+                    const colMap = {};
+                    headers.forEach((h, idx) => {
+                        if (/id(\s*produk)?/i.test(h) && colMap.id === undefined) colMap.id = idx;
+                        else if (/nama(\s*produk)?/i.test(h) && colMap.name === undefined) colMap.name = idx;
+                        else if (/harga/i.test(h) && colMap.price === undefined) colMap.price = idx;
+                        else if (/kategori/i.test(h) && !/sub/i.test(h) && colMap.category === undefined) colMap.category = idx;
+                        else if (/sub\s*kategori/i.test(h) && colMap.subCategory === undefined) colMap.subCategory = idx;
+                        else if (/ukuran\s*kapasitas/i.test(h) && colMap.capacitySize === undefined) colMap.capacitySize = idx;
+                        else if (/kapasitas/i.test(h) && colMap.capacity === undefined) colMap.capacity = idx;
+                        else if (/rentang\s*harga/i.test(h) && colMap.priceRange === undefined) colMap.priceRange = idx;
+                        else if (/deskripsi/i.test(h) && colMap.desc === undefined) colMap.desc = idx;
+                    });
+
+                    // Fallback to position if not detected
+                    if (colMap.id === undefined) colMap.id = 0;
+                    if (colMap.name === undefined) colMap.name = 1;
+                    if (colMap.price === undefined) colMap.price = 2;
+                    if (colMap.category === undefined) colMap.category = 3;
+                    if (colMap.subCategory === undefined) colMap.subCategory = 4;
+                    if (colMap.capacity === undefined) colMap.capacity = 5;
+                    if (colMap.capacitySize === undefined) colMap.capacitySize = 6;
+                    if (colMap.priceRange === undefined) colMap.priceRange = 7;
+                    if (colMap.desc === undefined) colMap.desc = 8;
+
+                    // Build lookup map of current products by ID
+                    const currentProductsMap = new Map();
+                    this.products.forEach(p => {
+                        if (p && p.id) {
+                            currentProductsMap.set(String(p.id).trim(), p);
+                        }
+                    });
+
+                    const previewRows = [];
+                    let total = 0, changed = 0, unchanged = 0, errors = 0;
+
+                    for (let r = headerIndex + 1; r < rows.length; r++) {
+                        const row = rows[r];
+                        if (!row || row.every(c => c === '' || c === null || c === undefined)) {
+                            continue;
+                        }
+
+                        total++;
+                        const rawId = String(row[colMap.id] ?? '').trim();
+                        if (!rawId) {
+                            errors++;
+                            previewRows.push({
+                                id: '-',
+                                name: String(row[colMap.name] ?? ''),
+                                isError: true,
+                                errorMsg: 'Baris tidak memiliki ID Produk',
+                                isChanged: false,
+                                diffs: []
+                            });
+                            continue;
+                        }
+
+                        const existing = currentProductsMap.get(rawId);
+                        if (!existing) {
+                            errors++;
+                            previewRows.push({
+                                id: rawId,
+                                name: String(row[colMap.name] ?? ''),
+                                isError: true,
+                                errorMsg: 'ID Produk tidak ditemukan di katalog',
+                                isChanged: false,
+                                diffs: []
+                            });
+                            continue;
+                        }
+
+                        // Extract new values
+                        const newName = String(row[colMap.name] ?? '').trim();
+                        let rawPriceVal = row[colMap.price];
+                        let cleanPriceStr = String(rawPriceVal ?? '').replace(/[^0-9]/g, '');
+                        const newPrice = cleanPriceStr !== '' ? parseInt(cleanPriceStr, 10) : (Number(existing.price) || 0);
+                        const newCategory = String(row[colMap.category] ?? '').trim();
+                        const newSubCategory = String(row[colMap.subCategory] ?? '').trim();
+                        const newCapacity = String(row[colMap.capacity] ?? '').trim();
+                        const newCapacitySize = String(row[colMap.capacitySize] ?? '').trim();
+                        const newPriceRange = String(row[colMap.priceRange] ?? '').trim();
+                        const newDesc = String(row[colMap.desc] ?? '').trim();
+
+                        // Detect Diffs
+                        const diffs = [];
+
+                        // 1. Price
+                        const oldPrice = Number(existing.price) || 0;
+                        if (newPrice > 0 && newPrice !== oldPrice) {
+                            diffs.push({
+                                field: 'price',
+                                label: 'Harga',
+                                oldVal: 'Rp ' + oldPrice.toLocaleString('id-ID'),
+                                newVal: 'Rp ' + newPrice.toLocaleString('id-ID')
+                            });
+                        }
+
+                        // 2. Name
+                        const oldName = (existing.name || '').trim();
+                        if (newName && newName !== oldName) {
+                            diffs.push({
+                                field: 'name',
+                                label: 'Nama Produk',
+                                oldVal: oldName,
+                                newVal: newName
+                            });
+                        }
+
+                        // 3. Category
+                        const oldCategory = (existing.category || '').trim();
+                        if (newCategory && newCategory !== oldCategory) {
+                            diffs.push({
+                                field: 'category',
+                                label: 'Kategori',
+                                oldVal: oldCategory,
+                                newVal: newCategory
+                            });
+                        }
+
+                        // 4. Sub Category
+                        const oldSubCategory = (existing.subCategory || '').trim();
+                        if (newSubCategory && newSubCategory !== oldSubCategory) {
+                            diffs.push({
+                                field: 'subCategory',
+                                label: 'Sub Kategori',
+                                oldVal: oldSubCategory,
+                                newVal: newSubCategory
+                            });
+                        }
+
+                        // 5. Capacity
+                        const oldCapacity = (existing.capacity || '').trim();
+                        if (newCapacity && newCapacity !== oldCapacity) {
+                            diffs.push({
+                                field: 'capacity',
+                                label: 'Kapasitas',
+                                oldVal: oldCapacity,
+                                newVal: newCapacity
+                            });
+                        }
+
+                        // 6. Capacity Size
+                        const oldCapacitySize = (existing.capacitySize || 'medium').trim();
+                        if (newCapacitySize && newCapacitySize !== oldCapacitySize) {
+                            diffs.push({
+                                field: 'capacitySize',
+                                label: 'Ukuran Kapasitas',
+                                oldVal: oldCapacitySize,
+                                newVal: newCapacitySize
+                            });
+                        }
+
+                        // 7. Price Range
+                        const oldPriceRange = (existing.priceRange || '').trim();
+                        if (newPriceRange && newPriceRange !== oldPriceRange) {
+                            diffs.push({
+                                field: 'priceRange',
+                                label: 'Rentang Harga',
+                                oldVal: oldPriceRange || '(Kosong)',
+                                newVal: newPriceRange
+                            });
+                        }
+
+                        // 8. Description
+                        const oldDesc = (existing.desc || existing.description || '').replace(/<[^>]*>/g, '').trim();
+                        if (newDesc && newDesc !== oldDesc) {
+                            diffs.push({
+                                field: 'desc',
+                                label: 'Deskripsi',
+                                oldVal: oldDesc.substring(0, 30) + (oldDesc.length > 30 ? '...' : ''),
+                                newVal: newDesc.substring(0, 30) + (newDesc.length > 30 ? '...' : '')
+                            });
+                        }
+
+                        const isChanged = diffs.length > 0;
+                        if (isChanged) changed++;
+                        else unchanged++;
+
+                        previewRows.push({
+                            id: rawId,
+                            name: newName || existing.name,
+                            category: newCategory || existing.category,
+                            subCategory: newSubCategory || existing.subCategory,
+                            price: newPrice,
+                            capacity: newCapacity || existing.capacity,
+                            capacitySize: newCapacitySize || existing.capacitySize,
+                            priceRange: newPriceRange || existing.priceRange,
+                            desc: newDesc || existing.desc,
+                            isError: false,
+                            isChanged: isChanged,
+                            diffs: diffs
+                        });
+                    }
+
+                    this.bulkStats = { total, changed, unchanged, errors };
+                    this.bulkPreviewData = previewRows;
+                    this.bulkActiveTab = 'upload';
+                } catch (err) {
+                    console.error('Error reading Excel:', err);
+                    alert('Gagal membaca file Excel. Pastikan format file valid (.xlsx, .xls, .csv)');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        },
+
+        filteredBulkPreviewRows() {
+            if (!this.bulkShowOnlyChanged) return this.bulkPreviewData;
+            return this.bulkPreviewData.filter(r => r.isChanged || r.isError);
+        },
+
+        async applyBulkUpdate() {
+            let changedRows = this.bulkPreviewData.filter(r => r.isChanged && !r.isError);
+            if (changedRows.length === 0) {
+                alert('Tidak ada perubahan produk yang perlu disimpan.');
+                return;
+            }
+
+            if (!confirm(`Yakin ingin menerapkan perubahan massal untuk ${changedRows.length} produk? Perubahan akan langsung tersimpan dan tampil di website.`)) {
+                return;
+            }
+
+            this.isProcessingBulk = true;
+            try {
+                let payload = changedRows.map(r => ({
+                    id: r.id,
+                    name: r.name,
+                    price: r.price,
+                    category: r.category,
+                    subCategory: r.subCategory,
+                    capacity: r.capacity,
+                    capacitySize: r.capacitySize,
+                    priceRange: r.priceRange,
+                    desc: r.desc
+                }));
+
+                let res = await fetch('api.php?action=bulk_update_products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ products: payload })
+                });
+
+                let data = await res.json();
+                if (res.ok && data.success) {
+                    alert(`Berhasil! ${data.updated_count} produk telah diperbarui secara massal.`);
+                    await this.loadProducts();
+                    this.showBulkModal = false;
+                    this.selectedProductIds = [];
+                    this.resetBulkUpload();
+                } else {
+                    alert(data.error || 'Gagal memperbarui produk.');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Terjadi kesalahan jaringan saat menyimpan perubahan massal.');
+            } finally {
+                this.isProcessingBulk = false;
+            }
         },
 
         openAddProduct() {

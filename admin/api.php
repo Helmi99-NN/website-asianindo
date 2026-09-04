@@ -744,5 +744,84 @@ if ($action === 'delete_product') {
     exit;
 }
 
+if ($action === 'bulk_update_products') {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $updates = $input['products'] ?? (is_array($input) ? $input : []);
+
+    if (!is_array($updates) || empty($updates)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Tidak ada data produk yang dikirim']);
+        exit;
+    }
+
+    $products = readData();
+    $indexMap = [];
+    foreach ($products as $idx => $p) {
+        if (isset($p['id'])) {
+            $indexMap[(string)$p['id']] = $idx;
+        }
+    }
+
+    $updatedCount = 0;
+    foreach ($updates as $item) {
+        $id = isset($item['id']) ? (string)$item['id'] : '';
+        if ($id === '' || !isset($indexMap[$id])) {
+            continue;
+        }
+
+        $idx = $indexMap[$id];
+        $current = $products[$idx];
+
+        // Update fields if provided
+        if (isset($item['name']) && trim($item['name']) !== '') {
+            $current['name'] = trim($item['name']);
+            $current['waMsg'] = 'Halo, saya tertarik dengan ' . $current['name'];
+        }
+
+        if (isset($item['price']) && is_numeric($item['price'])) {
+            $current['price'] = (int)$item['price'];
+            $current['priceDisplay'] = 'Rp ' . number_format($current['price'], 0, ',', '.');
+        }
+
+        if (isset($item['category']) && trim($item['category']) !== '') {
+            $current['category'] = trim($item['category']);
+        }
+
+        if (isset($item['subCategory'])) {
+            $current['subCategory'] = trim($item['subCategory']);
+        }
+
+        if (isset($item['capacity'])) {
+            $current['capacity'] = trim($item['capacity']);
+        }
+
+        if (isset($item['capacitySize']) && trim($item['capacitySize']) !== '') {
+            $current['capacitySize'] = trim($item['capacitySize']);
+        }
+
+        if (isset($item['priceRange'])) {
+            $current['priceRange'] = trim($item['priceRange']);
+        }
+
+        if (isset($item['desc'])) {
+            $current['desc'] = trim($item['desc']);
+        } elseif (isset($item['description'])) {
+            $current['desc'] = trim($item['description']);
+        }
+
+        $products[$idx] = $current;
+        $updatedCount++;
+    }
+
+    writeData($products);
+    echo json_encode([
+        'success' => true,
+        'updated_count' => $updatedCount,
+        'message' => "Berhasil memperbarui $updatedCount produk secara massal!"
+    ]);
+    exit;
+}
+
+
 http_response_code(400);
 echo json_encode(['error' => 'Invalid action']);

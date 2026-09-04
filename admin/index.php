@@ -11,6 +11,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.13.3/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
@@ -245,32 +246,79 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 <!-- 2. PRODUCTS LIST -->
 <!-- ================================================================ -->
 <div x-show="currentView==='products'">
-    <div class="flex items-center justify-between mb-6">
-        <div class="relative w-72">
-            <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
-            <input type="text" x-model="searchQuery" placeholder="Cari produk..." class="form-input !pl-10">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <div class="flex flex-wrap items-center gap-3">
+            <div class="relative w-72">
+                <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
+                <input type="text" x-model="searchQuery" placeholder="Cari nama atau ID produk..." class="form-input !pl-10">
+            </div>
+            <select x-model="productCategoryFilter" class="form-input !w-auto text-sm">
+                <option value="">Semua Kategori</option>
+                <option value="Mesin Industri">Mesin Industri</option>
+                <option value="Mesin Pengolahan">Mesin Pengolahan</option>
+                <option value="Mesin Pengemasan">Mesin Pengemasan</option>
+                <option value="Mesin Pertanian">Mesin Pertanian</option>
+                <option value="Mesin Lainnya">Mesin Lainnya</option>
+            </select>
         </div>
-        <button @click="openAddProduct()" class="btn-primary"><i class="fas fa-plus"></i> Tambah Produk</button>
+        <div class="flex items-center gap-2">
+            <!-- Shopee-style Update Massal Button -->
+            <button @click="openBulkModal('download')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-lg transition-all shadow-sm flex items-center gap-2 text-sm">
+                <i class="fas fa-file-excel text-base"></i>
+                <span>Update Massal</span>
+                <span class="bg-emerald-800/60 text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded">Excel</span>
+            </button>
+            <button @click="openAddProduct()" class="btn-primary text-sm !py-2"><i class="fas fa-plus"></i> Tambah Produk</button>
+        </div>
     </div>
+
+    <!-- Active Selection Floating Bar (Shopee Style) -->
+    <div x-show="selectedProductIds.length > 0" x-cloak class="mb-4 bg-gradient-to-r from-emerald-50 to-purple-50 border border-emerald-200 rounded-xl p-3 px-4 flex flex-wrap items-center justify-between gap-3 shadow-xs">
+        <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold" x-text="selectedProductIds.length"></span>
+            <span class="text-sm font-semibold text-gray-700">Produk terpilih untuk perubahan massal</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <button @click="openBulkModal('download', 'selected')" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors shadow-xs">
+                <i class="fas fa-download"></i> Unduh Template Excel (<span x-text="selectedProductIds.length"></span>)
+            </button>
+            <button @click="openBulkModal('upload')" class="text-xs bg-primary hover:bg-primary-hover text-white font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors shadow-xs">
+                <i class="fas fa-upload"></i> Unggah Hasil Edit
+            </button>
+            <button @click="selectedProductIds = []" class="text-xs bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg transition-colors">
+                Batal Pilihan
+            </button>
+        </div>
+    </div>
+
     <div class="card overflow-hidden">
         <table class="w-full">
-            <thead><tr class="bg-gray-50 text-xs text-gray-500 uppercase">
-                <th class="p-4 text-center font-medium w-16">No</th>
-                <th class="p-4 text-left font-medium">Gambar</th>
-                <th class="p-4 text-left font-medium">Nama Produk</th>
-                <th class="p-4 text-left font-medium">Kategori</th>
-                <th class="p-4 text-right font-medium">Harga</th>
-                <th class="p-4 text-center font-medium">Aksi</th>
+            <thead><tr class="bg-gray-50 text-xs text-gray-500 uppercase border-b border-gray-200">
+                <th class="p-3 text-center font-medium w-10">
+                    <input type="checkbox" :checked="isAllSelected()" @change="toggleSelectAll($event.target.checked)" class="rounded border-gray-300 text-primary focus:ring-primary h-4 w-4 cursor-pointer" title="Pilih Semua Produk">
+                </th>
+                <th class="p-3 text-center font-medium w-12">No</th>
+                <th class="p-3 text-left font-medium w-16">Gambar</th>
+                <th class="p-3 text-left font-medium">Nama Produk</th>
+                <th class="p-3 text-left font-medium">Kategori</th>
+                <th class="p-3 text-right font-medium">Harga</th>
+                <th class="p-3 text-center font-medium">Aksi</th>
             </tr></thead>
             <tbody>
                 <template x-for="(p, index) in filteredProducts()" :key="p.id || Math.random()">
-                    <tr class="border-t border-gray-100 hover:bg-primary-50/30">
+                    <tr class="border-t border-gray-100 hover:bg-primary-50/30 transition-colors" :class="selectedProductIds.includes(p.id) ? 'bg-emerald-50/40' : ''">
+                        <td class="p-3 text-center">
+                            <input type="checkbox" :value="p.id" x-model="selectedProductIds" class="rounded border-gray-300 text-primary focus:ring-primary h-4 w-4 cursor-pointer">
+                        </td>
                         <td class="p-3 text-center text-sm font-semibold text-gray-500" x-text="index + 1"></td>
                         <td class="p-3"><img :src="p.images && p.images.length > 0 ? (p.images[0].startsWith('http') || p.images[0].startsWith('data:') ? p.images[0] : '../'+p.images[0]) : ''" class="w-14 h-14 object-cover rounded-lg border" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2256%22 height=%2256%22><rect fill=%22%23eee%22 width=%2256%22 height=%2256%22/><text x=%2228%22 y=%2232%22 text-anchor=%22middle%22 fill=%22%23aaa%22 font-size=%2212%22>No img</text></svg>'"></td>
-                        <td class="p-3 font-medium text-sm" x-text="p.name"></td>
+                        <td class="p-3">
+                            <div class="font-medium text-sm text-gray-900" x-text="p.name"></div>
+                            <div class="text-[11px] text-gray-400 font-mono mt-0.5">ID: <span x-text="p.id"></span></div>
+                        </td>
                         <td class="p-3 text-sm text-gray-500" x-text="p.category"></td>
-                        <td class="p-3 text-sm text-right font-semibold" x-text="'Rp '+Number(p.price).toLocaleString('id-ID')"></td>
-                        <td class="p-3 text-center">
+                        <td class="p-3 text-sm text-right font-semibold text-gray-900" x-text="'Rp '+Number(p.price).toLocaleString('id-ID')"></td>
+                        <td class="p-3 text-center whitespace-nowrap">
                             <button @click="openEditProduct(p)" class="text-primary hover:text-primary-hover p-1.5" title="Edit"><i class="fas fa-edit"></i></button>
                             <button @click="deleteProduct(p.id)" class="text-red-500 hover:text-red-700 p-1.5 ml-1" title="Hapus"><i class="fas fa-trash"></i></button>
                         </td>
@@ -1285,6 +1333,237 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- MODAL: UPDATE PRODUK MASSAL (ALA SHOPEE) -->
+<!-- ================================================================ -->
+<div x-show="showBulkModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" x-cloak>
+    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden border border-gray-100" @click.away="if(!isProcessingBulk) showBulkModal = false">
+        <!-- Header -->
+        <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-gray-50 to-emerald-50/50">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-xl shadow-sm">
+                    <i class="fas fa-file-excel"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-gray-800 flex items-center gap-2">
+                        Update Produk Secara Massal
+                        <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-0.5 rounded-full font-semibold">Ala Shopee</span>
+                    </h3>
+                    <p class="text-xs text-gray-500 mt-0.5">Unduh template Excel dari pilihan produk, edit di spreadsheet, lalu unggah kembali.</p>
+                </div>
+            </div>
+            <button @click="if(!isProcessingBulk) showBulkModal = false" class="text-gray-400 hover:text-gray-600 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Tab Navigation (1. Unduh Template, 2. Unggah & Preview) -->
+        <div class="flex border-b border-gray-100 px-6 bg-gray-50/50">
+            <button @click="bulkActiveTab = 'download'" class="py-3 px-4 text-sm font-semibold border-b-2 transition-all flex items-center gap-2" :class="bulkActiveTab === 'download' ? 'border-emerald-600 text-emerald-700 bg-white' : 'border-transparent text-gray-500 hover:text-gray-700'">
+                <span class="w-5 h-5 rounded-full text-[11px] flex items-center justify-center font-bold" :class="bulkActiveTab === 'download' ? 'bg-emerald-600 text-white' : 'bg-gray-200 text-gray-600'">1</span>
+                Unduh Template Excel
+            </button>
+            <button @click="bulkActiveTab = 'upload'" class="py-3 px-4 text-sm font-semibold border-b-2 transition-all flex items-center gap-2" :class="bulkActiveTab === 'upload' ? 'border-primary text-primary bg-white' : 'border-transparent text-gray-500 hover:text-gray-700'">
+                <span class="w-5 h-5 rounded-full text-[11px] flex items-center justify-center font-bold" :class="bulkActiveTab === 'upload' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-600'">2</span>
+                Unggah & Tinjau Perubahan
+                <span x-show="bulkStats.changed > 0" class="bg-emerald-600 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full" x-text="bulkStats.changed"></span>
+            </button>
+        </div>
+
+        <!-- Modal Body Content -->
+        <div class="p-6 overflow-y-auto flex-1">
+            <!-- TAB 1: UNDUH TEMPLATE -->
+            <div x-show="bulkActiveTab === 'download'" class="space-y-6">
+                <!-- Pilihan Lingkup Produk -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-800 mb-2">Pilih Lingkup Produk yang Akan Diunduh:</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <label class="border-2 rounded-xl p-4 cursor-pointer transition-all flex items-start gap-3" :class="bulkExportScope === 'selected' ? 'border-emerald-600 bg-emerald-50/40 shadow-xs' : 'border-gray-200 hover:border-gray-300'">
+                            <input type="radio" value="selected" x-model="bulkExportScope" :disabled="selectedProductIds.length === 0" class="mt-1 text-emerald-600 focus:ring-emerald-500">
+                            <div>
+                                <span class="font-bold text-sm text-gray-800 block">Hanya Produk yang Dicentang</span>
+                                <span class="text-xs text-gray-500 block mt-0.5" x-text="selectedProductIds.length > 0 ? (selectedProductIds.length + ' produk terpilih di tabel') : 'Belum ada produk yang dicentang di tabel'"></span>
+                            </div>
+                        </label>
+
+                        <label class="border-2 rounded-xl p-4 cursor-pointer transition-all flex items-start gap-3" :class="bulkExportScope === 'all' ? 'border-emerald-600 bg-emerald-50/40 shadow-xs' : 'border-gray-200 hover:border-gray-300'">
+                            <input type="radio" value="all" x-model="bulkExportScope" class="mt-1 text-emerald-600 focus:ring-emerald-500">
+                            <div>
+                                <span class="font-bold text-sm text-gray-800 block">Semua Produk Katalog</span>
+                                <span class="text-xs text-gray-500 block mt-0.5" x-text="'Total ' + products.length + ' produk dalam katalog'"></span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Filter Kategori Tambahan jika Semua Produk -->
+                <div x-show="bulkExportScope === 'all'" class="bg-gray-50 p-4 rounded-xl border border-gray-200/80">
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Filter Kategori Tertentu (Opsional):</label>
+                    <select x-model="bulkCategoryFilter" class="form-input text-xs bg-white">
+                        <option value="all">Semua Kategori Produk</option>
+                        <option value="Mesin Industri">Mesin Industri</option>
+                        <option value="Mesin Pengolahan">Mesin Pengolahan</option>
+                        <option value="Mesin Pengemasan">Mesin Pengemasan</option>
+                        <option value="Mesin Pertanian">Mesin Pertanian</option>
+                        <option value="Mesin Lainnya">Mesin Lainnya</option>
+                    </select>
+                </div>
+
+                <!-- Petunjuk Pengisian -->
+                <div class="bg-amber-50/90 border border-amber-200 rounded-xl p-4 text-xs text-amber-900 space-y-2">
+                    <div class="font-bold flex items-center gap-1.5 text-amber-800 text-sm">
+                        <i class="fas fa-lightbulb text-amber-500"></i> Petunjuk Pengisian Template Excel Ala Shopee:
+                    </div>
+                    <ul class="list-disc list-inside space-y-1 text-amber-900/90 leading-relaxed">
+                        <li><strong>Kolom "ID Produk (Jangan Diubah)"</strong> adalah kunci produk. Jangan menghapus atau mengubah angka ID ini agar sistem mengenali produk yang diupdate.</li>
+                        <li><strong>Kolom "Harga (Rp)"</strong> harus berupa angka murni (contoh: <code class="bg-amber-100 px-1 py-0.5 rounded font-mono font-bold">25000000</code>). Jangan gunakan titik atau tulisan "Rp".</li>
+                        <li><strong>Gambar & Video</strong> produk Anda tetap aman dan tidak akan hilang saat Anda mengedit nama, harga, atau deskripsi di Excel.</li>
+                        <li>Setelah selesai diedit di Excel, simpan file lalu buka tab <strong>"Unggah & Tinjau Perubahan"</strong>.</li>
+                    </ul>
+                </div>
+
+                <!-- Tombol Download Template -->
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+                    <div class="text-xs text-gray-500">
+                        Siap mengunduh: <strong class="text-gray-800" x-text="getExportProductsCount() + ' produk'"></strong>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button @click="exportBulkTemplate('csv')" class="btn-secondary text-sm !py-2.5">
+                            <i class="fas fa-file-csv text-blue-600"></i> Unduh Format CSV
+                        </button>
+                        <button @click="exportBulkTemplate('xlsx')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 px-6 rounded-lg transition-colors inline-flex items-center gap-2 text-sm shadow-sm">
+                            <i class="fas fa-file-excel"></i> Unduh Template Excel (.xlsx)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: UNGGAH & PREVIEW -->
+            <div x-show="bulkActiveTab === 'upload'" class="space-y-5">
+                <!-- Dropzone / File Picker -->
+                <div class="border-2 border-dashed rounded-2xl p-6 text-center transition-all cursor-pointer relative bg-gray-50 hover:bg-emerald-50/20" :class="bulkPreviewData.length > 0 ? 'border-emerald-300' : 'border-gray-300 hover:border-emerald-500'" @dragover.prevent @drop.prevent="handleBulkExcelDrop($event)">
+                    <input type="file" accept=".xlsx, .xls, .csv" @change="handleBulkExcelUpload($event)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
+                    <div class="space-y-2">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-2xl shadow-inner">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm text-gray-800">
+                                <span x-show="!bulkFileName">Tarik & Lepas File Excel ke Sini atau Klik untuk Memilih File</span>
+                                <span x-show="bulkFileName" class="text-emerald-700 flex items-center justify-center gap-1.5 font-bold">
+                                    <i class="fas fa-check-circle text-emerald-600"></i> <span x-text="bulkFileName"></span>
+                                </span>
+                            </p>
+                            <p class="text-xs text-gray-400 mt-1">Mendukung format .xlsx, .xls, dan .csv</p>
+                        </div>
+                        <div x-show="bulkFileName" class="pt-1">
+                            <span class="text-xs text-primary underline font-medium">Klik untuk ganti file</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview Stats Cards -->
+                <div x-show="bulkPreviewData.length > 0" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 text-center">
+                        <span class="text-[11px] text-gray-500 font-medium block">Total Baris File</span>
+                        <span class="text-lg font-bold text-gray-800" x-text="bulkStats.total"></span>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-center">
+                        <span class="text-[11px] text-emerald-700 font-medium block">Akan Diperbarui</span>
+                        <span class="text-lg font-bold text-emerald-700" x-text="bulkStats.changed"></span>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 text-center">
+                        <span class="text-[11px] text-gray-500 font-medium block">Tidak Ada Perubahan</span>
+                        <span class="text-lg font-bold text-gray-500" x-text="bulkStats.unchanged"></span>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-3 text-center">
+                        <span class="text-[11px] text-red-700 font-medium block">ID Tidak Dikenal</span>
+                        <span class="text-lg font-bold text-red-700" x-text="bulkStats.errors"></span>
+                    </div>
+                </div>
+
+                <!-- Diff Comparison Table -->
+                <div x-show="bulkPreviewData.length > 0">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-bold text-xs text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fas fa-list-check text-primary"></i> Rincian Perubahan Produk
+                        </h4>
+                        <div class="flex items-center gap-2">
+                            <label class="text-xs text-gray-600 flex items-center gap-1 cursor-pointer">
+                                <input type="checkbox" x-model="bulkShowOnlyChanged" class="rounded border-gray-300 text-primary focus:ring-primary h-3.5 w-3.5">
+                                Hanya tampilkan yang berubah
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="border rounded-xl overflow-hidden max-h-72 overflow-y-auto">
+                        <table class="w-full text-xs text-left">
+                            <thead class="bg-gray-50 text-gray-500 uppercase sticky top-0 z-10 border-b">
+                                <tr>
+                                    <th class="p-3">ID Produk</th>
+                                    <th class="p-3">Nama Produk</th>
+                                    <th class="p-3">Perubahan yang Terdeteksi</th>
+                                    <th class="p-3 text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <template x-for="row in filteredBulkPreviewRows()" :key="row.id || Math.random()">
+                                    <tr :class="row.isError ? 'bg-red-50/50' : (row.isChanged ? 'bg-emerald-50/40' : '')">
+                                        <td class="p-3 font-mono font-medium text-gray-700" x-text="row.id"></td>
+                                        <td class="p-3">
+                                            <div class="font-medium text-gray-900" x-text="row.name"></div>
+                                            <div class="text-[11px] text-gray-400" x-text="row.category"></div>
+                                        </td>
+                                        <td class="p-3">
+                                            <template x-if="row.isError">
+                                                <span class="text-red-600 font-medium" x-text="row.errorMsg"></span>
+                                            </template>
+                                            <template x-if="!row.isError && row.isChanged">
+                                                <div class="space-y-1">
+                                                    <template x-for="diff in row.diffs" :key="diff.field">
+                                                        <div class="text-[11px]">
+                                                            <span class="font-bold text-gray-700" x-text="diff.label + ': '"></span>
+                                                            <span class="line-through text-gray-400 mr-1" x-text="diff.oldVal"></span>
+                                                            <i class="fas fa-arrow-right text-[9px] text-emerald-600 mx-0.5"></i>
+                                                            <span class="font-bold text-emerald-700" x-text="diff.newVal"></span>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </template>
+                                            <template x-if="!row.isError && !row.isChanged">
+                                                <span class="text-gray-400 italic">Data sama, tidak ada perubahan</span>
+                                            </template>
+                                        </td>
+                                        <td class="p-3 text-center whitespace-nowrap">
+                                            <span x-show="row.isError" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-700">Error</span>
+                                            <span x-show="!row.isError && row.isChanged" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Berubah</span>
+                                            <span x-show="!row.isError && !row.isChanged" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-gray-100 text-gray-500">Tetap</span>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                    <button @click="resetBulkUpload()" class="text-xs text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-redo-alt mr-1"></i> Reset / Bersihkan
+                    </button>
+                    <div class="flex items-center gap-2">
+                        <button @click="showBulkModal = false" class="btn-secondary text-sm !py-2">Tutup</button>
+                        <button @click="applyBulkUpdate()" :disabled="bulkStats.changed === 0 || isProcessingBulk" class="bg-primary hover:bg-primary-hover text-white font-semibold py-2 px-6 rounded-lg transition-colors inline-flex items-center gap-2 text-sm shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span x-show="!isProcessingBulk"><i class="fas fa-check-circle"></i> Terapkan Perubahan Massal (<span x-text="bulkStats.changed"></span>)</span>
+                            <span x-show="isProcessingBulk"><i class="fas fa-spinner fa-spin"></i> Menyimpan Perubahan...</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
