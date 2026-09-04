@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
-    <script src="wilayah-indonesia.js"></script>
+    <script src="wilayah-indonesia.js?v=3.0"></script>
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-TEST_DUMMY_KEY_123456"></script>
     <script>
         tailwind.config = {
@@ -592,21 +592,21 @@
                             <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap</label>
                             <textarea id="ship_address" rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none" placeholder="Nama Jalan, Gedung, RT/RW, Dusun/Desa"></textarea>
                         </div>
-                        <div class="relative">
+                        <div class="relative z-30">
                             <label class="block text-sm font-medium text-gray-700 mb-1">Provinsi</label>
                             <div class="relative">
                                 <input type="text" id="ship_province" autocomplete="off" class="w-full border border-gray-300 rounded-lg pl-4 pr-10 py-2 focus:ring-2 focus:ring-primary outline-none bg-white font-medium text-sm" placeholder="Ketik / Pilih Provinsi...">
                                 <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">arrow_drop_down</span>
                             </div>
-                            <div id="dropdown-ship_province" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-xl max-h-56 overflow-y-auto z-50 py-1 divide-y divide-gray-50"></div>
+                            <div id="dropdown-ship_province" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-2xl max-h-56 overflow-y-auto z-[9999] py-1 divide-y divide-gray-50"></div>
                         </div>
-                        <div class="relative">
+                        <div class="relative z-30">
                             <label class="block text-sm font-medium text-gray-700 mb-1">Kota / Kabupaten</label>
                             <div class="relative">
-                                <input type="text" id="ship_city" autocomplete="off" class="w-full border border-gray-300 rounded-lg pl-4 pr-10 py-2 focus:ring-2 focus:ring-primary outline-none bg-white font-medium text-sm" placeholder="Ketik kota (misal: Malang)...">
+                                <input type="text" id="ship_city" autocomplete="off" class="w-full border border-gray-300 rounded-lg pl-4 pr-10 py-2 focus:ring-2 focus:ring-primary outline-none bg-white font-medium text-sm" placeholder="Ketik nama kota (misal: Malang)...">
                                 <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">arrow_drop_down</span>
                             </div>
-                            <div id="dropdown-ship_city" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-xl max-h-56 overflow-y-auto z-50 py-1 divide-y divide-gray-50"></div>
+                            <div id="dropdown-ship_city" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-2xl max-h-56 overflow-y-auto z-[9999] py-1 divide-y divide-gray-50"></div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Kode Pos</label>
