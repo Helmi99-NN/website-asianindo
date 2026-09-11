@@ -29,6 +29,68 @@ function adminApp() {
         bulkStats: { total: 0, changed: 0, unchanged: 0, errors: 0 },
         bulkShowOnlyChanged: false,
         isProcessingBulk: false,
+
+        // ==================== INVOICE GENERATOR STATES ====================
+        savedInvoices: [],
+        showSavedInvoicesModal: false,
+        invoiceSearch: '',
+        isOcrProcessing: false,
+        ocrProgress: 0,
+        ocrStatusText: '',
+        ocrRawText: '',
+        showOcrRawText: false,
+        ocrDetectedInfo: null,
+        ocrImagePreview: '',
+        ocrFileName: '',
+        isSavingInvoice: false,
+        invoicePreviewScale: 100,
+
+        invoiceForm: {
+            id: '',
+            docType: 'INVOICE',
+            docNumber: '',
+            docCity: 'Malang',
+            docDate: '',
+            customerName: '',
+            customerCompany: '',
+            customerCity: '',
+            customerPhone: '',
+            hasSpecs: true,
+            tableHeaderName: 'KETERANGAN',
+            tableHeaderQty: 'QTY',
+            yellowTotal: true,
+            paymentTermMode: 'normal',
+            dp1Label: 'DP 1, 30%',
+            dp1Value: 0,
+            dp2Label: 'DP 2',
+            dp2Value: 0,
+            pelunasanLabel: 'PELUNASAN',
+            pelunasanValue: 0,
+            items: [
+                {
+                    no: 1,
+                    name: 'Mesin Evaporator Kaps 25 Liter',
+                    specs: 'Bahan Stainless Steel\nPemanas Kompor/heater\nKontrol Suhu Otomatis\nListrik 750 watt, 220V\nTabung Double Jacket\nDimensi Total: 80x118x129 cm\nRpm : 30 rpm.',
+                    qty: 1,
+                    price: 22500000,
+                    total: 22500000,
+                    image: ''
+                }
+            ],
+            bankAccountType: 'iman',
+            bankAccountCustom: '',
+            shippingOption: 'exclude',
+            shippingCustom: '',
+            showPaymentScheme: false,
+            paymentSchemeItems: [
+                'Dp 1 senilai 30%',
+                'Dp 2 senilai 40% ( setelah progress mesin 50% )',
+                'Dp 3 senilai 30% ( pelunasan ) ketika mesin jadi dan siap kirim'
+            ],
+            showSignature: true,
+            signerName: 'IMAN ANJANI BUCHORY S.E',
+            signerTitle: 'DIREKTUR'
+        },
         
         settings: {
             company_name: 'CV Asianindo',
@@ -198,6 +260,9 @@ function adminApp() {
                 this.loadOrders();
             } else if (view === 'customers') {
                 this.loadCustomers();
+            } else if (view === 'invoice_generator') {
+                this.loadInvoices();
+                if (!this.invoiceForm.docDate) this.initInvoiceDefaults();
             }
         },
 
@@ -214,8 +279,12 @@ function adminApp() {
                 this.loadModule('contact'),
                 this.loadEcommerceStats(),
                 this.loadOrders(),
-                this.loadCustomers()
+                this.loadCustomers(),
+                this.loadInvoices()
             ]);
+            if (!this.invoiceForm.docDate) {
+                this.initInvoiceDefaults();
+            }
         },
 
         async loadAnalytics() {
@@ -1291,6 +1360,437 @@ function adminApp() {
             }
             arr.sort((a,b) => b.views - a.views);
             return arr.slice(0, 10);
+        },
+
+        // ==================== INVOICE & QUOTATION GENERATOR ====================
+        async loadInvoices() {
+            try {
+                let r = await fetch('api.php?action=get_invoices');
+                this.savedInvoices = await r.json();
+            } catch(e) {}
+        },
+
+        initInvoiceDefaults() {
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const now = new Date();
+            const dateStr = now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+            this.invoiceForm.docDate = 'Malang, ' + dateStr;
+            this.generateDocNumber();
+        },
+
+        generateDocNumber() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const seq = String(Math.floor(Math.random() * 900) + 100);
+            const prefix = this.invoiceForm.docType === 'SURAT PENAWARAN' ? 'PNH/ASN' : 'INV/ASN';
+            this.invoiceForm.docNumber = `${prefix}/${year}/${month}/${seq}`;
+        },
+
+        // --- Smart OCR & Image Handling ---
+        handleGlobalPaste(e) {
+            if (this.currentView !== 'invoice_generator') return;
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            if (!items) return;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    const blob = items[i].getAsFile();
+                    this.ocrFileName = 'Screenshot Clipboard';
+                    this.runOcrOnImage(blob);
+                    break;
+                }
+            }
+        },
+
+        handleOcrImageUpload(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            this.ocrFileName = file.name;
+            this.runOcrOnImage(file);
+            e.target.value = '';
+        },
+
+        async runOcrOnImage(file) {
+            if (!file) return;
+            if (typeof Tesseract === 'undefined') {
+                alert('Library OCR Tesseract belum termuat. Periksa koneksi internet lalu refresh halaman.');
+                return;
+            }
+
+            this.ocrImagePreview = URL.createObjectURL(file);
+            this.isOcrProcessing = true;
+            this.ocrProgress = 0;
+            this.ocrStatusText = 'Mempersiapkan mesin OCR...';
+            this.ocrDetectedInfo = null;
+
+            try {
+                const res = await Tesseract.recognize(file, 'ind+eng', {
+                    logger: m => {
+                        if (m.status === 'recognizing text') {
+                            this.ocrProgress = Math.round((m.progress || 0) * 100);
+                            this.ocrStatusText = `Membaca teks (${this.ocrProgress}%)...`;
+                        }
+                    }
+                });
+
+                const raw = res.data && res.data.text ? res.data.text : '';
+                this.ocrRawText = raw;
+                this.parseOcrTextToForm(raw);
+            } catch (err) {
+                console.error('OCR Error:', err);
+                alert('Gagal mengekstrak teks dari gambar: ' + (err.message || 'Error'));
+            } finally {
+                this.isOcrProcessing = false;
+            }
+        },
+
+        parseOcrTextToForm(text) {
+            if (!text || !text.trim()) {
+                alert('Tidak ada teks yang dapat dikenali dari gambar ini.');
+                return;
+            }
+
+            const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+
+            let detectedCustomer = '';
+            let detectedProduct = '';
+            let detectedPrice = 0;
+            let detectedSpecs = [];
+
+            // Keywords indicators
+            const customerKeywords = /(?:kepada\s*yth|yth|customer|nama|bpk\.?|bapak|ibu|kak|saudara|pt\.?|cv\.?)\s*[:.]?\s*([^\n\r]+)/i;
+            const priceRegex = /(?:total|harga|subtotal|biaya|rp\.?|idr)\s*[:.]?\s*([0-9.,]+)/i;
+            const pureRpRegex = /Rp\.?\s*([0-9]{1,3}(?:\.[0-9]{3})*(?:,[0-9]+)?|[0-9]{5,10})/i;
+            const machineKeywords = /(?:mesin|retort|evaporator|dryer|pasturisasi|homogenizer|roaster|packaging|frying|extruder|blender|genset|sewa|tangki|autoclave|boiler|press)/i;
+            const techTerms = /(kapasitas|bahan|material|daya|watt|volt|hp|dinamo|dimensi|suhu|heater|kompor|stainless|stenlis|rpm|inverter|rangka|pengaduk|motor|transmisi|garansi|tekanan|tabung|plat|sus 304|valve|panel|burner|blower)/i;
+
+            lines.forEach(line => {
+                // 1. Detect Customer
+                if (!detectedCustomer) {
+                    const custMatch = line.match(customerKeywords);
+                    if (custMatch && custMatch[1]) {
+                        detectedCustomer = custMatch[1].replace(/[:\-]/g, '').trim();
+                    } else if (/^(?:Bpk|Bapak|Ibu|Kak|PT|CV)\s+[A-Za-z0-9\s.]+$/i.test(line) && line.length < 50) {
+                        detectedCustomer = line;
+                    }
+                }
+
+                // 2. Detect Price
+                if (!detectedPrice) {
+                    const priceMatch = line.match(priceRegex) || line.match(pureRpRegex);
+                    if (priceMatch && priceMatch[1]) {
+                        const digits = priceMatch[1].replace(/[^0-9]/g, '');
+                        if (digits.length >= 5) {
+                            detectedPrice = parseInt(digits, 10);
+                        }
+                    }
+                }
+
+                // 3. Detect Machine / Product Name
+                if (!detectedProduct && machineKeywords.test(line) && !techTerms.test(line) && line.length < 80) {
+                    detectedProduct = line.replace(/^[0-9]+[.\-)]\s*/, '').trim();
+                }
+
+                // 4. Detect Specifications
+                if (/^[•\-\*·\+]/.test(line) || techTerms.test(line)) {
+                    const cleanedSpec = line.replace(/^[•\-\*·\+\s0-9.]+/, '').trim();
+                    if (cleanedSpec && cleanedSpec.length > 2 && !detectedSpecs.includes(cleanedSpec)) {
+                        detectedSpecs.push(cleanedSpec);
+                    }
+                }
+            });
+
+            // Fallback product detection if not found by keywords
+            if (!detectedProduct) {
+                for (let line of lines) {
+                    if (line !== detectedCustomer && !techTerms.test(line) && !line.includes('Rp') && line.length > 5 && line.length < 70) {
+                        detectedProduct = line;
+                        break;
+                    }
+                }
+            }
+
+            // Apply to form
+            if (detectedCustomer) {
+                this.invoiceForm.customerName = detectedCustomer;
+            }
+            if (detectedProduct) {
+                this.invoiceForm.items[0].name = detectedProduct;
+            }
+            if (detectedPrice > 0) {
+                this.invoiceForm.items[0].price = detectedPrice;
+                this.invoiceForm.items[0].total = detectedPrice;
+            }
+            if (detectedSpecs.length > 0) {
+                this.invoiceForm.items[0].specs = detectedSpecs.join('\n');
+                this.invoiceForm.hasSpecs = true;
+            }
+
+            this.ocrDetectedInfo = {
+                customer: detectedCustomer,
+                product: detectedProduct,
+                price: detectedPrice,
+                specsCount: detectedSpecs.length
+            };
+        },
+
+        // --- Form Items & Calculations ---
+        addInvoiceItem() {
+            this.invoiceForm.items.push({
+                no: this.invoiceForm.items.length + 1,
+                name: '',
+                specs: '',
+                qty: 1,
+                price: 0,
+                total: 0,
+                image: ''
+            });
+        },
+
+        removeInvoiceItem(idx) {
+            if (this.invoiceForm.items.length <= 1) return;
+            this.invoiceForm.items.splice(idx, 1);
+        },
+
+        updateItemTotal(idx) {
+            const item = this.invoiceForm.items[idx];
+            if (item) {
+                item.total = (item.price || 0) * (item.qty || 1);
+            }
+        },
+
+        calculateInvoiceSubtotal() {
+            let total = 0;
+            this.invoiceForm.items.forEach(it => {
+                total += (Number(it.price) || 0) * (Number(it.qty) || 1);
+            });
+            return total;
+        },
+
+        setDpPercent(pct) {
+            const total = this.calculateInvoiceSubtotal();
+            this.invoiceForm.dp1Label = `DP 1, ${pct}%`;
+            this.invoiceForm.dp1Value = Math.round(total * (pct / 100));
+            this.autoCalculatePelunasan();
+        },
+
+        setDp2Percent(pct) {
+            const total = this.calculateInvoiceSubtotal();
+            this.invoiceForm.dp2Label = `DP 2, ${pct}%`;
+            this.invoiceForm.dp2Value = Math.round(total * (pct / 100));
+            this.autoCalculatePelunasan();
+        },
+
+        autoCalculatePelunasan() {
+            const total = this.calculateInvoiceSubtotal();
+            const dp1 = Number(this.invoiceForm.dp1Value) || 0;
+            const dp2 = this.invoiceForm.paymentTermMode === 'three_steps' ? (Number(this.invoiceForm.dp2Value) || 0) : 0;
+            this.invoiceForm.pelunasanValue = Math.max(0, total - dp1 - dp2);
+        },
+
+        pickCustomerToInvoice(customerId) {
+            if (!customerId) return;
+            const c = this.customers.find(item => String(item.id) === String(customerId));
+            if (c) {
+                this.invoiceForm.customerName = c.name || '';
+                this.invoiceForm.customerCompany = c.company || '';
+                this.invoiceForm.customerCity = c.city ? (c.city + (c.province ? ', ' + c.province : '')) : '';
+                this.invoiceForm.customerPhone = c.phone || '';
+            }
+        },
+
+        pickProductToItem(idx, productId) {
+            if (!productId || !this.invoiceForm.items[idx]) return;
+            const p = this.products.find(item => String(item.id) === String(productId));
+            if (p) {
+                this.invoiceForm.items[idx].name = p.name || '';
+                this.invoiceForm.items[idx].price = Number(p.price) || 0;
+                this.invoiceForm.items[idx].total = (Number(p.price) || 0) * (this.invoiceForm.items[idx].qty || 1);
+                
+                let specsArr = [];
+                if (p.specs && typeof p.specs === 'object') {
+                    for (let k in p.specs) {
+                        specsArr.push(k + ': ' + p.specs[k]);
+                    }
+                }
+                if (!specsArr.length && (p.desc || p.description)) {
+                    const lines = (p.desc || p.description).split('\n');
+                    lines.forEach(l => {
+                        const cl = l.replace(/^[•\-\*·\s]+/, '').trim();
+                        if (cl && cl.length > 3 && !cl.toUpperCase().includes('SPESIFIKASI')) {
+                            specsArr.push(cl);
+                        }
+                    });
+                }
+                if (specsArr.length) {
+                    this.invoiceForm.items[idx].specs = specsArr.slice(0, 10).join('\n');
+                    this.invoiceForm.hasSpecs = true;
+                }
+            }
+        },
+
+        formatRupiahInvoice(amount) {
+            const num = Number(amount) || 0;
+            return 'Rp.' + num.toLocaleString('id-ID');
+        },
+
+        resetInvoiceForm() {
+            if (!confirm('Reset semua data form invoice?')) return;
+            this.invoiceForm = {
+                id: '',
+                docType: 'INVOICE',
+                docNumber: '',
+                docCity: 'Malang',
+                docDate: '',
+                customerName: '',
+                customerCompany: '',
+                customerCity: '',
+                customerPhone: '',
+                hasSpecs: true,
+                tableHeaderName: 'KETERANGAN',
+                tableHeaderQty: 'QTY',
+                yellowTotal: true,
+                paymentTermMode: 'normal',
+                dp1Label: 'DP 1, 30%',
+                dp1Value: 0,
+                dp2Label: 'DP 2',
+                dp2Value: 0,
+                pelunasanLabel: 'PELUNASAN',
+                pelunasanValue: 0,
+                items: [
+                    {
+                        no: 1,
+                        name: '',
+                        specs: '',
+                        qty: 1,
+                        price: 0,
+                        total: 0,
+                        image: ''
+                    }
+                ],
+                bankAccountType: 'iman',
+                bankAccountCustom: '',
+                shippingOption: 'exclude',
+                shippingCustom: '',
+                showPaymentScheme: false,
+                paymentSchemeItems: [
+                    'Dp 1 senilai 30%',
+                    'Dp 2 senilai 40% ( setelah progress mesin 50% )',
+                    'Dp 3 senilai 30% ( pelunasan ) ketika mesin jadi dan siap kirim'
+                ],
+                showSignature: true,
+                signerName: 'IMAN ANJANI BUCHORY S.E',
+                signerTitle: 'DIREKTUR'
+            };
+            this.initInvoiceDefaults();
+            this.ocrImagePreview = '';
+            this.ocrFileName = '';
+            this.ocrDetectedInfo = null;
+            this.ocrRawText = '';
+        },
+
+        printInvoiceDoc() {
+            window.print();
+        },
+
+        getWhatsAppShareUrl() {
+            let phone = this.invoiceForm.customerPhone || '';
+            phone = phone.replace(/[^0-9]/g, '');
+            if (phone.startsWith('0')) phone = '62' + phone.slice(1);
+            
+            const total = this.calculateInvoiceSubtotal();
+            const totalFormatted = this.formatRupiahInvoice(total);
+            const docName = this.invoiceForm.docType;
+            const docNum = this.invoiceForm.docNumber || '-';
+            const cust = this.invoiceForm.customerName || 'Bpk/Ibu';
+            const item = this.invoiceForm.items[0] ? this.invoiceForm.items[0].name : 'Pesanan Mesin Industri';
+
+            const msg = `Halo ${cust}, berikut kami lampirkan dokumen resmi ${docName} dari CV Asianindo:
+
+📄 No. Dokumen: ${docNum}
+📦 Produk: ${item}
+💰 Total: ${totalFormatted}
+
+Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima kasih atas kepercayaan Anda.`;
+
+            return 'https://wa.me/' + (phone ? phone : '') + '?text=' + encodeURIComponent(msg);
+        },
+
+        // --- Archive & Storage ---
+        async saveInvoiceToArchive() {
+            this.isSavingInvoice = true;
+            try {
+                const payload = {
+                    ...this.invoiceForm,
+                    total: this.calculateInvoiceSubtotal()
+                };
+
+                const res = await fetch('api.php?action=save_invoice', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    this.invoiceForm.id = data.id;
+                    alert('Dokumen invoice berhasil disimpan ke arsip!');
+                    await this.loadInvoices();
+                } else {
+                    alert(data.error || 'Gagal menyimpan invoice');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Terjadi kesalahan jaringan saat menyimpan invoice.');
+            } finally {
+                this.isSavingInvoice = false;
+            }
+        },
+
+        openSavedInvoicesModal() {
+            this.loadInvoices();
+            this.showSavedInvoicesModal = true;
+        },
+
+        filteredSavedInvoices() {
+            if (!this.invoiceSearch) return this.savedInvoices;
+            const q = this.invoiceSearch.toLowerCase();
+            return this.savedInvoices.filter(inv => {
+                const num = (inv.docNumber || '').toLowerCase();
+                const name = (inv.customerName || '').toLowerCase();
+                const item = (inv.items && inv.items[0] ? inv.items[0].name : '').toLowerCase();
+                return num.includes(q) || name.includes(q) || item.includes(q);
+            });
+        },
+
+        calculateSavedInvoiceTotal(inv) {
+            if (inv.total) return inv.total;
+            let sum = 0;
+            (inv.items || []).forEach(it => {
+                sum += (Number(it.price) || 0) * (Number(it.qty) || 1);
+            });
+            return sum;
+        },
+
+        loadInvoiceIntoEditor(inv) {
+            this.invoiceForm = JSON.parse(JSON.stringify(inv));
+            this.showSavedInvoicesModal = false;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+
+        async deleteSavedInvoice(id) {
+            if (!confirm('Hapus dokumen invoice ini dari arsip?')) return;
+            try {
+                const res = await fetch('api.php?action=delete_invoice', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    this.loadInvoices();
+                }
+            } catch(e) {}
         }
     }
 }

@@ -822,6 +822,81 @@ if ($action === 'bulk_update_products') {
     exit;
 }
 
+// ==========================================
+// INVOICE & QUOTATION GENERATOR API
+// ==========================================
+$INVOICES_JSON = __DIR__ . '/../data/invoices.json';
+
+function readInvoices() {
+    global $INVOICES_JSON;
+    if (!file_exists($INVOICES_JSON)) return [];
+    $data = json_decode(file_get_contents($INVOICES_JSON), true);
+    return is_array($data) ? $data : [];
+}
+
+function writeInvoices($invoices) {
+    global $INVOICES_JSON;
+    $dir = dirname($INVOICES_JSON);
+    if (!is_dir($dir)) mkdir($dir, 0777, true);
+    file_put_contents($INVOICES_JSON, json_encode($invoices, JSON_PRETTY_PRINT));
+}
+
+if ($action === 'get_invoices') {
+    echo json_encode(readInvoices());
+    exit;
+}
+
+if ($action === 'save_invoice') {
+    $input = json_decode(file_get_contents('php://input'), true);
+    if (!$input || !is_array($input)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Data invoice tidak valid']);
+        exit;
+    }
+
+    $invoices = readInvoices();
+    $id = !empty($input['id']) ? $input['id'] : ('INV-' . date('Ymd-His') . '-' . rand(100, 999));
+    $input['id'] = $id;
+    $input['updated_at'] = date('Y-m-d H:i:s');
+    if (empty($input['created_at'])) {
+        $input['created_at'] = date('Y-m-d H:i:s');
+    }
+
+    $found = false;
+    foreach ($invoices as $idx => $inv) {
+        if ($inv['id'] === $id) {
+            $invoices[$idx] = $input;
+            $found = true;
+            break;
+        }
+    }
+    if (!$found) {
+        array_unshift($invoices, $input);
+    }
+
+    writeInvoices($invoices);
+    echo json_encode(['success' => true, 'id' => $id, 'invoice' => $input]);
+    exit;
+}
+
+if ($action === 'delete_invoice') {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'] ?? ($_POST['id'] ?? '');
+    if (!$id) {
+        http_response_code(400);
+        echo json_encode(['error' => 'ID Invoice tidak ditemukan']);
+        exit;
+    }
+
+    $invoices = readInvoices();
+    $invoices = array_values(array_filter($invoices, function($inv) use ($id) {
+        return $inv['id'] !== $id;
+    }));
+    writeInvoices($invoices);
+    echo json_encode(['success' => true]);
+    exit;
+}
 
 http_response_code(400);
 echo json_encode(['error' => 'Invalid action']);
+

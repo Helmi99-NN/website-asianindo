@@ -12,6 +12,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <script defer src="https://unpkg.com/alpinejs@3.13.3/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
@@ -45,6 +46,30 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         .section-title { @apply text-lg font-bold text-gray-800 mb-4 flex items-center gap-2; }
         .form-group { @apply mb-5; }
         .dynamic-row { @apply flex items-center gap-3 mb-2; }
+
+        @media print {
+            body * {
+                visibility: hidden !important;
+            }
+            #invoice-print-area, #invoice-print-area * {
+                visibility: visible !important;
+            }
+            #invoice-print-area {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                background: white !important;
+            }
+            @page {
+                size: A4 portrait;
+                margin: 8mm 12mm 8mm 12mm;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans" x-data="adminApp()" x-init="initApp()">
@@ -138,6 +163,12 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     <li><a href="#" @click.prevent="changeView('customers')" :class="currentView==='customers' ? 'bg-primary text-white shadow-md' : 'text-gray-300 hover:bg-sidebar-hover'" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm">
                         <i class="fas fa-users w-5 text-center"></i> Data Pelanggan
                         <span x-show="ecommerceStats.total_customers > 0" class="ml-auto bg-purple-500/80 text-white text-[10px] px-1.5 py-0.5 rounded-full" x-text="ecommerceStats.total_customers"></span>
+                    </a></li>
+
+                    <!-- Invoice Generator -->
+                    <li><a href="#" @click.prevent="changeView('invoice_generator')" :class="currentView==='invoice_generator' ? 'bg-primary text-white shadow-md' : 'text-gray-300 hover:bg-sidebar-hover'" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm">
+                        <i class="fas fa-file-invoice-dollar w-5 text-center text-amber-400"></i> Generator Invoice
+                        <span class="ml-auto bg-amber-500/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">Baru</span>
                     </a></li>
                     
                     <li class="pt-4 pb-1 px-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Halaman Web</li>
@@ -1259,8 +1290,751 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 </tr>
             </tbody>
         </table>
+</div>
+
+<!-- ================================================================ -->
+<!-- INVOICE & SURAT PENAWARAN GENERATOR (DOKUMEN RESMI CV ASIANINDO) -->
+<!-- ================================================================ -->
+<div x-show="currentView === 'invoice_generator'" x-cloak class="no-print">
+    <!-- Header Bar -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-200">
+        <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center text-2xl shadow-sm">
+                <i class="fas fa-file-invoice-dollar"></i>
+            </div>
+            <div>
+                <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                    Generator Invoice & Surat Penawaran
+                    <span class="bg-amber-100 text-amber-800 text-xs px-2.5 py-0.5 rounded-full font-bold">Resmi CV Asianindo</span>
+                </h2>
+                <p class="text-xs text-gray-500 mt-0.5">Ekstraksi spesifikasi dari screenshot chat via Smart OCR, checklist dinamis, dan cetak A4 presisi.</p>
+            </div>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+            <button @click="openSavedInvoicesModal()" class="btn-secondary text-sm !py-2">
+                <i class="fas fa-folder-open text-amber-500"></i> Arsip Invoice (<span x-text="savedInvoices.length"></span>)
+            </button>
+            <button @click="resetInvoiceForm()" class="btn-secondary text-sm !py-2">
+                <i class="fas fa-redo-alt text-gray-500"></i> Reset Form
+            </button>
+            <button @click="saveInvoiceToArchive()" :disabled="isSavingInvoice" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center gap-1.5 transition-colors shadow-xs">
+                <i class="fas fa-save" x-show="!isSavingInvoice"></i>
+                <i class="fas fa-spinner fa-spin" x-show="isSavingInvoice"></i>
+                <span x-text="isSavingInvoice ? 'Menyimpan...' : 'Simpan ke Arsip'"></span>
+            </button>
+            <button @click="printInvoiceDoc()" class="bg-primary hover:bg-primary-hover text-white text-sm font-semibold py-2 px-5 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
+                <i class="fas fa-print"></i> Cetak / Simpan PDF
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Grid: Left Form Builder & Right Live Preview -->
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+        
+        <!-- ================= LEFT COLUMN: FORM CONTROLS (5 Cols) ================= -->
+        <div class="xl:col-span-5 space-y-5">
+            
+            <!-- 1. SMART OCR: EXTRACT DARI GAMBAR -->
+            <div class="card p-5 border-2 border-dashed border-amber-300 bg-gradient-to-br from-amber-50/40 via-white to-amber-50/20 rounded-2xl shadow-xs relative" @paste.window="handleGlobalPaste($event)">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-bold text-sm text-gray-800 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-lg bg-amber-500 text-white flex items-center justify-center text-xs">
+                            <i class="fas fa-magic"></i>
+                        </span>
+                        Smart OCR: Ekstraksi dari Gambar / Screenshot
+                    </h3>
+                    <span class="text-[10px] font-bold uppercase tracking-wider bg-amber-200/70 text-amber-900 px-2 py-0.5 rounded-full">Auto-Fill</span>
+                </div>
+                <p class="text-xs text-gray-600 mb-3 leading-relaxed">
+                    Unggah atau <strong>tekan Ctrl+V (Paste)</strong> screenshot chat WhatsApp atau foto spesifikasi mesin. Sistem akan otomatis mendeteksi nama, harga, dan spesifikasi teknis.
+                </p>
+
+                <!-- Dropzone / Input -->
+                <div class="border border-amber-300/80 rounded-xl p-4 text-center bg-white hover:bg-amber-50/30 transition-all cursor-pointer relative">
+                    <input type="file" accept="image/*" @change="handleOcrImageUpload($event)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
+                    <div class="space-y-1.5" x-show="!ocrImagePreview">
+                        <i class="fas fa-cloud-upload-alt text-2xl text-amber-500"></i>
+                        <p class="text-xs font-semibold text-gray-700">Pilih File Foto atau Paste Screenshot (Ctrl + V)</p>
+                        <p class="text-[11px] text-gray-400">Format JPG, PNG, WEBP didukung</p>
+                    </div>
+                    <div x-show="ocrImagePreview" class="flex items-center justify-center gap-3">
+                        <img :src="ocrImagePreview" class="w-16 h-16 object-cover rounded-lg border border-gray-200 shadow-xs">
+                        <div class="text-left">
+                            <p class="text-xs font-bold text-gray-800" x-text="ocrFileName || 'Gambar Screenshot'"></p>
+                            <span class="text-[11px] text-amber-600 underline">Klik untuk ganti gambar</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OCR Loading State -->
+                <div x-show="isOcrProcessing" class="mt-3 bg-white p-3 rounded-xl border border-amber-200">
+                    <div class="flex items-center justify-between text-xs text-gray-700 mb-1 font-semibold">
+                        <span class="flex items-center gap-1.5">
+                            <i class="fas fa-spinner fa-spin text-amber-500"></i>
+                            <span x-text="ocrStatusText">Membaca teks...</span>
+                        </span>
+                        <span x-text="ocrProgress + '%'"></span>
+                    </div>
+                    <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                        <div class="bg-amber-500 h-2 rounded-full transition-all duration-300" :style="'width: ' + ocrProgress + '%'"></div>
+                    </div>
+                </div>
+
+                <!-- OCR Detection Alert & Summary -->
+                <div x-show="ocrDetectedInfo" class="mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs space-y-1.5 animate-fade-in">
+                    <div class="font-bold text-emerald-800 flex items-center justify-between">
+                        <span class="flex items-center gap-1">
+                            <i class="fas fa-check-circle text-emerald-600"></i> Ekstraksi Berhasil Diterapkan ke Form:
+                        </span>
+                        <button @click="showOcrRawText = !showOcrRawText" class="text-[11px] text-emerald-700 underline font-normal">
+                            <span x-text="showOcrRawText ? 'Tutup Teks' : 'Lihat Teks Mentah'"></span>
+                        </button>
+                    </div>
+                    <div class="text-[11px] text-emerald-900 grid grid-cols-2 gap-1 pt-1">
+                        <div>Pelanggan: <strong x-text="ocrDetectedInfo?.customer || '(Tidak ada)'"></strong></div>
+                        <div>Harga: <strong x-text="ocrDetectedInfo?.price ? formatRupiah(ocrDetectedInfo.price) : '(Tidak ada)'"></strong></div>
+                        <div class="col-span-2">Barang: <strong x-text="ocrDetectedInfo?.product || '(Tidak ada)'"></strong></div>
+                        <div class="col-span-2">Spesifikasi: <strong x-text="(ocrDetectedInfo?.specsCount || 0) + ' butir terdeteksi'"></strong></div>
+                    </div>
+                </div>
+
+                <!-- Raw OCR Text Accordion -->
+                <div x-show="showOcrRawText && ocrRawText" class="mt-2 bg-gray-50 border border-gray-200 p-3 rounded-xl">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <span class="text-[11px] font-bold text-gray-700">Teks Mentah Hasil Scan:</span>
+                        <button @click="copyToClipboard(ocrRawText)" class="text-[10px] bg-white border border-gray-300 px-2 py-0.5 rounded text-gray-600 hover:bg-gray-100">
+                            <i class="fas fa-copy"></i> Salin Semua
+                        </button>
+                    </div>
+                    <textarea readonly class="w-full text-[11px] font-mono bg-white border border-gray-200 rounded p-2 h-28 outline-none text-gray-700" x-text="ocrRawText"></textarea>
+                </div>
+            </div>
+
+            <!-- 2. PENGATURAN DOKUMEN & PEMESAN -->
+            <div class="card p-5 rounded-2xl shadow-xs space-y-4">
+                <h3 class="font-bold text-sm text-gray-800 flex items-center gap-2 border-b pb-2.5">
+                    <i class="fas fa-file-alt text-primary"></i> 1. Informasi Dokumen & Pemesan
+                </h3>
+
+                <!-- Tipe Dokumen Toggle -->
+                <div>
+                    <label class="form-label">Tipe Dokumen Resmi:</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" @click="invoiceForm.docType = 'INVOICE'" :class="invoiceForm.docType === 'INVOICE' ? 'bg-primary text-white font-bold shadow-xs' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'" class="py-2 px-3 rounded-lg text-xs transition-all flex items-center justify-center gap-1.5">
+                            <i class="fas fa-receipt"></i> INVOICE
+                        </button>
+                        <button type="button" @click="invoiceForm.docType = 'SURAT PENAWARAN'" :class="invoiceForm.docType === 'SURAT PENAWARAN' ? 'bg-primary text-white font-bold shadow-xs' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'" class="py-2 px-3 rounded-lg text-xs transition-all flex items-center justify-center gap-1.5">
+                            <i class="fas fa-handshake"></i> SURAT PENAWARAN
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Nomor Dokumen & Tanggal -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="form-label">Nomor Dokumen</label>
+                        <div class="flex gap-1.5">
+                            <input type="text" x-model="invoiceForm.docNumber" placeholder="INV/ASN/2026/09/001" class="form-input text-xs font-mono">
+                            <button type="button" @click="generateDocNumber()" class="btn-secondary !p-2 text-xs" title="Generate Nomor Baru">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="form-label">Kota & Tanggal</label>
+                        <input type="text" x-model="invoiceForm.docDate" placeholder="Malang, 11 September 2026" class="form-input text-xs">
+                    </div>
+                </div>
+
+                <!-- Kepada Yth (Customer) -->
+                <div class="space-y-2.5 pt-1">
+                    <div class="flex items-center justify-between">
+                        <label class="form-label !mb-0">Kepada Yth (Tujuan Penawaran / Tagihan):</label>
+                        <!-- Quick Auto-Fill from Registered Customers -->
+                        <select @change="pickCustomerToInvoice($event.target.value); $event.target.value='';" class="text-[11px] border border-gray-300 rounded px-2 py-0.5 text-gray-600 bg-gray-50 max-w-[180px]">
+                            <option value="">Pilih dari Data Pelanggan...</option>
+                            <template x-for="c in customers" :key="c.id">
+                                <option :value="c.id" x-text="c.name + (c.city ? ' (' + c.city + ')' : '')"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <input type="text" x-model="invoiceForm.customerName" placeholder="Contoh: Bapak Eky / Kak Hana" class="form-input text-xs font-semibold">
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" x-model="invoiceForm.customerCompany" placeholder="Nama PT / CV / Instansi (Opsional)" class="form-input text-xs">
+                        <input type="text" x-model="invoiceForm.customerCity" placeholder="Kota (Contoh: Jakarta / Sidoarjo)" class="form-input text-xs">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. DAFTAR BARANG & SPESIFIKASI TEKNIS -->
+            <div class="card p-5 rounded-2xl shadow-xs space-y-4">
+                <div class="flex items-center justify-between border-b pb-2.5">
+                    <h3 class="font-bold text-sm text-gray-800 flex items-center gap-2">
+                        <i class="fas fa-boxes text-primary"></i> 2. Daftar Barang & Spesifikasi
+                    </h3>
+                    <div class="flex items-center gap-3">
+                        <label class="text-xs text-gray-700 flex items-center gap-1.5 cursor-pointer font-medium">
+                            <input type="checkbox" x-model="invoiceForm.hasSpecs" class="rounded border-gray-300 text-primary focus:ring-primary h-3.5 w-3.5">
+                            Kolom Spesifikasi
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Opsi Format Header Tabel -->
+                <div class="grid grid-cols-2 gap-2 bg-gray-50 p-2.5 rounded-xl border border-gray-200/80 text-xs">
+                    <div>
+                        <span class="text-[11px] text-gray-500 block mb-1 font-medium">Judul Kolom 2:</span>
+                        <div class="flex gap-2">
+                            <label class="flex items-center gap-1 cursor-pointer">
+                                <input type="radio" value="KETERANGAN" x-model="invoiceForm.tableHeaderName" class="text-primary"> KETERANGAN
+                            </label>
+                            <label class="flex items-center gap-1 cursor-pointer">
+                                <input type="radio" value="NAMA BARANG" x-model="invoiceForm.tableHeaderName" class="text-primary"> NAMA BARANG
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-[11px] text-gray-500 block mb-1 font-medium">Judul Qty:</span>
+                        <div class="flex gap-2">
+                            <label class="flex items-center gap-1 cursor-pointer">
+                                <input type="radio" value="QTY" x-model="invoiceForm.tableHeaderQty" class="text-primary"> QTY
+                            </label>
+                            <label class="flex items-center gap-1 cursor-pointer">
+                                <input type="radio" value="Q" x-model="invoiceForm.tableHeaderQty" class="text-primary"> Q
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Repeater Items List -->
+                <div class="space-y-4">
+                    <template x-for="(item, idx) in invoiceForm.items" :key="idx">
+                        <div class="p-3.5 bg-gray-50/80 border border-gray-200 rounded-xl space-y-3 relative group">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-gray-800 flex items-center gap-1.5">
+                                    <span class="w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-[10px]" x-text="idx + 1"></span>
+                                    Barang / Layanan #<span x-text="idx + 1"></span>
+                                </span>
+                                <div class="flex items-center gap-1">
+                                    <!-- Quick Pick from Catalog Products -->
+                                    <select @change="pickProductToItem(idx, $event.target.value); $event.target.value='';" class="text-[10px] border border-gray-300 rounded px-1.5 py-0.5 text-gray-600 bg-white max-w-[130px]">
+                                        <option value="">Ambil dari Katalog...</option>
+                                        <template x-for="p in products" :key="p.id">
+                                            <option :value="p.id" x-text="p.name"></option>
+                                        </template>
+                                    </select>
+                                    <button type="button" @click="removeInvoiceItem(idx)" x-show="invoiceForm.items.length > 1" class="text-red-400 hover:text-red-600 p-1 rounded" title="Hapus Item Ini">
+                                        <i class="fas fa-trash-alt text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <div>
+                                    <label class="text-[11px] font-semibold text-gray-600 mb-0.5 block">Nama Barang / Mesin:</label>
+                                    <input type="text" x-model="item.name" placeholder="Contoh: Mesin Retort Sterilisasi Kapasitas 200 Liter" class="form-input text-xs font-medium">
+                                </div>
+
+                                <div x-show="invoiceForm.hasSpecs">
+                                    <label class="text-[11px] font-semibold text-gray-600 mb-0.5 flex items-center justify-between">
+                                        <span>Spesifikasi Teknis (1 baris per butir):</span>
+                                        <span class="text-[10px] text-gray-400 font-normal">Otomatis jadi bullet point •</span>
+                                    </label>
+                                    <textarea x-model="item.specs" rows="3" placeholder="Bahan Stainless Steel 304&#10;Kapasitas 200 Liter&#10;Daya Listrik 1500 Watt" class="form-textarea text-xs"></textarea>
+                                </div>
+
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 items-center">
+                                    <div>
+                                        <label class="text-[11px] font-semibold text-gray-600 mb-0.5 block">Jumlah (Qty):</label>
+                                        <input type="number" min="1" x-model.number="item.qty" @input="updateItemTotal(idx)" class="form-input text-xs text-center font-bold">
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label class="text-[11px] font-semibold text-gray-600 mb-0.5 block">Harga Satuan (Rp):</label>
+                                        <input type="number" min="0" step="1000" x-model.number="item.price" @input="updateItemTotal(idx)" class="form-input text-xs font-bold text-gray-800">
+                                    </div>
+                                </div>
+
+                                <div class="text-right text-xs font-semibold text-gray-700">
+                                    Subtotal: <span class="text-primary font-bold" x-text="formatRupiah(item.price * item.qty)"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <button type="button" @click="addInvoiceItem()" class="w-full py-2 border-2 border-dashed border-gray-300 hover:border-primary text-gray-600 hover:text-primary rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5">
+                    <i class="fas fa-plus"></i> Tambah Item Produk / Jasa
+                </button>
+
+                <!-- Total & Mode Termin Pembayaran -->
+                <div class="pt-3 border-t border-gray-200 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <label class="text-xs text-gray-700 flex items-center gap-1.5 cursor-pointer font-bold">
+                            <input type="checkbox" x-model="invoiceForm.yellowTotal" class="rounded border-gray-300 text-amber-500 focus:ring-amber-500 h-4 w-4">
+                            Highlight Kuning Baris TOTAL (#FFE500)
+                        </label>
+                        <span class="text-xs font-bold text-primary" x-text="'Total: ' + formatRupiah(calculateInvoiceSubtotal())"></span>
+                    </div>
+
+                    <!-- Pilihan Mode Termin Pembayaran di Tabel -->
+                    <div>
+                        <label class="form-label !mb-1">Skema Termin Pembayaran di Tabel:</label>
+                        <select x-model="invoiceForm.paymentTermMode" class="form-input text-xs font-medium">
+                            <option value="normal">1. Normal (Hanya Baris TOTAL Saja)</option>
+                            <option value="dp_single">2. Invoice DP Tunggal (TOTAL + Baris DP 1)</option>
+                            <option value="dp_pelunasan">3. Invoice DP + Pelunasan (TOTAL + DP 1 + Pelunasan)</option>
+                            <option value="three_steps">4. Tiga Kali Pelunasan (TOTAL + DP 1 + DP 2 + Pelunasan)</option>
+                        </select>
+                    </div>
+
+                    <!-- Input Detail Termin Berdasarkan Mode -->
+                    <div x-show="invoiceForm.paymentTermMode !== 'normal'" class="p-3 bg-amber-50/60 rounded-xl border border-amber-200 space-y-2.5 text-xs">
+                        <!-- DP 1 -->
+                        <div class="grid grid-cols-3 gap-2 items-center">
+                            <input type="text" x-model="invoiceForm.dp1Label" placeholder="Label (DP 1, 30%)" class="form-input text-xs font-semibold">
+                            <div class="col-span-2 flex gap-1">
+                                <input type="number" x-model.number="invoiceForm.dp1Value" placeholder="Nominal DP 1" class="form-input text-xs font-bold text-gray-800">
+                                <button type="button" @click="setDpPercent(30)" class="text-[10px] bg-white border border-gray-300 px-2 rounded font-bold hover:bg-gray-100" title="Hitung 30%">30%</button>
+                                <button type="button" @click="setDpPercent(50)" class="text-[10px] bg-white border border-gray-300 px-2 rounded font-bold hover:bg-gray-100" title="Hitung 50%">50%</button>
+                            </div>
+                        </div>
+
+                        <!-- DP 2 (Jika 3 Kali Pelunasan) -->
+                        <div x-show="invoiceForm.paymentTermMode === 'three_steps'" class="grid grid-cols-3 gap-2 items-center">
+                            <input type="text" x-model="invoiceForm.dp2Label" placeholder="DP 2" class="form-input text-xs font-semibold">
+                            <div class="col-span-2 flex gap-1">
+                                <input type="number" x-model.number="invoiceForm.dp2Value" placeholder="Nominal DP 2" class="form-input text-xs font-bold text-gray-800">
+                                <button type="button" @click="setDp2Percent(40)" class="text-[10px] bg-white border border-gray-300 px-2 rounded font-bold hover:bg-gray-100" title="Hitung 40%">40%</button>
+                            </div>
+                        </div>
+
+                        <!-- Pelunasan -->
+                        <div x-show="invoiceForm.paymentTermMode === 'dp_pelunasan' || invoiceForm.paymentTermMode === 'three_steps'" class="grid grid-cols-3 gap-2 items-center">
+                            <input type="text" x-model="invoiceForm.pelunasanLabel" placeholder="PELUNASAN" class="form-input text-xs font-semibold">
+                            <div class="col-span-2 flex gap-1">
+                                <input type="number" x-model.number="invoiceForm.pelunasanValue" placeholder="Sisa Pelunasan" class="form-input text-xs font-bold text-gray-800">
+                                <button type="button" @click="autoCalculatePelunasan()" class="text-[10px] bg-white border border-gray-300 px-2 rounded font-bold hover:bg-gray-100 text-primary" title="Hitung Sisa Otomatis">Auto</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. DAFTAR CENTANG KETERANGAN (CHECKLIST DINAMIS) -->
+            <div class="card p-5 rounded-2xl shadow-xs space-y-4">
+                <h3 class="font-bold text-sm text-gray-800 flex items-center gap-2 border-b pb-2.5">
+                    <i class="fas fa-tasks text-primary"></i> 3. Checklist Keterangan di Bawah Invoice
+                </h3>
+                <p class="text-xs text-gray-500">Centang opsi yang ingin Anda tampilkan pada bagian "Keterangan:" di dokumen.</p>
+
+                <!-- 1. Pilihan Nomor Rekening -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-gray-800 block">Pilihan Nomor Rekening Bank:</label>
+                    <div class="space-y-1 bg-gray-50 p-2.5 rounded-xl border border-gray-200/80 text-xs">
+                        <label class="flex items-center gap-2 p-1.5 rounded-lg hover:bg-white cursor-pointer transition-colors" :class="invoiceForm.bankAccountType === 'iman' ? 'bg-white font-semibold text-primary' : ''">
+                            <input type="radio" value="iman" x-model="invoiceForm.bankAccountType" class="text-primary">
+                            <span>Rekening BCA 6670747997 a/n Iman Anjani Buchory</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-1.5 rounded-lg hover:bg-white cursor-pointer transition-colors" :class="invoiceForm.bankAccountType === 'asianindo' ? 'bg-white font-semibold text-primary' : ''">
+                            <input type="radio" value="asianindo" x-model="invoiceForm.bankAccountType" class="text-primary">
+                            <span>Rekening BCA 0113582348 a/n CV.Asianindo</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-1.5 rounded-lg hover:bg-white cursor-pointer transition-colors">
+                            <input type="radio" value="custom" x-model="invoiceForm.bankAccountType" class="text-primary">
+                            <span>Rekening Kustom / Lainnya:</span>
+                        </label>
+                        <div x-show="invoiceForm.bankAccountType === 'custom'" class="pl-6 pt-1">
+                            <input type="text" x-model="invoiceForm.bankAccountCustom" placeholder="Contoh: Rekening Mandiri 144... a/n CV.Asianindo" class="form-input text-xs">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Keterangan Ongkir -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-gray-800 block">Keterangan Ongkos Kirim:</label>
+                    <div class="space-y-1 bg-gray-50 p-2.5 rounded-xl border border-gray-200/80 text-xs">
+                        <label class="flex items-center gap-2 p-1.5 rounded-lg hover:bg-white cursor-pointer transition-colors" :class="invoiceForm.shippingOption === 'exclude' ? 'bg-white font-semibold text-primary' : ''">
+                            <input type="radio" value="exclude" x-model="invoiceForm.shippingOption" class="text-primary">
+                            <span>Harga belum termasuk ongkos kirim ke lokasi</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-1.5 rounded-lg hover:bg-white cursor-pointer transition-colors" :class="invoiceForm.shippingOption === 'free' ? 'bg-white font-semibold text-primary' : ''">
+                            <input type="radio" value="free" x-model="invoiceForm.shippingOption" class="text-primary">
+                            <span>Free Ongkos Kirim ke Lokasi</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-1.5 rounded-lg hover:bg-white cursor-pointer transition-colors" :class="invoiceForm.shippingOption === 'include' ? 'bg-white font-semibold text-primary' : ''">
+                            <input type="radio" value="include" x-model="invoiceForm.shippingOption" class="text-primary">
+                            <span>Sudah termasuk ongkos kirim</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-1.5 rounded-lg hover:bg-white cursor-pointer transition-colors" :class="invoiceForm.shippingOption === 'none' ? 'bg-white font-semibold text-gray-500' : ''">
+                            <input type="radio" value="none" x-model="invoiceForm.shippingOption" class="text-primary">
+                            <span class="text-gray-500 italic">(Tidak menampilkan catatan ongkir)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 3. Skema Pembayaran (Termin) -->
+                <div class="space-y-2">
+                    <label class="flex items-center justify-between text-xs font-bold text-gray-800 cursor-pointer">
+                        <span class="flex items-center gap-2">
+                            <input type="checkbox" x-model="invoiceForm.showPaymentScheme" class="rounded border-gray-300 text-primary focus:ring-primary h-4 w-4">
+                            Tampilkan Catatan "Skema Pembayaran :"
+                        </span>
+                        <span x-show="invoiceForm.showPaymentScheme" class="text-[10px] text-primary font-normal">Aktif</span>
+                    </label>
+
+                    <div x-show="invoiceForm.showPaymentScheme" class="bg-gray-50 p-3 rounded-xl border border-gray-200/80 space-y-2 text-xs">
+                        <template x-for="(scheme, sIdx) in invoiceForm.paymentSchemeItems" :key="sIdx">
+                            <div class="flex items-center gap-2">
+                                <span class="text-gray-400 font-bold">-</span>
+                                <input type="text" x-model="invoiceForm.paymentSchemeItems[sIdx]" class="form-input !py-1 text-xs flex-1">
+                                <button type="button" @click="invoiceForm.paymentSchemeItems.splice(sIdx, 1)" class="text-red-400 hover:text-red-600 p-1">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </template>
+                        <button type="button" @click="invoiceForm.paymentSchemeItems.push('Dp baru senilai ...')" class="text-[11px] text-primary hover:underline font-semibold flex items-center gap-1 pt-1">
+                            <i class="fas fa-plus-circle"></i> Tambah Baris Skema Termin
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 4. Pengesahan & Tanda Tangan Resmi -->
+                <div class="pt-2 border-t border-gray-200">
+                    <label class="flex items-center gap-2 text-xs font-bold text-gray-800 cursor-pointer">
+                        <input type="checkbox" x-model="invoiceForm.showSignature" class="rounded border-gray-300 text-primary focus:ring-primary h-4 w-4">
+                        Tampilkan Tanda Tangan & Stempel Resmi Direktur
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================= RIGHT COLUMN: LIVE A4 PREVIEW (7 Cols) ================= -->
+        <div class="xl:col-span-7 xl:sticky xl:top-4 space-y-4">
+            
+            <!-- Preview Controls Bar -->
+            <div class="card p-3 px-4 rounded-xl flex items-center justify-between shadow-xs bg-white border border-gray-200">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-xs font-bold text-gray-700">Live Preview Dokumen Resmi (Skala A4)</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button @click="invoicePreviewScale = Math.max(70, invoicePreviewScale - 10)" class="p-1.5 text-xs bg-gray-100 hover:bg-gray-200 rounded text-gray-600" title="Perkecil">
+                        <i class="fas fa-search-minus"></i>
+                    </button>
+                    <span class="text-xs font-mono font-semibold text-gray-700 w-10 text-center" x-text="invoicePreviewScale + '%'"></span>
+                    <button @click="invoicePreviewScale = Math.min(120, invoicePreviewScale + 10)" class="p-1.5 text-xs bg-gray-100 hover:bg-gray-200 rounded text-gray-600" title="Perbesar">
+                        <i class="fas fa-search-plus"></i>
+                    </button>
+                    <button @click="invoicePreviewScale = 100" class="p-1.5 text-xs bg-gray-100 hover:bg-gray-200 rounded text-gray-600 font-bold" title="Reset Skala 100%">100%</button>
+                </div>
+            </div>
+
+            <!-- Scrollable Preview Canvas -->
+            <div class="overflow-x-auto p-4 bg-gray-200/70 rounded-2xl flex justify-center border border-gray-300/80 shadow-inner">
+                
+                <!-- ================= ACTUAL PRINTABLE A4 INVOICE SHEET ================= -->
+                <div id="invoice-print-area" 
+                     class="bg-white text-black font-sans shadow-2xl transition-transform origin-top" 
+                     :style="'width: 210mm; min-height: 297mm; padding: 12mm 15mm 12mm 15mm; transform: scale(' + (invoicePreviewScale / 100) + ');'">
+                    
+                    <!-- KOP SURAT RESMI CV ASIANINDO -->
+                    <div class="flex items-start justify-between gap-4">
+                        <!-- Left Logo -->
+                        <div class="flex flex-col items-center flex-shrink-0 pt-1">
+                            <img src="../images/logo_asianindo.webp" alt="CV. Asianindo" class="w-20 object-contain">
+                            <span class="text-[11px] font-bold text-[#202970] mt-1 tracking-tight">www.asianindo.com</span>
+                        </div>
+
+                        <!-- Right Company Details -->
+                        <div class="text-right flex-1 pl-2">
+                            <h1 class="text-[21px] font-black text-[#1d3557] uppercase tracking-wide leading-tight">CV. ASIANINDO</h1>
+                            <p class="text-[12px] font-bold text-black mt-0.5 leading-snug">
+                                Workshop Mesin Pengolahan Makanan, Pertanian, dan Mesin Industri
+                            </p>
+                            <p class="text-[10px] text-black leading-tight mt-1">
+                                Alamat: <sup class="font-bold">1</sup>Jl. Pemuda No.41 RT.2/RW.1 Permisan Jabon, Sidoarjo-Jawa Timur, 61276
+                            </p>
+                            <p class="text-[10px] text-black leading-tight mt-0.5">
+                                <sup class="font-bold">2</sup>The Tlogowaru Hills No.01 Blok A Kedungkandang Kota Malang-Jawa Timur, 65132
+                            </p>
+                            <p class="text-[10px] font-bold text-black leading-tight mt-0.5">
+                                No HP. +62 823-3527-3227
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Double Line Kop Surat (Persis Canva) -->
+                    <div class="border-t-[3px] border-b border-black h-1.5 my-3"></div>
+
+                    <!-- Document Title -->
+                    <div class="text-center my-3">
+                        <h2 class="text-[18px] font-black uppercase tracking-[0.2em] text-black" x-text="invoiceForm.docType"></h2>
+                    </div>
+
+                    <!-- Kepada Yth & Tanggal Header -->
+                    <div class="flex justify-between items-start text-[11px] leading-tight mb-3">
+                        <div class="space-y-0.5">
+                            <div class="font-bold">Kepada Yth:</div>
+                            <div class="font-semibold text-black" x-text="invoiceForm.customerName || 'Bapak / Ibu Pelanggan'"></div>
+                            <div class="text-black" x-show="invoiceForm.customerCompany" x-text="invoiceForm.customerCompany"></div>
+                            <div class="text-black" x-show="invoiceForm.customerCity" x-text="invoiceForm.customerCity"></div>
+                        </div>
+                        <div class="text-right font-bold text-black" x-text="invoiceForm.docDate || 'Malang, 11 September 2026'"></div>
+                    </div>
+
+                    <!-- TABEL UTAMA DOKUMEN (Border Hitam Solid 2px Persis Dokumen Acuan) -->
+                    <div class="border-2 border-black">
+                        <table class="w-full border-collapse text-[11px] leading-tight">
+                            <thead>
+                                <tr class="border-b-2 border-black text-center font-bold text-black uppercase bg-white">
+                                    <th class="p-2 border-r border-black w-10">NO</th>
+                                    <th class="p-2 border-r border-black" x-text="invoiceForm.tableHeaderName || 'KETERANGAN'"></th>
+                                    <th class="p-2 border-r border-black" x-show="invoiceForm.hasSpecs">SPESIFIKASI</th>
+                                    <th class="p-2 border-r border-black w-12" x-text="invoiceForm.tableHeaderQty || 'QTY'"></th>
+                                    <th class="p-2 text-center w-36">TOTAL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template x-for="(item, idx) in invoiceForm.items" :key="idx">
+                                    <tr class="border-b border-black align-top">
+                                        <td class="p-2 text-center font-bold border-r border-black" x-text="(idx + 1) + '.'"></td>
+                                        <td class="p-2 border-r border-black">
+                                            <div class="font-bold text-black" x-text="item.name"></div>
+                                        </td>
+                                        <td class="p-2 border-r border-black" x-show="invoiceForm.hasSpecs">
+                                            <div class="space-y-1">
+                                                <template x-for="line in (item.specs || '').split('\n').filter(l => l.trim() !== '')" :key="line">
+                                                    <div class="flex items-start gap-1">
+                                                        <span class="font-bold select-none">•</span>
+                                                        <span x-text="line.replace(/^[•\-\*·\s]+/, '')"></span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </td>
+                                        <td class="p-2 text-center font-bold border-r border-black" x-text="item.qty || 1"></td>
+                                        <td class="p-2 text-right font-bold text-black whitespace-nowrap" x-text="formatRupiahInvoice(item.price * item.qty)"></td>
+                                    </tr>
+                                </template>
+
+                                <!-- TOTAL ROW (DENGAN OPSI HIGHLIGHT KUNING #FFE500) -->
+                                <tr :class="invoiceForm.yellowTotal ? 'bg-[#FFE500]' : 'bg-white'" class="font-bold border-b border-black">
+                                    <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center uppercase tracking-wider border-r border-black">
+                                        TOTAL
+                                    </td>
+                                    <td class="p-2 text-right font-black whitespace-nowrap" x-text="formatRupiahInvoice(calculateInvoiceSubtotal())"></td>
+                                </tr>
+
+                                <!-- TERMIN ROWS (JIKA AKTIF) -->
+                                <template x-if="invoiceForm.paymentTermMode === 'dp_single'">
+                                    <tr class="font-bold border-b border-black">
+                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black" x-text="invoiceForm.dp1Label || 'DP 1, 30%'"></td>
+                                        <td class="p-2 text-right whitespace-nowrap" x-text="formatRupiahInvoice(invoiceForm.dp1Value)"></td>
+                                    </tr>
+                                </template>
+
+                                <template x-if="invoiceForm.paymentTermMode === 'dp_pelunasan'">
+                                    <tr class="font-bold border-b border-black">
+                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black" x-text="invoiceForm.dp1Label || 'DP 1'"></td>
+                                        <td class="p-2 text-right whitespace-nowrap" x-text="formatRupiahInvoice(invoiceForm.dp1Value)"></td>
+                                    </tr>
+                                </template>
+                                <template x-if="invoiceForm.paymentTermMode === 'dp_pelunasan'">
+                                    <tr class="font-bold border-b border-black">
+                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black" x-text="invoiceForm.pelunasanLabel || 'PELUNASAN'"></td>
+                                        <td class="p-2 text-right whitespace-nowrap" x-text="formatRupiahInvoice(invoiceForm.pelunasanValue)"></td>
+                                    </tr>
+                                </template>
+
+                                <template x-if="invoiceForm.paymentTermMode === 'three_steps'">
+                                    <tr class="font-bold border-b border-black">
+                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black" x-text="invoiceForm.dp1Label || 'DP 1'"></td>
+                                        <td class="p-2 text-right whitespace-nowrap" x-text="formatRupiahInvoice(invoiceForm.dp1Value)"></td>
+                                    </tr>
+                                </template>
+                                <template x-if="invoiceForm.paymentTermMode === 'three_steps'">
+                                    <tr class="font-bold border-b border-black">
+                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black" x-text="invoiceForm.dp2Label || 'DP 2'"></td>
+                                        <td class="p-2 text-right whitespace-nowrap" x-text="formatRupiahInvoice(invoiceForm.dp2Value)"></td>
+                                    </tr>
+                                </template>
+                                <template x-if="invoiceForm.paymentTermMode === 'three_steps'">
+                                    <tr class="font-bold border-b border-black">
+                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black" x-text="invoiceForm.pelunasanLabel || 'PELUNASAN'"></td>
+                                        <td class="p-2 text-right whitespace-nowrap" x-text="formatRupiahInvoice(invoiceForm.pelunasanValue)"></td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- FOOTER KETERANGAN & TANDA TANGAN (PERSIS DOKUMEN ACUAN) -->
+                    <div class="flex justify-between items-start mt-4 pt-1">
+                        <!-- Left: Keterangan Notes -->
+                        <div class="flex-1 pr-4 text-[11px] leading-relaxed text-black">
+                            <div class="font-bold">Keterangan:</div>
+                            <div class="space-y-1 mt-0.5">
+                                <!-- Rekening Item -->
+                                <div class="flex items-start gap-1">
+                                    <span class="font-bold select-none">•</span>
+                                    <span class="font-semibold" x-show="invoiceForm.bankAccountType === 'iman'">Rekening BCA 6670747997 a/n Iman Anjani Buchory</span>
+                                    <span class="font-semibold" x-show="invoiceForm.bankAccountType === 'asianindo'">Rekening BCA 0113582348 a/n CV.Asianindo.</span>
+                                    <span class="font-semibold" x-show="invoiceForm.bankAccountType === 'custom'" x-text="invoiceForm.bankAccountCustom"></span>
+                                </div>
+
+                                <!-- Ongkir Item -->
+                                <div class="flex items-start gap-1" x-show="invoiceForm.shippingOption !== 'none'">
+                                    <span class="font-bold select-none">•</span>
+                                    <span x-show="invoiceForm.shippingOption === 'exclude'">Harga belum termasuk ongkos kirim ke lokasi</span>
+                                    <span x-show="invoiceForm.shippingOption === 'free'">Free Ongkos Kirim ke Lokasi</span>
+                                    <span x-show="invoiceForm.shippingOption === 'include'">Sudah termasuk ongkos kirim</span>
+                                    <span x-show="invoiceForm.shippingOption === 'custom'" x-text="invoiceForm.shippingCustom"></span>
+                                </div>
+
+                                <!-- Skema Pembayaran Items -->
+                                <div x-show="invoiceForm.showPaymentScheme">
+                                    <div class="flex items-start gap-1">
+                                        <span class="font-bold select-none">•</span>
+                                        <span class="font-semibold">Skema pembayaran :</span>
+                                    </div>
+                                    <div class="pl-4 space-y-0.5">
+                                        <template x-for="sch in invoiceForm.paymentSchemeItems" :key="sch">
+                                            <div class="flex items-start gap-1">
+                                                <span>-</span>
+                                                <span x-text="sch"></span>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right: Signature & Stamp Block -->
+                        <div class="text-center w-52 flex-shrink-0 text-[11px] leading-tight" x-show="invoiceForm.showSignature">
+                            <div class="font-normal text-black">Hormat Kami,</div>
+                            <div class="font-bold text-black uppercase tracking-wide">CV ASIANINDO</div>
+                            
+                            <!-- Authentic Stamped Signature -->
+                            <div class="my-0.5 flex justify-center items-center h-20 relative">
+                                <img src="../images/signature_official.svg" class="w-36 h-20 object-contain pointer-events-none select-none">
+                            </div>
+
+                            <div class="font-black underline text-black uppercase tracking-wider" x-text="invoiceForm.signerName || 'IMAN ANJANI BUCHORY S.E'"></div>
+                            <div class="font-black text-black uppercase text-[10px] mt-0.5" x-text="invoiceForm.signerTitle || 'DIREKTUR'"></div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- ================= END ACTUAL PRINTABLE SHEET ================= -->
+
+            </div>
+
+            <!-- Bottom Floating Action Bar -->
+            <div class="card p-4 rounded-xl flex flex-wrap items-center justify-between gap-3 shadow-xs bg-white border border-gray-200">
+                <div class="text-xs text-gray-500">
+                    Format: <strong class="text-gray-800" x-text="invoiceForm.docType"></strong> • 
+                    Total: <strong class="text-primary" x-text="formatRupiah(calculateInvoiceSubtotal())"></strong>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a :href="getWhatsAppShareUrl()" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold py-2 px-3.5 rounded-lg flex items-center gap-1.5 transition-colors shadow-xs">
+                        <i class="fab fa-whatsapp text-sm"></i> Kirim WhatsApp
+                    </a>
+                    <button @click="printInvoiceDoc()" class="bg-primary hover:bg-primary-hover text-white text-xs font-semibold py-2 px-4 rounded-lg flex items-center gap-1.5 transition-colors shadow-xs">
+                        <i class="fas fa-print"></i> Cetak Dokumen PDF
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 </div>
+
+<!-- ================================================================ -->
+<!-- MODAL: ARSIP & RIWAYAT INVOICE -->
+<!-- ================================================================ -->
+<div x-show="showSavedInvoicesModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 no-print" x-cloak>
+    <div @click.away="showSavedInvoicesModal = false" class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden border border-gray-100">
+        <!-- Modal Header -->
+        <div class="p-5 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-gray-50 to-amber-50/50">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg shadow-sm">
+                    <i class="fas fa-folder-open"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-base text-gray-800">Arsip Dokumen Invoice & Surat Penawaran</h3>
+                    <p class="text-xs text-gray-500">Daftar dokumen yang pernah disimpan di sistem.</p>
+                </div>
+            </div>
+            <button @click="showSavedInvoicesModal = false" class="text-gray-400 hover:text-gray-600 p-2 rounded-lg hover:bg-gray-100">
+                <i class="fas fa-times text-base"></i>
+            </button>
+        </div>
+
+        <!-- Filter / Search -->
+        <div class="p-4 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between gap-3">
+            <div class="relative flex-1 max-w-sm">
+                <i class="fas fa-search absolute left-3 top-2.5 text-gray-400 text-xs"></i>
+                <input type="text" x-model="invoiceSearch" placeholder="Cari nama pelanggan, nomor, atau barang..." class="form-input !py-1.5 !pl-9 text-xs">
+            </div>
+            <span class="text-xs text-gray-500" x-text="filteredSavedInvoices().length + ' Dokumen Tersimpan'"></span>
+        </div>
+
+        <!-- Invoices Table -->
+        <div class="p-4 overflow-y-auto flex-1">
+            <div class="border rounded-xl overflow-hidden">
+                <table class="w-full text-xs text-left">
+                    <thead class="bg-gray-50 text-gray-500 uppercase border-b">
+                        <tr>
+                            <th class="p-3">No. Dokumen</th>
+                            <th class="p-3">Tipe</th>
+                            <th class="p-3">Pelanggan</th>
+                            <th class="p-3">Barang</th>
+                            <th class="p-3 text-right">Total</th>
+                            <th class="p-3 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <template x-for="inv in filteredSavedInvoices()" :key="inv.id">
+                            <tr class="hover:bg-gray-50/80 transition-colors">
+                                <td class="p-3 font-mono font-bold text-primary" x-text="inv.docNumber || inv.id"></td>
+                                <td class="p-3">
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold" :class="inv.docType === 'INVOICE' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'" x-text="inv.docType"></span>
+                                    <div class="text-[10px] text-gray-400 mt-0.5" x-text="inv.docDate"></div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-bold text-gray-800" x-text="inv.customerName"></div>
+                                    <div class="text-[10px] text-gray-400" x-show="inv.customerCompany" x-text="inv.customerCompany"></div>
+                                </td>
+                                <td class="p-3 text-gray-600 truncate max-w-xs" x-text="inv.items && inv.items[0] ? inv.items[0].name : '-'"></td>
+                                <td class="p-3 text-right font-bold text-gray-900" x-text="formatRupiah(calculateSavedInvoiceTotal(inv))"></td>
+                                <td class="p-3 text-center whitespace-nowrap">
+                                    <button @click="loadInvoiceIntoEditor(inv)" class="btn-secondary !py-1 !px-2.5 text-xs text-primary font-bold mr-1" title="Buka & Edit">
+                                        <i class="fas fa-edit mr-1"></i> Buka
+                                    </button>
+                                    <button @click="deleteSavedInvoice(inv.id)" class="text-red-400 hover:text-red-600 p-1" title="Hapus Dokumen">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </template>
+                        <tr x-show="filteredSavedInvoices().length === 0">
+                            <td colspan="6" class="p-8 text-center text-gray-400">
+                                <i class="fas fa-folder-open text-2xl mb-1 text-gray-300"></i>
+                                <p>Belum ada dokumen invoice yang tersimpan.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="p-4 border-t border-gray-100 bg-gray-50 flex justify-end">
+            <button @click="showSavedInvoicesModal = false" class="btn-secondary text-xs !py-2">Tutup</button>
+        </div>
+    </div>
+</div>
+
 
 <!-- Modal Detail Pelanggan -->
 <div x-show="showCustomerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" style="display: none;" x-cloak>

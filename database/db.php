@@ -37,17 +37,29 @@ $options = [
     PDO::ATTR_EMULATE_PREPARES   => false,
     PDO::ATTR_TIMEOUT            => 5,
 ];
+$pdo = null;
+$conn = null;
 
-try {
-    $pdo = new PDO("mysql:host={$dbHost};dbname={$dbName};charset=utf8mb4", $dbUser, $dbPass, $options);
-} catch (PDOException $e) {
+/**
+ * Singleton / Getter untuk PDO Instance (Lazy Loaded)
+ */
+function getDB() {
+    global $pdo, $dbHost, $dbUser, $dbPass, $dbName, $options;
+    if ($pdo !== null) {
+        return $pdo;
+    }
+
     try {
-        // Coba alternatif host (localhost jika 127.0.0.1 gagal, atau sebaliknya)
-        $altHost = ($dbHost === '127.0.0.1') ? 'localhost' : '127.0.0.1';
-        $pdo = new PDO("mysql:host={$altHost};dbname={$dbName};charset=utf8mb4", $dbUser, $dbPass, $options);
-    } catch (PDOException $e2) {
-        if (!defined('CLI_MODE')) {
-            http_response_code(200); // Kembalikan 200 dengan status error agar terbaca jelas di JSON frontend
+        $pdo = new PDO("mysql:host={$dbHost};dbname={$dbName};charset=utf8mb4", $dbUser, $dbPass, $options);
+        return $pdo;
+    } catch (PDOException $e) {
+        try {
+            // Coba alternatif host (localhost jika 127.0.0.1 gagal, atau sebaliknya)
+            $altHost = ($dbHost === '127.0.0.1') ? 'localhost' : '127.0.0.1';
+            $pdo = new PDO("mysql:host={$altHost};dbname={$dbName};charset=utf8mb4", $dbUser, $dbPass, $options);
+            return $pdo;
+        } catch (PDOException $e2) {
+            http_response_code(500);
             header('Content-Type: application/json');
             echo json_encode([
                 'success' => false,
@@ -57,28 +69,6 @@ try {
             exit;
         }
     }
-}
-
-// Buat objek koneksi mysqli ($conn) untuk kompatibilitas script yang menggunakan mysqli
-try {
-    $conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
-    if ($conn->connect_error) {
-        $altHost = ($dbHost === '127.0.0.1') ? 'localhost' : '127.0.0.1';
-        $conn = new mysqli($altHost, $dbUser, $dbPass, $dbName);
-    }
-    if ($conn && !$conn->connect_error) {
-        $conn->set_charset("utf8mb4");
-    }
-} catch (Throwable $cte) {
-    $conn = null;
-}
-
-/**
- * Singleton / Getter untuk PDO Instance
- */
-function getDB() {
-    global $pdo;
-    return $pdo;
 }
 
 /**
