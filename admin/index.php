@@ -16,7 +16,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&family=Roboto+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -49,8 +49,14 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             src: url('fonts/TradeGothic-Regular.woff') format('woff'),
                  url('https://fonts.cdnfonts.com/s/14462/trade-gothic-lt-std-58a78e64434a9.woff') format('woff');
         }
-        #invoice-print-area, #invoice-print-area * {
-            font-family: 'Trade Gothic Bold 2', 'Trade Gothic LT Std', 'Barlow Semi Condensed', 'Roboto Condensed', sans-serif !important;
+        /* Base invoice font: normal Open Sans / clean sans-serif */
+        #invoice-print-area {
+            font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+        }
+        /* KHUSUS SPESIFIKASI: Trade Gothic Bold #2 dan DITEBALKAN */
+        .spec-trade-gothic, .spec-trade-gothic * {
+            font-family: 'Trade Gothic Bold 2', 'Trade Gothic LT Std', 'Barlow Semi Condensed', sans-serif !important;
+            font-weight: 700 !important;
         }
     </style>
     <style type="text/tailwindcss">
@@ -1839,11 +1845,11 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                         <td class="p-2.5 text-center font-bold border-r border-black text-[12.5px]" x-text="(idx + 1) + '.'"></td>
                                         <td class="p-2.5 border-r border-black font-bold text-black text-[12.5px]" x-text="item.name"></td>
                                         <td class="p-2.5 border-r border-black" x-show="invoiceForm.hasSpecs">
-                                            <div class="space-y-1 text-[12px] font-normal leading-relaxed text-black">
+                                            <div class="space-y-1 text-[12px] leading-snug text-black spec-trade-gothic">
                                                 <template x-for="line in getFormattedSpecs(item.specs)" :key="line">
                                                     <div class="flex items-start gap-1.5">
                                                         <span class="font-bold select-none">•</span>
-                                                        <span x-text="line"></span>
+                                                        <span class="font-bold" x-text="line"></span>
                                                     </div>
                                                 </template>
                                             </div>
