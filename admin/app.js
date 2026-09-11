@@ -1522,7 +1522,11 @@ function adminApp() {
                 this.invoiceForm.items[0].total = detectedPrice;
             }
             if (detectedSpecs.length > 0) {
-                this.invoiceForm.items[0].specs = detectedSpecs.join('\n');
+                const formatted = detectedSpecs.map(s => {
+                    let clean = s.replace(/^[•\-\*·\d\.\)\s]+/, '').trim();
+                    return clean ? clean.charAt(0).toUpperCase() + clean.slice(1) : '';
+                }).filter(s => s.length > 0);
+                this.invoiceForm.items[0].specs = formatted.join('\n');
                 this.invoiceForm.hasSpecs = true;
             }
 
@@ -1618,7 +1622,7 @@ function adminApp() {
                     lines.forEach(l => {
                         const cl = l.replace(/^[•\-\*·\s]+/, '').trim();
                         if (cl && cl.length > 3 && !cl.toUpperCase().includes('SPESIFIKASI')) {
-                            specsArr.push(cl);
+                            specsArr.push(cl.charAt(0).toUpperCase() + cl.slice(1));
                         }
                     });
                 }
@@ -1627,6 +1631,20 @@ function adminApp() {
                     this.invoiceForm.hasSpecs = true;
                 }
             }
+        },
+
+        getFormattedSpecs(specs) {
+            if (!specs) return [];
+            return specs
+                .split('\n')
+                .map(l => l.trim())
+                .filter(l => l.length > 0)
+                .map(l => {
+                    let clean = l.replace(/^[•\-\*·\d\.\)\s]+/, '').trim();
+                    if (!clean) return '';
+                    return clean.charAt(0).toUpperCase() + clean.slice(1);
+                })
+                .filter(l => l.length > 0);
         },
 
         formatRupiahInvoice(amount) {

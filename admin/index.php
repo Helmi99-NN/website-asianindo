@@ -48,11 +48,19 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         .dynamic-row { @apply flex items-center gap-3 mb-2; }
 
         @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
             body * {
                 visibility: hidden !important;
             }
             #invoice-print-area, #invoice-print-area * {
                 visibility: visible !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
             }
             #invoice-print-area {
                 position: absolute !important;
@@ -60,10 +68,15 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 top: 0 !important;
                 width: 100% !important;
                 margin: 0 !important;
-                padding: 0 !important;
+                padding: 6mm 10mm !important;
                 box-shadow: none !important;
                 border: none !important;
                 background: white !important;
+            }
+            .bg-\[\#FFE500\], tr[style*="FFE500"], td[style*="FFE500"] {
+                background-color: #FFE500 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
             @page {
                 size: A4 portrait;
@@ -1541,7 +1554,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                         <span>Spesifikasi Teknis (1 baris per butir):</span>
                                         <span class="text-[10px] text-gray-400 font-normal">Otomatis jadi bullet point •</span>
                                     </label>
-                                    <textarea x-model="item.specs" rows="3" placeholder="Bahan Stainless Steel 304&#10;Kapasitas 200 Liter&#10;Daya Listrik 1500 Watt" class="form-textarea text-xs"></textarea>
+                                    <textarea x-model="item.specs" @blur="item.specs = getFormattedSpecs(item.specs).join('\n')" rows="3" placeholder="Bahan Stainless Steel 304&#10;Kapasitas 200 Liter&#10;Daya Listrik 1500 Watt" class="form-textarea text-xs"></textarea>
                                 </div>
 
                                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 items-center">
@@ -1739,44 +1752,46 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                      class="bg-white text-black font-sans shadow-2xl transition-transform origin-top" 
                      :style="'width: 210mm; min-height: 297mm; padding: 12mm 15mm 12mm 15mm; transform: scale(' + (invoicePreviewScale / 100) + ');'">
                     
-                    <!-- KOP SURAT RESMI CV ASIANINDO -->
-                    <div class="flex items-start justify-between gap-4">
-                        <!-- Left Logo -->
-                        <div class="flex flex-col items-center flex-shrink-0 pt-1">
-                            <img src="../images/logo_asianindo.webp" alt="CV. Asianindo" class="w-20 object-contain">
-                            <span class="text-[11px] font-bold text-[#202970] mt-1 tracking-tight">www.asianindo.com</span>
+                    <!-- KOP SURAT RESMI CV ASIANINDO (PERSIS MEDIA ACUAN) -->
+                    <div class="flex items-center justify-between gap-3 pb-1">
+                        <!-- Left Logo (Gambar Asli Transparan dengan Logo, Nama & Web) -->
+                        <div class="flex-shrink-0">
+                            <img src="../images/logo_invoice_official.png" alt="CV. Asianindo" class="w-28 h-auto object-contain">
                         </div>
 
-                        <!-- Right Company Details -->
-                        <div class="text-right flex-1 pl-2">
-                            <h1 class="text-[21px] font-black text-[#1d3557] uppercase tracking-wide leading-tight">CV. ASIANINDO</h1>
-                            <p class="text-[12px] font-bold text-black mt-0.5 leading-snug">
+                        <!-- Right Company Details (CENTERED Persis Contoh Gambar) -->
+                        <div class="flex-1 text-center pl-2">
+                            <h1 class="text-[23px] font-black text-[#1e3a8a] uppercase tracking-wider leading-none mb-1">CV. ASIANINDO</h1>
+                            <p class="text-[12px] font-bold text-black leading-tight mb-1">
                                 Workshop Mesin Pengolahan Makanan, Pertanian, dan Mesin Industri
                             </p>
-                            <p class="text-[10px] text-black leading-tight mt-1">
+                            <p class="text-[10px] text-black leading-tight font-medium">
                                 Alamat: <sup class="font-bold">1</sup>Jl. Pemuda No.41 RT.2/RW.1 Permisan Jabon, Sidoarjo-Jawa Timur, 61276
                             </p>
-                            <p class="text-[10px] text-black leading-tight mt-0.5">
-                                <sup class="font-bold">2</sup>The Tlogowaru Hills No.01 Blok A Kedungkandang Kota Malang-Jawa Timur, 65132
+                            <p class="text-[10px] text-black leading-tight font-medium">
+                                <sup class="font-bold">2</sup>The Tlogowaru Hills No.01 Blok A Kedungkandang Kota Malang-
                             </p>
-                            <p class="text-[10px] font-bold text-black leading-tight mt-0.5">
+                            <p class="text-[10px] text-black leading-tight font-medium">
+                                Jawa Timur, 65132
+                            </p>
+                            <p class="text-[10.5px] font-bold text-black leading-tight mt-1">
                                 No HP. +62 823-3527-3227
                             </p>
                         </div>
                     </div>
 
-                    <!-- Double Line Kop Surat (Persis Canva) -->
-                    <div class="border-t-[3px] border-b border-black h-1.5 my-3"></div>
+                    <!-- Single Solid Black Line (Persis Media Acuan) -->
+                    <div class="border-b-[3px] border-black my-3"></div>
 
                     <!-- Document Title -->
                     <div class="text-center my-3">
-                        <h2 class="text-[18px] font-black uppercase tracking-[0.2em] text-black" x-text="invoiceForm.docType"></h2>
+                        <h2 class="text-[19px] font-black uppercase tracking-[0.25em] text-black" x-text="invoiceForm.docType"></h2>
                     </div>
 
                     <!-- Kepada Yth & Tanggal Header -->
                     <div class="flex justify-between items-start text-[11px] leading-tight mb-3">
                         <div class="space-y-0.5">
-                            <div class="font-bold">Kepada Yth:</div>
+                            <div class="font-bold text-black">Kepada Yth:</div>
                             <div class="font-semibold text-black" x-text="invoiceForm.customerName || 'Bapak / Ibu Pelanggan'"></div>
                             <div class="text-black" x-show="invoiceForm.customerCompany" x-text="invoiceForm.customerCompany"></div>
                             <div class="text-black" x-show="invoiceForm.customerCity" x-text="invoiceForm.customerCity"></div>
@@ -1788,11 +1803,11 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     <div class="border-2 border-black">
                         <table class="w-full border-collapse text-[11px] leading-tight">
                             <thead>
-                                <tr class="border-b-2 border-black text-center font-bold text-black uppercase bg-white">
-                                    <th class="p-2 border-r border-black w-10">NO</th>
-                                    <th class="p-2 border-r border-black" x-text="invoiceForm.tableHeaderName || 'KETERANGAN'"></th>
-                                    <th class="p-2 border-r border-black" x-show="invoiceForm.hasSpecs">SPESIFIKASI</th>
-                                    <th class="p-2 border-r border-black w-12" x-text="invoiceForm.tableHeaderQty || 'QTY'"></th>
+                                <tr class="border-b-2 border-black text-center font-bold text-black uppercase bg-white text-[11.5px]">
+                                    <th class="p-2 border-r border-black w-10 text-center">NO</th>
+                                    <th class="p-2 border-r border-black text-center" x-text="invoiceForm.tableHeaderName || 'KETERANGAN'"></th>
+                                    <th class="p-2 border-r border-black text-center" x-show="invoiceForm.hasSpecs">SPESIFIKASI</th>
+                                    <th class="p-2 border-r border-black w-12 text-center" x-text="invoiceForm.tableHeaderQty || 'QTY'"></th>
                                     <th class="p-2 text-center w-36">TOTAL</th>
                                 </tr>
                             </thead>
@@ -1800,15 +1815,13 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                 <template x-for="(item, idx) in invoiceForm.items" :key="idx">
                                     <tr class="border-b border-black align-top">
                                         <td class="p-2 text-center font-bold border-r border-black" x-text="(idx + 1) + '.'"></td>
-                                        <td class="p-2 border-r border-black">
-                                            <div class="font-bold text-black" x-text="item.name"></div>
-                                        </td>
+                                        <td class="p-2 border-r border-black font-bold text-black" x-text="item.name"></td>
                                         <td class="p-2 border-r border-black" x-show="invoiceForm.hasSpecs">
                                             <div class="space-y-1">
-                                                <template x-for="line in (item.specs || '').split('\n').filter(l => l.trim() !== '')" :key="line">
+                                                <template x-for="line in getFormattedSpecs(item.specs)" :key="line">
                                                     <div class="flex items-start gap-1">
                                                         <span class="font-bold select-none">•</span>
-                                                        <span x-text="line.replace(/^[•\-\*·\s]+/, '')"></span>
+                                                        <span x-text="line"></span>
                                                     </div>
                                                 </template>
                                             </div>
@@ -1818,51 +1831,57 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                     </tr>
                                 </template>
 
-                                <!-- TOTAL ROW (DENGAN OPSI HIGHLIGHT KUNING #FFE500) -->
-                                <tr :class="invoiceForm.yellowTotal ? 'bg-[#FFE500]' : 'bg-white'" class="font-bold border-b border-black">
-                                    <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center uppercase tracking-wider border-r border-black">
+                                <!-- TOTAL ROW (DENGAN OPSI HIGHLIGHT KUNING #FFE500 & PRINT EXACT) -->
+                                <tr :class="invoiceForm.yellowTotal ? 'bg-[#FFE500]' : 'bg-white'" 
+                                    :style="invoiceForm.yellowTotal ? 'background-color: #FFE500 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;' : ''" 
+                                    class="font-bold border-b border-black text-[11.5px]">
+                                    <td :colspan="invoiceForm.hasSpecs ? 4 : 3" 
+                                        :style="invoiceForm.yellowTotal ? 'background-color: #FFE500 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;' : ''" 
+                                        class="p-2 text-center uppercase tracking-wider border-r border-black font-black text-black">
                                         TOTAL
                                     </td>
-                                    <td class="p-2 text-right font-black whitespace-nowrap" x-text="formatRupiahInvoice(calculateInvoiceSubtotal())"></td>
+                                    <td :style="invoiceForm.yellowTotal ? 'background-color: #FFE500 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;' : ''" 
+                                        class="p-2 text-right font-black whitespace-nowrap text-black" 
+                                        x-text="formatRupiahInvoice(calculateInvoiceSubtotal())"></td>
                                 </tr>
 
                                 <!-- TERMIN ROWS (JIKA AKTIF) -->
                                 <template x-if="invoiceForm.paymentTermMode === 'dp_single'">
                                     <tr class="font-bold border-b border-black">
-                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black" x-text="invoiceForm.dp1Label || 'DP 1, 30%'"></td>
-                                        <td class="p-2 text-right whitespace-nowrap" x-text="formatRupiahInvoice(invoiceForm.dp1Value)"></td>
+                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black text-black font-bold" x-text="invoiceForm.dp1Label || 'DP 1, 30%'"></td>
+                                        <td class="p-2 text-right whitespace-nowrap text-black font-bold" x-text="formatRupiahInvoice(invoiceForm.dp1Value)"></td>
                                     </tr>
                                 </template>
 
                                 <template x-if="invoiceForm.paymentTermMode === 'dp_pelunasan'">
                                     <tr class="font-bold border-b border-black">
-                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black" x-text="invoiceForm.dp1Label || 'DP 1'"></td>
-                                        <td class="p-2 text-right whitespace-nowrap" x-text="formatRupiahInvoice(invoiceForm.dp1Value)"></td>
+                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black text-black font-bold" x-text="invoiceForm.dp1Label || 'DP 1'"></td>
+                                        <td class="p-2 text-right whitespace-nowrap text-black font-bold" x-text="formatRupiahInvoice(invoiceForm.dp1Value)"></td>
                                     </tr>
                                 </template>
                                 <template x-if="invoiceForm.paymentTermMode === 'dp_pelunasan'">
                                     <tr class="font-bold border-b border-black">
-                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black" x-text="invoiceForm.pelunasanLabel || 'PELUNASAN'"></td>
-                                        <td class="p-2 text-right whitespace-nowrap" x-text="formatRupiahInvoice(invoiceForm.pelunasanValue)"></td>
+                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black text-black font-bold" x-text="invoiceForm.pelunasanLabel || 'PELUNASAN'"></td>
+                                        <td class="p-2 text-right whitespace-nowrap text-black font-bold" x-text="formatRupiahInvoice(invoiceForm.pelunasanValue)"></td>
                                     </tr>
                                 </template>
 
                                 <template x-if="invoiceForm.paymentTermMode === 'three_steps'">
                                     <tr class="font-bold border-b border-black">
-                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black" x-text="invoiceForm.dp1Label || 'DP 1'"></td>
-                                        <td class="p-2 text-right whitespace-nowrap" x-text="formatRupiahInvoice(invoiceForm.dp1Value)"></td>
+                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black text-black font-bold" x-text="invoiceForm.dp1Label || 'DP 1'"></td>
+                                        <td class="p-2 text-right whitespace-nowrap text-black font-bold" x-text="formatRupiahInvoice(invoiceForm.dp1Value)"></td>
                                     </tr>
                                 </template>
                                 <template x-if="invoiceForm.paymentTermMode === 'three_steps'">
                                     <tr class="font-bold border-b border-black">
-                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black" x-text="invoiceForm.dp2Label || 'DP 2'"></td>
-                                        <td class="p-2 text-right whitespace-nowrap" x-text="formatRupiahInvoice(invoiceForm.dp2Value)"></td>
+                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black text-black font-bold" x-text="invoiceForm.dp2Label || 'DP 2'"></td>
+                                        <td class="p-2 text-right whitespace-nowrap text-black font-bold" x-text="formatRupiahInvoice(invoiceForm.dp2Value)"></td>
                                     </tr>
                                 </template>
                                 <template x-if="invoiceForm.paymentTermMode === 'three_steps'">
                                     <tr class="font-bold border-b border-black">
-                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black" x-text="invoiceForm.pelunasanLabel || 'PELUNASAN'"></td>
-                                        <td class="p-2 text-right whitespace-nowrap" x-text="formatRupiahInvoice(invoiceForm.pelunasanValue)"></td>
+                                        <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black text-black font-bold" x-text="invoiceForm.pelunasanLabel || 'PELUNASAN'"></td>
+                                        <td class="p-2 text-right whitespace-nowrap text-black font-bold" x-text="formatRupiahInvoice(invoiceForm.pelunasanValue)"></td>
                                     </tr>
                                 </template>
                             </tbody>
@@ -1873,7 +1892,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     <div class="flex justify-between items-start mt-4 pt-1">
                         <!-- Left: Keterangan Notes -->
                         <div class="flex-1 pr-4 text-[11px] leading-relaxed text-black">
-                            <div class="font-bold">Keterangan:</div>
+                            <div class="font-bold text-[11.5px]">Keterangan:</div>
                             <div class="space-y-1 mt-0.5">
                                 <!-- Rekening Item -->
                                 <div class="flex items-start gap-1">
@@ -1910,18 +1929,18 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                             </div>
                         </div>
 
-                        <!-- Right: Signature & Stamp Block -->
-                        <div class="text-center w-52 flex-shrink-0 text-[11px] leading-tight" x-show="invoiceForm.showSignature">
-                            <div class="font-normal text-black">Hormat Kami,</div>
-                            <div class="font-bold text-black uppercase tracking-wide">CV ASIANINDO</div>
+                        <!-- Right: Signature & Stamp Block (Persis Media Acuan) -->
+                        <div class="text-center w-56 flex-shrink-0 text-[11px] leading-tight" x-show="invoiceForm.showSignature">
+                            <div class="font-semibold text-black text-[12px]">Hormat Kami,</div>
+                            <div class="font-black text-black uppercase tracking-wide text-[13px] mt-0.5">CV ASIANINDO</div>
                             
-                            <!-- Authentic Stamped Signature -->
-                            <div class="my-0.5 flex justify-center items-center h-20 relative">
-                                <img src="../images/signature_official.svg" class="w-36 h-20 object-contain pointer-events-none select-none">
+                            <!-- Authentic Stamped Signature (Persis Crop Contoh User) -->
+                            <div class="my-1 flex justify-center items-center h-24 relative">
+                                <img src="../images/signature_authentic_stamp.png" class="w-48 h-auto object-contain pointer-events-none select-none">
                             </div>
 
-                            <div class="font-black underline text-black uppercase tracking-wider" x-text="invoiceForm.signerName || 'IMAN ANJANI BUCHORY S.E'"></div>
-                            <div class="font-black text-black uppercase text-[10px] mt-0.5" x-text="invoiceForm.signerTitle || 'DIREKTUR'"></div>
+                            <div class="font-black text-black uppercase tracking-wider text-[12px] border-b-[1.5px] border-black pb-0.5 inline-block" x-text="invoiceForm.signerName || 'IMAN ANJANI BUCHORY S.E'"></div>
+                            <div class="font-black text-black uppercase text-[11px] mt-1" x-text="invoiceForm.signerTitle || 'DIREKTUR'"></div>
                         </div>
                     </div>
 
