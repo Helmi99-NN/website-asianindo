@@ -35,28 +35,12 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         window.IS_LOGGED_IN = <?php echo $is_admin ? 'true' : 'false'; ?>;
     </script>
     <style>
-        @font-face {
-            font-family: 'Trade Gothic Bold 2';
-            font-style: normal;
-            font-weight: 700;
-            src: url('fonts/TradeGothic-Bold2.woff') format('woff'),
-                 url('https://fonts.cdnfonts.com/s/14462/trade-gothic-lt-std-bold-condensed-no-20-5872def1d27d8.woff') format('woff');
-        }
-        @font-face {
-            font-family: 'Trade Gothic Bold 2';
-            font-style: normal;
-            font-weight: 400;
-            src: url('fonts/TradeGothic-Regular.woff') format('woff'),
-                 url('https://fonts.cdnfonts.com/s/14462/trade-gothic-lt-std-58a78e64434a9.woff') format('woff');
-        }
-        /* Base invoice font: normal Open Sans / clean sans-serif */
-        #invoice-print-area {
+        /* Seluruh elemen invoice menggunakan Open Sans (bersih, tajam, profesional) */
+        #invoice-print-area, #invoice-print-area * {
             font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
         }
-        /* KHUSUS SPESIFIKASI: Trade Gothic Bold #2 dan DITEBALKAN */
-        .spec-trade-gothic, .spec-trade-gothic * {
-            font-family: 'Trade Gothic Bold 2', 'Trade Gothic LT Std', 'Barlow Semi Condensed', sans-serif !important;
-            font-weight: 700 !important;
+        .font-serif-invoice, .font-serif-invoice * {
+            font-family: 'Times New Roman', Times, Georgia, serif !important;
         }
     </style>
     <style type="text/tailwindcss">
@@ -1780,44 +1764,44 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                      class="bg-white text-black font-sans shadow-2xl transition-transform origin-top" 
                      :style="'width: 210mm; min-height: 297mm; padding: 12mm 15mm 12mm 15mm; transform: scale(' + (invoicePreviewScale / 100) + ');'">
                     
-                    <!-- KOP SURAT RESMI CV ASIANINDO (PROPORSI BESAR PERSIS MEDIA ACUAN) -->
-                    <div class="flex items-center justify-between gap-4 pb-2">
-                        <!-- Left Logo (Proporsi Pas & Nyata) -->
+                    <!-- KOP SURAT RESMI CV ASIANINDO (PROPORSI RAMPING & PADAT SESUAI MEDIA ACUAN) -->
+                    <div class="flex items-center justify-between gap-3 pb-1">
+                        <!-- Left Logo (Proporsi Pas Sesuai Contoh media_1789114031143) -->
                         <div class="flex-shrink-0">
-                            <img src="../images/logo_invoice_official.png" alt="CV. Asianindo" class="w-44 h-auto object-contain">
+                            <img src="../images/logo_invoice_official.png" alt="CV. Asianindo" class="w-32 h-auto object-contain">
                         </div>
 
-                        <!-- Right Company Details (CENTERED & PROPORSI BESAR SESUAI CANVA) -->
+                        <!-- Right Company Details (CENTERED & RAMPING ATAS-BAWAH) -->
                         <div class="flex-1 text-center pl-2">
-                            <h1 class="text-[30px] font-bold text-[#204070] uppercase tracking-wider leading-none mb-1.5">CV. ASIANINDO</h1>
-                            <p class="text-[13.5px] font-bold text-black leading-tight mb-1">
+                            <h1 class="text-[24px] font-bold text-[#1e3a8a] uppercase tracking-wide leading-none mb-1">CV. ASIANINDO</h1>
+                            <p class="text-[12px] font-bold text-black leading-tight mb-0.5">
                                 Workshop Mesin Pengolahan Makanan, Pertanian, dan Mesin Industri
                             </p>
-                            <p class="text-[11.5px] text-black leading-snug font-medium">
+                            <p class="text-[10px] text-black leading-tight font-medium">
                                 Alamat: <sup class="font-bold">1</sup>Jl. Pemuda No.41 RT.2/RW.1 Permisan Jabon, Sidoarjo-Jawa Timur, 61276
                             </p>
-                            <p class="text-[11.5px] text-black leading-snug font-medium">
+                            <p class="text-[10px] text-black leading-tight font-medium">
                                 <sup class="font-bold">2</sup>The Tlogowaru Hills No.01 Blok A Kedungkandang Kota Malang-
                             </p>
-                            <p class="text-[11.5px] text-black leading-snug font-medium">
+                            <p class="text-[10px] text-black leading-tight font-medium">
                                 Jawa Timur, 65132
                             </p>
-                            <p class="text-[12.5px] font-bold text-black leading-snug mt-1">
+                            <p class="text-[11px] font-bold text-black leading-tight mt-0.5">
                                 No HP. +62 823-3527-3227
                             </p>
                         </div>
                     </div>
 
                     <!-- Single Solid Black Line (Persis Media Acuan) -->
-                    <div class="border-b-[3px] border-black my-3"></div>
+                    <div class="border-b-[2.5px] border-black my-2"></div>
 
-                    <!-- Document Title (Trade Gothic Bold #2) -->
-                    <div class="text-center my-3">
-                        <h2 class="text-[20px] font-bold uppercase tracking-[0.25em] text-black" x-text="invoiceForm.docType"></h2>
+                    <!-- Document Title -->
+                    <div class="text-center my-2">
+                        <h2 class="text-[18px] font-bold uppercase tracking-[0.25em] text-black" x-text="invoiceForm.docType"></h2>
                     </div>
 
-                    <!-- Kepada Yth & Tanggal Header -->
-                    <div class="flex justify-between items-start text-[12px] leading-tight mb-3">
+                    <!-- Kepada Yth & Tanggal Header (Times New Roman Bold Persis Media Acuan) -->
+                    <div class="flex justify-between items-start text-[12px] leading-tight mb-2.5 font-serif-invoice">
                         <div class="space-y-0.5">
                             <div class="font-bold text-black">Kepada Yth:</div>
                             <div class="font-bold text-black" x-text="invoiceForm.customerName || 'Bapak / Ibu Pelanggan'"></div>
@@ -1827,25 +1811,26 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         <div class="text-right font-bold text-black" x-text="invoiceForm.docDate || 'Malang, 11 September 2026'"></div>
                     </div>
 
-                    <!-- TABEL UTAMA DOKUMEN (Border Hitam Solid 2px Persis Dokumen Acuan) -->
+                    <!-- TABEL UTAMA DOKUMEN (Border Hitam Solid 2px Persis Dokumen Acuan media_1789113986907) -->
                     <div class="border-2 border-black">
                         <table class="w-full border-collapse text-[12px] leading-tight">
                             <thead>
-                                <tr class="border-b-2 border-black text-center font-bold text-black uppercase bg-white text-[13px]">
-                                    <th class="py-2.5 px-2 border-r border-black w-12 text-center font-bold">NO</th>
-                                    <th class="py-2.5 px-3 border-r border-black text-center font-bold" x-text="invoiceForm.tableHeaderName || 'NAMA BARANG'"></th>
-                                    <th class="py-2.5 px-3 border-r border-black text-center font-bold" x-show="invoiceForm.hasSpecs">SPESIFIKASI</th>
-                                    <th class="py-2.5 px-2 border-r border-black w-12 text-center font-bold" x-text="invoiceForm.tableHeaderQty || 'Q'"></th>
-                                    <th class="py-2.5 px-3 text-center w-40 font-bold">TOTAL</th>
+                                <tr class="border-b-2 border-black text-center font-bold text-black uppercase bg-white text-[12.5px]">
+                                    <th class="py-2 px-2 border-r border-black w-12 text-center font-bold">NO</th>
+                                    <th class="py-2 px-3 border-r border-black text-center font-bold" x-text="invoiceForm.tableHeaderName || 'KETERANGAN'"></th>
+                                    <th class="py-2 px-3 border-r border-black text-center font-bold" x-show="invoiceForm.hasSpecs">SPESIFIKASI</th>
+                                    <th class="py-2 px-2 border-r border-black w-12 text-center font-bold" x-text="invoiceForm.tableHeaderQty || 'QTY'"></th>
+                                    <th class="py-2 px-3 text-center w-40 font-bold">TOTAL</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <template x-for="(item, idx) in invoiceForm.items" :key="idx">
                                     <tr class="border-b border-black align-top">
-                                        <td class="p-2.5 text-center font-bold border-r border-black text-[12.5px]" x-text="(idx + 1) + '.'"></td>
-                                        <td class="p-2.5 border-r border-black font-bold text-black text-[12.5px]" x-text="item.name"></td>
+                                        <td class="p-2.5 text-center font-bold border-r border-black text-[12px] text-black" x-text="(idx + 1) + '.'"></td>
+                                        <td class="p-2.5 border-r border-black font-bold text-black text-[12px]" x-text="item.name"></td>
                                         <td class="p-2.5 border-r border-black" x-show="invoiceForm.hasSpecs">
-                                            <div class="space-y-1 text-[12px] leading-snug text-black spec-trade-gothic">
+                                            <!-- Font Spesifikasi Sama dengan Font Keterangan & Ditebalkan Persis Contoh media_1789113986907 -->
+                                            <div class="space-y-1 text-[12px] leading-snug text-black font-bold">
                                                 <template x-for="line in getFormattedSpecs(item.specs)" :key="line">
                                                     <div class="flex items-start gap-1.5">
                                                         <span class="font-bold select-none">•</span>
@@ -1854,15 +1839,15 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                                 </template>
                                             </div>
                                         </td>
-                                        <td class="p-2.5 text-center font-bold border-r border-black text-[12.5px] text-black" x-text="item.qty || 1"></td>
-                                        <td class="p-2.5 text-right font-bold text-black whitespace-nowrap text-[12.5px]" x-text="formatRupiahInvoice(item.price * item.qty)"></td>
+                                        <td class="p-2.5 text-center font-bold border-r border-black text-[12px] text-black" x-text="item.qty || 1"></td>
+                                        <td class="p-2.5 text-right font-bold text-black whitespace-nowrap text-[12px]" x-text="formatRupiahInvoice(item.price * item.qty)"></td>
                                     </tr>
                                 </template>
 
                                 <!-- TOTAL ROW (HIGHLIGHT KUNING #FFE500 & EXACT PRINT COLOR) -->
                                 <tr :class="invoiceForm.yellowTotal ? 'bg-[#FFE500]' : 'bg-white'" 
                                     :style="invoiceForm.yellowTotal ? 'background-color: #FFE500 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;' : ''" 
-                                    class="font-bold border-b border-black text-[13px]">
+                                    class="font-bold border-b border-black text-[12.5px]">
                                     <td :colspan="invoiceForm.hasSpecs ? 4 : 3" 
                                         :style="invoiceForm.yellowTotal ? 'background-color: #FFE500 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;' : ''" 
                                         class="py-2 px-3 text-center uppercase tracking-wider border-r border-black font-bold text-black">
@@ -1875,39 +1860,39 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
                                 <!-- TERMIN ROWS (JIKA AKTIF) -->
                                 <template x-if="invoiceForm.paymentTermMode === 'dp_single'">
-                                    <tr class="font-bold border-b border-black text-[12.5px]">
+                                    <tr class="font-bold border-b border-black text-[12px]">
                                         <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black text-black font-bold" x-text="invoiceForm.dp1Label || 'DP 1, 30%'"></td>
                                         <td class="p-2 text-right whitespace-nowrap text-black font-bold" x-text="formatRupiahInvoice(invoiceForm.dp1Value)"></td>
                                     </tr>
                                 </template>
 
                                 <template x-if="invoiceForm.paymentTermMode === 'dp_pelunasan'">
-                                    <tr class="font-bold border-b border-black text-[12.5px]">
+                                    <tr class="font-bold border-b border-black text-[12px]">
                                         <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black text-black font-bold" x-text="invoiceForm.dp1Label || 'DP 1'"></td>
                                         <td class="p-2 text-right whitespace-nowrap text-black font-bold" x-text="formatRupiahInvoice(invoiceForm.dp1Value)"></td>
                                     </tr>
                                 </template>
                                 <template x-if="invoiceForm.paymentTermMode === 'dp_pelunasan'">
-                                    <tr class="font-bold border-b border-black text-[12.5px]">
+                                    <tr class="font-bold border-b border-black text-[12px]">
                                         <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black text-black font-bold" x-text="invoiceForm.pelunasanLabel || 'PELUNASAN'"></td>
                                         <td class="p-2 text-right whitespace-nowrap text-black font-bold" x-text="formatRupiahInvoice(invoiceForm.pelunasanValue)"></td>
                                     </tr>
                                 </template>
 
                                 <template x-if="invoiceForm.paymentTermMode === 'three_steps'">
-                                    <tr class="font-bold border-b border-black text-[12.5px]">
+                                    <tr class="font-bold border-b border-black text-[12px]">
                                         <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black text-black font-bold" x-text="invoiceForm.dp1Label || 'DP 1'"></td>
                                         <td class="p-2 text-right whitespace-nowrap text-black font-bold" x-text="formatRupiahInvoice(invoiceForm.dp1Value)"></td>
                                     </tr>
                                 </template>
                                 <template x-if="invoiceForm.paymentTermMode === 'three_steps'">
-                                    <tr class="font-bold border-b border-black text-[12.5px]">
+                                    <tr class="font-bold border-b border-black text-[12px]">
                                         <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black text-black font-bold" x-text="invoiceForm.dp2Label || 'DP 2'"></td>
                                         <td class="p-2 text-right whitespace-nowrap text-black font-bold" x-text="formatRupiahInvoice(invoiceForm.dp2Value)"></td>
                                     </tr>
                                 </template>
                                 <template x-if="invoiceForm.paymentTermMode === 'three_steps'">
-                                    <tr class="font-bold border-b border-black text-[12.5px]">
+                                    <tr class="font-bold border-b border-black text-[12px]">
                                         <td :colspan="invoiceForm.hasSpecs ? 4 : 3" class="p-2 text-center border-r border-black text-black font-bold" x-text="invoiceForm.pelunasanLabel || 'PELUNASAN'"></td>
                                         <td class="p-2 text-right whitespace-nowrap text-black font-bold" x-text="formatRupiahInvoice(invoiceForm.pelunasanValue)"></td>
                                     </tr>
@@ -1916,36 +1901,36 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         </table>
                     </div>
 
-                    <!-- 1. KETERANGAN NOTES (DI KIRI DI BAWAH TABEL) -->
-                    <div class="mt-4 pt-1 text-[12px] leading-relaxed text-black max-w-xl">
+                    <!-- 1. KETERANGAN NOTES (DI KIRI DI BAWAH TABEL DENGAN FONT BOLD IDENTIK) -->
+                    <div class="mt-3.5 pt-1 text-[12px] leading-relaxed text-black max-w-xl">
                         <div class="font-bold text-[12.5px]">Keterangan:</div>
                         <div class="space-y-1.5 mt-1 pl-1">
                             <!-- Rekening Item -->
                             <div class="flex items-start gap-1.5">
                                 <span class="font-bold select-none">•</span>
-                                <span class="font-normal" x-show="invoiceForm.bankAccountType === 'iman'">Rekening BCA 6670747997 a/n Iman Anjani Buchory</span>
-                                <span class="font-normal" x-show="invoiceForm.bankAccountType === 'asianindo'">Rekening BCA 0113582348 a/n CV.Asianindo.</span>
-                                <span class="font-normal" x-show="invoiceForm.bankAccountType === 'custom'" x-text="invoiceForm.bankAccountCustom"></span>
+                                <span class="font-bold" x-show="invoiceForm.bankAccountType === 'iman'">Rekening BCA 6670747997 a/n Iman Anjani Buchory</span>
+                                <span class="font-bold" x-show="invoiceForm.bankAccountType === 'asianindo'">Rekening BCA 0113582348 a/n CV.Asianindo.</span>
+                                <span class="font-bold" x-show="invoiceForm.bankAccountType === 'custom'" x-text="invoiceForm.bankAccountCustom"></span>
                             </div>
 
                             <!-- Ongkir Item -->
                             <div class="flex items-start gap-1.5" x-show="invoiceForm.shippingOption !== 'none'">
                                 <span class="font-bold select-none">•</span>
-                                <span class="font-normal" x-show="invoiceForm.shippingOption === 'exclude'">Harga belum termasuk ongkos kirim ke lokasi</span>
-                                <span class="font-normal" x-show="invoiceForm.shippingOption === 'free'">Free Ongkos Kirim ke Lokasi</span>
-                                <span class="font-normal" x-show="invoiceForm.shippingOption === 'include'">Sudah termasuk ongkos kirim</span>
-                                <span class="font-normal" x-show="invoiceForm.shippingOption === 'custom'" x-text="invoiceForm.shippingCustom"></span>
+                                <span class="font-bold" x-show="invoiceForm.shippingOption === 'exclude'">Harga belum termasuk ongkos kirim ke lokasi</span>
+                                <span class="font-bold" x-show="invoiceForm.shippingOption === 'free'">Free Ongkos Kirim ke Lokasi</span>
+                                <span class="font-bold" x-show="invoiceForm.shippingOption === 'include'">Sudah termasuk ongkos kirim</span>
+                                <span class="font-bold" x-show="invoiceForm.shippingOption === 'custom'" x-text="invoiceForm.shippingCustom"></span>
                             </div>
 
                             <!-- Skema Pembayaran Items -->
                             <div x-show="invoiceForm.showPaymentScheme">
                                 <div class="flex items-start gap-1.5">
                                     <span class="font-bold select-none">•</span>
-                                    <span class="font-normal">Skema pembayaran :</span>
+                                    <span class="font-bold">Skema pembayaran :</span>
                                 </div>
                                 <div class="pl-4 space-y-0.5">
                                     <template x-for="sch in invoiceForm.paymentSchemeItems" :key="sch">
-                                        <div class="flex items-start gap-1.5 font-normal">
+                                        <div class="flex items-start gap-1.5 font-bold">
                                             <span>-</span>
                                             <span x-text="sch"></span>
                                         </div>
@@ -1955,19 +1940,19 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         </div>
                     </div>
 
-                    <!-- 2. TANDA TANGAN DIREKTUR (DI BAWAH KETERANGAN, SISI KANAN DENGAN UKURAN PROPORSIONAL) -->
+                    <!-- 2. TANDA TANGAN DIREKTUR (DI BAWAH KETERANGAN, SISI KANAN DENGAN STEMPEL PROPORSIONAL BESAR PERSIS CONTOH media_1789114102479) -->
                     <div class="flex justify-end mt-2 pt-1" x-show="invoiceForm.showSignature">
-                        <div class="text-center w-48 text-[11.5px] leading-tight">
-                            <div class="font-medium text-black text-[12px]">Hormat Kami,</div>
+                        <div class="text-center w-52 text-[12px] leading-tight">
+                            <div class="font-bold text-black text-[12px]">Hormat Kami,</div>
                             <div class="font-bold text-black uppercase tracking-wide text-[13px] mt-0.5">CV ASIANINDO</div>
                             
-                            <!-- Authentic Stamped Signature (Proporsional, Ramping & Elegan) -->
-                            <div class="my-1 flex justify-center items-center h-16 relative">
-                                <img src="../images/signature_authentic_stamp.png" class="w-32 h-auto object-contain pointer-events-none select-none">
+                            <!-- Authentic Stamped Signature (Proporsi Pas Mengisi Tengah media_1789114102479) -->
+                            <div class="my-1 flex justify-center items-center h-20 relative">
+                                <img src="../images/signature_authentic_stamp.png" class="w-44 h-auto object-contain pointer-events-none select-none">
                             </div>
 
                             <div class="font-bold text-black uppercase tracking-wider text-[12px] border-b-[1.5px] border-black pb-0.5 inline-block" x-text="invoiceForm.signerName || 'IMAN ANJANI BUCHORY S.E'"></div>
-                            <div class="font-bold text-black uppercase text-[10.5px] mt-1" x-text="invoiceForm.signerTitle || 'DIREKTUR'"></div>
+                            <div class="font-bold text-black uppercase text-[11px] mt-1" x-text="invoiceForm.signerTitle || 'DIREKTUR'"></div>
                         </div>
                     </div>
 
