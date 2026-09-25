@@ -8,6 +8,11 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asianindo CMS Dashboard</title>
+    <!-- Favicon / Logo Asianindo Chrome Tab -->
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="../images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.13.3/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -57,7 +62,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         .card-body { @apply p-6; }
         .section-title { @apply text-lg font-bold text-gray-800 mb-4 flex items-center gap-2; }
         .form-group { @apply mb-5; }
-        .dynamic-row { @apply flex items-center gap-3 mb-2; }
+        .dynamic-row { @apply flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 mb-3; }
 
         @media print {
             * {
@@ -130,8 +135,11 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <!-- ======================== MAIN CMS LAYOUT ======================== -->
     <div x-show="isLoggedIn" x-cloak class="flex h-screen overflow-hidden">
         
+        <!-- Mobile Sidebar Overlay Backdrop -->
+        <div x-show="isSidebarOpen" @click="isSidebarOpen = false" class="fixed inset-0 bg-black/40 z-30 md:hidden backdrop-blur-sm" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"></div>
+
         <!-- ======== SIDEBAR ======== -->
-        <aside class="w-64 bg-sidebar text-white flex flex-col flex-shrink-0">
+        <aside :class="isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'" class="w-64 bg-sidebar text-white flex flex-col flex-shrink-0 fixed md:static inset-y-0 left-0 z-40 transform transition-transform duration-200 ease-in-out">
             <div class="p-5 border-b border-white/10">
                 <h2 class="text-xl font-bold flex items-center gap-2">
                     <i class="fas fa-cogs text-primary-light"></i> CMS Admin
@@ -231,15 +239,18 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         <!-- ======== MAIN CONTENT ======== -->
         <main class="flex-1 flex flex-col overflow-hidden">
             <!-- Header Bar -->
-            <header class="bg-white shadow-sm h-14 flex items-center justify-between px-8 border-b border-gray-200 flex-shrink-0">
-                <h1 class="text-lg font-bold text-gray-800 capitalize" x-text="currentView.replace('_', ' ')"></h1>
-                <a href="../" target="_blank" class="text-sm text-primary hover:text-primary-hover flex items-center gap-1.5 font-medium">
-                    <i class="fas fa-external-link-alt text-xs"></i> Lihat Website
-                </a>
-            </header>
+            <header class="bg-white shadow-sm h-14 flex items-center justify-between px-4 md:px-8 border-b border-gray-200 flex-shrink-0">
+    <button @click="isSidebarOpen = !isSidebarOpen" class="md:hidden text-gray-600 focus:outline-none">
+        <i class="fas" :class="isSidebarOpen ? 'fa-times' : 'fa-bars'"></i>
+    </button>
+    <h1 class="text-lg font-bold text-gray-800 capitalize" x-text="currentView.replace('_', ' ')"></h1>
+    <a href="../" target="_blank" class="text-sm text-primary hover:text-primary-hover flex items-center gap-1.5 font-medium hidden md:flex">
+        <i class="fas fa-external-link-alt text-xs"></i> Lihat Website
+    </a>
+</header>
 
             <!-- Scrollable Content -->
-            <div class="flex-1 overflow-y-auto p-6 lg:p-8">
+            <div class="flex-1 overflow-y-auto p-3 md:p-6 lg:p-8">
                 <!-- Saving Overlay -->
                 <div x-show="isSaving" class="fixed inset-0 bg-black/30 z-50 flex items-center justify-center backdrop-blur-sm">
                     <div class="bg-white rounded-xl p-8 shadow-2xl flex flex-col items-center">
@@ -278,13 +289,13 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <!-- Analytics Chart -->
     <div class="card mb-8">
         <div class="card-header"><h3 class="font-bold text-gray-700"><i class="fas fa-chart-line text-blue-500 mr-2"></i>Tren Pengunjung & Interaksi (30 Hari Terakhir)</h3></div>
-        <div class="card-body p-4 relative" style="height: 350px;">
+        <div class="card-body p-4 relative h-52 sm:h-64 md:h-[350px]">
             <canvas id="analyticsChart"></canvas>
         </div>
     </div>
     
     <!-- Popular Products Table -->
-    <div class="card">
+    <div class="card overflow-x-auto">
         <div class="card-header"><h3 class="font-bold text-gray-700"><i class="fas fa-fire text-orange-500 mr-2"></i>Produk Terpopuler</h3></div>
         <table class="w-full">
             <thead><tr class="bg-gray-50 text-xs text-gray-500 uppercase"><th class="p-4 text-left font-medium">Nama Produk</th><th class="p-4 text-right font-medium">Dilihat</th></tr></thead>
@@ -304,7 +315,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 <div x-show="currentView==='products'">
     <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
         <div class="flex flex-wrap items-center gap-3">
-            <div class="relative w-72">
+            <div class="relative w-full sm:w-72">
                 <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
                 <input type="text" x-model="searchQuery" placeholder="Cari nama atau ID produk..." class="form-input !pl-10">
             </div>
@@ -317,7 +328,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 <option value="Mesin Lainnya">Mesin Lainnya</option>
             </select>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex flex-wrap items-center gap-2">
             <!-- Shopee-style Update Massal Button -->
             <button @click="openBulkModal('download')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-lg transition-all shadow-sm flex items-center gap-2 text-sm">
                 <i class="fas fa-file-excel text-base"></i>
@@ -334,7 +345,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             <span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold" x-text="selectedProductIds.length"></span>
             <span class="text-sm font-semibold text-gray-700">Produk terpilih untuk perubahan massal</span>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex flex-wrap items-center gap-2">
             <button @click="openBulkModal('download', 'selected')" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors shadow-xs">
                 <i class="fas fa-download"></i> Unduh Template Excel (<span x-text="selectedProductIds.length"></span>)
             </button>
@@ -347,7 +358,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         </div>
     </div>
 
-    <div class="card overflow-hidden">
+    <div class="card overflow-x-auto">
         <table class="w-full">
             <thead><tr class="bg-gray-50 text-xs text-gray-500 uppercase border-b border-gray-200">
                 <th class="p-3 text-center font-medium w-10">
@@ -519,14 +530,14 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 <!-- 4. ARTICLES LIST -->
 <!-- ================================================================ -->
 <div x-show="currentView==='articles'">
-    <div class="flex items-center justify-between mb-6">
-        <div class="relative w-72">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+        <div class="relative w-full sm:w-72">
             <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
             <input type="text" x-model="articleSearch" placeholder="Cari artikel..." class="form-input !pl-10">
         </div>
         <button @click="openAddArticle()" class="btn-primary"><i class="fas fa-plus"></i> Tulis Artikel</button>
     </div>
-    <div class="card overflow-hidden">
+    <div class="card overflow-x-auto">
         <table class="w-full">
             <thead><tr class="bg-gray-50 text-xs text-gray-500 uppercase">
                 <th class="p-4 text-center font-medium w-16">No</th>
@@ -635,7 +646,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             <template x-for="m in filteredMedia()" :key="m.name">
-                <div class="group relative rounded-lg border border-gray-200 overflow-hidden bg-gray-50 hover:shadow-md transition-all flex flex-col">
+                <div class="group relative rounded-lg border border-gray-200 overflow-hidden bg-gray-50 hover:shadow-md transition-all flex flex-col" tabindex="0">
                     <div class="h-32 w-full overflow-hidden flex items-center justify-center bg-gray-100">
                         <img :src="'../' + m.path" class="object-cover h-full w-full" loading="lazy">
                     </div>
@@ -645,7 +656,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     </div>
                     
                     <!-- Overlay Actions -->
-                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 backdrop-blur-sm">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 sm:opacity-0 transition-opacity flex flex-col items-center justify-center gap-3 backdrop-blur-sm" @click.stop>
                         <div class="flex gap-2">
                             <button @click="copyToClipboard(window.location.origin + '/' + m.path)" class="w-9 h-9 rounded-full bg-white text-gray-800 hover:text-blue-500 hover:scale-110 transition-transform flex items-center justify-center shadow-lg" title="Salin URL Gambar">
                                 <i class="fas fa-link"></i>
@@ -1089,7 +1100,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 </div>
             </div>
         </div>
-        <div class="px-6 py-4 border-t bg-gray-50 flex justify-end gap-3">
+        <div class="px-6 py-4 border-t bg-gray-50 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3">
             <button @click="verifyPayment('rejected')" class="btn-danger"><i class="fas fa-times"></i> Tolak Bukti</button>
             <button @click="verifyPayment('verified')" class="btn-success"><i class="fas fa-check"></i> Terima Pembayaran</button>
         </div>
@@ -1098,12 +1109,12 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
 <!-- Shipment Modal -->
 <div x-show="showShipmentModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" x-cloak>
-    <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden flex flex-col">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col">
         <div class="px-6 py-4 border-b flex justify-between items-center bg-gray-50">
             <h3 class="font-bold text-lg"><i class="fas fa-truck text-blue-500 mr-2"></i>Update Pengiriman</h3>
             <button @click="showShipmentModal = false" class="text-gray-400 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
         </div>
-        <div class="p-6 space-y-4">
+        <div class="p-6 space-y-4 overflow-y-auto flex-1">
             <div class="bg-blue-50 text-blue-800 p-3 rounded-lg text-sm mb-4">
                 No. Pesanan: <strong x-text="activeOrder?.order_number"></strong>
             </div>
@@ -1132,7 +1143,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 <textarea x-model="shipmentForm.notes" class="form-textarea" rows="2" placeholder="Catatan logistik..."></textarea>
             </div>
         </div>
-        <div class="px-6 py-4 border-t bg-gray-50 flex justify-end gap-3">
+        <div class="px-6 py-4 border-t bg-gray-50 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3">
             <button @click="showShipmentModal = false" class="btn-secondary">Batal</button>
             <button @click="saveShipment()" class="btn-primary"><i class="fas fa-save"></i> Simpan Resi</button>
         </div>
@@ -1183,7 +1194,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
                 <!-- Kanan: Items & Ringkasan -->
                 <div class="md:col-span-2 space-y-6">
-                    <div class="card border border-gray-200 shadow-none overflow-hidden">
+                    <div class="card border border-gray-200 shadow-none overflow-x-auto">
                         <table class="w-full text-sm">
                             <thead class="bg-gray-100 text-gray-600">
                                 <tr>
@@ -1227,7 +1238,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     </div>
 
                     <div class="flex flex-wrap gap-2 justify-end">
-                        <select x-model="orderStatusUpdate" class="form-input w-48 text-sm">
+                        <select x-model="orderStatusUpdate" class="form-input w-full sm:w-48 text-sm">
                             <option value="pending_payment">Menunggu Bayar</option>
                             <option value="payment_uploaded">Bukti Diunggah</option>
                             <option value="payment_verified">Pembayaran Terverifikasi</option>
@@ -1251,7 +1262,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 <div x-show="currentView === 'customers'" x-cloak>
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div>
-            <h2 class="text-xl font-bold flex items-center gap-2 text-gray-800">
+            <h2 class="text-xl font-bold flex flex-wrap items-center gap-2 text-gray-800">
                 <i class="fas fa-users text-primary"></i>
                 <span>Data Pelanggan Terdaftar</span>
                 <span class="text-xs bg-purple-100 text-primary font-bold px-2.5 py-0.5 rounded-full" x-text="(customers ? customers.length : 0) + ' Akun'"></span>
@@ -1368,7 +1379,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 <i class="fas fa-file-invoice-dollar"></i>
             </div>
             <div>
-                <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                <h2 class="text-xl font-bold text-gray-800 flex flex-wrap items-center gap-2">
                     Generator Invoice & Surat Penawaran
                     <span class="bg-amber-100 text-amber-800 text-xs px-2.5 py-0.5 rounded-full font-bold">Resmi CV Asianindo</span>
                 </h2>
@@ -1401,7 +1412,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             
             <!-- 1. SMART OCR: EXTRACT DARI GAMBAR -->
             <div class="card p-5 border-2 border-dashed border-amber-300 bg-gradient-to-br from-amber-50/40 via-white to-amber-50/20 rounded-2xl shadow-xs relative" @paste.window="handleGlobalPaste($event)">
-                <div class="flex items-center justify-between mb-3">
+                <div class="flex flex-wrap items-center justify-between gap-y-2 mb-3">
                     <h3 class="font-bold text-sm text-gray-800 flex items-center gap-2">
                         <span class="w-6 h-6 rounded-lg bg-amber-500 text-white flex items-center justify-center text-xs">
                             <i class="fas fa-magic"></i>
@@ -1524,7 +1535,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         </select>
                     </div>
                     <input type="text" x-model="invoiceForm.customerName" placeholder="Contoh: Bapak Eky / Kak Hana" class="form-input text-xs font-semibold">
-                    <div class="grid grid-cols-2 gap-2">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         <input type="text" x-model="invoiceForm.customerCompany" placeholder="Nama PT / CV / Instansi (Opsional)" class="form-input text-xs">
                         <input type="text" x-model="invoiceForm.customerCity" placeholder="Kota (Contoh: Jakarta / Sidoarjo)" class="form-input text-xs">
                     </div>
@@ -1546,7 +1557,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 </div>
 
                 <!-- Opsi Format Header Tabel -->
-                <div class="grid grid-cols-2 gap-2 bg-gray-50 p-2.5 rounded-xl border border-gray-200/80 text-xs">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-gray-50 p-2.5 rounded-xl border border-gray-200/80 text-xs">
                     <div>
                         <span class="text-[11px] text-gray-500 block mb-1 font-medium">Judul Kolom 2:</span>
                         <div class="flex gap-2">
@@ -1655,7 +1666,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     <!-- Input Detail Termin Berdasarkan Mode -->
                     <div x-show="invoiceForm.paymentTermMode !== 'normal'" class="p-3 bg-amber-50/60 rounded-xl border border-amber-200 space-y-2.5 text-xs">
                         <!-- DP 1 -->
-                        <div class="grid grid-cols-3 gap-2 items-center">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
                             <input type="text" x-model="invoiceForm.dp1Label" placeholder="Label (DP 1, 30%)" class="form-input text-xs font-semibold">
                             <div class="col-span-2 flex gap-1">
                                 <input type="number" x-model.number="invoiceForm.dp1Value" placeholder="Nominal DP 1" class="form-input text-xs font-bold text-gray-800">
@@ -1665,7 +1676,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         </div>
 
                         <!-- DP 2 (Jika 3 Kali Pelunasan) -->
-                        <div x-show="invoiceForm.paymentTermMode === 'three_steps'" class="grid grid-cols-3 gap-2 items-center">
+                        <div x-show="invoiceForm.paymentTermMode === 'three_steps'" class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
                             <input type="text" x-model="invoiceForm.dp2Label" placeholder="DP 2" class="form-input text-xs font-semibold">
                             <div class="col-span-2 flex gap-1">
                                 <input type="number" x-model.number="invoiceForm.dp2Value" placeholder="Nominal DP 2" class="form-input text-xs font-bold text-gray-800">
@@ -1674,7 +1685,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         </div>
 
                         <!-- Pelunasan -->
-                        <div x-show="invoiceForm.paymentTermMode === 'dp_pelunasan' || invoiceForm.paymentTermMode === 'three_steps'" class="grid grid-cols-3 gap-2 items-center">
+                        <div x-show="invoiceForm.paymentTermMode === 'dp_pelunasan' || invoiceForm.paymentTermMode === 'three_steps'" class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
                             <input type="text" x-model="invoiceForm.pelunasanLabel" placeholder="PELUNASAN" class="form-input text-xs font-semibold">
                             <div class="col-span-2 flex gap-1">
                                 <input type="number" x-model.number="invoiceForm.pelunasanValue" placeholder="Sisa Pelunasan" class="form-input text-xs font-bold text-gray-800">
@@ -1796,7 +1807,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             </div>
 
             <!-- Scrollable Preview Canvas -->
-            <div class="overflow-x-auto p-4 bg-gray-200/70 rounded-2xl flex justify-center border border-gray-300/80 shadow-inner">
+            <div class="overflow-x-auto p-4 bg-gray-200/70 rounded-2xl border border-gray-300/80 shadow-inner">
                 
                 <!-- ================= ACTUAL PRINTABLE A4 INVOICE SHEET ================= -->
                 <div id="invoice-print-area" 
@@ -2053,7 +2064,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
         <!-- Invoices Table -->
         <div class="p-4 overflow-y-auto flex-1">
-            <div class="border rounded-xl overflow-hidden">
+            <div class="border rounded-xl overflow-x-auto">
                 <table class="w-full text-xs text-left">
                     <thead class="bg-gray-50 text-gray-500 uppercase border-b">
                         <tr>
@@ -2152,7 +2163,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             <h4 class="font-bold text-sm text-gray-800 mb-3 flex items-center gap-2">
                 <i class="fas fa-history text-primary"></i> Riwayat Pesanan Pelanggan
             </h4>
-            <div class="border rounded-xl overflow-hidden">
+            <div class="border rounded-xl overflow-x-auto">
                 <table class="w-full text-xs text-left">
                     <thead class="bg-gray-50 text-gray-500 uppercase">
                         <tr>
@@ -2346,7 +2357,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         </div>
                     </div>
 
-                    <div class="border rounded-xl overflow-hidden max-h-72 overflow-y-auto">
+                    <div class="border rounded-xl overflow-x-auto max-h-72 overflow-y-auto">
                         <table class="w-full text-xs text-left">
                             <thead class="bg-gray-50 text-gray-500 uppercase sticky top-0 z-10 border-b">
                                 <tr>

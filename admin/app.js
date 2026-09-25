@@ -12,6 +12,7 @@ function adminApp() {
         chartInstance: null,
         products: [],
         searchQuery: '',
+        isSidebarOpen: false,
         articleSearch: '',
         mediaItems: [],
         isUploadingMedia: false,
@@ -248,7 +249,8 @@ function adminApp() {
         },
 
         changeView(view) { 
-            this.currentView = view; 
+            this.currentView = view;
+            this.isSidebarOpen = false; // Close sidebar on mobile after navigation
             if (view === 'orders') {
                 this.orderFilter = 'all';
                 this.loadOrders();
