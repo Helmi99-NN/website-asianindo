@@ -12,24 +12,38 @@ require_once __DIR__ . '/midtrans_config.php';
 
 header('Content-Type: application/json');
 
-$rawInput = file_get_contents('php://input');
+// 1. Tangani Test Ping / Probe dari Dashboard Midtrans (GET atau Empty POST)
+if ($_SERVER['REQUEST_METHOD'] === 'GET' || empty($rawInput)) {
+    http_response_code(200);
+    echo json_encode(['status' => 'OK', 'message' => 'Midtrans webhook endpoint is active and ready']);
+    exit;
+}
+
 $data = json_decode($rawInput, true);
 
-if (!$data || empty($data['order_id']) || empty($data['signature_key'])) {
-    http_response_code(400);
-    echo json_encode(['status' => 'ERROR', 'message' => 'Invalid notification payload']);
+// 2. Tangani Test Payload dari Dashboard Midtrans ("Test notification URL")
+if (!$data || empty($data['order_id'])) {
+    http_response_code(200);
+    echo json_encode(['status' => 'OK', 'message' => 'Midtrans test probe acknowledged']);
     exit;
 }
 
 $orderId = $data['order_id'];
-$statusCode = $data['status_code'];
-$grossAmount = $data['gross_amount'];
-$reqSignature = $data['signature_key'];
-$transactionStatus = $data['transaction_status'];
+$statusCode = $data['status_code'] ?? '200';
+$grossAmount = $data['gross_amount'] ?? '0';
+$reqSignature = $data['signature_key'] ?? '';
+$transactionStatus = $data['transaction_status'] ?? '';
 $fraudStatus = $data['fraud_status'] ?? '';
 $paymentType = $data['payment_type'] ?? '';
 $transactionId = $data['transaction_id'] ?? '';
 $pdfUrl = $data['pdf_url'] ?? '';
+
+// Jika order_id merupakan transaksi test bawaan Midtrans dashboard
+if (strpos(strtolower($orderId), 'test') !== false || empty($reqSignature)) {
+    http_response_code(200);
+    echo json_encode(['status' => 'OK', 'message' => 'Test notification acknowledged successfully']);
+    exit;
+}
 
 // Format gross_amount ke format angka murni (tanpa desimal tak perlu)
 $grossAmountFormatted = is_numeric($grossAmount) ? sprintf("%.2f", (float)$grossAmount) : $grossAmount;
@@ -40,8 +54,14 @@ $localSig1 = hash('sha512', $orderId . $statusCode . $grossAmount . MIDTRANS_SER
 $localSig2 = hash('sha512', $orderId . $statusCode . $grossAmountFormatted . MIDTRANS_SERVER_KEY);
 
 if ($reqSignature !== $localSig1 && $reqSignature !== $localSig2) {
-    http_response_code(403);
-    echo json_encode(['status' => 'ERROR', 'message' => 'Invalid signature key']);
+    // Jika signature tidak cocok tapi berawalan test/mock, tetap beri respon 200 agar pengetesan dashboard tidak error
+    if (strpos(strtolower($orderId), 'sample') !== false || strpos(strtolower($orderId), 'mock') !== false) {
+        http_response_code(200);
+        echo json_encode(['status' => 'OK', 'message' => 'Sample test signature acknowledged']);
+        exit;
+    }
+    http_response_code(200); // Selalu kirim 200 untuk mencegah retrying Midtrans
+    echo json_encode(['status' => 'IGNORED', 'message' => 'Invalid signature key']);
     exit;
 }
 
@@ -54,8 +74,9 @@ try {
     $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$order) {
-        http_response_code(404);
-        echo json_encode(['status' => 'ERROR', 'message' => 'Order not found']);
+        // Jangan kembalikan 404 ke Midtrans (Midtrans rekomendasi return 200 untuk pesanan yang tidak dikenal)
+        http_response_code(200);
+        echo json_encode(['status' => 'OK', 'message' => 'Order not found in database or dummy test transaction']);
         exit;
     }
 
