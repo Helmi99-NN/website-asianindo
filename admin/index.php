@@ -139,12 +139,17 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         <div x-show="isSidebarOpen" @click="isSidebarOpen = false" class="fixed inset-0 bg-black/40 z-30 md:hidden backdrop-blur-sm" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"></div>
 
         <!-- ======== SIDEBAR ======== -->
-        <aside :class="isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'" class="w-64 bg-sidebar text-white flex flex-col flex-shrink-0 fixed md:static inset-y-0 left-0 z-40 transform transition-transform duration-200 ease-in-out">
-            <div class="p-5 border-b border-white/10">
-                <h2 class="text-xl font-bold flex items-center gap-2">
-                    <i class="fas fa-cogs text-primary-light"></i> CMS Admin
-                </h2>
-                <p class="text-xs text-gray-400 mt-1">CV Asianindo</p>
+        <aside :class="isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'" class="-translate-x-full md:translate-x-0 w-64 bg-sidebar text-white flex flex-col flex-shrink-0 fixed md:static inset-y-0 left-0 z-40 transform transition-transform duration-200 ease-in-out">
+            <div class="p-5 border-b border-white/10 flex items-center justify-between">
+                <div>
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        <i class="fas fa-cogs text-primary-light"></i> CMS Admin
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-1">CV Asianindo</p>
+                </div>
+                <button @click="isSidebarOpen = false" class="md:hidden text-gray-400 hover:text-white p-2 rounded-lg hover:bg-sidebar-hover text-lg focus:outline-none" title="Tutup Menu">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <nav class="flex-1 overflow-y-auto py-4">
                 <ul class="space-y-0.5 px-3">
@@ -240,14 +245,16 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         <main class="flex-1 flex flex-col overflow-hidden">
             <!-- Header Bar -->
             <header class="bg-white shadow-sm h-14 flex items-center justify-between px-4 md:px-8 border-b border-gray-200 flex-shrink-0">
-    <button @click="isSidebarOpen = !isSidebarOpen" class="md:hidden text-gray-600 focus:outline-none">
-        <i class="fas" :class="isSidebarOpen ? 'fa-times' : 'fa-bars'"></i>
-    </button>
-    <h1 class="text-lg font-bold text-gray-800 capitalize" x-text="currentView.replace('_', ' ')"></h1>
-    <a href="../" target="_blank" class="text-sm text-primary hover:text-primary-hover flex items-center gap-1.5 font-medium hidden md:flex">
-        <i class="fas fa-external-link-alt text-xs"></i> Lihat Website
-    </a>
-</header>
+                <div class="flex items-center gap-3">
+                    <button @click="isSidebarOpen = !isSidebarOpen" class="md:hidden text-gray-700 hover:text-primary p-2 -ml-2 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none" aria-label="Toggle Menu">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                    <h1 class="text-base sm:text-lg font-bold text-gray-800 capitalize truncate max-w-[200px] sm:max-w-none" x-text="currentView.replace('_', ' ')"></h1>
+                </div>
+                <a href="../" target="_blank" class="text-sm text-primary hover:text-primary-hover flex items-center gap-1.5 font-medium hidden md:flex">
+                    <i class="fas fa-external-link-alt text-xs"></i> Lihat Website
+                </a>
+            </header>
 
             <!-- Scrollable Content -->
             <div class="flex-1 overflow-y-auto p-3 md:p-6 lg:p-8">
@@ -494,7 +501,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     <template x-for="(img, idx) in productForm.images" :key="idx">
                         <div class="relative group">
                             <img :src="img.startsWith('http') || img.startsWith('data:') ? img : ('../'+img)" class="w-32 h-32 object-cover rounded-lg border shadow-sm">
-                            <button type="button" @click="productForm.images.splice(idx, 1)" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-md">
+                            <button type="button" @click="productForm.images.splice(idx, 1)" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shadow-md" title="Hapus foto">
                                 <i class="fas fa-times text-xs"></i>
                             </button>
                         </div>
