@@ -394,7 +394,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         <button @click="changeView('products')" class="btn-secondary text-sm"><i class="fas fa-arrow-left"></i> Kembali</button>
         <h2 class="text-xl font-bold" x-text="editingId ? 'Edit Produk' : 'Tambah Produk Baru'"></h2>
     </div>
-    <div class="card card-body max-w-4xl">
+    <div class="card card-body max-w-5xl">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div class="form-group"><label class="form-label">Nama Produk *</label><input type="text" x-model="productForm.name" class="form-input" placeholder="Contoh: Mesin Vacuum Frying"></div>
             <div class="form-group"><label class="form-label">Kategori</label>
@@ -407,7 +407,46 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             <div class="form-group md:col-span-2"><label class="form-label">Rentang Harga</label><input type="text" x-model="productForm.priceRange" class="form-input" placeholder="Contoh: Rp 10.000.000 - Rp 25.000.000"></div>
         </div>
         
-        <div class="form-group"><label class="form-label">Deskripsi Produk</label><textarea x-model="productForm.description" class="form-textarea" rows="4" placeholder="Tuliskan deskripsi lengkap produk..."></textarea></div>
+        <!-- Deskripsi Produk (Shopee Style) -->
+        <div class="form-group">
+            <div class="flex items-center justify-between mb-1.5">
+                <label class="form-label mb-0"><span class="text-red-500 mr-1">*</span>Deskripsi Produk</label>
+                <span class="text-xs text-gray-400 font-medium"><span x-text="(productForm.description || '').length">0</span> / 3000 karakter</span>
+            </div>
+            
+            <div class="border border-gray-300 rounded-xl bg-white shadow-xs overflow-hidden focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all">
+                <textarea 
+                    x-model="productForm.description" 
+                    rows="14" 
+                    class="w-full p-4 text-sm text-gray-800 leading-relaxed font-sans border-0 focus:ring-0 focus:outline-none resize-y min-h-[300px] placeholder-gray-400" 
+                    placeholder="Tuliskan deskripsi lengkap produk (kapasitas, dimensi, spesifikasi teknis, garansi, keunggulan, dll)..."></textarea>
+                
+                <!-- Quick Recommendation Tags Bar (Shopee Style) -->
+                <div class="px-4 py-2.5 bg-gray-50/80 border-t border-gray-100 flex flex-wrap items-center gap-2">
+                    <span class="text-xs font-semibold text-gray-500 mr-1">Rekomendasi</span>
+                    <button type="button" @click="productForm.description = (productForm.description ? productForm.description.trim() + '\n' : '') + '- Instruksi Penggunaan: '" class="px-2.5 py-1 text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-full transition-colors text-gray-700 shadow-2xs font-medium cursor-pointer">+ Instruksi Penggunaan</button>
+                    <button type="button" @click="productForm.description = (productForm.description ? productForm.description.trim() + '\n' : '') + '- Dimensi: '" class="px-2.5 py-1 text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-full transition-colors text-gray-700 shadow-2xs font-medium cursor-pointer">+ Ukuran</button>
+                    <button type="button" @click="productForm.description = (productForm.description ? productForm.description.trim() + '\n' : '') + '- Bahan: '" class="px-2.5 py-1 text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-full transition-colors text-gray-700 shadow-2xs font-medium cursor-pointer">+ Bahan</button>
+                    <button type="button" @click="productForm.description = (productForm.description ? productForm.description.trim() + '\n' : '') + '- Kapasitas: '" class="px-2.5 py-1 text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-full transition-colors text-gray-700 shadow-2xs font-medium cursor-pointer">+ Kapasitas</button>
+                    <button type="button" @click="productForm.description = (productForm.description ? productForm.description.trim() + '\n' : '') + '- Total Daya Listrik: '" class="px-2.5 py-1 text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-full transition-colors text-gray-700 shadow-2xs font-medium cursor-pointer">+ Daya Listrik</button>
+                    <button type="button" @click="productForm.description = (productForm.description ? productForm.description.trim() + '\n' : '') + '- Material Rangka: Plat SUS 304 (Food Grade)'" class="px-2.5 py-1 text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-full transition-colors text-gray-700 shadow-2xs font-medium cursor-pointer">+ Material</button>
+                    <button type="button" @click="productForm.description = (productForm.description ? productForm.description.trim() + '\n' : '') + '- Garansi: 1 Tahun Service Resmi CV Asianindo'" class="px-2.5 py-1 text-xs bg-white border border-gray-200 hover:border-primary hover:text-primary rounded-full transition-colors text-gray-700 shadow-2xs font-medium cursor-pointer">+ Garansi</button>
+                </div>
+            </div>
+
+            <!-- Shopee Assistant Banner -->
+            <div class="mt-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-orange-50/70 border border-orange-200/80 rounded-lg text-xs text-orange-950">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-magic text-orange-500"></i>
+                    <span>Membantu untuk menyusun deskripsi produk yang lebih baik dan rapi untuk calon pembeli</span>
+                </div>
+                <div class="flex items-center gap-2 self-end sm:self-auto">
+                    <button type="button" @click="if(!productForm.description){ productForm.description = '- Kapasitas: \n- Dimensi: \n- Material: Stainless Steel SUS 304 Food Grade\n- Total Daya Listrik: \n- Sistem Kontrol: Otomatis\n- Garansi: 1 Tahun Service Resmi CV Asianindo'; } else { productForm.description = productForm.description.trim() + '\n- Garansi: 1 Tahun Service Resmi CV Asianindo'; }" class="px-3 py-1 bg-white border border-orange-300 hover:bg-orange-100 rounded-md text-orange-900 font-semibold text-xs transition-colors cursor-pointer shadow-2xs">
+                        Template Standar
+                    </button>
+                </div>
+            </div>
+        </div>
         
         <!-- Features -->
         <div class="form-group">
