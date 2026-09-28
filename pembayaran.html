@@ -74,7 +74,7 @@
             <div class="mb-4 sm:mb-6 bg-gradient-to-br from-purple-50/70 to-blue-50/50 p-3.5 sm:p-5 rounded-2xl border border-purple-100">
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center gap-2" id="channel_logo_container">
-                        <img id="channel_logo" src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" alt="Bank Logo" class="h-6 sm:h-8 object-contain">
+                        <img id="channel_logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/320px-Bank_Central_Asia.svg.png" alt="Bank Logo" class="h-6 sm:h-8 object-contain">
                     </div>
                     <span id="channel_tag" class="text-[11px] sm:text-xs font-semibold px-2 py-0.5 rounded-md bg-primary/10 text-primary">Virtual Account</span>
                 </div>
@@ -350,19 +350,19 @@
         }
 
         const channelLogos = {
-            'BC': 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg',
-            'M2': 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg',
-            'BR': 'https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg',
-            'B1': 'https://upload.wikimedia.org/wikipedia/commons/f/f0/BNI_logo.svg',
-            'BT': 'https://upload.wikimedia.org/wikipedia/commons/7/7b/PermataBank_logo.svg',
-            'BSI': 'https://upload.wikimedia.org/wikipedia/commons/a/a0/Bank_Syariah_Indonesia.svg',
-            'C1': 'https://upload.wikimedia.org/wikipedia/commons/1/15/CIMB_Niaga_logo.svg',
-            'NQ': 'https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg',
-            'VC': 'https://upload.wikimedia.org/wikipedia/commons/d/d6/Visa_2021.svg',
-            'OV': 'https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo_purple.svg',
-            'DA': 'https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg',
-            'SP': 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Shopee_logo.svg',
-            'MANUAL_BCA': 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg'
+            'BC': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/320px-Bank_Central_Asia.svg.png',
+            'M2': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/320px-Bank_Mandiri_logo_2016.svg.png',
+            'BR': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/BANK_BRI_logo.svg/320px-BANK_BRI_logo.svg.png',
+            'B1': 'images/bni.svg',
+            'BT': 'https://logo.clearbit.com/permatabank.com',
+            'BSI': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Bank_Syariah_Indonesia.svg/320px-Bank_Syariah_Indonesia.svg.png',
+            'C1': 'https://logo.clearbit.com/cimbniaga.co.id',
+            'NQ': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/320px-Logo_QRIS.svg.png',
+            'VC': 'images/visa.svg',
+            'OV': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Logo_ovo_purple.svg/320px-Logo_ovo_purple.svg.png',
+            'DA': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Logo_dana_blue.svg/320px-Logo_dana_blue.svg.png',
+            'SP': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Shopee_logo.svg/320px-Shopee_logo.svg.png',
+            'MANUAL_BCA': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/320px-Bank_Central_Asia.svg.png'
         };
 
         let statusPollTimer = null;
@@ -414,7 +414,7 @@
                     // Render Channel details
                     const channelCode = order.payment_method_code || 'BC';
                     const isMidtrans = (order.payment_gateway === 'midtrans');
-                    const logoUrl = channelLogos[channelCode] || 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg';
+                    const logoUrl = channelLogos[channelCode] || 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/320px-Bank_Central_Asia.svg.png';
                     
                     const logoEl = document.getElementById('channel_logo');
                     if (logoEl) logoEl.src = logoUrl;
