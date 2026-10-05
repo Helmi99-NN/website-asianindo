@@ -822,6 +822,65 @@ if ($action === 'bulk_update_products') {
     exit;
 }
 
+if ($action === 'bulk_update_media') {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $updates = $input['updates'] ?? (is_array($input) ? $input : []);
+
+    if (!is_array($updates) || empty($updates)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Tidak ada data produk yang dikirim']);
+        exit;
+    }
+
+    $products = readData();
+    $indexMap = [];
+    foreach ($products as $idx => $p) {
+        if (isset($p['id'])) {
+            $indexMap[(string)$p['id']] = $idx;
+        }
+    }
+
+    $updatedCount = 0;
+    foreach ($updates as $item) {
+        $id = isset($item['id']) ? (string)$item['id'] : '';
+        if ($id === '' || !isset($indexMap[$id])) {
+            continue;
+        }
+
+        $idx = $indexMap[$id];
+        $current = $products[$idx];
+
+        if (isset($item['images']) && is_array($item['images'])) {
+            $cleanImages = [];
+            foreach ($item['images'] as $img) {
+                if (is_string($img) && trim($img) !== '') {
+                    $cleanImages[] = trim($img);
+                }
+            }
+            $current['images'] = $cleanImages;
+        }
+
+        if (array_key_exists('promo_image', $item)) {
+            $current['promo_image'] = trim($item['promo_image'] ?? '');
+        }
+
+        if (array_key_exists('video', $item)) {
+            $current['video'] = trim($item['video'] ?? '');
+        }
+
+        $products[$idx] = $current;
+        $updatedCount++;
+    }
+
+    writeData($products);
+    echo json_encode([
+        'success' => true,
+        'updated_count' => $updatedCount,
+        'message' => "$updatedCount / " . count($updates) . " berhasil"
+    ]);
+    exit;
+}
+
 // ==========================================
 // INVOICE & QUOTATION GENERATOR API
 // ==========================================

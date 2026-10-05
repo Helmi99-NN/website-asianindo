@@ -31,6 +31,28 @@ function adminApp() {
         bulkShowOnlyChanged: false,
         isProcessingBulk: false,
 
+        // ==================== SHOPEE-STYLE BULK MEDIA STATES ====================
+        bulkMediaItems: [],
+        bulkMediaFilterCategory: '',
+        bulkMediaSearch: '',
+        bulkMediaStatusFilter: 'all', // 'all', 'modified', 'under5', 'novideo'
+        bulkMediaPage: 1,
+        bulkMediaPerPage: 10,
+        bulkMediaSelectedIds: [],
+        isSavingBulkMedia: false,
+        bulkMediaSuccessToast: false,
+        bulkMediaToastText: '',
+
+        // Media Library Picker Modal States
+        showMediaPickerModal: false,
+        mediaPickerTargetProductId: null,
+        mediaPickerTargetType: 'gallery', // 'gallery', 'promo', 'replace_index'
+        mediaPickerReplaceIndex: null,
+        mediaPickerSelectedUrls: [],
+
+        // Panduan Ukuran & Format Foto Shopee Modal
+        showSizeGuideModal: false,
+
         // ==================== INVOICE GENERATOR STATES ====================
         savedInvoices: [],
         showSavedInvoicesModal: false,
@@ -265,6 +287,12 @@ function adminApp() {
             } else if (view === 'invoice_generator') {
                 this.loadInvoices();
                 if (!this.invoiceForm.docDate) this.initInvoiceDefaults();
+            } else if (view === 'bulk_media') {
+                if (!this.products || this.products.length === 0) {
+                    this.loadProducts().then(() => this.initBulkMedia());
+                } else {
+                    this.initBulkMedia();
+                }
             }
         },
 
@@ -1811,6 +1839,361 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
                     this.loadInvoices();
                 }
             } catch(e) {}
+        },
+
+        // ==================== SHOPEE-STYLE BULK MEDIA METHODS ====================
+        initBulkMedia() {
+            this.bulkMediaSelectedIds = [];
+            this.bulkMediaPage = 1;
+            const prods = Array.isArray(this.products) ? this.products : [];
+            this.bulkMediaItems = prods.map(p => {
+                const origImages = Array.isArray(p.images) ? [...p.images] : [];
+                const origPromo = p.promo_image || '';
+                const origVideo = p.video || '';
+                return {
+                    id: String(p.id),
+                    name: p.name || '',
+                    category: p.category || '',
+                    subCategory: p.subCategory || '',
+                    price: p.price || 0,
+                    priceDisplay: p.priceDisplay || ('Rp ' + (p.price || 0).toLocaleString('id-ID')),
+                    images: [...origImages],
+                    promo_image: origPromo,
+                    video: origVideo,
+                    ratio: '1:1',
+                    _origImages: [...origImages],
+                    _origPromo: origPromo,
+                    _origVideo: origVideo,
+                    isUploading: false
+                };
+            });
+        },
+
+        openBulkMediaWithSelected() {
+            this.changeView('bulk_media');
+            if (this.selectedProductIds && this.selectedProductIds.length > 0) {
+                this.bulkMediaSearch = '';
+                this.bulkMediaStatusFilter = 'all';
+                this.bulkMediaFilterCategory = '';
+                this.bulkMediaItems = this.bulkMediaItems.filter(p => this.selectedProductIds.includes(p.id));
+                this.bulkMediaSelectedIds = [...this.selectedProductIds];
+            }
+        },
+
+        isProductMediaModified(item) {
+            if (!item) return false;
+            const imgDiff = JSON.stringify(item.images) !== JSON.stringify(item._origImages);
+            const promoDiff = (item.promo_image || '') !== (item._origPromo || '');
+            const vidDiff = (item.video || '') !== (item._origVideo || '');
+            return imgDiff || promoDiff || vidDiff;
+        },
+
+        getModifiedBulkMediaCount() {
+            return (this.bulkMediaItems || []).filter(item => this.isProductMediaModified(item)).length;
+        },
+
+        filteredBulkMediaItems() {
+            let list = this.bulkMediaItems || [];
+            if (this.bulkMediaFilterCategory) {
+                list = list.filter(item => item.category === this.bulkMediaFilterCategory);
+            }
+            if (this.bulkMediaSearch) {
+                const q = this.bulkMediaSearch.toLowerCase().trim();
+                list = list.filter(item => item.name.toLowerCase().includes(q) || item.id.toLowerCase().includes(q));
+            }
+            if (this.bulkMediaStatusFilter === 'modified') {
+                list = list.filter(item => this.isProductMediaModified(item));
+            } else if (this.bulkMediaStatusFilter === 'under5') {
+                list = list.filter(item => (item.images || []).length < 5);
+            } else if (this.bulkMediaStatusFilter === 'novideo') {
+                list = list.filter(item => !item.video);
+            }
+            return list;
+        },
+
+        paginatedBulkMediaItems() {
+            const list = this.filteredBulkMediaItems();
+            if (this.bulkMediaPerPage === 'all') return list;
+            const perPage = parseInt(this.bulkMediaPerPage) || 10;
+            const start = (this.bulkMediaPage - 1) * perPage;
+            return list.slice(start, start + perPage);
+        },
+
+        totalBulkMediaPages() {
+            if (this.bulkMediaPerPage === 'all') return 1;
+            const perPage = parseInt(this.bulkMediaPerPage) || 10;
+            return Math.ceil(this.filteredBulkMediaItems().length / perPage) || 1;
+        },
+
+        isAllBulkMediaSelectedInPage() {
+            const pageItems = this.paginatedBulkMediaItems();
+            if (pageItems.length === 0) return false;
+            return pageItems.every(i => this.bulkMediaSelectedIds.includes(i.id));
+        },
+
+        toggleSelectAllBulkMediaInPage() {
+            const pageItems = this.paginatedBulkMediaItems();
+            if (this.isAllBulkMediaSelectedInPage()) {
+                const pageIds = pageItems.map(i => i.id);
+                this.bulkMediaSelectedIds = this.bulkMediaSelectedIds.filter(id => !pageIds.includes(id));
+            } else {
+                const newIds = pageItems.map(i => i.id);
+                this.bulkMediaSelectedIds = Array.from(new Set([...this.bulkMediaSelectedIds, ...newIds]));
+            }
+        },
+
+        toggleSelectBulkMedia(id) {
+            if (this.bulkMediaSelectedIds.includes(id)) {
+                this.bulkMediaSelectedIds = this.bulkMediaSelectedIds.filter(x => x !== id);
+            } else {
+                this.bulkMediaSelectedIds.push(id);
+            }
+        },
+
+        async uploadImagesForProduct(productId, event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+            const item = this.bulkMediaItems.find(p => p.id === productId);
+            if (!item) return;
+
+            if (item.images.length + files.length > 9) {
+                alert('Maksimal 9 foto produk sesuai standar Shopee!');
+            }
+
+            item.isUploading = true;
+            for (let i = 0; i < files.length; i++) {
+                if (item.images.length >= 9) break;
+                const f = files[i];
+                if (f.size > 5 * 1024 * 1024) {
+                    alert('Ukuran foto ' + f.name + ' melebihi 5MB!');
+                    continue;
+                }
+                const fd = new FormData();
+                fd.append('file', f);
+                try {
+                    const res = await fetch('api.php?action=upload_media', { method: 'POST', body: fd });
+                    const json = await res.json();
+                    if (json.success && json.path) {
+                        item.images.push(json.path);
+                    }
+                } catch (err) {
+                    console.error('Upload error:', err);
+                }
+            }
+            item.isUploading = false;
+            event.target.value = '';
+        },
+
+        async replaceImageAt(productId, index, event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const item = this.bulkMediaItems.find(p => p.id === productId);
+            if (!item) return;
+
+            item.isUploading = true;
+            const fd = new FormData();
+            fd.append('file', file);
+            try {
+                const res = await fetch('api.php?action=upload_media', { method: 'POST', body: fd });
+                const json = await res.json();
+                if (json.success && json.path) {
+                    item.images[index] = json.path;
+                }
+            } catch (err) {
+                console.error('Replace error:', err);
+            }
+            item.isUploading = false;
+            event.target.value = '';
+        },
+
+        setAsCoverImage(productId, index) {
+            const item = this.bulkMediaItems.find(p => p.id === productId);
+            if (!item || index === 0) return;
+            const target = item.images.splice(index, 1)[0];
+            item.images.unshift(target);
+        },
+
+        moveImage(productId, fromIndex, toIndex) {
+            const item = this.bulkMediaItems.find(p => p.id === productId);
+            if (!item || toIndex < 0 || toIndex >= item.images.length) return;
+            const target = item.images.splice(fromIndex, 1)[0];
+            item.images.splice(toIndex, 0, target);
+        },
+
+        removeImageAt(productId, index) {
+            const item = this.bulkMediaItems.find(p => p.id === productId);
+            if (!item) return;
+            item.images.splice(index, 1);
+        },
+
+        async uploadPromoImage(productId, event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const item = this.bulkMediaItems.find(p => p.id === productId);
+            if (!item) return;
+
+            item.isUploading = true;
+            const fd = new FormData();
+            fd.append('file', file);
+            try {
+                const res = await fetch('api.php?action=upload_media', { method: 'POST', body: fd });
+                const json = await res.json();
+                if (json.success && json.path) {
+                    item.promo_image = json.path;
+                }
+            } catch (err) {
+                console.error('Promo upload error:', err);
+            }
+            item.isUploading = false;
+            event.target.value = '';
+        },
+
+        removePromoImage(productId) {
+            const item = this.bulkMediaItems.find(p => p.id === productId);
+            if (item) item.promo_image = '';
+        },
+
+        async uploadVideoForProduct(productId, event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (file.size > 30 * 1024 * 1024) {
+                alert('Ukuran video maksimal 30MB (ketentuan Shopee)!');
+                event.target.value = '';
+                return;
+            }
+            const item = this.bulkMediaItems.find(p => p.id === productId);
+            if (!item) return;
+
+            item.isUploading = true;
+            const fd = new FormData();
+            fd.append('file', file);
+            try {
+                const res = await fetch('api.php?action=upload_media', { method: 'POST', body: fd });
+                const json = await res.json();
+                if (json.success && json.path) {
+                    item.video = json.path;
+                } else {
+                    alert('Gagal mengunggah video: ' + (json.error || 'Server error'));
+                }
+            } catch (err) {
+                console.error('Video upload error:', err);
+            }
+            item.isUploading = false;
+            event.target.value = '';
+        },
+
+        removeVideoForProduct(productId) {
+            const item = this.bulkMediaItems.find(p => p.id === productId);
+            if (item) item.video = '';
+        },
+
+        resetProductMedia(productId) {
+            const item = this.bulkMediaItems.find(p => p.id === productId);
+            if (!item) return;
+            item.images = [...item._origImages];
+            item.promo_image = item._origPromo;
+            item.video = item._origVideo;
+        },
+
+        revertAllBulkMedia() {
+            const count = this.getModifiedBulkMediaCount();
+            if (count === 0) return;
+            if (!confirm(`Batalkan semua perubahan foto & video pada ${count} produk?`)) return;
+            this.bulkMediaItems.forEach(item => {
+                item.images = [...item._origImages];
+                item.promo_image = item._origPromo;
+                item.video = item._origVideo;
+            });
+        },
+
+        async saveBulkMediaChanges() {
+            const modifiedItems = this.bulkMediaItems.filter(item => this.isProductMediaModified(item));
+            if (modifiedItems.length === 0) {
+                alert('Tidak ada perubahan foto produk yang perlu disimpan.');
+                return;
+            }
+
+            this.isSavingBulkMedia = true;
+            const payload = {
+                updates: modifiedItems.map(item => ({
+                    id: item.id,
+                    images: item.images,
+                    promo_image: item.promo_image || '',
+                    video: item.video || ''
+                }))
+            };
+
+            try {
+                const res = await fetch('api.php?action=bulk_update_media', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const json = await res.json();
+                if (res.ok && json.success) {
+                    modifiedItems.forEach(item => {
+                        item._origImages = [...item.images];
+                        item._origPromo = item.promo_image;
+                        item._origVideo = item.video;
+                    });
+                    await this.loadProducts();
+                    this.bulkMediaToastText = `${json.updated_count} / ${modifiedItems.length} berhasil diperbarui`;
+                    this.bulkMediaSuccessToast = true;
+                    setTimeout(() => {
+                        this.bulkMediaSuccessToast = false;
+                    }, 4500);
+                } else {
+                    alert('Gagal menyimpan: ' + (json.error || 'Server error'));
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Terjadi kesalahan jaringan saat menyimpan foto.');
+            } finally {
+                this.isSavingBulkMedia = false;
+            }
+        },
+
+        openMediaPicker(productId, type = 'gallery', replaceIndex = null) {
+            this.mediaPickerTargetProductId = productId;
+            this.mediaPickerTargetType = type;
+            this.mediaPickerReplaceIndex = replaceIndex;
+            this.mediaPickerSelectedUrls = [];
+            this.loadMedia();
+            this.showMediaPickerModal = true;
+        },
+
+        toggleSelectMediaPickerUrl(path) {
+            if (this.mediaPickerTargetType === 'promo' || this.mediaPickerTargetType === 'replace_index') {
+                this.mediaPickerSelectedUrls = [path];
+            } else {
+                const idx = this.mediaPickerSelectedUrls.indexOf(path);
+                if (idx >= 0) this.mediaPickerSelectedUrls.splice(idx, 1);
+                else this.mediaPickerSelectedUrls.push(path);
+            }
+        },
+
+        applyMediaPickerSelection() {
+            if (this.mediaPickerSelectedUrls.length === 0) {
+                this.showMediaPickerModal = false;
+                return;
+            }
+            const item = this.bulkMediaItems.find(p => p.id === this.mediaPickerTargetProductId);
+            if (item) {
+                if (this.mediaPickerTargetType === 'promo') {
+                    item.promo_image = this.mediaPickerSelectedUrls[0];
+                } else if (this.mediaPickerTargetType === 'replace_index') {
+                    if (this.mediaPickerReplaceIndex !== null) {
+                        item.images[this.mediaPickerReplaceIndex] = this.mediaPickerSelectedUrls[0];
+                    }
+                } else {
+                    for (const url of this.mediaPickerSelectedUrls) {
+                        if (item.images.length < 9) {
+                            item.images.push(url);
+                        }
+                    }
+                }
+            }
+            this.showMediaPickerModal = false;
         }
     }
 }

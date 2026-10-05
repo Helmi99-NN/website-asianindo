@@ -166,6 +166,12 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         <span class="ml-auto bg-white/20 text-xs px-2 py-0.5 rounded-full" x-text="products.length"></span>
                     </a></li>
                     
+                    <!-- Ubah Foto Massal (Shopee) -->
+                    <li><a href="#" @click.prevent="changeView('bulk_media')" :class="currentView==='bulk_media' ? 'bg-[#EE4D2D] text-white shadow-md' : 'text-gray-300 hover:bg-sidebar-hover'" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm group">
+                        <i class="fas fa-camera-retro w-5 text-center text-orange-400 group-hover:scale-110 transition-transform"></i> Edit Foto Massal
+                        <span class="ml-auto bg-orange-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider">Shopee</span>
+                    </a></li>
+                    
                     <!-- Artikel -->
                     <li><a href="#" @click.prevent="changeView('articles')" :class="currentView==='articles'||currentView==='article_form' ? 'bg-primary text-white shadow-md' : 'text-gray-300 hover:bg-sidebar-hover'" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm">
                         <i class="fas fa-newspaper w-5 text-center"></i> Artikel Blog
@@ -336,6 +342,12 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             </select>
         </div>
         <div class="flex flex-wrap items-center gap-2">
+            <!-- Shopee-style Edit Foto Massal Button -->
+            <button @click="changeView('bulk_media')" class="bg-[#EE4D2D] hover:bg-[#d73211] text-white font-semibold py-2 px-4 rounded-lg transition-all shadow-sm flex items-center gap-2 text-sm">
+                <i class="fas fa-camera-retro text-base"></i>
+                <span>Ubah Foto Massal</span>
+                <span class="bg-black/20 text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded">Shopee</span>
+            </button>
             <!-- Shopee-style Update Massal Button -->
             <button @click="openBulkModal('download')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-lg transition-all shadow-sm flex items-center gap-2 text-sm">
                 <i class="fas fa-file-excel text-base"></i>
@@ -347,12 +359,15 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     </div>
 
     <!-- Active Selection Floating Bar (Shopee Style) -->
-    <div x-show="selectedProductIds.length > 0" x-cloak class="mb-4 bg-gradient-to-r from-emerald-50 to-purple-50 border border-emerald-200 rounded-xl p-3 px-4 flex flex-wrap items-center justify-between gap-3 shadow-xs">
+    <div x-show="selectedProductIds.length > 0" x-cloak class="mb-4 bg-gradient-to-r from-emerald-50 via-orange-50 to-purple-50 border border-emerald-200 rounded-xl p-3 px-4 flex flex-wrap items-center justify-between gap-3 shadow-xs">
         <div class="flex items-center gap-2.5">
             <span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold" x-text="selectedProductIds.length"></span>
-            <span class="text-sm font-semibold text-gray-700">Produk terpilih untuk perubahan massal</span>
+            <span class="text-sm font-semibold text-gray-700">Produk terpilih untuk aksi massal</span>
         </div>
         <div class="flex flex-wrap items-center gap-2">
+            <button @click="openBulkMediaWithSelected()" class="text-xs bg-[#EE4D2D] hover:bg-[#d73211] text-white font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors shadow-xs">
+                <i class="fas fa-camera-retro"></i> Ubah Foto (<span x-text="selectedProductIds.length"></span>)
+            </button>
             <button @click="openBulkModal('download', 'selected')" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors shadow-xs">
                 <i class="fas fa-download"></i> Unduh Template Excel (<span x-text="selectedProductIds.length"></span>)
             </button>
@@ -531,6 +546,424 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             <button @click="changeView('products')" class="btn-secondary">Batal</button>
         </div>
     </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- 3.5. UBAH ATRIBUT FOTO & MEDIA PRODUK MASSAL (ALA SHOPEE SELLER) -->
+<!-- ================================================================ -->
+<div x-show="currentView==='bulk_media'" x-cloak class="pb-28">
+    
+    <!-- Breadcrumb Shopee Style -->
+    <div class="flex items-center gap-2 text-xs text-gray-500 mb-3 font-medium">
+        <a href="#" @click.prevent="changeView('dashboard')" class="hover:text-primary transition-colors">Beranda</a>
+        <i class="fas fa-chevron-right text-[9px] text-gray-400"></i>
+        <a href="#" @click.prevent="changeView('products')" class="hover:text-primary transition-colors">Produk Saya</a>
+        <i class="fas fa-chevron-right text-[9px] text-gray-400"></i>
+        <span class="text-gray-800 font-bold">Ubah Atribut Foto & Media Produk</span>
+    </div>
+
+    <!-- Header & Info Banner -->
+    <div class="bg-white rounded-2xl p-5 border border-gray-200/80 shadow-xs mb-5">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 text-white flex items-center justify-center text-xl shadow-md flex-shrink-0">
+                    <i class="fas fa-camera-retro"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2.5 flex-wrap">
+                        <h2 class="text-xl font-bold text-gray-800">Ubah Informasi Media Produk</h2>
+                        <span class="bg-[#EE4D2D]/10 text-[#EE4D2D] border border-[#EE4D2D]/20 text-xs px-2.5 py-0.5 rounded-full font-bold">Model Shopee Seller Center</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1 max-w-2xl leading-relaxed">
+                        Kelola galeri foto, foto promosi, dan video produk pada banyak produk sekaligus dalam satu halaman tanpa perlu membuka form edit satu per satu.
+                    </p>
+                </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 self-start md:self-auto">
+                <button type="button" @click="showSizeGuideModal = true" class="text-xs bg-blue-50 text-blue-700 hover:bg-blue-100 font-semibold px-3 py-2 rounded-lg border border-blue-200 flex items-center gap-1.5 transition-colors">
+                    <i class="fas fa-ruler-combined"></i> Panduan Ukuran Foto
+                </button>
+                <button type="button" @click="changeView('media')" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5">
+                    <i class="fas fa-images"></i> Galeri Media CMS
+                </button>
+                <button type="button" @click="changeView('products')" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Produk
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter & Toolbar Bar -->
+    <div class="bg-white rounded-2xl p-4 border border-gray-200/80 shadow-xs mb-5 space-y-3.5">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-3 flex-1 min-w-[280px]">
+                <!-- Search Input -->
+                <div class="relative flex-1 sm:max-w-xs">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
+                    <input type="text" x-model="bulkMediaSearch" placeholder="Cari nama atau ID produk..." class="form-input !pl-10 text-xs">
+                </div>
+                <!-- Category Filter -->
+                <select x-model="bulkMediaFilterCategory" class="form-input !w-auto text-xs">
+                    <option value="">Semua Kategori</option>
+                    <option value="Mesin Industri">Mesin Industri</option>
+                    <option value="Mesin Pengolahan">Mesin Pengolahan</option>
+                    <option value="Mesin Pengemasan">Mesin Pengemasan</option>
+                    <option value="Mesin Pertanian">Mesin Pertanian</option>
+                    <option value="Mesin Lainnya">Mesin Lainnya</option>
+                </select>
+            </div>
+
+            <!-- Page Size -->
+            <div class="flex items-center gap-2 text-xs text-gray-500">
+                <span>Tampilkan:</span>
+                <select x-model="bulkMediaPerPage" @change="bulkMediaPage = 1" class="form-input !w-auto !py-1 text-xs">
+                    <option value="10">10 Produk</option>
+                    <option value="20">20 Produk</option>
+                    <option value="50">50 Produk</option>
+                    <option value="all">Semua Produk</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Filter Status Tabs (Shopee Style) -->
+        <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-gray-100 text-xs">
+            <button type="button" @click="bulkMediaStatusFilter = 'all'; bulkMediaPage = 1" :class="bulkMediaStatusFilter === 'all' ? 'bg-[#EE4D2D] text-white font-bold shadow-xs' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'" class="px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5">
+                <span>Semua Produk</span>
+                <span class="bg-black/15 text-[11px] px-1.5 py-0.2 rounded-full" x-text="bulkMediaItems.length"></span>
+            </button>
+            <button type="button" @click="bulkMediaStatusFilter = 'modified'; bulkMediaPage = 1" :class="bulkMediaStatusFilter === 'modified' ? 'bg-[#EE4D2D] text-white font-bold shadow-xs' : 'bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200'" class="px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5">
+                <i class="fas fa-pencil-alt text-xs"></i>
+                <span>Ada Perubahan</span>
+                <span class="bg-orange-600 text-white font-bold text-[11px] px-1.5 py-0.2 rounded-full" x-text="getModifiedBulkMediaCount()"></span>
+            </button>
+            <button type="button" @click="bulkMediaStatusFilter = 'under5'; bulkMediaPage = 1" :class="bulkMediaStatusFilter === 'under5' ? 'bg-[#EE4D2D] text-white font-bold shadow-xs' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'" class="px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5">
+                <span>Foto Kurang Dari 5</span>
+            </button>
+            <button type="button" @click="bulkMediaStatusFilter = 'novideo'; bulkMediaPage = 1" :class="bulkMediaStatusFilter === 'novideo' ? 'bg-[#EE4D2D] text-white font-bold shadow-xs' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'" class="px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5">
+                <span>Belum Ada Video</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Products Table / List (Shopee Style) -->
+    <div class="space-y-4">
+        <!-- Table Header Bar -->
+        <div class="bg-gray-100/90 rounded-xl px-5 py-3 border border-gray-200 flex items-center justify-between text-xs font-bold text-gray-600 uppercase tracking-wider">
+            <div class="flex items-center gap-3 w-80">
+                <input type="checkbox" :checked="isAllBulkMediaSelectedInPage()" @change="toggleSelectAllBulkMediaInPage()" class="rounded border-gray-300 text-[#EE4D2D] focus:ring-[#EE4D2D] h-4 w-4 cursor-pointer" title="Pilih Semua di Halaman Ini">
+                <span>Nama Produk</span>
+            </div>
+            <div class="flex-1 pl-6">
+                <span>Informasi Media</span>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div x-show="filteredBulkMediaItems().length === 0" class="bg-white rounded-2xl p-12 text-center border border-gray-200 shadow-xs">
+            <i class="fas fa-box-open text-gray-300 text-4xl mb-3"></i>
+            <p class="text-sm font-semibold text-gray-700">Tidak ada produk yang cocok dengan filter</p>
+            <p class="text-xs text-gray-400 mt-1">Coba ubah kata kunci pencarian atau ganti filter status.</p>
+        </div>
+
+        <!-- Product Cards Loop -->
+        <template x-for="p in paginatedBulkMediaItems()" :key="p.id">
+            <div class="bg-white rounded-2xl border transition-all p-5 shadow-xs hover:border-gray-300" :class="isProductMediaModified(p) ? 'border-orange-300 bg-orange-50/10' : 'border-gray-200'">
+                <div class="flex flex-col lg:flex-row items-start gap-6">
+                    
+                    <!-- Left: Product Basic Info -->
+                    <div class="w-full lg:w-80 flex-shrink-0 flex items-start gap-3 border-b lg:border-b-0 lg:border-r border-gray-100 pb-4 lg:pb-0 lg:pr-5">
+                        <input type="checkbox" :checked="bulkMediaSelectedIds.includes(p.id)" @change="toggleSelectBulkMedia(p.id)" class="rounded border-gray-300 text-[#EE4D2D] focus:ring-[#EE4D2D] h-4 w-4 mt-1 cursor-pointer">
+                        
+                        <!-- Thumbnail Preview -->
+                        <div class="w-14 h-14 rounded-lg bg-gray-100 border border-gray-200 overflow-hidden flex-shrink-0 flex items-center justify-center">
+                            <template x-if="p.images && p.images[0]">
+                                <img :src="p.images[0].startsWith('http') ? p.images[0] : ('../' + p.images[0])" class="w-full h-full object-cover">
+                            </template>
+                            <template x-if="!p.images || !p.images[0]">
+                                <i class="fas fa-image text-gray-300 text-xl"></i>
+                            </template>
+                        </div>
+
+                        <!-- Name & Attributes -->
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-xs sm:text-sm font-bold text-gray-800 line-clamp-2 leading-snug" x-text="p.name"></h4>
+                            <p class="text-[11px] text-gray-400 mt-1">ID: <span class="font-mono text-gray-600" x-text="p.id"></span></p>
+                            <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                                <span class="text-[10px] bg-purple-50 text-purple-700 px-2 py-0.5 rounded font-medium" x-text="p.category"></span>
+                                <span class="text-[11px] font-bold text-primary" x-text="p.priceDisplay"></span>
+                            </div>
+
+                            <!-- Modification status badge -->
+                            <div class="mt-2.5">
+                                <template x-if="isProductMediaModified(p)">
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-flex items-center gap-1 text-[10px] font-bold text-orange-700 bg-orange-100 border border-orange-200 px-2 py-0.5 rounded-full animate-pulse">
+                                            <i class="fas fa-pencil-alt"></i> Belum Disimpan
+                                        </span>
+                                        <button type="button" @click="resetProductMedia(p.id)" class="text-[10px] text-red-500 hover:text-red-700 underline font-medium" title="Batalkan perubahan pada produk ini">
+                                            Reset
+                                        </button>
+                                    </div>
+                                </template>
+                                <template x-if="!isProductMediaModified(p)">
+                                    <span class="text-[10px] font-medium text-gray-400 flex items-center gap-1">
+                                        <i class="fas fa-check text-emerald-500"></i> Tersimpan
+                                    </span>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Informasi Media (Shopee Style) -->
+                    <div class="flex-1 w-full space-y-4">
+                        
+                        <!-- 1. FOTO PRODUK -->
+                        <div>
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+                                <div class="flex items-center gap-3">
+                                    <span class="font-bold text-xs sm:text-sm text-gray-800">Foto Produk</span>
+                                    <span class="text-[11px] text-gray-400">(Maks 9 foto)</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-xs">
+                                    <label class="inline-flex items-center gap-1.5 cursor-pointer text-gray-700">
+                                        <input type="radio" :name="'ratio_' + p.id" value="1:1" x-model="p.ratio" class="text-[#EE4D2D] focus:ring-[#EE4D2D]">
+                                        <span class="font-medium text-[11px]">Foto 1:1</span>
+                                    </label>
+                                    <label class="inline-flex items-center gap-1.5 cursor-pointer text-gray-400 hover:text-gray-600">
+                                        <input type="radio" :name="'ratio_' + p.id" value="3:4" x-model="p.ratio" class="text-[#EE4D2D] focus:ring-[#EE4D2D]">
+                                        <span class="font-medium text-[11px]">Foto 3:4</span>
+                                    </label>
+                                    <button type="button" @click="showSizeGuideModal = true" class="text-[11px] text-blue-600 hover:underline">
+                                        Panduan Ukuran
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Image Thumbnails Grid -->
+                            <div class="flex flex-wrap items-center gap-2.5">
+                                <template x-for="(img, idx) in p.images" :key="idx">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 relative rounded-xl border border-gray-200 overflow-hidden bg-gray-50 group shadow-2xs">
+                                        <img :src="img.startsWith('http') ? img : ('../' + img)" class="w-full h-full object-cover">
+                                        
+                                        <!-- Cover Badge for Index 0 -->
+                                        <template x-if="idx === 0">
+                                            <span class="absolute top-1 left-1 bg-[#EE4D2D] text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow-xs z-10">
+                                                Sampul
+                                            </span>
+                                        </template>
+
+                                        <!-- Order Number Badge -->
+                                        <span class="absolute bottom-1 left-1 bg-black/60 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center z-10" x-text="idx + 1"></span>
+
+                                        <!-- Hover / Tap Action Overlay -->
+                                        <div class="absolute inset-0 bg-black/75 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1 p-1 z-20">
+                                            <div class="flex items-center gap-1">
+                                                <!-- Move Left -->
+                                                <button type="button" x-show="idx > 0" @click="moveImage(p.id, idx, idx - 1)" class="w-5 h-5 bg-white/90 hover:bg-white text-gray-800 rounded flex items-center justify-center text-[9px]" title="Geser ke kiri">
+                                                    <i class="fas fa-chevron-left"></i>
+                                                </button>
+                                                <!-- Set as Cover -->
+                                                <button type="button" x-show="idx !== 0" @click="setAsCoverImage(p.id, idx)" class="w-5 h-5 bg-amber-400 hover:bg-amber-300 text-gray-900 rounded flex items-center justify-center text-[9px]" title="Jadikan Foto Sampul Utama">
+                                                    <i class="fas fa-star"></i>
+                                                </button>
+                                                <!-- Move Right -->
+                                                <button type="button" x-show="idx < p.images.length - 1" @click="moveImage(p.id, idx, idx + 1)" class="w-5 h-5 bg-white/90 hover:bg-white text-gray-800 rounded flex items-center justify-center text-[9px]" title="Geser ke kanan">
+                                                    <i class="fas fa-chevron-right"></i>
+                                                </button>
+                                            </div>
+                                            <div class="flex items-center gap-1 mt-0.5">
+                                                <!-- Replace Image -->
+                                                <label class="w-5 h-5 bg-blue-500 hover:bg-blue-600 text-white rounded flex items-center justify-center text-[9px] cursor-pointer" title="Ganti foto ini">
+                                                    <i class="fas fa-sync-alt"></i>
+                                                    <input type="file" accept="image/*" @change="replaceImageAt(p.id, idx, $event)" class="hidden">
+                                                </label>
+                                                <!-- Remove Image -->
+                                                <button type="button" @click="removeImageAt(p.id, idx)" class="w-5 h-5 bg-red-500 hover:bg-red-600 text-white rounded flex items-center justify-center text-[9px]" title="Hapus foto">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <!-- Dashed Upload Box (Ala Shopee) -->
+                                <template x-if="p.images.length < 9">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl border-2 border-dashed border-red-300 hover:border-[#EE4D2D] bg-red-50/20 hover:bg-red-50/60 transition-all flex flex-col items-center justify-center p-1 relative group cursor-pointer text-center">
+                                        <i class="fas fa-camera text-[#EE4D2D] text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+                                        <span class="text-[10px] sm:text-[11px] font-bold text-[#EE4D2D] leading-tight">Tambahkan Foto</span>
+                                        <span class="text-[9px] text-gray-400 mt-0.5" x-text="'(' + p.images.length + '/9)'"></span>
+                                        <input type="file" accept="image/*" multiple @change="uploadImagesForProduct(p.id, $event)" class="absolute inset-0 opacity-0 cursor-pointer" title="Pilih foto dari komputer">
+                                    </div>
+                                </template>
+
+                                <!-- Quick Pick from CMS Gallery -->
+                                <template x-if="p.images.length < 9">
+                                    <button type="button" @click="openMediaPicker(p.id, 'gallery')" class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl border border-gray-200 hover:border-primary bg-gray-50/80 hover:bg-primary-50/30 transition-all flex flex-col items-center justify-center p-2 text-center text-gray-500 hover:text-primary group" title="Pilih dari Media Library CMS">
+                                        <i class="fas fa-photo-video text-base mb-1 group-hover:scale-110 transition-transform"></i>
+                                        <span class="text-[10px] font-semibold leading-tight">Dari Galeri CMS</span>
+                                    </button>
+                                </template>
+
+                                <!-- Upload Spinner -->
+                                <div x-show="p.isUploading" class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-gray-100 flex items-center justify-center border border-gray-200">
+                                    <i class="fas fa-spinner fa-spin text-orange-500 text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2. FOTO PRODUK PROMOSI & 3. VIDEO PRODUK (Side by side) -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100">
+                            
+                            <!-- Foto Produk Promosi (1:1) -->
+                            <div class="bg-gray-50/60 p-3 rounded-xl border border-gray-200/80">
+                                <span class="font-bold text-xs text-gray-700 block mb-2">Foto Produk Promosi</span>
+                                <div class="flex items-center gap-3">
+                                    <!-- Promo Image Thumbnail or Upload Box -->
+                                    <template x-if="p.promo_image">
+                                        <div class="w-16 h-16 sm:w-18 sm:h-18 relative rounded-lg border border-gray-200 overflow-hidden group flex-shrink-0">
+                                            <img :src="p.promo_image.startsWith('http') ? p.promo_image : ('../' + p.promo_image)" class="w-full h-full object-cover">
+                                            <div class="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5">
+                                                <label class="w-6 h-6 bg-blue-500 text-white rounded flex items-center justify-center text-[10px] cursor-pointer" title="Ganti foto promosi">
+                                                    <i class="fas fa-sync-alt"></i>
+                                                    <input type="file" accept="image/*" @change="uploadPromoImage(p.id, $event)" class="hidden">
+                                                </label>
+                                                <button type="button" @click="removePromoImage(p.id)" class="w-6 h-6 bg-red-500 text-white rounded flex items-center justify-center text-[10px]" title="Hapus foto promosi">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template x-if="!p.promo_image">
+                                        <div class="w-16 h-16 sm:w-18 sm:h-18 rounded-lg border-2 border-dashed border-gray-300 hover:border-orange-400 bg-white transition-all flex flex-col items-center justify-center relative cursor-pointer text-center flex-shrink-0 group">
+                                            <i class="fas fa-plus text-gray-400 group-hover:text-orange-500 mb-0.5 text-xs"></i>
+                                            <span class="text-[9px] font-bold text-gray-500 group-hover:text-orange-600">Foto 1:1</span>
+                                            <input type="file" accept="image/*" @change="uploadPromoImage(p.id, $event)" class="absolute inset-0 opacity-0 cursor-pointer" title="Upload foto promosi">
+                                        </div>
+                                    </template>
+
+                                    <!-- Guide notes -->
+                                    <div class="text-[11px] text-gray-500 leading-tight space-y-1">
+                                        <p class="font-medium text-gray-700">• Upload Foto Rasio 1:1</p>
+                                        <p>Digunakan di halaman promosi, banner highlight katalog, dan hasil pencarian.</p>
+                                        <button type="button" @click="openMediaPicker(p.id, 'promo')" class="text-[10px] text-primary hover:underline font-semibold">
+                                            + Pilih dari Galeri Media
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Video Produk -->
+                            <div class="bg-gray-50/60 p-3 rounded-xl border border-gray-200/80">
+                                <span class="font-bold text-xs text-gray-700 block mb-2">Video Produk</span>
+                                <div class="flex items-center gap-3">
+                                    <!-- Video Thumbnail or Upload Box -->
+                                    <template x-if="p.video">
+                                        <div class="w-20 h-16 sm:w-24 sm:h-18 relative rounded-lg border border-gray-200 overflow-hidden bg-black flex items-center justify-center group flex-shrink-0">
+                                            <video :src="'../' + p.video" class="w-full h-full object-cover"></video>
+                                            <span class="absolute bottom-1 right-1 bg-black/70 text-white text-[9px] px-1 rounded font-mono">MP4</span>
+                                            <div class="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5">
+                                                <label class="w-6 h-6 bg-blue-500 text-white rounded flex items-center justify-center text-[10px] cursor-pointer" title="Ganti video">
+                                                    <i class="fas fa-sync-alt"></i>
+                                                    <input type="file" accept="video/mp4,video/*" @change="uploadVideoForProduct(p.id, $event)" class="hidden">
+                                                </label>
+                                                <button type="button" @click="removeVideoForProduct(p.id)" class="w-6 h-6 bg-red-500 text-white rounded flex items-center justify-center text-[10px]" title="Hapus video">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template x-if="!p.video">
+                                        <div class="w-20 h-16 sm:w-24 sm:h-18 rounded-lg border-2 border-dashed border-gray-300 hover:border-blue-400 bg-white transition-all flex flex-col items-center justify-center relative cursor-pointer text-center flex-shrink-0 group">
+                                            <i class="fas fa-video text-gray-400 group-hover:text-blue-500 mb-0.5 text-xs"></i>
+                                            <span class="text-[9px] font-bold text-gray-500 group-hover:text-blue-600">Video MP4</span>
+                                            <input type="file" accept="video/mp4,video/*" @change="uploadVideoForProduct(p.id, $event)" class="absolute inset-0 opacity-0 cursor-pointer" title="Upload video produk">
+                                        </div>
+                                    </template>
+
+                                    <!-- Guide notes -->
+                                    <div class="text-[11px] text-gray-500 leading-tight space-y-1">
+                                        <p class="font-medium text-gray-700">• Ukuran: Maks 30MB</p>
+                                        <p>• Durasi: 10–60 detik (MP4/WebM)</p>
+                                        <p class="text-[10px] text-gray-400">Video tampil di galeri utama produk.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </template>
+    </div>
+
+    <!-- Pagination Navigation (if multiple pages) -->
+    <div x-show="totalBulkMediaPages() > 1" class="mt-6 flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-xl border border-gray-200">
+        <p class="text-xs text-gray-500">
+            Menampilkan halaman <strong x-text="bulkMediaPage"></strong> dari <strong x-text="totalBulkMediaPages()"></strong> (<span x-text="filteredBulkMediaItems().length"></span> total produk)
+        </p>
+        <div class="flex items-center gap-1.5">
+            <button type="button" @click="bulkMediaPage = Math.max(1, bulkMediaPage - 1)" :disabled="bulkMediaPage <= 1" class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-semibold hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed">
+                <i class="fas fa-chevron-left mr-1"></i> Sebelumnya
+            </button>
+            <span class="px-3 py-1.5 text-xs font-bold text-primary" x-text="bulkMediaPage"></span>
+            <button type="button" @click="bulkMediaPage = Math.min(totalBulkMediaPages(), bulkMediaPage + 1)" :disabled="bulkMediaPage >= totalBulkMediaPages()" class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-semibold hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed">
+                Selanjutnya <i class="fas fa-chevron-right ml-1"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- STICKY FLOATING BOTTOM BAR (PERSIS SEPERTI SHOPEE SELLER) -->
+    <!-- ================================================================ -->
+    <div class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-2xl p-3.5 px-6 flex flex-wrap items-center justify-between gap-4">
+        
+        <!-- Left Side Selection & Change Status -->
+        <div class="flex items-center gap-4 flex-wrap">
+            <label class="inline-flex items-center gap-2 cursor-pointer text-xs font-bold text-gray-700">
+                <input type="checkbox" :checked="isAllBulkMediaSelectedInPage()" @change="toggleSelectAllBulkMediaInPage()" class="rounded border-gray-300 text-[#EE4D2D] focus:ring-[#EE4D2D] h-4 w-4 cursor-pointer">
+                <span>Pilih Semua</span>
+            </label>
+            <span class="text-xs text-gray-500">
+                <strong x-text="bulkMediaSelectedIds.length"></strong> produk dipilih
+            </span>
+            <template x-if="getModifiedBulkMediaCount() > 0">
+                <span class="text-xs font-bold text-orange-700 bg-orange-100 border border-orange-200 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
+                    <i class="fas fa-pencil-alt text-xs animate-spin"></i>
+                    <span x-text="getModifiedBulkMediaCount()"></span> produk diubah belum disimpan
+                </span>
+            </template>
+        </div>
+
+        <!-- Right Side Actions -->
+        <div class="flex items-center gap-3">
+            <button type="button" @click="revertAllBulkMedia()" :disabled="getModifiedBulkMediaCount() === 0" class="btn-secondary text-xs !py-2.5 !px-4 disabled:opacity-40 disabled:cursor-not-allowed">
+                Batalkan Semua
+            </button>
+            <button type="button" @click="saveBulkMediaChanges()" :disabled="getModifiedBulkMediaCount() === 0 || isSavingBulkMedia" class="bg-[#EE4D2D] hover:bg-[#d73211] text-white font-bold text-xs sm:text-sm py-2.5 px-6 rounded-lg transition-all shadow-md flex items-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                <span x-show="!isSavingBulkMedia" class="flex items-center gap-2">
+                    <i class="fas fa-save"></i> Simpan Produk Di Halaman Ini
+                </span>
+                <span x-show="isSavingBulkMedia" class="flex items-center gap-2">
+                    <i class="fas fa-spinner fa-spin"></i> Menyimpan Perubahan...
+                </span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- FLOATING TOAST NOTIFICATION ALA SHOPEE (cth: "2 / 2 berhasil") -->
+    <!-- ================================================================ -->
+    <div x-show="bulkMediaSuccessToast" x-cloak class="fixed bottom-20 right-6 sm:right-10 z-50 bg-gray-900/95 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 backdrop-blur-md border border-white/10" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-4">
+        <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <i class="fas fa-check text-sm"></i>
+        </div>
+        <span class="font-bold text-sm" x-text="bulkMediaToastText"></span>
+        <button type="button" @click="bulkMediaSuccessToast = false" class="text-gray-400 hover:text-white ml-2">
+            <i class="fas fa-times text-xs"></i>
+        </button>
+    </div>
+
 </div>
 
 <!-- ================================================================ -->
@@ -2428,6 +2861,141 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- MODAL: PILIH DARI GALERI MEDIA CMS (UNTUK BULK FOTO PRODUK) -->
+<!-- ================================================================ -->
+<div x-show="showMediaPickerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" x-cloak>
+    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+        <!-- Modal Header -->
+        <div class="px-6 py-4 border-b flex items-center justify-between bg-gray-50">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-orange-100 text-[#EE4D2D] flex items-center justify-center">
+                    <i class="fas fa-photo-video text-sm"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-base text-gray-800">Pilih dari Galeri Media CMS</h3>
+                    <p class="text-[11px] text-gray-400">Pilih foto yang sudah tersimpan di Galeri Media untuk ditambahkan ke produk.</p>
+                </div>
+            </div>
+            <button @click="showMediaPickerModal = false" class="text-gray-400 hover:text-red-500 p-1">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="px-6 py-3 border-b bg-white flex flex-wrap items-center justify-between gap-3">
+            <div class="relative w-full sm:w-72">
+                <i class="fas fa-search absolute left-3 top-2.5 text-gray-400 text-xs"></i>
+                <input type="text" x-model="mediaSearch" placeholder="Cari nama file foto..." class="form-input !pl-9 !py-1.5 text-xs">
+            </div>
+            <div class="text-xs text-gray-500">
+                <span x-text="mediaPickerSelectedUrls.length"></span> foto dipilih
+            </div>
+        </div>
+
+        <!-- Modal Body: Media Grid -->
+        <div class="p-6 overflow-y-auto flex-1">
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                <template x-for="m in filteredMedia()" :key="m.name">
+                    <div @click="toggleSelectMediaPickerUrl(m.path)" class="relative rounded-xl border-2 overflow-hidden aspect-square bg-gray-50 cursor-pointer group transition-all" :class="mediaPickerSelectedUrls.includes(m.path) ? 'border-[#EE4D2D] ring-2 ring-[#EE4D2D]/30' : 'border-gray-200 hover:border-gray-400'">
+                        <img :src="'../' + m.path" class="w-full h-full object-cover">
+                        <!-- Checkbox Overlay -->
+                        <div class="absolute top-1.5 right-1.5 w-5 h-5 rounded-full flex items-center justify-center transition-colors" :class="mediaPickerSelectedUrls.includes(m.path) ? 'bg-[#EE4D2D] text-white shadow-xs' : 'bg-black/40 text-white/70 group-hover:bg-black/60'">
+                            <i class="fas fa-check text-[10px]"></i>
+                        </div>
+                        <div class="absolute inset-x-0 bottom-0 bg-black/60 p-1 text-[9px] text-white truncate px-1.5" x-text="m.name"></div>
+                    </div>
+                </template>
+            </div>
+            <div x-show="filteredMedia().length === 0" class="py-12 text-center text-gray-400">
+                <i class="fas fa-images text-3xl mb-2 text-gray-300"></i>
+                <p class="text-xs">Tidak ada media ditemukan</p>
+            </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="px-6 py-3.5 border-t bg-gray-50 flex items-center justify-between">
+            <span class="text-xs text-gray-500">
+                Mode: <strong x-text="mediaPickerTargetType === 'promo' ? 'Foto Promosi (1 foto)' : (mediaPickerTargetType === 'replace_index' ? 'Ganti 1 Foto' : 'Galeri Produk (Bisa pilih banyak)')"></strong>
+            </span>
+            <div class="flex items-center gap-2">
+                <button @click="showMediaPickerModal = false" class="btn-secondary text-xs !py-2">Batal</button>
+                <button @click="applyMediaPickerSelection()" :disabled="mediaPickerSelectedUrls.length === 0" class="bg-[#EE4D2D] hover:bg-[#d73211] text-white font-bold text-xs py-2 px-5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                    Gunakan Foto Terpilih (<span x-text="mediaPickerSelectedUrls.length"></span>)
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- MODAL: PANDUAN UKURAN & FORMAT FOTO PRODUK (STANDAR SHOPEE) -->
+<!-- ================================================================ -->
+<div x-show="showSizeGuideModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" x-cloak>
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden flex flex-col">
+        <!-- Header -->
+        <div class="px-6 py-4 border-b flex items-center justify-between bg-gray-50">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-ruler-combined text-[#EE4D2D]"></i>
+                <h3 class="font-bold text-base text-gray-800">Panduan Ukuran Foto Produk</h3>
+            </div>
+            <button @click="showSizeGuideModal = false" class="text-gray-400 hover:text-red-500">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div class="p-6 space-y-4 text-xs text-gray-600 leading-relaxed">
+            <div class="bg-orange-50 border border-orange-200 rounded-xl p-3.5 text-orange-950">
+                <p class="font-bold flex items-center gap-1.5 mb-1 text-orange-900">
+                    <i class="fas fa-lightbulb text-orange-500"></i> Rekomendasi Marketplace & Website Asianindo
+                </p>
+                <p>Foto produk yang jernih, berlatar rapi, dan beresolusi pas akan meningkatkan kepercayaan calon pembeli mesin industri hingga 80%.</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="border border-gray-200 rounded-xl p-3 bg-gray-50/50">
+                    <div class="w-16 h-16 bg-white border-2 border-[#EE4D2D] rounded-lg mx-auto mb-2 flex items-center justify-center font-bold text-xs text-[#EE4D2D]">
+                        1 : 1
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-center mb-1">Rasio Persegi (1:1)</h4>
+                    <ul class="space-y-0.5 text-[11px] text-gray-500">
+                        <li>• Ukuran: 800 x 800 px (min)</li>
+                        <li>• Optimal: 1200 x 1200 px</li>
+                        <li>• Format: WebP / JPG / PNG</li>
+                        <li>• Standar utama katalog & Shopee</li>
+                    </ul>
+                </div>
+                <div class="border border-gray-200 rounded-xl p-3 bg-gray-50/50">
+                    <div class="w-12 h-16 bg-white border-2 border-blue-500 rounded-lg mx-auto mb-2 flex items-center justify-center font-bold text-xs text-blue-600">
+                        3 : 4
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-center mb-1">Rasio Vertikal (3:4)</h4>
+                    <ul class="space-y-0.5 text-[11px] text-gray-500">
+                        <li>• Ukuran: 900 x 1200 px</li>
+                        <li>• Format: WebP / JPG / PNG</li>
+                        <li>• Cocok untuk tampilan mesin tinggi</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="space-y-1.5 pt-2">
+                <h4 class="font-bold text-gray-800 text-xs">Ketentuan Unggah Foto:</h4>
+                <p>1. <strong>Foto Sampul (#1):</strong> Harus menampilkan unit mesin secara keseluruhan dengan jelas.</p>
+                <p>2. <strong>Foto Tambahan (#2 - #9):</strong> Menampilkan sudut detail (panel kontrol, tabung reaktor, material stainless SUS 304, pengemasan/pengiriman).</p>
+                <p>3. <strong>Sistem Otomatis:</strong> Setiap foto yang Anda upload akan langsung dikompresi otomatis menjadi format WebP berkecepatan tinggi tanpa pecah.</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="px-6 py-3 border-t bg-gray-50 flex justify-end">
+            <button @click="showSizeGuideModal = false" class="bg-[#EE4D2D] hover:bg-[#d73211] text-white font-bold text-xs py-2 px-6 rounded-lg transition-colors">
+                Saya Mengerti
+            </button>
         </div>
     </div>
 </div>
