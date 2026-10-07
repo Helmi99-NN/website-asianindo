@@ -166,6 +166,20 @@
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
+        @keyframes float-badge-1 {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes float-badge-2 {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-floating-badge {
+            animation: float-badge-1 4.5s ease-in-out infinite;
+        }
+        .animate-floating-badge-delayed {
+            animation: float-badge-2 5.5s ease-in-out 1.2s infinite;
+        }
         .ambient-shadow {
             box-shadow: 0 8px 24px rgba(45, 35, 84, 0.08);
         }
@@ -502,30 +516,52 @@
                         </div>
                     </div>
                 </div>                
-                <!-- Hero Machine Showcase (Matching Reference Design) -->
-                <div class="md:col-span-5 relative flex items-center justify-center mt-6 md:mt-0">
-                    <div class="relative w-full max-w-lg lg:max-w-xl mx-auto group">
-                        <!-- Main Showcase Image -->
-                        <img src="images/hero_showcase_clean.png" 
-                             alt="Solusi Mesin Industri CV Asianindo" 
-                             class="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.4)] transform hover:scale-[1.01] transition-transform duration-500" />
+                <!-- Hero Machine Showcase (Isolated Elements & Floating Cards) -->
+                <div class="md:col-span-5 relative flex items-center justify-center mt-10 md:mt-0">
+                    <div class="relative w-full max-w-md sm:max-w-lg lg:max-w-xl mx-auto flex items-center justify-center">
                         
-                        <!-- Clickable Hotspot 1: Konsultasi pemilihan mesin (Top-Right Badge) -->
+                        <!-- Ambient Radial Glow Behind Machine -->
+                        <div class="absolute inset-0 bg-gradient-to-tr from-purple-600/30 via-indigo-500/20 to-transparent blur-3xl rounded-full scale-110 pointer-events-none -z-10"></div>
+                        
+                        <!-- Main Reactor Machine (100% Transparent, No Background Box) -->
+                        <div class="relative z-10 w-full flex items-center justify-center px-4 sm:px-0">
+                            <picture>
+                                <source srcset="images/hero_reactor_clean_transparent.webp" type="image/webp">
+                                <img src="images/hero_reactor_clean_transparent.png" 
+                                     alt="Solusi Mesin Industri CV Asianindo" 
+                                     class="w-full h-auto max-h-[460px] lg:max-h-[520px] object-contain drop-shadow-[0_20px_45px_rgba(0,0,0,0.55)] transition-transform duration-700 hover:scale-[1.02]" />
+                            </picture>
+                        </div>
+
+                        <!-- Floating Card 1: Konsultasi Pemilihan Mesin (Top-Right) -->
                         <a href="https://wa.me/6285335850517?text=Halo%20CV%20Asianindo%2C%20saya%20ingin%20konsultasi%20pemilihan%20mesin" 
                            target="_blank" 
-                           rel="noopener noreferrer"
+                           rel="noopener noreferrer" 
                            title="Konsultasi pemilihan mesin via WhatsApp" 
-                           class="absolute top-[6.6%] left-[66.4%] w-[29.5%] h-[23.2%] rounded-2xl cursor-pointer hover:bg-white/10 hover:ring-2 hover:ring-white/30 transition-all z-20"
-                           aria-label="Konsultasi pemilihan mesin via WhatsApp"></a>
+                           class="absolute -top-3 right-0 sm:top-2 sm:-right-4 z-20 bg-white/95 backdrop-blur-md px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-2xl shadow-[0_14px_35px_rgba(0,0,0,0.25)] border border-white/80 flex items-center gap-2.5 sm:gap-3 transition-all duration-300 hover:scale-105 hover:shadow-[0_20px_45px_rgba(0,0,0,0.35)] animate-floating-badge group">
+                            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-purple-50 text-[#4A2C91] flex items-center justify-center shrink-0 group-hover:bg-[#4A2C91] group-hover:text-white transition-colors duration-300">
+                                <span class="material-symbols-outlined text-[20px] sm:text-[22px]">chat</span>
+                            </div>
+                            <div class="flex flex-col text-left">
+                                <span class="text-xs sm:text-sm font-bold text-gray-900 leading-tight">Konsultasi</span>
+                                <span class="text-[10px] sm:text-xs text-gray-500 font-medium leading-tight">pemilihan mesin</span>
+                            </div>
+                        </a>
 
-                        <!-- Clickable Hotspot 2: Pilihan mesin industri (Bottom-Left Badge) -->
+                        <!-- Floating Card 2: Pilihan Mesin Industri (Bottom-Left) -->
                         <a href="katalog.html" 
                            title="Lihat Pilihan Mesin Industri di Katalog" 
-                           class="absolute top-[58.6%] left-[2.5%] w-[30.2%] h-[38.7%] rounded-2xl cursor-pointer hover:bg-white/10 hover:ring-2 hover:ring-white/30 transition-all z-20"
-                           aria-label="Lihat Pilihan Mesin Industri"></a>
+                           class="absolute -bottom-4 left-0 sm:bottom-0 sm:-left-4 z-20 bg-white/95 backdrop-blur-md p-2.5 sm:p-3 rounded-2xl sm:rounded-3xl shadow-[0_16px_36px_rgba(0,0,0,0.28)] border border-white/80 flex flex-col items-center w-36 sm:w-44 transition-all duration-300 hover:scale-105 hover:shadow-[0_22px_45px_rgba(0,0,0,0.38)] animate-floating-badge-delayed group">
+                            <div class="w-full aspect-[4/3] rounded-xl sm:rounded-2xl bg-white overflow-hidden flex items-center justify-center p-1 sm:p-1.5 border border-gray-100 group-hover:border-purple-200 transition-colors">
+                                <img src="images/vacuum_frying_v2.png" 
+                                     alt="Pilihan Mesin Industri" 
+                                     class="w-full h-full object-contain transform scale-110 group-hover:scale-115 transition-transform duration-500" />
+                            </div>
+                            <span class="text-[11px] sm:text-xs font-bold text-gray-900 mt-2 text-center leading-tight group-hover:text-[#4A2C91] transition-colors">
+                                Pilihan mesin industri
+                            </span>
+                        </a>
 
-                        <!-- Subtle ambient glow -->
-                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 h-4/5 bg-purple-500/20 blur-[100px] rounded-full -z-10 pointer-events-none"></div>
                     </div>
                 </div>
             </div>
