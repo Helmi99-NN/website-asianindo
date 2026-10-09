@@ -10,20 +10,34 @@ if (file_exists(__DIR__ . '/midtrans_custom_config.php')) {
     require_once __DIR__ . '/midtrans_custom_config.php';
 }
 
-// 1. Kredensial Akun Midtrans (Dapat diubah via Panel Admin atau file ini)
+// Baca konfigurasi dari data/settings.json (yang disimpan dari CMS Admin Panel)
+$settingsFile = __DIR__ . '/data/settings.json';
+$cmsSettings = [];
+if (file_exists($settingsFile)) {
+    $cmsSettings = json_decode(file_get_contents($settingsFile), true) ?? [];
+}
+
+// 1. Kredensial Akun Midtrans (Prioritas: midtrans_custom_config.php > settings.json > getenv > default dummy)
 if (!defined('MIDTRANS_SERVER_KEY')) {
-    // Default Sandbox Server Key untuk testing (Ganti dengan Server Key dari dashboard.midtrans.com saat Go Live)
-    define('MIDTRANS_SERVER_KEY', getenv('MIDTRANS_SERVER_KEY') ?: 'SB-Mid-server-TEST_DUMMY_KEY_123456');
+    $cfgServerKey = !empty($cmsSettings['midtrans_server_key']) ? trim($cmsSettings['midtrans_server_key']) : (getenv('MIDTRANS_SERVER_KEY') ?: 'SB-Mid-server-TEST_DUMMY_KEY_123456');
+    define('MIDTRANS_SERVER_KEY', $cfgServerKey);
 }
 
 if (!defined('MIDTRANS_CLIENT_KEY')) {
-    // Default Sandbox Client Key untuk testing (Ganti dengan Client Key dari dashboard.midtrans.com saat Go Live)
-    define('MIDTRANS_CLIENT_KEY', getenv('MIDTRANS_CLIENT_KEY') ?: 'SB-Mid-client-TEST_DUMMY_KEY_123456');
+    $cfgClientKey = !empty($cmsSettings['midtrans_client_key']) ? trim($cmsSettings['midtrans_client_key']) : (getenv('MIDTRANS_CLIENT_KEY') ?: 'SB-Mid-client-TEST_DUMMY_KEY_123456');
+    define('MIDTRANS_CLIENT_KEY', $cfgClientKey);
 }
 
 // 2. Mode Lingkungan (sandbox / production)
 if (!defined('MIDTRANS_ENVIRONMENT')) {
-    define('MIDTRANS_ENVIRONMENT', getenv('MIDTRANS_ENV') ?: 'sandbox');
+    $cfgEnv = !empty($cmsSettings['midtrans_environment']) ? trim($cmsSettings['midtrans_environment']) : (getenv('MIDTRANS_ENV') ?: 'sandbox');
+    // Auto-detect production bila server key dimulai dengan 'Mid-server-' (tanpa 'SB-')
+    if (strpos(MIDTRANS_SERVER_KEY, 'Mid-server-') === 0 && strpos(MIDTRANS_SERVER_KEY, 'SB-') !== 0) {
+        $cfgEnv = 'production';
+    } elseif (strpos(MIDTRANS_SERVER_KEY, 'SB-') === 0) {
+        $cfgEnv = 'sandbox';
+    }
+    define('MIDTRANS_ENVIRONMENT', $cfgEnv);
 }
 
 // 3. URL Endpoint Midtrans

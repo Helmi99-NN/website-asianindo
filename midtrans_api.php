@@ -154,10 +154,22 @@ function createMidtransSnapToken($orderData, $paymentMethodCode, $customerData) 
             'raw' => $resData
         ];
     } else {
+        $statusMsg = 'Gagal membuat Snap Token Midtrans';
+        if (!empty($resData['error_messages'])) {
+            $statusMsg = is_array($resData['error_messages']) ? implode('; ', $resData['error_messages']) : (string)$resData['error_messages'];
+        } elseif (!empty($resData['error'])) {
+            $statusMsg = 'Midtrans: ' . $resData['error'] . ' (Server Key tidak valid atau salah lingkungan)';
+        } elseif (!empty($resData['status_message'])) {
+            $statusMsg = $resData['status_message'];
+        } elseif (!empty($resData['message'])) {
+            $statusMsg = $resData['message'];
+        }
+
         return [
             'success' => false,
             'statusCode' => (string)$httpCode,
-            'statusMessage' => $resData['error_messages'][0] ?? ($resData['status_message'] ?? 'Gagal membuat Snap Token Midtrans')
+            'statusMessage' => $statusMsg,
+            'raw' => $resData
         ];
     }
 }
@@ -226,9 +238,6 @@ function checkMidtransStatus($orderNumber) {
 // REST API Handler jika dipanggil secara direct GET / POST
 if (basename($_SERVER['SCRIPT_FILENAME'] ?? '') === 'midtrans_api.php') {
     header('Content-Type: application/json');
-    $pdo = getDB();
-    ensureMidtransColumnsExist($pdo);
-
     $action = $_GET['action'] ?? $_POST['action'] ?? '';
 
     if ($action === 'get_channels') {
@@ -273,6 +282,125 @@ if (basename($_SERVER['SCRIPT_FILENAME'] ?? '') === 'midtrans_api.php') {
         $res = checkMidtransStatus($orderNumber);
         echo json_encode($res);
         exit;
+    }
+
+    if ($action === 'get_client_config') {
+        $clientKey = MIDTRANS_CLIENT_KEY;
+        $env = MIDTRANS_ENVIRONMENT;
+        $snapJs = MIDTRANS_SNAP_JS;
+        $isConfigured = (!empty($clientKey) && strpos($clientKey, 'TEST_DUMMY_KEY') === false);
+
+        echo json_encode([
+            'success' => true,
+            'client_key' => $clientKey,
+            'snap_url' => $snapJs,
+            'environment' => $env,
+            'is_configured' => $isConfigured
+        ]);
+        exit;
+    }
+
+    if ($action === 'test_connection') {
+        // Izinkan pengujian parameter dari request (misal dari Admin CMS sebelum disimpan)
+        $serverKey = trim($_POST['server_key'] ?? $_GET['server_key'] ?? MIDTRANS_SERVER_KEY);
+        $clientKey = trim($_POST['client_key'] ?? $_GET['client_key'] ?? MIDTRANS_CLIENT_KEY);
+        $env = trim($_POST['environment'] ?? $_GET['environment'] ?? MIDTRANS_ENVIRONMENT);
+
+        if (empty($serverKey)) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Server Key belum diisi. Silakan masukkan Server Key Midtrans Anda.'
+            ]);
+            exit;
+        }
+
+        if (strpos($serverKey, 'TEST_DUMMY_KEY') !== false) {
+            echo json_encode([
+                'success' => false,
+                'is_dummy' => true,
+                'message' => 'Server Key masih menggunakan kunci dummy (placeholder). Silakan masukkan Server Key asli dari Dashboard Midtrans Anda.'
+            ]);
+            exit;
+        }
+
+        $snapUrl = ($env === 'production') 
+            ? 'https://app.midtrans.com/snap/v1/transactions' 
+            : 'https://app.sandbox.midtrans.com/snap/v1/transactions';
+
+        $authHeader = 'Basic ' . base64_encode($serverKey . ':');
+        $testOrderId = 'PING-' . date('YmdHis') . '-' . rand(100, 999);
+
+        $testPayload = [
+            'transaction_details' => [
+                'order_id' => $testOrderId,
+                'gross_amount' => 10000
+            ],
+            'customer_details' => [
+                'first_name' => 'Koneksi Test',
+                'email' => 'test@asianindomachine.com'
+            ]
+        ];
+
+        $ch = curl_init($snapUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($testPayload));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Accept: application/json',
+            'Authorization: ' . $authHeader
+        ]);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error = curl_error($ch);
+        curl_close($ch);
+
+        if ($error) {
+            echo json_encode([
+                'success' => false,
+                'http_code' => 0,
+                'message' => 'Gagal terhubung ke Midtrans API (cURL Error: ' . $error . ')'
+            ]);
+            exit;
+        }
+
+        $resData = json_decode($response, true);
+
+        if ($httpCode === 201 || $httpCode === 200) {
+            echo json_encode([
+                'success' => true,
+                'http_code' => $httpCode,
+                'environment' => $env,
+                'token' => $resData['token'] ?? null,
+                'message' => 'Koneksi berhasil! Server Key valid dan Midtrans Snap API siap memproses pembayaran (' . strtoupper($env) . ').'
+            ]);
+            exit;
+        } elseif ($httpCode === 401) {
+            echo json_encode([
+                'success' => false,
+                'http_code' => 401,
+                'environment' => $env,
+                'message' => 'Autentikasi ditolak (HTTP 401 Unauthorized). Server Key tidak cocok atau salah lingkungan (' . $env . '). Pastikan kunci sesuai mode (' . ($env === 'sandbox' ? 'Sandbox' : 'Production') . ').'
+            ]);
+            exit;
+        } else {
+            $errMsg = '';
+            if (!empty($resData['error_messages'])) {
+                $errMsg = is_array($resData['error_messages']) ? implode(', ', $resData['error_messages']) : $resData['error_messages'];
+            } else {
+                $errMsg = $resData['status_message'] ?? ($resData['message'] ?? 'Response HTTP ' . $httpCode);
+            }
+
+            echo json_encode([
+                'success' => false,
+                'http_code' => $httpCode,
+                'message' => 'Respon Midtrans: ' . $errMsg
+            ]);
+            exit;
+        }
     }
 
     echo json_encode(['success' => false, 'message' => 'Action tidak valid']);

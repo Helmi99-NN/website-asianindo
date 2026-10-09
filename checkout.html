@@ -12,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
     <script src="wilayah-indonesia.js?v=5.0"></script>
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-TEST_DUMMY_KEY_123456"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -96,7 +95,35 @@
             updateGrandTotal();
         }
 
+        let snapLoadedPromise = null;
+        function ensureSnapScriptLoaded() {
+            if (snapLoadedPromise) return snapLoadedPromise;
+            snapLoadedPromise = fetch('midtrans_api.php?action=get_client_config')
+                .then(res => res.json())
+                .then(cfg => {
+                    return new Promise((resolve) => {
+                        if (cfg && cfg.success && cfg.snap_url && cfg.client_key) {
+                            const existing = document.querySelector('script[src*="snap/snap.js"]');
+                            if (existing) existing.remove();
+
+                            const script = document.createElement('script');
+                            script.src = cfg.snap_url;
+                            script.setAttribute('data-client-key', cfg.client_key);
+                            script.async = true;
+                            script.onload = () => resolve(true);
+                            script.onerror = () => resolve(false);
+                            document.head.appendChild(script);
+                        } else {
+                            resolve(false);
+                        }
+                    });
+                })
+                .catch(() => false);
+            return snapLoadedPromise;
+        }
+
         async function initCheckout() {
+            ensureSnapScriptLoaded();
             // Check auth
             try {
                 const resAuth = await fetch('auth_api.php?action=get_profile');
@@ -527,6 +554,10 @@
                     
                     const orderNum = data.order_number;
                     const snapToken = data.snap_token;
+
+                    if (snapToken) {
+                        await ensureSnapScriptLoaded();
+                    }
 
                     if (typeof snap !== 'undefined' && snapToken) {
                         snap.pay(snapToken, {

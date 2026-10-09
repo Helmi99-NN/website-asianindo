@@ -1159,17 +1159,25 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
         <!-- Midtrans Payment Gateway Settings -->
         <div class="card card-body mb-6">
-            <h3 class="section-title"><i class="fas fa-credit-card text-purple-600"></i> Payment Gateway Midtrans</h3>
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <h3 class="section-title mb-0"><i class="fas fa-credit-card text-purple-600"></i> Payment Gateway Midtrans</h3>
+                <span :class="(settings.midtrans_server_key && !settings.midtrans_server_key.includes('TEST_DUMMY_KEY')) ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'" class="text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                    <i class="fas" :class="(settings.midtrans_server_key && !settings.midtrans_server_key.includes('TEST_DUMMY_KEY')) ? 'fa-check-circle text-green-600' : 'fa-exclamation-triangle text-amber-600'"></i>
+                    <span x-text="(settings.midtrans_server_key && !settings.midtrans_server_key.includes('TEST_DUMMY_KEY')) ? 'Key Terisi' : 'Kunci Dummy / Belum Diisi'"></span>
+                </span>
+            </div>
             <p class="text-xs text-gray-500 mb-4">Integrasi pembayaran otomatis Virtual Account (BCA, Mandiri, BRI, BNI, Permata, CIMB), QRIS (GoPay, ShopeePay, m-Banking), & Kartu Kredit. Biaya fee dibebankan ke pembeli.</p>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div class="form-group">
                     <label class="form-label">Midtrans Server Key</label>
-                    <input type="password" x-model="settings.midtrans_server_key" class="form-input" placeholder="SB-Mid-server-xxxx... atau Mid-server-xxxx...">
+                    <input type="text" x-model="settings.midtrans_server_key" class="form-input font-mono text-xs" placeholder="SB-Mid-server-xxxx... atau Mid-server-xxxx...">
+                    <p class="text-[11px] text-gray-400 mt-1">Ambil dari dashboard Midtrans menu <b>Settings > Access Keys</b></p>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Midtrans Client Key</label>
-                    <input type="text" x-model="settings.midtrans_client_key" class="form-input" placeholder="SB-Mid-client-xxxx... atau Mid-client-xxxx...">
+                    <input type="text" x-model="settings.midtrans_client_key" class="form-input font-mono text-xs" placeholder="SB-Mid-client-xxxx... atau Mid-client-xxxx...">
+                    <p class="text-[11px] text-gray-400 mt-1">Dibutuhkan untuk pop-up Snap pembayaran di browser</p>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Mode Lingkungan (Environment)</label>
@@ -1183,6 +1191,24 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     <div class="flex gap-2">
                         <input type="text" readonly :value="window.location.origin + '/midtrans_callback.php'" class="form-input bg-gray-100 text-xs font-mono select-all">
                         <button type="button" @click="copyToClipboard(window.location.origin + '/midtrans_callback.php')" class="btn-secondary text-xs px-3" title="Salin Webhook URL"><i class="fas fa-copy"></i></button>
+                    </div>
+                    <p class="text-[11px] text-gray-400 mt-1">Masukkan URL ini di Midtrans menu <b>Settings > Configuration > Payment Notification URL</b></p>
+                </div>
+            </div>
+
+            <!-- Test Connection Button & Result Alert -->
+            <div class="mt-4 pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <button type="button" @click="testMidtransConnection()" :disabled="midtransTesting" class="btn-primary bg-purple-700 hover:bg-purple-800 text-white text-xs px-4 py-2 rounded-lg font-semibold flex items-center gap-2">
+                    <i class="fas" :class="midtransTesting ? 'fa-spinner fa-spin' : 'fa-plug'"></i>
+                    <span x-text="midtransTesting ? 'Menguji Koneksi ke Midtrans...' : 'Test Koneksi Midtrans Sekarang'"></span>
+                </button>
+                <div x-show="midtransTestResult" class="flex-1 w-full sm:w-auto">
+                    <div :class="midtransTestResult?.success ? 'bg-green-50 border-green-300 text-green-800' : 'bg-red-50 border-red-300 text-red-800'" class="border p-2.5 rounded-lg text-xs flex items-start gap-2">
+                        <i class="fas mt-0.5 text-sm" :class="midtransTestResult?.success ? 'fa-check-circle text-green-600' : 'fa-times-circle text-red-600'"></i>
+                        <div>
+                            <div class="font-bold" x-text="midtransTestResult?.success ? 'Koneksi Berhasil!' : 'Koneksi Gagal / Kunci Belum Valid'"></div>
+                            <div class="mt-0.5" x-text="midtransTestResult?.message"></div>
+                        </div>
                     </div>
                 </div>
             </div>

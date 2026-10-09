@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-TEST_DUMMY_KEY_123456"></script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; }
@@ -263,6 +262,33 @@
         document.getElementById('display_order_number').innerText = orderNumber || '-';
         document.getElementById('order_number_input').value = orderNumber || '';
 
+        let snapLoadedPromise = null;
+        function ensureSnapScriptLoaded() {
+            if (snapLoadedPromise) return snapLoadedPromise;
+            snapLoadedPromise = fetch('midtrans_api.php?action=get_client_config')
+                .then(res => res.json())
+                .then(cfg => {
+                    return new Promise((resolve) => {
+                        if (cfg && cfg.success && cfg.snap_url && cfg.client_key) {
+                            const existing = document.querySelector('script[src*="snap/snap.js"]');
+                            if (existing) existing.remove();
+
+                            const script = document.createElement('script');
+                            script.src = cfg.snap_url;
+                            script.setAttribute('data-client-key', cfg.client_key);
+                            script.async = true;
+                            script.onload = () => resolve(true);
+                            script.onerror = () => resolve(false);
+                            document.head.appendChild(script);
+                        } else {
+                            resolve(false);
+                        }
+                    });
+                })
+                .catch(() => false);
+            return snapLoadedPromise;
+        }
+
         function formatRupiah(angka, prefix) {
             var number_string = (angka || 0).toString().replace(/[^,\d]/g, ''),
             split = number_string.split(','),
@@ -452,12 +478,16 @@
 
                         // Trigger Midtrans Snap Popup button jika ada snap_token
                         if (order.midtrans_snap_token) {
+                            ensureSnapScriptLoaded();
                             const popCont = document.getElementById('duitku_pop_container');
                             const popBtn = document.getElementById('btn_open_duitku_pop');
                             if (popCont && popBtn) {
                                 popCont.classList.remove('hidden');
                                 popBtn.innerHTML = '<span class="material-symbols-outlined text-lg">payments</span> Bayar Sekarang (Pop-up Midtrans Snap)';
-                                popBtn.onclick = function() {
+                                popBtn.onclick = async function() {
+                                    popBtn.disabled = true;
+                                    await ensureSnapScriptLoaded();
+                                    popBtn.disabled = false;
                                     if (typeof snap !== 'undefined') {
                                         snap.pay(order.midtrans_snap_token, {
                                             onSuccess: function(result){
@@ -473,6 +503,8 @@
                                                 // closed pop
                                             }
                                         });
+                                    } else {
+                                        showToast('Modul Midtrans belum termuat. Periksa koneksi internet Anda.', false);
                                     }
                                 };
                             }

@@ -136,6 +136,9 @@ function adminApp() {
             midtrans_environment: 'sandbox'
         },
 
+        midtransTestResult: null,
+        midtransTesting: false,
+
         articles: [],
 
         homepage: {
@@ -470,6 +473,28 @@ function adminApp() {
                 else alert('Gagal menyimpan');
             } catch(e) { alert('Kesalahan jaringan'); }
             this.isSaving = false;
+        },
+
+        async testMidtransConnection() {
+            this.midtransTesting = true;
+            this.midtransTestResult = null;
+            try {
+                let params = new URLSearchParams({
+                    action: 'test_connection',
+                    server_key: this.settings.midtrans_server_key || '',
+                    client_key: this.settings.midtrans_client_key || '',
+                    environment: this.settings.midtrans_environment || 'sandbox'
+                });
+                let res = await fetch('../midtrans_api.php?' + params.toString());
+                let data = await res.json();
+                this.midtransTestResult = data;
+            } catch(e) {
+                this.midtransTestResult = {
+                    success: false,
+                    message: 'Gagal menghubungi server pengujian: ' + e.message
+                };
+            }
+            this.midtransTesting = false;
         },
 
         // ==================== E-COMMERCE FUNCTIONS ====================

@@ -12,6 +12,9 @@ require_once __DIR__ . '/midtrans_config.php';
 
 header('Content-Type: application/json');
 
+// Baca raw body input dari Midtrans Webhook
+$rawInput = file_get_contents('php://input');
+
 // 1. Tangani Test Ping / Probe dari Dashboard Midtrans (GET atau Empty POST)
 if ($_SERVER['REQUEST_METHOD'] === 'GET' || empty($rawInput)) {
     http_response_code(200);
