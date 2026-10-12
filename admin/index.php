@@ -354,6 +354,11 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 <span>Update Massal</span>
                 <span class="bg-emerald-800/60 text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded">Excel</span>
             </button>
+            <!-- Auto Heal Missing / Broken Photos Button -->
+            <button @click="healCatalogImages()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-3 rounded-lg transition-all shadow-sm flex items-center gap-1.5 text-sm" title="Periksa dan pulihkan foto produk yang hilang atau rusak">
+                <i class="fas fa-magic text-xs"></i>
+                <span>Pulihkan Foto</span>
+            </button>
             <button @click="openAddProduct()" class="btn-primary text-sm !py-2"><i class="fas fa-plus"></i> Tambah Produk</button>
         </div>
     </div>

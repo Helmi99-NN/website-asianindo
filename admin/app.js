@@ -497,6 +497,22 @@ function adminApp() {
             this.midtransTesting = false;
         },
 
+        async healCatalogImages() {
+            if (!confirm('Periksa dan pulihkan otomatis seluruh foto produk yang bermasalah?')) return;
+            try {
+                let res = await fetch('api.php?action=heal_catalog');
+                let data = await res.json();
+                if (data.success) {
+                    alert(data.message || 'Katalog foto berhasil dipulihkan!');
+                    await this.loadProducts();
+                } else {
+                    alert('Gagal memulihkan: ' + (data.error || 'Server error'));
+                }
+            } catch (e) {
+                alert('Terjadi kesalahan jaringan.');
+            }
+        },
+
         // ==================== E-COMMERCE FUNCTIONS ====================
         async loadEcommerceStats() {
             try {

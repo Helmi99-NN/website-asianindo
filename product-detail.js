@@ -57,14 +57,40 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('breadcrumb-product-name').innerText = product.name;
     document.getElementById('product-name').innerText = product.name;
     document.getElementById('product-price').innerText = product.priceDisplay;
+    function sanitizeProductImage(img, productId, index = 0) {
+        if (!img || typeof img !== 'string') return `images/products/${productId}_0.webp`;
+        const trimmed = img.trim();
+        if (trimmed.includes('media_6ac') || trimmed.includes('media_6ac7')) {
+            return `images/products/${productId}_${index}.webp`;
+        }
+        return trimmed;
+    }
+
+    if (Array.isArray(product.images) && product.images.length > 0) {
+        product.images = product.images.map((img, idx) => sanitizeProductImage(img, product.id, idx));
+    } else {
+        product.images = [`images/products/${product.id}_0.webp`];
+    }
+
+    const mainImg = document.getElementById('product-image');
+    if (mainImg) {
+        mainImg.onerror = function() {
+            if (!this.dataset.fallback) {
+                this.dataset.fallback = '1';
+                this.src = `images/products/${product.id}_0.webp`;
+            } else {
+                this.onerror = null;
+                this.src = 'images/placeholder.webp';
+            }
+        };
+        mainImg.src = product.images[0];
+        mainImg.alt = product.name;
+    }
+
     if (product.images && product.images.length > 0) {
-        document.getElementById('product-image').src = product.images[0];
-        document.getElementById('product-image').alt = product.name;
-        
         // Gallery navigation state
         let currentImageIndex = 0;
         const images = product.images;
-        const mainImg = document.getElementById('product-image');
         const prevBtn = document.getElementById('gallery-prev');
         const nextBtn = document.getElementById('gallery-next');
 
@@ -122,7 +148,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 thumbHtml += `
                     <div class="flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 ${borderClass} cursor-pointer transition-all hover:border-primary" 
                          data-index="${idx}">
-                        <img src="${img}" alt="Thumbnail ${idx+1}" class="w-full h-full object-cover">
+                        <img src="${img}" 
+                             onerror="this.onerror=null; this.src='images/products/${product.id}_0.webp';" 
+                             alt="Thumbnail ${idx+1}" 
+                             class="w-full h-full object-cover">
                     </div>
                 `;
             });

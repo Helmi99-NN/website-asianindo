@@ -719,7 +719,23 @@
         // ============================
         // PRODUCT DATA & VIEW TRACKING
         // ============================
-        let products = window.CATALOG_PRODUCTS || [];
+        function sanitizeProductImage(img, productId, index = 0) {
+            if (!img || typeof img !== 'string') return `images/products/${productId}_0.webp`;
+            const trimmed = img.trim();
+            if (trimmed.includes('media_6ac') || trimmed.includes('media_6ac7')) {
+                return `images/products/${productId}_${index}.webp`;
+            }
+            return trimmed;
+        }
+
+        let products = (window.CATALOG_PRODUCTS || []).map(p => {
+            if (p && Array.isArray(p.images) && p.images.length > 0) {
+                p.images = p.images.map((img, idx) => sanitizeProductImage(img, p.id, idx));
+            } else if (p && (!p.images || p.images.length === 0)) {
+                p.images = [`images/products/${p.id}_0.webp`];
+            }
+            return p;
+        });
         let productViews = {};
 
         // Load local views from localStorage
@@ -823,12 +839,20 @@
                         ${p.images && p.images.length > 0 
                             ? p.images.map(img => `
                                 <a href="product.html?id=${pTarget}" onclick="window.trackProductOpen('${pTarget}')" class="w-full h-full flex-shrink-0 snap-center relative block">
-                                    <img src="${img}" class="product-img w-full h-full object-contain p-4 mix-blend-multiply" alt="${p.name}" loading="lazy" />
+                                    <img src="${img}" 
+                                         onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='images/products/${p.id}_0.webp';}else{this.onerror=null;this.src='images/placeholder.webp';}" 
+                                         class="product-img w-full h-full object-contain p-4 mix-blend-multiply" 
+                                         alt="${p.name}" 
+                                         loading="lazy" />
                                 </a>
                               `).join('')
                             : `
                                 <a href="product.html?id=${pTarget}" onclick="window.trackProductOpen('${pTarget}')" class="w-full h-full flex-shrink-0 snap-center relative block">
-                                    <img src="images/placeholder.webp" class="product-img w-full h-full object-contain p-4 mix-blend-multiply" alt="${p.name}" loading="lazy" />
+                                    <img src="images/products/${p.id}_0.webp" 
+                                         onerror="this.onerror=null;this.src='images/placeholder.webp';" 
+                                         class="product-img w-full h-full object-contain p-4 mix-blend-multiply" 
+                                         alt="${p.name}" 
+                                         loading="lazy" />
                                 </a>
                               `
                         }

@@ -57,6 +57,12 @@ if ($action === 'get_public') {
     exit;
 }
 
+if ($action === 'heal_catalog') {
+    $products = readData();
+    echo json_encode(['success' => true, 'count' => count($products), 'message' => 'Katalog produk berhasil diperiksa & diselaraskan']);
+    exit;
+}
+
 if ($action === 'get_product_views') {
     header('Content-Type: application/json');
     $analyticsFile = __DIR__ . '/../data/analytics.json';
@@ -582,17 +588,48 @@ if ($action === 'upload_media') {
     exit;
 }
 
-// Legacy Product Functions (preserving for compatibility)
+// Product Data Functions with Auto-Healing
+function healProductImages(&$products) {
+    $healed = false;
+    foreach ($products as &$p) {
+        if (!isset($p['id'])) continue;
+        $id = (string)$p['id'];
+        if (isset($p['images']) && is_array($p['images'])) {
+            foreach ($p['images'] as $idx => $img) {
+                if (is_string($img)) {
+                    $isBrokenMedia = (strpos($img, 'media_6ac') !== false);
+                    $fileMissing = (strpos($img, 'images/media_') === 0 && !file_exists(__DIR__ . '/../' . $img));
+                    if ($isBrokenMedia || $fileMissing) {
+                        $p['images'][$idx] = 'images/products/' . $id . '_' . $idx . '.webp';
+                        $healed = true;
+                    }
+                }
+            }
+        } elseif (!isset($p['images']) || empty($p['images'])) {
+            $p['images'] = ['images/products/' . $id . '_0.webp'];
+            $healed = true;
+        }
+    }
+    return $healed;
+}
+
 function readData() {
     global $DATA_JSON;
+    $products = [];
     if (!file_exists($DATA_JSON)) {
         $DEFAULT_JSON = __DIR__ . '/../default_products.json';
         if (file_exists($DEFAULT_JSON)) {
-            return json_decode(file_get_contents($DEFAULT_JSON), true) ?? [];
+            $products = json_decode(file_get_contents($DEFAULT_JSON), true) ?? [];
         }
-        return [];
+    } else {
+        $products = json_decode(file_get_contents($DATA_JSON), true) ?? [];
     }
-    return json_decode(file_get_contents($DATA_JSON), true) ?? [];
+
+    if (!empty($products) && healProductImages($products)) {
+        writeData($products);
+    }
+
+    return $products;
 }
 
 function writeData($data) {
