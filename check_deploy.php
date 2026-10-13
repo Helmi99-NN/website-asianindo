@@ -18,6 +18,9 @@ $result = [
     'db_size' => file_exists($dbFile) ? filesize($dbFile) : 0,
     'db_has_password' => file_exists($dbFile) ? (strpos(file_get_contents($dbFile), 'Web_asianindo21') !== false) : false,
     'db_md5' => file_exists($dbFile) ? md5_file($dbFile) : '',
+    'mp4_in_images' => glob(__DIR__ . '/images/*.mp4'),
+    'mp4_in_videos' => glob(__DIR__ . '/videos/*.mp4'),
+    'media_files_in_images' => array_slice(glob(__DIR__ . '/images/media_*'), 0, 20),
 ];
 
 echo json_encode($result, JSON_PRETTY_PRINT);
