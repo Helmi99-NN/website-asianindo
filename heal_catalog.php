@@ -78,6 +78,12 @@ foreach ($products as $idx => &$p) {
         $wasChanged = true;
     }
 
+    // Promo Image Healing: default to leftmost cover image
+    if ((!isset($p['promo_image']) || trim($p['promo_image']) === '') && !empty($p['images']) && is_array($p['images'])) {
+        $p['promo_image'] = $p['images'][0];
+        $wasChanged = true;
+    }
+
     if ($wasChanged) {
         $repaired[] = [
             'id' => $id,

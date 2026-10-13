@@ -639,6 +639,12 @@ function healProductImages(&$products) {
             $p['video'] = 'videos/promo_vacuum_frying.mp4';
             $healed = true;
         }
+
+        // Auto-heal promo_image: default to leftmost cover photo if empty
+        if ((!isset($p['promo_image']) || trim($p['promo_image']) === '') && !empty($p['images']) && is_array($p['images'])) {
+            $p['promo_image'] = $p['images'][0];
+            $healed = true;
+        }
     }
     return $healed;
 }

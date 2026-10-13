@@ -1900,7 +1900,8 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
             const prods = Array.isArray(this.products) ? this.products : [];
             this.bulkMediaItems = prods.map(p => {
                 const origImages = Array.isArray(p.images) ? [...p.images] : [];
-                const origPromo = p.promo_image || '';
+                const coverImage = origImages.length > 0 ? origImages[0] : '';
+                const origPromo = (p.promo_image && typeof p.promo_image === 'string' && p.promo_image.trim() !== '') ? p.promo_image.trim() : coverImage;
                 const origVideo = p.video || '';
                 return {
                     id: String(p.id),
@@ -1919,6 +1920,17 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
                     isUploading: false
                 };
             });
+        },
+
+        getPromoImage(p) {
+            if (!p) return '';
+            if (p.promo_image && typeof p.promo_image === 'string' && p.promo_image.trim() !== '') {
+                return p.promo_image.trim();
+            }
+            if (Array.isArray(p.images) && p.images.length > 0 && typeof p.images[0] === 'string' && p.images[0].trim() !== '') {
+                return p.images[0].trim();
+            }
+            return '';
         },
 
         openBulkMediaWithSelected() {
@@ -2061,21 +2073,33 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
         setAsCoverImage(productId, index) {
             const item = this.bulkMediaItems.find(p => p.id === productId);
             if (!item || index === 0) return;
+            const prevCover = item.images[0];
             const target = item.images.splice(index, 1)[0];
             item.images.unshift(target);
+            if (!item.promo_image || item.promo_image === prevCover) {
+                item.promo_image = item.images[0];
+            }
         },
 
         moveImage(productId, fromIndex, toIndex) {
             const item = this.bulkMediaItems.find(p => p.id === productId);
             if (!item || toIndex < 0 || toIndex >= item.images.length) return;
+            const prevCover = item.images[0];
             const target = item.images.splice(fromIndex, 1)[0];
             item.images.splice(toIndex, 0, target);
+            if (!item.promo_image || item.promo_image === prevCover) {
+                item.promo_image = item.images[0];
+            }
         },
 
         removeImageAt(productId, index) {
             const item = this.bulkMediaItems.find(p => p.id === productId);
             if (!item) return;
+            const prevCover = item.images[0];
             item.images.splice(index, 1);
+            if (!item.promo_image || item.promo_image === prevCover) {
+                item.promo_image = (item.images.length > 0) ? item.images[0] : '';
+            }
         },
 
         async uploadPromoImage(productId, event) {
@@ -2102,7 +2126,16 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
 
         removePromoImage(productId) {
             const item = this.bulkMediaItems.find(p => p.id === productId);
-            if (item) item.promo_image = '';
+            if (item) {
+                item.promo_image = (item.images && item.images.length > 0) ? item.images[0] : '';
+            }
+        },
+
+        resetPromoToCover(productId) {
+            const item = this.bulkMediaItems.find(p => p.id === productId);
+            if (item && item.images && item.images.length > 0) {
+                item.promo_image = item.images[0];
+            }
         },
 
         async uploadVideoForProduct(productId, event) {
@@ -2212,7 +2245,7 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
                 updates: modifiedItems.map(item => ({
                     id: item.id,
                     images: item.images,
-                    promo_image: item.promo_image || '',
+                    promo_image: item.promo_image || (item.images && item.images.length > 0 ? item.images[0] : ''),
                     video: item.video || ''
                 }))
             };

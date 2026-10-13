@@ -829,21 +829,27 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                 <span class="font-bold text-xs text-gray-700 block mb-2">Foto Produk Promosi</span>
                                 <div class="flex items-center gap-3">
                                     <!-- Promo Image Thumbnail or Upload Box -->
-                                    <template x-if="p.promo_image">
-                                        <div class="w-16 h-16 sm:w-18 sm:h-18 relative rounded-lg border border-gray-200 overflow-hidden group flex-shrink-0">
-                                            <img :src="p.promo_image.startsWith('http') ? p.promo_image : ('../' + p.promo_image)" class="w-full h-full object-cover">
-                                            <div class="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5">
-                                                <label class="w-6 h-6 bg-blue-500 text-white rounded flex items-center justify-center text-[10px] cursor-pointer" title="Ganti foto promosi">
+                                    <template x-if="getPromoImage(p)">
+                                        <div class="w-16 h-16 sm:w-18 sm:h-18 relative rounded-lg border border-gray-300 overflow-hidden group flex-shrink-0 bg-white shadow-2xs">
+                                            <img :src="getPromoImage(p).startsWith('http') ? getPromoImage(p) : ('../' + getPromoImage(p))" class="w-full h-full object-cover">
+                                            <!-- Badge Sampul or Kustom -->
+                                            <span class="absolute bottom-1 right-1 bg-black/75 text-white text-[9px] px-1 rounded font-semibold z-10" x-text="p.promo_image && p.images && p.images[0] && p.promo_image !== p.images[0] ? 'Kustom' : 'Sampul'"></span>
+                                            <!-- Hover Actions -->
+                                            <div class="absolute inset-0 bg-black/75 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 z-20">
+                                                <label class="w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded flex items-center justify-center text-[10px] cursor-pointer shadow-xs transition-colors" title="Ganti foto promosi (upload file)">
                                                     <i class="fas fa-sync-alt"></i>
                                                     <input type="file" accept="image/*" @change="uploadPromoImage(p.id, $event)" class="hidden">
                                                 </label>
-                                                <button type="button" @click="removePromoImage(p.id)" class="w-6 h-6 bg-red-500 text-white rounded flex items-center justify-center text-[10px]" title="Hapus foto promosi">
-                                                    <i class="fas fa-trash"></i>
+                                                <button type="button" @click="openMediaPicker(p.id, 'promo')" class="w-6 h-6 bg-amber-500 hover:bg-amber-600 text-white rounded flex items-center justify-center text-[10px] shadow-xs transition-colors" title="Pilih dari Galeri Media">
+                                                    <i class="fas fa-images"></i>
+                                                </button>
+                                                <button type="button" @click="resetPromoToCover(p.id)" class="w-6 h-6 bg-emerald-500 hover:bg-emerald-600 text-white rounded flex items-center justify-center text-[10px] shadow-xs transition-colors" title="Kembalikan ke Foto Sampul (#1)" x-show="p.promo_image && p.images && p.images[0] && p.promo_image !== p.images[0]">
+                                                    <i class="fas fa-undo"></i>
                                                 </button>
                                             </div>
                                         </div>
                                     </template>
-                                    <template x-if="!p.promo_image">
+                                    <template x-if="!getPromoImage(p)">
                                         <div class="w-16 h-16 sm:w-18 sm:h-18 rounded-lg border-2 border-dashed border-gray-300 hover:border-orange-400 bg-white transition-all flex flex-col items-center justify-center relative cursor-pointer text-center flex-shrink-0 group">
                                             <i class="fas fa-plus text-gray-400 group-hover:text-orange-500 mb-0.5 text-xs"></i>
                                             <span class="text-[9px] font-bold text-gray-500 group-hover:text-orange-600">Foto 1:1</span>
@@ -853,11 +859,25 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
                                     <!-- Guide notes -->
                                     <div class="text-[11px] text-gray-500 leading-tight space-y-1">
-                                        <p class="font-medium text-gray-700">• Upload Foto Rasio 1:1</p>
-                                        <p>Digunakan di halaman promosi, banner highlight katalog, dan hasil pencarian.</p>
-                                        <button type="button" @click="openMediaPicker(p.id, 'promo')" class="text-[10px] text-primary hover:underline font-semibold">
-                                            + Pilih dari Galeri Media
-                                        </button>
+                                        <p class="font-medium text-gray-700">• Foto Rasio 1:1 (Persegi)</p>
+                                        <template x-if="!p.promo_image || (p.images && p.promo_image === p.images[0])">
+                                            <p class="text-[11px] text-emerald-700 font-semibold flex items-center gap-1">
+                                                <i class="fas fa-check-circle text-emerald-600"></i> Mengikuti Foto Sampul #1
+                                            </p>
+                                        </template>
+                                        <template x-if="p.promo_image && p.images && p.images[0] && p.promo_image !== p.images[0]">
+                                            <p class="text-[11px] text-blue-700 font-medium flex items-center gap-1">
+                                                <i class="fas fa-info-circle text-blue-600"></i> Menggunakan Foto Khusus
+                                            </p>
+                                        </template>
+                                        <div class="flex items-center gap-2 pt-0.5">
+                                            <button type="button" @click="openMediaPicker(p.id, 'promo')" class="text-[10px] text-primary hover:underline font-semibold">
+                                                + Pilih dari Galeri
+                                            </button>
+                                            <button type="button" @click="resetPromoToCover(p.id)" class="text-[10px] text-emerald-700 hover:underline font-semibold" x-show="p.promo_image && p.images && p.images[0] && p.promo_image !== p.images[0]">
+                                                • Pakai Sampul #1
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
