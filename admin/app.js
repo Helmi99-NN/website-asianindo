@@ -53,6 +53,12 @@ function adminApp() {
         // Panduan Ukuran & Format Foto Shopee Modal
         showSizeGuideModal: false,
 
+        // Video Preview Modal States
+        showVideoModal: false,
+        videoPreviewSrc: '',
+        videoPreviewTitle: '',
+        videoPreviewUrl: '',
+
         // ==================== INVOICE GENERATOR STATES ====================
         savedInvoices: [],
         showSavedInvoicesModal: false,
@@ -1316,7 +1322,12 @@ function adminApp() {
         handleVideo(e) {
             let f = e.target.files[0]; if (!f) return;
             if (f.size > 15*1024*1024) { alert('Ukuran video maksimal 15MB!'); e.target.value=''; return; }
-            this.videoFile = f; this.videoPreview = true;
+            this.videoFile = f;
+            if (this.videoPreviewUrl) {
+                try { URL.revokeObjectURL(this.videoPreviewUrl); } catch(err) {}
+            }
+            this.videoPreviewUrl = URL.createObjectURL(f);
+            this.videoPreview = true;
         },
 
         async saveProduct() {
@@ -2126,6 +2137,48 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
         removeVideoForProduct(productId) {
             const item = this.bulkMediaItems.find(p => p.id === productId);
             if (item) item.video = '';
+        },
+
+        openVideoPreview(product) {
+            if (!product) return;
+            const videoPath = product.video || (typeof product === 'string' ? product : '');
+            if (!videoPath) {
+                alert('Belum ada video produk yang tersedia untuk diputar.');
+                return;
+            }
+
+            let src = videoPath;
+            if (!src.startsWith('http') && !src.startsWith('blob:') && !src.startsWith('data:') && !src.startsWith('../')) {
+                src = '../' + src;
+            }
+
+            this.videoPreviewSrc = src;
+            this.videoPreviewTitle = product.name || product.title || 'Video Produk';
+            this.showVideoModal = true;
+
+            this.$nextTick(() => {
+                const vid = document.getElementById('admin-preview-video-player');
+                if (vid) {
+                    vid.load();
+                    const playPromise = vid.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(() => {
+                            // Autoplay may need direct user interaction, controls are available
+                        });
+                    }
+                }
+            });
+        },
+
+        closeVideoPreview() {
+            const vid = document.getElementById('admin-preview-video-player');
+            if (vid) {
+                vid.pause();
+                vid.currentTime = 0;
+            }
+            this.showVideoModal = false;
+            this.videoPreviewSrc = '';
+            this.videoPreviewTitle = '';
         },
 
         resetProductMedia(productId) {

@@ -532,7 +532,12 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             <div class="form-group">
                 <label class="form-label">Video Produk (Maks 15MB)</label>
                 <input type="file" accept="video/*" @change="handleVideo($event)" class="form-input text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-primary-light file:text-primary file:font-medium file:cursor-pointer">
-                <p x-show="videoPreview || productForm.existing_video" class="mt-2 text-sm text-green-600"><i class="fas fa-check-circle mr-1"></i>Video tersedia</p>
+                <div x-show="videoPreview || productForm.existing_video" class="mt-2 flex items-center gap-3">
+                    <p class="text-sm text-green-600"><i class="fas fa-check-circle mr-1"></i>Video tersedia</p>
+                    <button type="button" @click="openVideoPreview({ name: productForm.name || 'Video Produk', video: videoPreviewUrl || productForm.existing_video })" class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-100 hover:bg-emerald-200 px-2.5 py-1 rounded-md transition-colors border border-emerald-300 shadow-2xs">
+                        <i class="fas fa-play text-[10px]"></i> Cek / Putar Video
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -863,15 +868,25 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                 <div class="flex items-center gap-3">
                                     <!-- Video Thumbnail or Upload Box -->
                                     <template x-if="p.video">
-                                        <div class="w-20 h-16 sm:w-24 sm:h-18 relative rounded-lg border border-gray-200 overflow-hidden bg-black flex items-center justify-center group flex-shrink-0">
-                                            <video :src="'../' + p.video" class="w-full h-full object-cover"></video>
-                                            <span class="absolute bottom-1 right-1 bg-black/70 text-white text-[9px] px-1 rounded font-mono">MP4</span>
-                                            <div class="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5">
-                                                <label class="w-6 h-6 bg-blue-500 text-white rounded flex items-center justify-center text-[10px] cursor-pointer" title="Ganti video">
+                                        <div class="w-20 h-16 sm:w-24 sm:h-18 relative rounded-lg border border-gray-300 overflow-hidden bg-black flex items-center justify-center group flex-shrink-0 cursor-pointer shadow-xs" @click="openVideoPreview(p)" title="Klik untuk memutar video">
+                                            <video :src="p.video.startsWith('http') ? p.video : ('../' + p.video)" class="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity pointer-events-none"></video>
+                                            <!-- Center Play Icon -->
+                                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none group-hover:scale-110 transition-transform">
+                                                <div class="w-7 h-7 rounded-full bg-white/40 backdrop-blur-xs flex items-center justify-center text-white shadow-sm border border-white/60">
+                                                    <i class="fas fa-play text-[10px] ml-0.5"></i>
+                                                </div>
+                                            </div>
+                                            <span class="absolute bottom-1 right-1 bg-black/80 text-white text-[9px] px-1 rounded font-mono z-10">MP4</span>
+                                            <!-- Hover Actions Overlay -->
+                                            <div class="absolute inset-0 bg-black/75 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 z-20" @click.stop>
+                                                <button type="button" @click="openVideoPreview(p)" class="w-6 h-6 bg-emerald-500 hover:bg-emerald-600 text-white rounded flex items-center justify-center text-[10px] shadow-xs transition-colors" title="Putar & Cek Video">
+                                                    <i class="fas fa-play ml-0.5"></i>
+                                                </button>
+                                                <label class="w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded flex items-center justify-center text-[10px] cursor-pointer shadow-xs transition-colors" title="Ganti video">
                                                     <i class="fas fa-sync-alt"></i>
                                                     <input type="file" accept="video/mp4,video/*" @change="uploadVideoForProduct(p.id, $event)" class="hidden">
                                                 </label>
-                                                <button type="button" @click="removeVideoForProduct(p.id)" class="w-6 h-6 bg-red-500 text-white rounded flex items-center justify-center text-[10px]" title="Hapus video">
+                                                <button type="button" @click="removeVideoForProduct(p.id)" class="w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded flex items-center justify-center text-[10px] shadow-xs transition-colors" title="Hapus video">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </div>
@@ -885,11 +900,19 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                         </div>
                                     </template>
 
-                                    <!-- Guide notes -->
+                                    <!-- Guide notes & Quick Play Button -->
                                     <div class="text-[11px] text-gray-500 leading-tight space-y-1">
                                         <p class="font-medium text-gray-700">• Ukuran: Maks 30MB</p>
                                         <p>• Durasi: 10–60 detik (MP4/WebM)</p>
-                                        <p class="text-[10px] text-gray-400">Video tampil di galeri utama produk.</p>
+                                        <template x-if="p.video">
+                                            <button type="button" @click="openVideoPreview(p)" class="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-100/80 hover:bg-emerald-200/80 px-2.5 py-1 rounded-md transition-colors mt-0.5 border border-emerald-300/60 shadow-2xs">
+                                                <i class="fas fa-play-circle text-xs text-emerald-600"></i>
+                                                <span>Cek / Putar Video</span>
+                                            </button>
+                                        </template>
+                                        <template x-if="!p.video">
+                                            <p class="text-[10px] text-gray-400">Video tampil di galeri utama produk.</p>
+                                        </template>
                                     </div>
                                 </div>
                             </div>
@@ -3026,6 +3049,53 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         <div class="px-6 py-3 border-t bg-gray-50 flex justify-end">
             <button @click="showSizeGuideModal = false" class="bg-[#EE4D2D] hover:bg-[#d73211] text-white font-bold text-xs py-2 px-6 rounded-lg transition-colors">
                 Saya Mengerti
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- MODAL: PREVIEW & PUTAR VIDEO PRODUK -->
+<!-- ================================================================ -->
+<div x-show="showVideoModal" 
+     x-cloak 
+     @keydown.escape.window="if(showVideoModal) closeVideoPreview()" 
+     class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+    <div @click.outside="closeVideoPreview()" class="bg-gray-900 text-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden flex flex-col border border-gray-700">
+        <!-- Header -->
+        <div class="px-5 py-3.5 border-b border-gray-800 flex items-center justify-between bg-gray-950/80">
+            <div class="flex items-center gap-2.5 min-w-0">
+                <span class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-play text-xs"></i>
+                </span>
+                <div class="min-w-0">
+                    <h3 class="font-bold text-sm text-gray-100 truncate" x-text="videoPreviewTitle || 'Video Produk'"></h3>
+                    <p class="text-[11px] text-gray-400">Putar & Verifikasi Video Produk</p>
+                </div>
+            </div>
+            <button type="button" @click="closeVideoPreview()" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-800 transition-colors">
+                <i class="fas fa-times text-base"></i>
+            </button>
+        </div>
+
+        <!-- Video Player Container -->
+        <div class="bg-black p-3 sm:p-5 flex items-center justify-center">
+            <div class="w-full max-h-[65vh] flex items-center justify-center rounded-xl overflow-hidden bg-black/90">
+                <video id="admin-preview-video-player" 
+                       :src="videoPreviewSrc" 
+                       controls 
+                       playsinline 
+                       class="max-w-full max-h-[65vh] rounded-lg shadow-lg">
+                    Browser Anda tidak mendukung pemutar video HTML5.
+                </video>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="px-5 py-3 border-t border-gray-800 bg-gray-950/80 flex items-center justify-between text-xs text-gray-400">
+            <span class="truncate max-w-xs font-mono text-[11px] text-gray-400" x-text="videoPreviewSrc ? videoPreviewSrc.replace('../', '') : ''"></span>
+            <button type="button" @click="closeVideoPreview()" class="bg-gray-800 hover:bg-gray-700 text-white font-medium text-xs py-1.5 px-4 rounded-lg transition-colors">
+                Tutup Pemutar
             </button>
         </div>
     </div>
