@@ -66,13 +66,52 @@ document.addEventListener('DOMContentLoaded', async () => {
         return trimmed;
     }
 
+    function sanitizeProductVideo(video, productName, subCategory) {
+        if (!video || typeof video !== 'string') return '';
+        const trimmed = video.trim();
+        if (trimmed.includes('media_6ac') || trimmed.includes('images/media_')) {
+            const isVacuum = (productName + ' ' + subCategory).toLowerCase().includes('vacuum');
+            return isVacuum ? 'videos/promo_vacuum_frying.mp4' : '';
+        }
+        return trimmed;
+    }
+
     if (Array.isArray(product.images) && product.images.length > 0) {
         product.images = product.images.map((img, idx) => sanitizeProductImage(img, product.id, idx));
     } else {
         product.images = [`images/products/${product.id}_0.webp`];
     }
 
+    // Check for product video (Shopee style: placed at the very beginning)
+    let validVideo = sanitizeProductVideo(product.video, product.name || '', product.subCategory || '');
+    if (!validVideo && (product.name || '').toLowerCase().includes('vacuum frying')) {
+        validVideo = 'videos/promo_vacuum_frying.mp4';
+    }
+
+    // Build unified media items array: Video is always index 0 if available!
+    const mediaItems = [];
+    if (validVideo) {
+        mediaItems.push({
+            type: 'video',
+            src: validVideo,
+            poster: product.images[0] || 'images/placeholder.webp'
+        });
+    }
+    (product.images || []).forEach(img => {
+        mediaItems.push({
+            type: 'image',
+            src: img
+        });
+    });
+
     const mainImg = document.getElementById('product-image');
+    const mainVideo = document.getElementById('product-video');
+    const prevBtn = document.getElementById('gallery-prev');
+    const nextBtn = document.getElementById('gallery-next');
+    const thumbContainer = document.getElementById('product-thumbnails');
+
+    let currentMediaIndex = 0;
+
     if (mainImg) {
         mainImg.onerror = function() {
             if (!this.dataset.fallback) {
@@ -83,91 +122,120 @@ document.addEventListener('DOMContentLoaded', async () => {
                 this.src = 'images/placeholder.webp';
             }
         };
-        mainImg.src = product.images[0];
-        mainImg.alt = product.name;
     }
 
-    if (product.images && product.images.length > 0) {
-        // Gallery navigation state
-        let currentImageIndex = 0;
-        const images = product.images;
-        const prevBtn = document.getElementById('gallery-prev');
-        const nextBtn = document.getElementById('gallery-next');
+    function showMedia(newIndex) {
+        if (newIndex < 0 || newIndex >= mediaItems.length) return;
+        currentMediaIndex = newIndex;
+        const currentItem = mediaItems[currentMediaIndex];
 
-        function updateGallery(newIndex) {
-            currentImageIndex = newIndex;
-            // Smooth transition
-            mainImg.style.opacity = '0';
-            mainImg.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                mainImg.src = images[currentImageIndex];
-                mainImg.style.opacity = '1';
-                mainImg.style.transform = 'scale(1)';
-            }, 150);
-            
-            // Update thumbnail highlight
-            const thumbs = document.querySelectorAll('#product-thumbnails > div');
-            thumbs.forEach((t, i) => {
-                if (i === currentImageIndex) {
-                    t.classList.replace('border-gray-200', 'border-primary');
-                } else {
-                    t.classList.replace('border-primary', 'border-gray-200');
+        if (currentItem.type === 'video') {
+            // Show video player
+            if (mainImg) mainImg.classList.add('hidden');
+            if (mainVideo) {
+                mainVideo.classList.remove('hidden');
+                if (mainVideo.src !== currentItem.src && !mainVideo.src.endsWith(currentItem.src)) {
+                    mainVideo.src = currentItem.src;
                 }
-            });
-
-            // Update arrow disabled state
-            if (prevBtn) prevBtn.disabled = (currentImageIndex === 0);
-            if (nextBtn) nextBtn.disabled = (currentImageIndex === images.length - 1);
+                if (currentItem.poster) mainVideo.poster = currentItem.poster;
+            }
+        } else {
+            // Show photo image
+            if (mainVideo) {
+                mainVideo.pause();
+                mainVideo.classList.add('hidden');
+            }
+            if (mainImg) {
+                mainImg.classList.remove('hidden');
+                mainImg.style.opacity = '0';
+                mainImg.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    mainImg.src = currentItem.src;
+                    mainImg.style.opacity = '1';
+                    mainImg.style.transform = 'scale(1)';
+                }, 100);
+            }
         }
 
-        // Show arrows if more than 1 image
-        if (images.length > 1) {
-            if (prevBtn) { prevBtn.style.display = 'flex'; prevBtn.disabled = true; }
-            if (nextBtn) { nextBtn.style.display = 'flex'; }
-            
-            prevBtn.addEventListener('click', () => {
-                if (currentImageIndex > 0) updateGallery(currentImageIndex - 1);
-            });
-            nextBtn.addEventListener('click', () => {
-                if (currentImageIndex < images.length - 1) updateGallery(currentImageIndex + 1);
-            });
+        // Highlight active thumbnail
+        const thumbs = document.querySelectorAll('#product-thumbnails > div');
+        thumbs.forEach((t, i) => {
+            if (i === currentMediaIndex) {
+                t.classList.replace('border-gray-200', 'border-primary');
+                t.classList.add('ring-2', 'ring-primary/40');
+            } else {
+                t.classList.replace('border-primary', 'border-gray-200');
+                t.classList.remove('ring-2', 'ring-primary/40');
+            }
+        });
 
-            // Keyboard arrow support
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowLeft' && currentImageIndex > 0) updateGallery(currentImageIndex - 1);
-                if (e.key === 'ArrowRight' && currentImageIndex < images.length - 1) updateGallery(currentImageIndex + 1);
-            });
-        }
+        // Update arrow button disabled state
+        if (prevBtn) prevBtn.disabled = (currentMediaIndex === 0);
+        if (nextBtn) nextBtn.disabled = (currentMediaIndex === mediaItems.length - 1);
+    }
 
-        // Render thumbnails if more than 1 image
-        const thumbContainer = document.getElementById('product-thumbnails');
-        if (thumbContainer && product.images.length > 1) {
-            let thumbHtml = '';
-            product.images.forEach((img, idx) => {
-                let borderClass = idx === 0 ? 'border-primary' : 'border-gray-200';
+    // Render thumbnails gallery
+    if (thumbContainer && mediaItems.length > 1) {
+        let thumbHtml = '';
+        mediaItems.forEach((item, idx) => {
+            let borderClass = idx === 0 ? 'border-primary ring-2 ring-primary/40' : 'border-gray-200';
+            if (item.type === 'video') {
                 thumbHtml += `
-                    <div class="flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 ${borderClass} cursor-pointer transition-all hover:border-primary" 
+                    <div class="flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 ${borderClass} cursor-pointer transition-all hover:border-primary relative group/vthumb bg-black/90 shadow-sm" 
+                         data-index="${idx}" title="Tonton Video Produk">
+                        <img src="${item.poster}" alt="Thumbnail Video" class="w-full h-full object-cover opacity-80 group-hover/vthumb:opacity-95 transition-opacity">
+                        <div class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white pointer-events-none">
+                            <span class="material-symbols-outlined text-2xl drop-shadow text-white" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+                            <span class="text-[9px] font-bold tracking-wider uppercase mt-[-2px] bg-red-600 text-white px-1.5 py-0.5 rounded-full shadow-sm leading-none">Video</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                thumbHtml += `
+                    <div class="flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 ${borderClass} cursor-pointer transition-all hover:border-primary bg-white shadow-sm" 
                          data-index="${idx}">
-                        <img src="${img}" 
+                        <img src="${item.src}" 
                              onerror="this.onerror=null; this.src='images/products/${product.id}_0.webp';" 
                              alt="Thumbnail ${idx+1}" 
                              class="w-full h-full object-cover">
                     </div>
                 `;
-            });
-            thumbContainer.innerHTML = thumbHtml;
+            }
+        });
+        thumbContainer.innerHTML = thumbHtml;
 
-            // Bind thumbnail clicks
-            thumbContainer.querySelectorAll('[data-index]').forEach(thumb => {
-                thumb.addEventListener('click', () => {
-                    updateGallery(parseInt(thumb.dataset.index));
-                });
+        // Bind click events on thumbnails
+        thumbContainer.querySelectorAll('[data-index]').forEach(thumb => {
+            thumb.addEventListener('click', () => {
+                showMedia(parseInt(thumb.dataset.index));
+            });
+        });
+    }
+
+    // Navigation arrows & keyboard listeners
+    if (mediaItems.length > 1) {
+        if (prevBtn) { prevBtn.style.display = 'flex'; prevBtn.disabled = true; }
+        if (nextBtn) { nextBtn.style.display = 'flex'; }
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                if (currentMediaIndex > 0) showMedia(currentMediaIndex - 1);
             });
         }
-    } else if (product.image) {
-        document.getElementById('product-image').src = product.image;
-        document.getElementById('product-image').alt = product.name;
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                if (currentMediaIndex < mediaItems.length - 1) showMedia(currentMediaIndex + 1);
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && currentMediaIndex > 0) showMedia(currentMediaIndex - 1);
+            if (e.key === 'ArrowRight' && currentMediaIndex < mediaItems.length - 1) showMedia(currentMediaIndex + 1);
+        });
     }
+
+    // Show initial item: Video first if available, else first image!
+    showMedia(0);
     document.getElementById('product-category').innerText = product.category || '';
     document.getElementById('product-capacity').innerText = product.capacity || '';
     

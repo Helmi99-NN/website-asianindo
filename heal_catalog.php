@@ -61,12 +61,30 @@ foreach ($products as $idx => &$p) {
         $wasChanged = true;
     }
 
+    // Video Healing
+    $isVacuum = (stripos(($p['name'] ?? '') . ' ' . ($p['subCategory'] ?? ''), 'vacuum') !== false);
+    if (isset($p['video']) && is_string($p['video'])) {
+        $v = trim($p['video']);
+        $isBrokenVid = (strpos($v, 'media_6ac') !== false || (strpos($v, 'images/media_') === 0 && !file_exists(__DIR__ . '/' . $v)));
+        if ($isBrokenVid && $isVacuum) {
+            $p['video'] = 'videos/promo_vacuum_frying.mp4';
+            $wasChanged = true;
+        } elseif ($isBrokenVid && !file_exists(__DIR__ . '/' . $v)) {
+            $p['video'] = '';
+            $wasChanged = true;
+        }
+    } elseif ($isVacuum && empty($p['video'])) {
+        $p['video'] = 'videos/promo_vacuum_frying.mp4';
+        $wasChanged = true;
+    }
+
     if ($wasChanged) {
         $repaired[] = [
             'id' => $id,
             'name' => $p['name'] ?? '',
             'before' => $oldImages,
-            'after' => $p['images']
+            'after' => $p['images'],
+            'video' => $p['video'] ?? ''
         ];
     }
 }

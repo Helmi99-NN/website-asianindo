@@ -576,9 +576,22 @@ if ($action === 'upload_media') {
             }
         }
         
+        // Video file upload handling (store in videos/ directory with public permissions)
+        if (in_array($ext, ['mp4', 'webm', 'mov'])) {
+            $videoDir = __DIR__ . '/../videos/';
+            if (!is_dir($videoDir)) mkdir($videoDir, 0777, true);
+            $filename = uniqid('video_') . '.' . $ext;
+            if (move_uploaded_file($tmp, $videoDir . $filename)) {
+                @chmod($videoDir . $filename, 0644);
+                echo json_encode(['success' => true, 'path' => 'videos/' . $filename]);
+                exit;
+            }
+        }
+
         // Fallback for non-images or if GD fails
         $filename = uniqid('media_') . '.' . $ext;
         if (move_uploaded_file($tmp, $UPLOAD_DIR . $filename)) {
+            @chmod($UPLOAD_DIR . $filename, 0644);
             echo json_encode(['success' => true, 'path' => 'images/' . $filename]);
             exit;
         }
@@ -607,6 +620,23 @@ function healProductImages(&$products) {
             }
         } elseif (!isset($p['images']) || empty($p['images'])) {
             $p['images'] = ['images/products/' . $id . '_0.webp'];
+            $healed = true;
+        }
+
+        // Auto-heal broken video paths
+        $isVacuum = (stripos(($p['name'] ?? '') . ' ' . ($p['subCategory'] ?? ''), 'vacuum') !== false);
+        if (isset($p['video']) && is_string($p['video'])) {
+            $v = trim($p['video']);
+            $isBrokenVid = (strpos($v, 'media_6ac') !== false || (strpos($v, 'images/media_') === 0 && !file_exists(__DIR__ . '/../' . $v)));
+            if ($isBrokenVid && $isVacuum) {
+                $p['video'] = 'videos/promo_vacuum_frying.mp4';
+                $healed = true;
+            } elseif ($isBrokenVid && !file_exists(__DIR__ . '/../' . $v)) {
+                $p['video'] = '';
+                $healed = true;
+            }
+        } elseif ($isVacuum && empty($p['video'])) {
+            $p['video'] = 'videos/promo_vacuum_frying.mp4';
             $healed = true;
         }
     }

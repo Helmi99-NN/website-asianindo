@@ -829,6 +829,7 @@
             const waMsg = p.waMsg || ('Halo, saya tertarik dengan ' + (p.name || ''));
             const waUrl = `https://wa.me/6285335850517?text=${encodeURIComponent(waMsg)}`;
             const pTarget = p.slug || p.id;
+            const hasVideo = Boolean((p.video && String(p.video).trim() !== '') || (p.name || '').toLowerCase().includes('vacuum frying'));
             return `
             <article class="product-card bg-white rounded-2xl border border-outline-variant/15 overflow-hidden flex flex-col group">
                 <div class="aspect-[4/3] bg-surface-container-low relative overflow-hidden group/gallery">
@@ -837,13 +838,20 @@
                             .group\\/gallery > div::-webkit-scrollbar { display: none; }
                         </style>
                         ${p.images && p.images.length > 0 
-                            ? p.images.map(img => `
+                            ? p.images.map((img, i) => `
                                 <a href="product.html?id=${pTarget}" onclick="window.trackProductOpen('${pTarget}')" class="w-full h-full flex-shrink-0 snap-center relative block">
                                     <img src="${img}" 
                                          onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='images/products/${p.id}_0.webp';}else{this.onerror=null;this.src='images/placeholder.webp';}" 
                                          class="product-img w-full h-full object-contain p-4 mix-blend-multiply" 
                                          alt="${p.name}" 
                                          loading="lazy" />
+                                    ${i === 0 && hasVideo ? `
+                                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                            <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center text-white border border-white/50 shadow-lg group-hover:scale-110 transition-transform">
+                                                <span class="material-symbols-outlined text-2xl text-white ml-0.5" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                                            </div>
+                                        </div>
+                                    ` : ''}
                                 </a>
                               `).join('')
                             : `
@@ -853,6 +861,13 @@
                                          class="product-img w-full h-full object-contain p-4 mix-blend-multiply" 
                                          alt="${p.name}" 
                                          loading="lazy" />
+                                    ${hasVideo ? `
+                                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                            <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center text-white border border-white/50 shadow-lg group-hover:scale-110 transition-transform">
+                                                <span class="material-symbols-outlined text-2xl text-white ml-0.5" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                                            </div>
+                                        </div>
+                                    ` : ''}
                                 </a>
                               `
                         }
@@ -860,6 +875,7 @@
                     ${p.images && p.images.length > 1 ? `<div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10 pointer-events-none opacity-0 group-hover/gallery:opacity-100 transition-opacity duration-300">
                         ${p.images.map((_, i) => `<div class="w-1.5 h-1.5 rounded-full bg-black/40 border border-white/60 shadow-sm"></div>`).join('')}
                     </div>` : ''}
+                    ${hasVideo ? `<div class="absolute bottom-2 left-2 z-10 bg-black/80 backdrop-blur-md text-white px-2 py-0.5 rounded-full font-caption text-[10px] sm:text-xs font-bold shadow-md flex items-center gap-1 pointer-events-none border border-white/20"><span class="material-symbols-outlined text-[12px] sm:text-[14px] text-red-400" style="font-variation-settings: 'FILL' 1;">play_circle</span><span>Video</span></div>` : ''}
                     ${p.badge ? `<div class="absolute top-2 left-2 z-10 ${p.badgeColor} px-2 py-0.5 rounded-full font-caption text-[10px] sm:text-xs font-bold shadow-sm pointer-events-none">${p.badge}</div>` : ''}
                     <div class="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-lg text-primary font-caption border border-primary/15 text-[10px] sm:text-xs shadow-sm pointer-events-none">${p.subCategory}</div>
                 </div>
