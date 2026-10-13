@@ -2196,7 +2196,8 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
                     const playPromise = vid.play();
                     if (playPromise !== undefined) {
                         playPromise.catch(() => {
-                            // Autoplay may need direct user interaction, controls are available
+                            vid.muted = true;
+                            vid.play().catch(e => console.warn('Admin preview autoplay error:', e));
                         });
                     }
                 }

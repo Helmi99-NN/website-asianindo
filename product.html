@@ -410,7 +410,11 @@
                         <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-sm sm:shadow-lg border border-primary/5 sticky top-20 sm:top-24">
                             <div class="aspect-square relative flex items-center justify-center overflow-hidden rounded-xl sm:rounded-2xl group bg-surface/50">
                                 <img id="product-image" src="" alt="Product Image" class="w-full h-full object-contain drop-shadow-md transition-all duration-300 group-hover:scale-105" />
-                                <video id="product-video" class="w-full h-full object-contain rounded-xl sm:rounded-2xl bg-black/95 hidden z-10" playsinline controls preload="metadata"></video>
+                                <video id="product-video" class="w-full h-full object-contain rounded-xl sm:rounded-2xl bg-black/95 hidden z-10" playsinline controls autoplay muted loop preload="auto"></video>
+                                <button id="video-unmute-btn" type="button" class="absolute top-3 right-3 z-20 hidden items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/75 hover:bg-black/90 backdrop-blur-md text-white text-xs font-semibold shadow-lg transition-all border border-white/20 cursor-pointer">
+                                    <span class="material-symbols-outlined text-base text-yellow-300">volume_off</span>
+                                    <span>Aktifkan Suara</span>
+                                </button>
                                 <div id="product-badge-container" class="absolute top-3 left-3 z-10 hidden">
                                     <span id="product-badge" class="px-2.5 py-0.5 text-[11px] font-bold rounded-full"></span>
                                 </div>

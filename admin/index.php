@@ -3104,6 +3104,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 <video id="admin-preview-video-player" 
                        :src="videoPreviewSrc" 
                        controls 
+                       autoplay 
                        playsinline 
                        class="max-w-full max-h-[65vh] rounded-lg shadow-lg">
                     Browser Anda tidak mendukung pemutar video HTML5.

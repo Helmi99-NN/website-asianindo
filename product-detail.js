@@ -109,8 +109,69 @@ document.addEventListener('DOMContentLoaded', async () => {
     const prevBtn = document.getElementById('gallery-prev');
     const nextBtn = document.getElementById('gallery-next');
     const thumbContainer = document.getElementById('product-thumbnails');
+    const unmuteBtn = document.getElementById('video-unmute-btn');
 
     let currentMediaIndex = 0;
+
+    function updateUnmuteBtnState() {
+        if (!unmuteBtn || !mainVideo || mainVideo.classList.contains('hidden')) {
+            if (unmuteBtn) { unmuteBtn.classList.add('hidden'); unmuteBtn.classList.remove('flex'); }
+            return;
+        }
+        if (mainVideo.muted) {
+            unmuteBtn.classList.remove('hidden');
+            unmuteBtn.classList.add('flex');
+        } else {
+            unmuteBtn.classList.add('hidden');
+            unmuteBtn.classList.remove('flex');
+        }
+    }
+
+    function hideUnmuteBtn() {
+        if (unmuteBtn) {
+            unmuteBtn.classList.add('hidden');
+            unmuteBtn.classList.remove('flex');
+        }
+    }
+
+    function playProductVideo(isUserClick = false) {
+        if (!mainVideo) return;
+        if (isUserClick) {
+            mainVideo.muted = false;
+        }
+        const promise = mainVideo.play();
+        if (promise !== undefined) {
+            promise.then(() => {
+                updateUnmuteBtnState();
+            }).catch(() => {
+                // If browser restricts unmuted autoplay on initial load, play muted immediately
+                mainVideo.muted = true;
+                mainVideo.play().then(() => {
+                    updateUnmuteBtnState();
+                }).catch(e => {
+                    console.warn('Autoplay error:', e);
+                });
+            });
+        }
+    }
+
+    if (unmuteBtn && mainVideo) {
+        unmuteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mainVideo.muted = false;
+            hideUnmuteBtn();
+            mainVideo.play().catch(() => {});
+        });
+        mainVideo.addEventListener('volumechange', () => {
+            updateUnmuteBtnState();
+        });
+        mainVideo.addEventListener('click', () => {
+            if (mainVideo.muted) {
+                mainVideo.muted = false;
+                hideUnmuteBtn();
+            }
+        });
+    }
 
     if (mainImg) {
         mainImg.onerror = function() {
@@ -124,7 +185,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
     }
 
-    function showMedia(newIndex) {
+    function showMedia(newIndex, isUserClick = false) {
         if (newIndex < 0 || newIndex >= mediaItems.length) return;
         currentMediaIndex = newIndex;
         const currentItem = mediaItems[currentMediaIndex];
@@ -138,12 +199,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                     mainVideo.src = currentItem.src;
                 }
                 if (currentItem.poster) mainVideo.poster = currentItem.poster;
+
+                // Play video immediately upon opening
+                playProductVideo(isUserClick);
             }
         } else {
             // Show photo image
             if (mainVideo) {
                 mainVideo.pause();
                 mainVideo.classList.add('hidden');
+                hideUnmuteBtn();
             }
             if (mainImg) {
                 mainImg.classList.remove('hidden');
@@ -207,7 +272,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Bind click events on thumbnails
         thumbContainer.querySelectorAll('[data-index]').forEach(thumb => {
             thumb.addEventListener('click', () => {
-                showMedia(parseInt(thumb.dataset.index));
+                showMedia(parseInt(thumb.dataset.index), true);
             });
         });
     }
@@ -219,23 +284,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (prevBtn) {
             prevBtn.addEventListener('click', () => {
-                if (currentMediaIndex > 0) showMedia(currentMediaIndex - 1);
+                if (currentMediaIndex > 0) showMedia(currentMediaIndex - 1, true);
             });
         }
         if (nextBtn) {
             nextBtn.addEventListener('click', () => {
-                if (currentMediaIndex < mediaItems.length - 1) showMedia(currentMediaIndex + 1);
+                if (currentMediaIndex < mediaItems.length - 1) showMedia(currentMediaIndex + 1, true);
             });
         }
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft' && currentMediaIndex > 0) showMedia(currentMediaIndex - 1);
-            if (e.key === 'ArrowRight' && currentMediaIndex < mediaItems.length - 1) showMedia(currentMediaIndex + 1);
+            if (e.key === 'ArrowLeft' && currentMediaIndex > 0) showMedia(currentMediaIndex - 1, true);
+            if (e.key === 'ArrowRight' && currentMediaIndex < mediaItems.length - 1) showMedia(currentMediaIndex + 1, true);
         });
     }
 
     // Show initial item: Video first if available, else first image!
-    showMedia(0);
+    showMedia(0, false);
     document.getElementById('product-category').innerText = product.category || '';
     document.getElementById('product-capacity').innerText = product.capacity || '';
     
