@@ -412,7 +412,16 @@
                     <!-- Search -->
                     <div class="relative flex-1">
                         <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline" style="font-size: 20px;">search</span>
-                        <input class="w-full pl-11 pr-4 py-3 rounded-xl border border-outline-variant/40 bg-white text-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-outline shadow-ambient" id="search-input" placeholder="Cari mesin... (contoh: vacuum frying, spray dryer)" type="text" />
+                        <input class="w-full pl-11 pr-28 sm:pr-32 py-3 rounded-xl border border-outline-variant/40 bg-white text-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-outline shadow-ambient" id="search-input" placeholder="Cari mesin... (contoh: vacuum frying, pirolisis)" type="text" />
+                        <div class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                            <button id="copy-search-link-btn" type="button" class="hidden items-center gap-1 px-2.5 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white text-xs font-label-md font-bold transition-all shadow-2xs border border-primary/20 cursor-pointer" title="Salin link katalog pencarian ini untuk dibagikan ke customer">
+                                <span class="material-symbols-outlined" style="font-size: 15px;">link</span>
+                                <span class="text-[11px]">Salin Link</span>
+                            </button>
+                            <button id="clear-search-btn" type="button" class="hidden p-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer" title="Hapus pencarian">
+                                <span class="material-symbols-outlined" style="font-size: 18px;">close</span>
+                            </button>
+                        </div>
                     </div>
                     <div class="flex gap-3">
                         <!-- Mobile Filter Button -->
@@ -422,13 +431,14 @@
                             <span class="bg-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold hidden" id="filter-count-mobile">0</span>
                         </button>
                         <!-- Sort -->
-                        <select class="px-4 py-3 rounded-xl border border-outline-variant/40 bg-white text-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-on-surface shadow-ambient font-label-md min-w-[160px]" id="sort-select">
-                            <option value="most-viewed" selected>Paling Sering Dibuka (Terpopuler)</option>
-                            <option value="newest">Terbaru</option>
-                            <option value="popular">Ulasan Terbanyak</option>
+                        <select class="px-4 py-3 rounded-xl border border-outline-variant/40 bg-white text-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-on-surface shadow-ambient font-label-md min-w-[170px]" id="sort-select">
+                            <option value="capacity-low" selected>Kapasitas Terkecil ke Terbesar</option>
+                            <option value="capacity-high">Kapasitas Terbesar</option>
+                            <option value="most-viewed">Paling Sering Dibuka (Terpopuler)</option>
                             <option value="price-low">Harga Terendah</option>
                             <option value="price-high">Harga Tertinggi</option>
-                            <option value="capacity-high">Kapasitas Terbesar</option>
+                            <option value="popular">Ulasan Terbanyak</option>
+                            <option value="newest">Terbaru</option>
                         </select>
                     </div>
                 </div>
@@ -805,8 +815,87 @@
         let currentPage = 1;
 
         // ============================
-        // RENDER FUNCTIONS
+        // CAPACITY PARSER & FORMATTER
         // ============================
+        function parseProductCapacity(p) {
+            if (!p) return { value: Infinity, isAccessory: false };
+            
+            const name = (p.name || '').trim();
+            const cap = (p.capacity || '').trim();
+            
+            // Sparepart / aksesoris berharga murah (< 1.5 juta) ditempatkan paling akhir
+            const isAccessory = (p.price && p.price < 1500000) && /\b(karet|seal|sparepart|onderdil|baut|selang|pisau)\b/i.test(name);
+            if (isAccessory) {
+                return { value: 9999999, isAccessory: true };
+            }
+
+            // 1. Desimal eksplisit di nama produk terlebih dahulu, lalu di kapasitas (contoh: "1,5 kg", "1.5 kg", "3,5 kg", "3.5kg", "0.5 kg")
+            const decRegex = /(\d+[.,]\d+)\s*(?:kg|kilo|liter|ltr|\bl\b|ton\b|rak|loyang)/i;
+            let match = name.match(decRegex) || cap.match(decRegex);
+            if (match) {
+                let num = parseFloat(match[1].replace(',', '.'));
+                if (/ton/i.test(match[0])) num *= 1000;
+                return { value: num, isAccessory: false };
+            }
+
+            // 2. Satuan Ton
+            const tonRegex = /(\d+[.,]?\d*)\s*ton\b/i;
+            match = name.match(tonRegex) || cap.match(tonRegex);
+            if (match) {
+                return { value: parseFloat(match[1].replace(',', '.')) * 1000, isAccessory: false };
+            }
+
+            // 3. Satuan bulat standar: "5 kg", "10 liter", "20 rak", "10 loyang", dll
+            const unitRegex = /(\d+)\s*(?:kg|kilo|liter|ltr|rak|loyang|butir|\bl\b|\bgr\b|\bgram\b)/i;
+            match = name.match(unitRegex) || cap.match(unitRegex);
+            if (match) {
+                let val = parseInt(match[1]);
+                if (/\b(gr|gram)\b/i.test(match[0])) {
+                    val = val / 1000;
+                }
+                return { value: val, isAccessory: false };
+            }
+
+            // 4. Kata "kapasitas [angka]" atau "kap [angka]"
+            const capWordRegex = /(?:kapasitas|kap\.?)\s*[:=]?\s*(\d+[.,]?\d*)/i;
+            match = name.match(capWordRegex) || cap.match(capWordRegex);
+            if (match) {
+                return { value: parseFloat(match[1].replace(',', '.')), isAccessory: false };
+            }
+
+            // 5. Angka di dalam field capacity: contoh "50 kg." atau "100"
+            const capNumRegex = /(\d+[.,]?\d*)/;
+            match = cap.match(capNumRegex);
+            if (match && parseFloat(match[1]) > 0) {
+                return { value: parseFloat(match[1].replace(',', '.')), isAccessory: false };
+            }
+
+            // Kapasitas kustom ("Sesuai Kebutuhan") diletakkan setelah kapasitas standar
+            if (cap.toLowerCase().includes('sesuai kebutuhan') || name.toLowerCase().includes('sesuai kebutuhan')) {
+                return { value: 8888888, isAccessory: false };
+            }
+
+            // Fallback ukuran capacitySize jika ada
+            if (p.capacitySize === 'small') return { value: 10, isAccessory: false };
+            if (p.capacitySize === 'medium') return { value: 50, isAccessory: false };
+            if (p.capacitySize === 'large') return { value: 100, isAccessory: false };
+
+            return { value: 7777777, isAccessory: false };
+        }
+
+        function formatProductCapacity(p) {
+            if (!p) return '-';
+            let cap = (p.capacity || '').replace(/<[^>]*>?/gm, '').trim();
+            // Jika kapasitas terpotong seperti '1' atau '3' atau kosong padahal di judul ada '1,5kg' / '3,5kg'
+            if (!cap || cap === '1' || cap === '3' || /^\d+$/.test(cap)) {
+                const decMatch = (p.name || '').match(/(\d+[.,]\d+)\s*(?:kg|kilo|liter|ltr|\bl\b|ton\b|rak|loyang)/i);
+                if (decMatch) return decMatch[0];
+                const unitMatch = (p.name || '').match(/(\d+)\s*(?:kg|kilo|liter|ltr|rak|loyang|butir|ton)/i);
+                if (unitMatch) return unitMatch[0];
+                if (cap) return cap + ' kg';
+            }
+            return cap;
+        }
 
         function renderStars(rating) {
             let html = '';
@@ -883,7 +972,7 @@
                     <a href="product.html?id=${pTarget}" onclick="window.trackProductOpen('${pTarget}')" class="hover:text-primary transition-colors"><h3 class="font-headline-sm text-sm sm:text-[17px] font-bold text-on-surface line-clamp-2 leading-snug">${p.name}</h3></a>
                     <div class="flex items-center gap-1.5 mt-0.5 sm:mt-1">
                         <span class="material-symbols-outlined text-primary text-sm sm:text-base">scale</span>
-                        <span class="text-on-surface-variant text-[11px] sm:text-xs font-medium truncate">${(p.capacity || '').replace(/<[^>]*>?/gm, '')}</span>
+                        <span class="text-on-surface-variant text-[11px] sm:text-xs font-medium truncate">${formatProductCapacity(p)}</span>
                     </div>
                     <div class="flex items-center gap-1">
                         ${renderStars(p.rating || 5)}
@@ -998,6 +1087,24 @@
             // Sort
             const sort = document.getElementById('sort-select').value;
             switch (sort) {
+                case 'capacity-low':
+                    filtered.sort((a, b) => {
+                        const capA = parseProductCapacity(a).value;
+                        const capB = parseProductCapacity(b).value;
+                        if (capA !== capB) return capA - capB;
+                        if (a.price && b.price && a.price !== b.price) return a.price - b.price;
+                        return (b.reviews || 0) - (a.reviews || 0);
+                    });
+                    break;
+                case 'capacity-high':
+                    filtered.sort((a, b) => {
+                        const capA = parseProductCapacity(a).value;
+                        const capB = parseProductCapacity(b).value;
+                        if (capB !== capA) return capB - capA;
+                        if (a.price && b.price && a.price !== b.price) return b.price - a.price;
+                        return (b.reviews || 0) - (a.reviews || 0);
+                    });
+                    break;
                 case 'most-viewed':
                     filtered.sort((a, b) => {
                         const viewsA = getProductScore(a);
@@ -1013,13 +1120,13 @@
                 case 'price-low': filtered.sort((a, b) => a.price - b.price); break;
                 case 'price-high': filtered.sort((a, b) => b.price - a.price); break;
                 case 'popular': filtered.sort((a, b) => (b.reviews || 0) - (a.reviews || 0)); break;
-                case 'capacity-high': filtered.sort((a, b) => (b.capacitySize === 'large' ? 3 : b.capacitySize === 'medium' ? 2 : 1) - (a.capacitySize === 'large' ? 3 : a.capacitySize === 'medium' ? 2 : 1)); break;
                 case 'newest': break; // original order
                 default:
                     filtered.sort((a, b) => {
-                        const viewsA = getProductScore(a);
-                        const viewsB = getProductScore(b);
-                        if (viewsB !== viewsA) return viewsB - viewsA;
+                        const capA = parseProductCapacity(a).value;
+                        const capB = parseProductCapacity(b).value;
+                        if (capA !== capB) return capA - capB;
+                        if (a.price && b.price && a.price !== b.price) return a.price - b.price;
                         return (b.reviews || 0) - (a.reviews || 0);
                     });
                     break;
@@ -1133,8 +1240,13 @@
             const urlParams = new URLSearchParams(window.location.search);
             
             const search = document.getElementById('search-input').value.trim();
-            if (search) urlParams.set('search', search);
-            else { urlParams.delete('search'); urlParams.delete('q'); }
+            if (search) {
+                urlParams.set('q', search);
+                urlParams.delete('search');
+            } else {
+                urlParams.delete('q');
+                urlParams.delete('search');
+            }
 
             const cats = Array.from(document.querySelectorAll('.filter-cat:checked')).map(c => c.value);
             if (cats.length) urlParams.set('cat', cats.join(','));
@@ -1153,7 +1265,7 @@
             else urlParams.delete('price');
 
             const sort = document.getElementById('sort-select').value;
-            if (sort !== "most-viewed") urlParams.set('sort', sort);
+            if (sort !== "capacity-low") urlParams.set('sort', sort);
             else urlParams.delete('sort');
 
             if (currentPage !== 1) urlParams.set('page', currentPage);
@@ -1161,6 +1273,23 @@
 
             const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
             window.history.replaceState({}, '', newUrl);
+
+            // Update copy button and clear button
+            const copyBtn = document.getElementById('copy-search-link-btn');
+            const clearBtn = document.getElementById('clear-search-btn');
+            if (copyBtn) {
+                if (search) {
+                    copyBtn.classList.remove('hidden');
+                    copyBtn.classList.add('inline-flex');
+                } else {
+                    copyBtn.classList.add('hidden');
+                    copyBtn.classList.remove('inline-flex');
+                }
+            }
+            if (clearBtn) {
+                if (search) clearBtn.classList.remove('hidden');
+                else clearBtn.classList.add('hidden');
+            }
 
             // Save to Session Storage as fallback
             sessionStorage.setItem('katalog_state', JSON.stringify({
@@ -1184,6 +1313,41 @@
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(updateView, 300);
         });
+
+        // Copy search link button
+        const copyBtn = document.getElementById('copy-search-link-btn');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const fullUrl = window.location.href;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(fullUrl).then(() => {
+                        const originalHtml = copyBtn.innerHTML;
+                        copyBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 15px;">check</span><span class="text-[11px]">Tersalin!</span>';
+                        copyBtn.classList.remove('bg-primary/10', 'text-primary');
+                        copyBtn.classList.add('bg-emerald-600', 'text-white');
+                        setTimeout(() => {
+                            copyBtn.innerHTML = originalHtml;
+                            copyBtn.classList.add('bg-primary/10', 'text-primary');
+                            copyBtn.classList.remove('bg-emerald-600', 'text-white');
+                        }, 2000);
+                    }).catch(() => {
+                        prompt('Salin link berikut:', fullUrl);
+                    });
+                } else {
+                    prompt('Salin link berikut:', fullUrl);
+                }
+            });
+        }
+
+        // Clear search button
+        const clearBtn = document.getElementById('clear-search-btn');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function() {
+                document.getElementById('search-input').value = '';
+                updateView();
+            });
+        }
 
         // Sort
         document.getElementById('sort-select').addEventListener('change', updateView);
@@ -1212,7 +1376,7 @@
             document.querySelectorAll('.filter-sub, .filter-cap').forEach(c => c.checked = false);
             priceRange.value = 200;
             priceLabel.textContent = 'Rp 200 Juta';
-            document.getElementById('sort-select').value = 'most-viewed';
+            document.getElementById('sort-select').value = 'capacity-low';
             updateView();
         }
 
@@ -1364,7 +1528,7 @@
             if (urlSort) {
                 document.getElementById('sort-select').value = urlSort;
             } else {
-                document.getElementById('sort-select').value = 'most-viewed';
+                document.getElementById('sort-select').value = 'capacity-low';
             }
 
             const urlPage = urlParams.get('page');
@@ -1381,14 +1545,14 @@
                 document.getElementById('price-range').value = state.price;
                 document.getElementById('price-label').textContent = parseInt(state.price) >= 200 ? 'Semua Harga' : `Maks Rp ${state.price} Juta`;
             }
-            if (state.sort && state.sort !== 'newest') {
+            if (state.sort) {
                 document.getElementById('sort-select').value = state.sort;
             } else {
-                document.getElementById('sort-select').value = 'most-viewed';
+                document.getElementById('sort-select').value = 'capacity-low';
             }
             if (state.page) currentPage = state.page;
         } else {
-            document.getElementById('sort-select').value = 'most-viewed';
+            document.getElementById('sort-select').value = 'capacity-low';
         }
 
         render();

@@ -34,11 +34,17 @@ function ensureMidtransColumnsExist($pdo) {
 }
 
 /**
- * Membuat Transaction Request ke Midtrans Snap API (/snap/v1/transactions)
+ * Menyusun payload transaksi Midtrans Snap.
  */
-function createMidtransSnapToken($orderData, $paymentMethodCode, $customerData) {
+function buildMidtransSnapPayload($orderData, $paymentMethodCode, $customerData) {
     $orderNumber = $orderData['order_number'];
-    $baseAmount = (int)$orderData['total']; // Total (subtotal + shipping_cost)
+    // Nilai tagihan bisa berupa total penuh atau DP. Jangan memakai total
+    // pesanan untuk DP, karena akan membuat gross_amount tidak sesuai tagihan.
+    $baseAmount = (int)($orderData['bill_amount'] ?? $orderData['total'] ?? 0);
+    if ($baseAmount <= 0) {
+        throw new InvalidArgumentException('Nilai tagihan Midtrans harus lebih dari Rp 0.');
+    }
+
     $paymentFee = calculateMidtransFee($paymentMethodCode, $baseAmount);
     $grossAmount = $baseAmount + $paymentFee;
 
@@ -58,15 +64,24 @@ function createMidtransSnapToken($orderData, $paymentMethodCode, $customerData) 
     elseif ($midtransType === 'gopay') $enabledPayments = ['gopay'];
     elseif ($midtransType === 'shopeepay') $enabledPayments = ['shopeepay'];
 
-    // Construct item details for Snap transaction
+    // Untuk pembayaran DP, item detail harus berjumlah sama dengan nilai DP;
+    // rincian produk penuh baru akan dipakai pada transaksi pelunasan.
     $items = [];
-    if (!empty($orderData['items'])) {
+    $isPartialPayment = $baseAmount < (int)($orderData['total'] ?? $baseAmount);
+    if ($isPartialPayment) {
+        $items[] = [
+            'id' => 'DP-' . $orderNumber,
+            'price' => $baseAmount,
+            'quantity' => 1,
+            'name' => 'Pembayaran DP Pesanan ' . $orderNumber
+        ];
+    } elseif (!empty($orderData['items'])) {
         foreach ($orderData['items'] as $it) {
             $items[] = [
                 'id' => 'PRD-' . ($it['product_id'] ?? rand(100, 999)),
-                'price' => (int)$it['price'],
-                'quantity' => (int)$it['quantity'],
-                'name' => mb_strimwidth($it['product_name'], 0, 45, '...')
+                'price' => (int)($it['price'] ?? $it['product_price'] ?? 0),
+                'quantity' => (int)($it['quantity'] ?? 1),
+                'name' => mb_strimwidth(($it['product_name'] ?? $it['name'] ?? 'Produk Asianindo'), 0, 45, '...')
             ];
         }
     } else {
@@ -78,7 +93,7 @@ function createMidtransSnapToken($orderData, $paymentMethodCode, $customerData) 
         ];
     }
 
-    if (!empty($orderData['shipping_cost']) && (int)$orderData['shipping_cost'] > 0) {
+    if (!$isPartialPayment && !empty($orderData['shipping_cost']) && (int)$orderData['shipping_cost'] > 0) {
         $items[] = [
             'id' => 'SHIP-COST',
             'price' => (int)$orderData['shipping_cost'],
@@ -114,6 +129,23 @@ function createMidtransSnapToken($orderData, $paymentMethodCode, $customerData) 
 
     if (!empty($enabledPayments)) {
         $payload['enabled_payments'] = $enabledPayments;
+    }
+
+    return [$payload, $grossAmount];
+}
+
+/**
+ * Membuat Transaction Request ke Midtrans Snap API (/snap/v1/transactions)
+ */
+function createMidtransSnapToken($orderData, $paymentMethodCode, $customerData) {
+    try {
+        [$payload, $grossAmount] = buildMidtransSnapPayload($orderData, $paymentMethodCode, $customerData);
+    } catch (Throwable $e) {
+        return [
+            'success' => false,
+            'statusCode' => '400',
+            'statusMessage' => $e->getMessage()
+        ];
     }
 
     $serverKey = MIDTRANS_SERVER_KEY;

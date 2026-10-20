@@ -231,7 +231,18 @@ if ($action === 'create_order') {
     $total = $subtotal + $shipping_cost;
     $payment_scheme = trim($d['payment_scheme'] ?? 'dp_50');
     $payment_method_code = trim($d['payment_method_code'] ?? $d['payment_method'] ?? 'BC');
-    $payment_gateway = ($payment_method_code === 'MANUAL_BCA' || $d['payment_gateway'] === 'manual_transfer') ? 'manual_transfer' : 'duitku';
+    $channels = getMidtransPaymentChannels();
+
+    // Gateway dan channel tidak boleh ditentukan oleh data dari browser. Semua
+    // channel selain transfer manual dibuatkan transaksi lewat Midtrans.
+    if ($payment_method_code === 'MANUAL_BCA') {
+        $payment_gateway = 'manual_transfer';
+    } elseif (isset($channels[$payment_method_code]) && ($channels[$payment_method_code]['midtrans_type'] ?? '') !== 'manual') {
+        $payment_gateway = 'midtrans';
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Metode pembayaran tidak tersedia. Silakan pilih ulang.']);
+        exit;
+    }
 
     $initial_amount = $total;
     $scheme_text = '';
@@ -305,7 +316,6 @@ if ($action === 'create_order') {
         ensureMidtransColumnsExist($pdo);
 
         // Get Channel info
-        $channels = getMidtransPaymentChannels();
         $selectedChannelInfo = $channels[$payment_method_code] ?? null;
         $channelName = $selectedChannelInfo['name'] ?? ($payment_gateway === 'midtrans' ? 'Midtrans Payment Gateway' : 'Bank BCA');
 
@@ -333,10 +343,13 @@ if ($action === 'create_order') {
                 'phone' => $shipping_phone ?: '081234567890'
             ];
             $midtransResponse = createMidtransSnapToken($orderPayload, $payment_method_code, $customerPayload);
-            if ($midtransResponse && !empty($midtransResponse['snap_token'])) {
-                $snapToken = $midtransResponse['snap_token'];
-                $redirectUrl = $midtransResponse['redirect_url'] ?? null;
+            if (!$midtransResponse || empty($midtransResponse['success']) || empty($midtransResponse['snap_token'])) {
+                $message = $midtransResponse['statusMessage'] ?? 'Snap Token tidak diterima dari Midtrans.';
+                throw new RuntimeException('Midtrans belum dapat membuat pembayaran. ' . $message);
             }
+
+            $snapToken = $midtransResponse['snap_token'];
+            $redirectUrl = $midtransResponse['redirect_url'] ?? null;
         }
 
         // Insert initial payment record

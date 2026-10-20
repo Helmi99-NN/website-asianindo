@@ -645,6 +645,21 @@ function healProductImages(&$products) {
             $p['promo_image'] = $p['images'][0];
             $healed = true;
         }
+
+        // Auto-heal capacity: fix truncated capacity values (e.g. '1' -> '1,5 kg', '3' -> '3,5 kg')
+        if (isset($p['capacity'])) {
+            $capTrim = trim($p['capacity']);
+            $pName = $p['name'] ?? '';
+            if ($capTrim === '1' && (stripos($pName, '1,5') !== false || stripos($pName, '1.5') !== false)) {
+                $p['capacity'] = '1,5 kg';
+                $p['capacitySize'] = 'small';
+                $healed = true;
+            } elseif ($capTrim === '3' && (stripos($pName, '3,5') !== false || stripos($pName, '3.5') !== false)) {
+                $p['capacity'] = '3,5 kg';
+                $p['capacitySize'] = 'small';
+                $healed = true;
+            }
+        }
     }
     return $healed;
 }

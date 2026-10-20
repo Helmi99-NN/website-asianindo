@@ -84,6 +84,21 @@ foreach ($products as $idx => &$p) {
         $wasChanged = true;
     }
 
+    // Capacity Healing: Fix truncated capacities (e.g. '1' -> '1,5 kg', '3' -> '3,5 kg')
+    if (isset($p['capacity'])) {
+        $capTrim = trim($p['capacity']);
+        $pName = $p['name'] ?? '';
+        if ($capTrim === '1' && (stripos($pName, '1,5') !== false || stripos($pName, '1.5') !== false)) {
+            $p['capacity'] = '1,5 kg';
+            $p['capacitySize'] = 'small';
+            $wasChanged = true;
+        } elseif ($capTrim === '3' && (stripos($pName, '3,5') !== false || stripos($pName, '3.5') !== false)) {
+            $p['capacity'] = '3,5 kg';
+            $p['capacitySize'] = 'small';
+            $wasChanged = true;
+        }
+    }
+
     if ($wasChanged) {
         $repaired[] = [
             'id' => $id,
@@ -105,6 +120,9 @@ if (!empty($repaired)) {
     file_put_contents($DATA_JSON, $jsonString);
     file_put_contents($DATA_JS, "window.CATALOG_PRODUCTS = " . $jsonString . ";");
 }
+
+$jsonString = json_encode($products, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+file_put_contents(__DIR__ . '/default_products.js', "window.CATALOG_PRODUCTS = " . $jsonString . ";");
 
 echo json_encode([
     'success' => true,

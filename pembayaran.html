@@ -124,8 +124,8 @@
                 </div>
             </div>
 
-            <!-- Realtime Verification Pulsing Notice (Khusus Duitku Otomatis) -->
-            <div id="duitku_auto_notice" class="hidden mb-4 sm:mb-6 p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-3">
+            <!-- Realtime Verification Pulsing Notice (Khusus Midtrans Otomatis) -->
+            <div id="midtrans_auto_notice" class="hidden mb-4 sm:mb-6 p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-3">
                 <span class="relative flex h-3 w-3 flex-shrink-0">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
@@ -135,11 +135,11 @@
                 </p>
             </div>
 
-            <!-- Tombol Buka Pop-up Duitku jika ada Payment URL -->
-            <div id="duitku_pop_container" class="hidden mb-4 sm:mb-6 text-center">
-                <button id="btn_open_duitku_pop" class="w-full bg-primary hover:bg-secondary text-white font-bold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-xs sm:text-sm">
+            <!-- Tombol Buka Pop-up Midtrans jika ada Snap Token -->
+            <div id="midtrans_pop_container" class="hidden mb-4 sm:mb-6 text-center">
+                <button id="btn_open_midtrans_pop" class="w-full bg-primary hover:bg-secondary text-white font-bold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-xs sm:text-sm">
                     <span class="material-symbols-outlined text-base">open_in_new</span>
-                    Buka Halaman Pembayaran Duitku
+                    Buka Pembayaran Midtrans
                 </button>
             </div>
 
@@ -465,7 +465,7 @@
 
                     if (isMidtrans) {
                         document.getElementById('account_label').innerText = (channelCode === 'NQ') ? 'Kode Referensi Transaksi' : 'Nomor Virtual Account (VA)';
-                        document.getElementById('duitku_auto_notice').classList.remove('hidden');
+                        document.getElementById('midtrans_auto_notice').classList.remove('hidden');
                         document.getElementById('upload_section').classList.add('hidden'); // Sembunyikan form upload manual karena Midtrans otomatis
 
                         if (order.payment_fee > 0) {
@@ -479,8 +479,8 @@
                         // Trigger Midtrans Snap Popup button jika ada snap_token
                         if (order.midtrans_snap_token) {
                             ensureSnapScriptLoaded();
-                            const popCont = document.getElementById('duitku_pop_container');
-                            const popBtn = document.getElementById('btn_open_duitku_pop');
+                            const popCont = document.getElementById('midtrans_pop_container');
+                            const popBtn = document.getElementById('btn_open_midtrans_pop');
                             if (popCont && popBtn) {
                                 popCont.classList.remove('hidden');
                                 popBtn.innerHTML = '<span class="material-symbols-outlined text-lg">payments</span> Bayar Sekarang (Pop-up Midtrans Snap)';
@@ -515,7 +515,7 @@
                     } else {
                         // Manual Transfer BCA
                         document.getElementById('account_label').innerText = 'Nomor Rekening BCA Tujuan';
-                        document.getElementById('duitku_auto_notice').classList.add('hidden');
+                        document.getElementById('midtrans_auto_notice').classList.add('hidden');
                         document.getElementById('upload_section').classList.remove('hidden');
                     }
 

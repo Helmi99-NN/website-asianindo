@@ -5,6 +5,7 @@
  */
 
 require_once __DIR__ . '/../midtrans_config.php';
+require_once __DIR__ . '/../midtrans_api.php';
 
 echo "=========================================================\n";
 echo "       UNIT TEST: MIDTRANS PAYMENT GATEWAY CV ASIANINDO\n";
@@ -62,6 +63,40 @@ $serverKey = 'SB-Mid-server-TEST_DUMMY_KEY_123456';
 $expectedSig = hash('sha512', $orderId . $statusCode . $grossAmount . $serverKey);
 $actualSig = hash('sha512', $orderId . $statusCode . $grossAmount . $serverKey);
 assertEqual('Midtrans SHA-512 Signature Hash Matching', $expectedSig, $actualSig);
+
+// 7. DP harus ditagihkan sesuai nilai DP, bukan total pesanan.
+[$dpPayload, $dpGrossAmount] = buildMidtransSnapPayload([
+    'order_number' => 'ASN-DP-TEST',
+    'bill_amount' => 5000000,
+    'total' => 10000000,
+    'subtotal' => 9800000,
+    'shipping_cost' => 200000,
+    'items' => [[
+        'product_id' => 'MESIN-1',
+        'product_name' => 'Mesin Uji',
+        'price' => 9800000,
+        'quantity' => 1
+    ]]
+], 'BC', ['name' => 'Pelanggan Uji']);
+assertEqual('Gross amount DP memakai nilai DP + fee', 5004000, $dpGrossAmount);
+assertEqual('Item detail DP seimbang dengan nilai DP', 5000000, $dpPayload['item_details'][0]['price']);
+
+// 8. Untuk pembayaran penuh, total item detail harus sama dengan gross amount.
+[$fullPayload, $fullGrossAmount] = buildMidtransSnapPayload([
+    'order_number' => 'ASN-FULL-TEST',
+    'bill_amount' => 10000000,
+    'total' => 10000000,
+    'subtotal' => 9800000,
+    'shipping_cost' => 200000,
+    'items' => [[
+        'product_id' => 'MESIN-1',
+        'product_name' => 'Mesin Uji',
+        'price' => 9800000,
+        'quantity' => 1
+    ]]
+], 'BC', ['name' => 'Pelanggan Uji']);
+$fullItemTotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $fullPayload['item_details']));
+assertEqual('Item detail pembayaran penuh seimbang dengan gross amount', $fullGrossAmount, $fullItemTotal);
 
 echo "\n---------------------------------------------------------\n";
 echo "SUMMARY: Passed {$passCount} tests, Failed {$failCount} tests.\n";
