@@ -1167,6 +1167,29 @@ if ($action === 'import_whatsapp_chat') {
     $defaultTopic = trim($_POST['topic'] ?? ($input['topic'] ?? 'Konsultasi Teknis'));
     $uploadDateInput = trim($_POST['upload_date'] ?? ($input['upload_date'] ?? date('Y-m-d H:i:s')));
 
+    // Direct ZIP or TXT file upload fallback via multipart
+    $uploadedFile = $_FILES['chat_file'] ?? ($_FILES['zip_file'] ?? ($_FILES['file'] ?? null));
+    if ($uploadedFile && !empty($uploadedFile['tmp_name']) && is_uploaded_file($uploadedFile['tmp_name'])) {
+        $fileName = $uploadedFile['name'] ?? '';
+        $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        if ($ext === 'zip' && class_exists('ZipArchive')) {
+            $zip = new ZipArchive();
+            if ($zip->open($uploadedFile['tmp_name']) === true) {
+                for ($i = 0; $i < $zip->numFiles; $i++) {
+                    $entryName = $zip->getNameIndex($i);
+                    $entryExt = strtolower(pathinfo($entryName, PATHINFO_EXTENSION));
+                    if ($entryExt === 'txt') {
+                        $rawText = $zip->getFromIndex($i);
+                        break;
+                    }
+                }
+                $zip->close();
+            }
+        } elseif ($ext === 'txt') {
+            $rawText = file_get_contents($uploadedFile['tmp_name']);
+        }
+    }
+
     if (empty($rawText)) {
         http_response_code(400);
         echo json_encode(['error' => 'Teks chat WhatsApp kosong']);

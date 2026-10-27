@@ -80,6 +80,7 @@ function adminApp() {
         rawWhatsAppChatInput: '',
         whatsappImportTopic: '',
         whatsappImportUploadDate: new Date().toISOString().slice(0, 10),
+        uploadedZipFileName: '',
         newWhatsAppEntry: {
             id: '',
             title: '',
@@ -2484,6 +2485,7 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
                     alert(data.message || 'Chat WhatsApp berhasil diimpor!');
                     this.rawWhatsAppChatInput = '';
                     this.whatsappImportTopic = '';
+                    this.uploadedZipFileName = '';
                     await this.loadWhatsAppKnowledge();
                 } else {
                     alert(data.error || 'Gagal mengimpor chat WhatsApp.');
@@ -2496,14 +2498,79 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
             }
         },
 
-        handleWhatsAppFileUpload(event) {
+        clearUploadedZipFile() {
+            this.uploadedZipFileName = '';
+            this.rawWhatsAppChatInput = '';
+        },
+
+        async handleWhatsAppFileUpload(event) {
             const file = event.target.files && event.target.files[0];
             if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                this.rawWhatsAppChatInput = e.target.result;
-            };
-            reader.readAsText(file);
+
+            this.uploadedZipFileName = file.name;
+            const isZip = file.name.toLowerCase().endsWith('.zip') || (file.type && file.type.includes('zip'));
+
+            if (isZip) {
+                try {
+                    if (typeof JSZip === 'undefined') {
+                        alert('Library pembaca ZIP sedang dimuat, silakan coba 2 detik lagi.');
+                        return;
+                    }
+
+                    const zip = await JSZip.loadAsync(file);
+                    let chatEntry = null;
+                    let largestTxtEntry = null;
+                    let largestTxtSize = 0;
+
+                    for (const filename of Object.keys(zip.files)) {
+                        const entry = zip.files[filename];
+                        if (entry.dir) continue;
+                        const lower = filename.toLowerCase();
+
+                        if (lower.endsWith('.txt')) {
+                            // Standard WhatsApp exports:
+                            // iOS: _chat.txt
+                            // Android: WhatsApp Chat with [Name].txt or WhatsApp Chat - [Name].txt
+                            if (lower === '_chat.txt' || lower.includes('_chat.txt') || lower.includes('whatsapp chat')) {
+                                chatEntry = entry;
+                                break;
+                            }
+
+                            const uncompressedSize = entry._data ? (entry._data.uncompressedSize || 0) : 0;
+                            if (uncompressedSize >= largestTxtSize) {
+                                largestTxtSize = uncompressedSize;
+                                largestTxtEntry = entry;
+                            }
+                        }
+                    }
+
+                    const chosenEntry = chatEntry || largestTxtEntry;
+                    if (!chosenEntry) {
+                        alert('Tidak ditemukan file percakapan teks (.txt) di dalam file ZIP ini. Pastikan file ZIP adalah hasil ekspor WhatsApp.');
+                        return;
+                    }
+
+                    const text = await chosenEntry.async('string');
+                    this.rawWhatsAppChatInput = text;
+
+                    // Auto detect topic / partner name from zip filename if empty
+                    const matchName = file.name.match(/WhatsApp Chat (?:with|-)s*([^.]+)/i);
+                    if (matchName && !this.whatsappImportTopic) {
+                        this.whatsappImportTopic = 'Chat ' + matchName[1].trim();
+                    }
+
+                } catch (err) {
+                    console.error('Error opening ZIP file:', err);
+                    alert('Gagal membuka file ZIP: ' + (err.message || 'File ZIP mungkin rusak atau diproteksi password.'));
+                }
+            } else {
+                // Plain text file (.txt)
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.rawWhatsAppChatInput = e.target.result;
+                };
+                reader.readAsText(file);
+            }
         },
 
         openWhatsAppModal(entry = null) {

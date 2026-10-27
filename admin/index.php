@@ -18,6 +18,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1017,7 +1018,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         Impor Obrolan WhatsApp Baru
                     </h3>
                     <p class="text-xs sm:text-sm text-gray-500 mt-0.5">
-                        Tempelkan hasil ekspor chat WhatsApp atau unggah file teks (<code class="bg-gray-100 px-1 py-0.5 rounded text-gray-700">.txt</code>) obrolan dengan owner.
+                        Tempelkan teks obrolan atau unggah langsung file arsip ZIP (<code class="bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded">.zip</code>) / teks (<code class="bg-gray-100 px-1 py-0.5 rounded text-gray-700">.txt</code>) hasil ekspor WhatsApp.
                     </p>
                 </div>
                 <button type="button" 
@@ -1035,7 +1036,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 </div>
                 <div class="flex-1">
                     <strong class="font-bold">Cara Ekspor Chat dari HP:</strong>
-                    Buka WhatsApp -> Buka chat dengan Owner/Teknisi -> Klik <strong>Titik Tiga (Opsi)</strong> -> <strong>Lainnya</strong> -> <strong>Ekspor Chat</strong> -> Pilih <strong>Tanpa Media</strong> -> Kirim file <code>.txt</code> atau buka dan copy isinya ke form di bawah ini.
+                    Buka WhatsApp di HP -> Buka chat dengan Owner/Teknisi -> Klik <strong>Titik Tiga (Opsi)</strong> -> <strong>Lainnya</strong> -> <strong>Ekspor Chat</strong> -> Pilih <strong>Tanpa Media</strong> -> Kirim/unggah file <strong>.zip</strong> (atau <strong>.txt</strong>) langsung ke form di bawah ini. Sistem otomatis membuka dan mengekstrak isi chat dari dalam ZIP!
                 </div>
             </div>
 
@@ -1058,11 +1059,25 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 focus:bg-white focus:border-emerald-500 rounded-xl text-xs sm:text-sm font-medium outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-700 mb-1">Atau Unggah File (.txt) Ekspor WhatsApp</label>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">
+                            <i class="fas fa-file-archive text-amber-500 mr-1"></i> Unggah File ZIP / TXT WhatsApp
+                        </label>
                         <input type="file" 
-                               accept=".txt" 
+                               accept=".zip,.txt,application/zip,application/x-zip-compressed,text/plain" 
                                @change="handleWhatsAppFileUpload($event)" 
-                               class="w-full text-xs text-gray-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
+                               class="w-full text-xs text-gray-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 cursor-pointer">
+                        <template x-if="uploadedZipFileName">
+                            <div class="mt-2 text-xs bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-lg p-2.5 flex items-center justify-between gap-2 shadow-2xs">
+                                <div class="flex items-center gap-2 truncate">
+                                    <i class="fas fa-file-archive text-amber-500 text-sm flex-shrink-0"></i>
+                                    <span class="truncate font-medium">ZIP: <strong x-text="uploadedZipFileName"></strong></span>
+                                    <span class="text-[10px] bg-emerald-200/80 text-emerald-900 font-bold px-1.5 py-0.5 rounded">Berhasil Diekstrak</span>
+                                </div>
+                                <button type="button" @click="clearUploadedZipFile()" class="text-gray-400 hover:text-red-600 p-1" title="Hapus File">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </template>
                     </div>
                 </div>
 
