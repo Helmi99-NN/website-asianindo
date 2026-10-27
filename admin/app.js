@@ -2445,6 +2445,33 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
             document.body.removeChild(ta);
         },
 
+        formatQaMarkdown(text) {
+            if (!text) return '';
+            let html = String(text)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+
+            // Dimension / key metric pill: ### **170 cm x 122 cm x 140 cm**
+            html = html.replace(/^###\s*\*\*(.*?)\*\*/gim, '<div class="text-xl sm:text-2xl font-black text-emerald-800 bg-emerald-100/90 border-2 border-emerald-400 px-4 py-2 rounded-xl my-2 inline-block tracking-wide shadow-sm">$1</div>');
+            html = html.replace(/^### (.*$)/gim, '<div class="text-xl sm:text-2xl font-black text-emerald-800 bg-emerald-100/90 border-2 border-emerald-400 px-4 py-2 rounded-xl my-2 inline-block tracking-wide shadow-sm">$1</div>');
+            html = html.replace(/^## (.*$)/gim, '<h4 class="text-base sm:text-lg font-bold text-gray-900 mt-3 mb-1">$1</h4>');
+
+            // Bold
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>');
+
+            // Italic
+            html = html.replace(/\*(.*?)\*/g, '<em class="italic text-gray-600">$1</em>');
+
+            // Bullet points
+            html = html.replace(/^[•\-\*]\s+(.*$)/gim, '<div class="flex items-start gap-2 my-1.5"><span class="text-emerald-600 font-bold">•</span><span class="text-gray-800">$1</span></div>');
+
+            // Line breaks
+            html = html.replace(/\n\n/g, '<div class="h-2"></div>');
+            html = html.replace(/\n/g, '<br>');
+            return html;
+        },
+
         async loadWhatsAppKnowledge() {
             this.isLoadingWhatsAppKnowledge = true;
             try {

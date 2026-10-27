@@ -744,9 +744,8 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     <!-- Direct Answer Content -->
                     <template x-if="qaResults.direct_answer">
                         <div class="space-y-4">
-                            <div class="text-sm sm:text-base text-gray-800 leading-relaxed font-normal bg-white/70 backdrop-blur-xs p-4 rounded-xl border border-emerald-200/50" 
-                                 x-html="qaResults.direct_answer.summary.replace(/
-/g, '<br>')">
+                            <div class="text-sm sm:text-base text-gray-800 leading-relaxed font-normal bg-white/80 backdrop-blur-xs p-4 sm:p-5 rounded-xl border border-emerald-200/60 shadow-xs" 
+                                 x-html="formatQaMarkdown(qaResults.direct_answer.summary)">
                             </div>
 
                             <!-- Highlights Badges -->

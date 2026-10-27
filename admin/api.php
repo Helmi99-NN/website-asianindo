@@ -1161,6 +1161,75 @@ if ($action === 'delete_whatsapp_knowledge') {
     exit;
 }
 
+// Helper: Parse structured technical specifications from product description
+function parseProductSpecs($desc, $priceDisplay = '') {
+    $specs = [
+        'kapasitas' => null,
+        'dimensi' => null,
+        'daya' => null,
+        'suhu' => null,
+        'minyak' => null,
+        'sistem' => null,
+        'material' => null,
+        'pemanas' => null,
+        'harga' => !empty($priceDisplay) ? $priceDisplay : null
+    ];
+
+    $lines = preg_split('/[\r\n•]+/', $desc ?? '');
+    foreach ($lines as $line) {
+        $trimmed = trim(ltrim(trim($line), '-*• '));
+        if (empty($trimmed)) continue;
+
+        // Dimensi / Ukuran
+        if (preg_match('/(?:dimensi|ukuran|tabung|diameter)\b.*?(?:cm|meter|mm|\bx\b|\b×\b)/i', $trimmed) || preg_match('/\b\d+\s*cm\s*(?:x|×)\s*\d+/i', $trimmed)) {
+            if (!$specs['dimensi']) {
+                $specs['dimensi'] = $trimmed;
+            } else {
+                $specs['dimensi'] .= ' • ' . $trimmed;
+            }
+        }
+
+        // Daya / Listrik
+        if (preg_match('/(?:daya|listrik|watt|volt|phase|ampere|hp|kw)\b/i', $trimmed) && preg_match('/\d+/i', $trimmed)) {
+            if (!preg_match('/(?:kebutuhan minyak|dimensi)/i', $trimmed)) {
+                if (!$specs['daya']) $specs['daya'] = $trimmed;
+            }
+        }
+
+        // Suhu
+        if (preg_match('/(?:suhu|temperatur|heater|pemanas)\b/i', $trimmed) && !preg_match('/(?:daya listrik|dimensi)/i', $trimmed)) {
+            if (!$specs['suhu']) $specs['suhu'] = $trimmed;
+        }
+
+        // Kapasitas
+        if (preg_match('/(?:kapasitas)\b/i', $trimmed) && !preg_match('/(?:kebutuhan minyak)/i', $trimmed)) {
+            if (!$specs['kapasitas']) $specs['kapasitas'] = $trimmed;
+        }
+
+        // Kebutuhan Minyak
+        if (preg_match('/(?:minyak)\b/i', $trimmed)) {
+            if (!$specs['minyak']) $specs['minyak'] = $trimmed;
+        }
+
+        // Sistem
+        if (preg_match('/(?:sistem vacuum|sistem)\b/i', $trimmed)) {
+            if (!$specs['sistem']) $specs['sistem'] = $trimmed;
+        }
+
+        // Material
+        if (preg_match('/(?:material|stainless|sus 304|food grade)\b/i', $trimmed)) {
+            if (!$specs['material']) $specs['material'] = $trimmed;
+        }
+
+        // Pemanas
+        if (preg_match('/(?:pemanas|kompor|burner)\b/i', $trimmed)) {
+            if (!$specs['pemanas']) $specs['pemanas'] = $trimmed;
+        }
+    }
+
+    return $specs;
+}
+
 if ($action === 'import_whatsapp_chat') {
     $input = json_decode(file_get_contents('php://input'), true) ?: [];
     $rawText = trim($_POST['raw_chat'] ?? ($_POST['raw_text'] ?? ($input['raw_chat'] ?? ($input['raw_text'] ?? ''))));
@@ -1242,9 +1311,12 @@ if ($action === 'import_whatsapp_chat') {
     $list = readWhatsAppKnowledge();
     $addedCount = 0;
 
-    $chunkSize = 2;
-    for ($i = 0; $i < count($parsedMessages); $i += $chunkSize) {
-        $chunk = array_slice($parsedMessages, $i, $chunkSize);
+    // Sliding window conversational thread grouping (3-4 messages per exchange)
+    $step = 3;
+    for ($i = 0; $i < count($parsedMessages); $i += $step) {
+        $chunk = array_slice($parsedMessages, $i, 4);
+        if (empty($chunk)) break;
+
         $fullText = implode("\n", array_map(function($m) {
             return '[' . $m['date'] . ' ' . $m['time'] . '] ' . $m['sender'] . ': ' . $m['text'];
         }, $chunk));
@@ -1258,19 +1330,40 @@ if ($action === 'import_whatsapp_chat') {
             }
         }
 
-        $entryTitle = mb_substr($chunk[0]['text'], 0, 80);
-        if (mb_strlen($chunk[0]['text']) > 80) $entryTitle .= '...';
+        // Check for dimensions / specs pattern in dialogue
+        $hasDimension = preg_match('/(\d+\s*(?:cm|meter|mm)?\s*(?:x|×)\s*\d+\s*(?:cm|meter|mm)?(?:\s*(?:x|×)\s*\d+)?\s*(?:cm|meter|mm)?)/i', $fullText, $dimMatch);
+        $hasCapacity = preg_match('/(\d+(?:[\.,]\d+)?)\s*(kg|kilo|kilogram|liter|ltr|l)\b/i', $fullText, $capMatch);
+        $hasConfirmation = preg_match('/\b(iya|betul|benar|ya|oke|sip|siap|nggih)\b/i', $lowerText);
+
+        $entryTitle = '';
+        $synthesizedAnswer = '';
+
+        if ($hasDimension && $hasCapacity && $hasConfirmation) {
+            $capStr = $capMatch[1] . ' ' . (in_array(strtolower($capMatch[2]), ['kilo', 'kilogram']) ? 'Kg' : strtoupper($capMatch[2]));
+            $dimStr = $dimMatch[1];
+            $entryTitle = "Dimensi Mesin " . ($detectedMachine !== 'Umum' ? $detectedMachine : 'Produksi') . " " . $capStr . " (Konfirmasi Owner)";
+            $synthesizedAnswer = "Berdasarkan konfirmasi percakapan WhatsApp dengan Owner: Dimensi Mesin " . ($detectedMachine !== 'Umum' ? $detectedMachine : '') . " kapasitas $capStr adalah $dimStr.\n\nKonteks Percakapan:\n" . implode("\n", array_map(function($m) { return $m['sender'] . ': ' . $m['text']; }, $chunk));
+        } else {
+            $firstLine = $chunk[0]['text'];
+            $entryTitle = mb_substr($firstLine, 0, 75);
+            if (mb_strlen($firstLine) > 75) $entryTitle .= '...';
+            $synthesizedAnswer = implode("\n\n", array_map(function($m) {
+                return $m['sender'] . ': ' . $m['text'];
+            }, $chunk));
+        }
 
         $tags = [$detectedMachine];
+        if ($hasDimension) $tags[] = 'dimensi';
+        if ($hasCapacity) {
+            $tags[] = 'kapasitas';
+            $tags[] = $capMatch[1] . ' kg';
+            $tags[] = $capMatch[1] . ' kilo';
+        }
         if (strpos($lowerText, 'suhu') !== false || strpos($lowerText, 'derajat') !== false) $tags[] = 'suhu';
-        if (strpos($lowerText, 'kapasitas') !== false || strpos($lowerText, 'liter') !== false || strpos($lowerText, 'kg') !== false) $tags[] = 'kapasitas';
         if (strpos($lowerText, 'watt') !== false || strpos($lowerText, 'listrik') !== false || strpos($lowerText, 'daya') !== false) $tags[] = 'daya';
         if (strpos($lowerText, 'harga') !== false) $tags[] = 'harga';
 
         $chatDate = !empty($chunk[0]['date']) ? $chunk[0]['date'] : date('d/m/Y');
-        $contentStr = implode("\n\n", array_map(function($m) {
-            return $m['sender'] . ': ' . $m['text'];
-        }, $chunk));
 
         $entry = [
             'id' => 'wa_' . time() . '_' . rand(100, 999),
@@ -1278,8 +1371,8 @@ if ($action === 'import_whatsapp_chat') {
             'machine_category' => $detectedMachine !== 'Umum' ? $detectedMachine : $defaultTopic,
             'machine_name' => 'Mesin ' . ($detectedMachine !== 'Umum' ? $detectedMachine : $defaultTopic) . ' Asianindo',
             'title' => $entryTitle,
-            'content' => $contentStr,
-            'answer' => $contentStr,
+            'content' => $synthesizedAnswer,
+            'answer' => $synthesizedAnswer,
             'raw_chat' => $fullText,
             'chat_date' => $chatDate,
             'uploaded_at' => $uploadDateInput,
@@ -1297,7 +1390,7 @@ if ($action === 'import_whatsapp_chat') {
         'success' => true,
         'added_count' => $addedCount,
         'total_parsed_messages' => count($parsedMessages),
-        'message' => "Berhasil mengekstrak dan menyimpan $addedCount entri percakapan WhatsApp ke database!"
+        'message' => "Berhasil mengekstrak dan merangkum $addedCount poin percakapan WhatsApp ke database pengetahuan!"
     ]);
     exit;
 }
@@ -1337,7 +1430,10 @@ if ($action === 'search_knowledge') {
         'berapa', 'apa', 'apakah', 'bagaimana', 'mengapa', 'kenapa', 'siapa', 'dimana',
         'mesin', 'dari', 'yang', 'dan', 'atau', 'pada', 'untuk', 'di', 'ke', 'adalah',
         'ini', 'itu', 'bisa', 'tolong', 'cek', 'info', 'spesifikasi', 'spek', 'kak',
-        'pak', 'gan', 'mas', 'min', 'ya', 'sih', 'dong', 'kah', 'ada'
+        'pak', 'gan', 'mas', 'min', 'ya', 'sih', 'dong', 'kah', 'ada',
+        'dimensi', 'ukuran', 'panjang', 'lebar', 'tinggi', 'suhu', 'temperatur', 'panas',
+        'daya', 'listrik', 'watt', 'kapasitas', 'volume', 'muat', 'harga', 'biaya', 'tarif',
+        'garansi', 'servis', 'service', 'material', 'bahan', 'sistem', 'minyak', 'kilo', 'kg', 'liter'
     ];
 
     $rawWords = preg_split('/[\s,\.\?!;:\(\)\-_]+/', $lowerQuery);
@@ -1349,6 +1445,7 @@ if ($action === 'search_knowledge') {
         }
     }
 
+    // Machine entities recognition
     $machineEntities = [
         'spray dryer' => ['spray dryer', 'spray dry', 'pengering semprot'],
         'vacuum frying' => ['vacuum frying', 'vacum frying', 'keripik buah', 'penggoreng hampa'],
@@ -1375,14 +1472,26 @@ if ($action === 'search_knowledge') {
         }
     }
 
+    // Capacity detection (e.g. "10 kilo", "10 kg", "1.5 kg", "5 liter")
+    $detectedCapacityNum = null;
+    $detectedCapacityUnit = null;
+    if (preg_match('/(\d+(?:[\.,]\d+)?)\s*(kg|kilo|kilogram|liter|ltr|l)\b/i', $lowerQuery, $capMatch)) {
+        $detectedCapacityNum = str_replace(',', '.', $capMatch[1]);
+        $rawUnit = strtolower($capMatch[2]);
+        $detectedCapacityUnit = in_array($rawUnit, ['kilo', 'kilogram']) ? 'kg' : (in_array($rawUnit, ['ltr', 'l']) ? 'liter' : $rawUnit);
+    }
+
+    // Intent recognition
     $intentAttributes = [
-        'suhu' => ['suhu', 'panas', 'temperatur', 'derajat', '°c', 'celcius', 'c', 'inlet', 'outlet', 'heater', 'pemanas', 'thermal', 'steam'],
-        'daya' => ['daya', 'listrik', 'watt', 'volt', 'hp', 'phase', 'kw', 'kwh', 'ampere'],
-        'kapasitas' => ['kapasitas', 'liter', 'ltr', 'kg', 'batch', 'volume', 'jam', 'ukuran'],
-        'material' => ['material', 'bahan', 'stainless', 'plat', 'sus 304', 'sus 316', 'food grade'],
-        'harga' => ['harga', 'biaya', 'tarif', 'rp', 'juta', 'ribu', 'nilai'],
-        'cara_kerja' => ['cara kerja', 'prinsip', 'metode', 'proses', 'fungsi', 'tata cara'],
-        'garansi' => ['garansi', 'servis', 'service', 'sparepart', 'rusak', 'jaminan']
+        'dimensi' => ['dimensi', 'ukuran', 'panjang', 'lebar', 'tinggi', 'p x l x t', 'pxlxt', 'diameter', 'tabung', 'panjang x lebar', 'cm x', 'cm ×'],
+        'suhu' => ['suhu', 'temperatur', 'temperature', 'panas', 'derajat', 'celcius', 'inlet', 'outlet', 'heater', 'pemanas', 'thermal'],
+        'daya' => ['daya', 'listrik', 'watt', 'daya listrik', 'volt', 'hp', 'phase', '3 phase', 'ampere', 'kw', 'kwh', 'motor penggerak'],
+        'kapasitas' => ['kapasitas', 'volume', 'muat', 'liter', 'ltr', 'kg', 'kilo', 'kilogram', 'batch', 'per jam'],
+        'harga' => ['harga', 'biaya', 'tarif', 'jual', 'berapaan', 'pricelist', 'paket usaha'],
+        'material' => ['material', 'bahan', 'stainless', 'sus 304', 'sus 316', 'food grade', 'plat'],
+        'minyak' => ['minyak', 'kebutuhan minyak', 'liter minyak', 'kapasitas minyak'],
+        'sistem' => ['sistem', 'sistem vacuum', 'waterjet', 'water jet', 'cara kerja', 'prinsip'],
+        'garansi' => ['garansi', 'servis', 'service', 'sparepart', 'jaminan', 'qc', 'running test']
     ];
 
     $detectedIntents = [];
@@ -1405,51 +1514,102 @@ if ($action === 'search_knowledge') {
             $pDescLower = strtolower($p['desc'] ?? '');
             $pCatLower = strtolower($p['category'] ?? '');
             $pSubLower = strtolower($p['subCategory'] ?? '');
+            $pCapLower = strtolower($p['capacity'] ?? '');
 
             if ($detectedMachine) {
                 foreach ($machineEntities[$detectedMachine] as $syn) {
                     if (strpos($pNameLower, $syn) !== false || strpos($pSubLower, $syn) !== false) {
-                        $score += 50;
+                        $score += 60;
                         break;
                     }
                 }
             }
 
+            // High boost if capacity matches!
+            if ($detectedCapacityNum !== null) {
+                $capPattern1 = $detectedCapacityNum . 'kg';
+                $capPattern2 = $detectedCapacityNum . ' kg';
+                $capPattern3 = $detectedCapacityNum . ' liter';
+                $capPattern4 = $detectedCapacityNum . 'liter';
+                if (strpos($pNameLower, $capPattern1) !== false || strpos($pNameLower, $capPattern2) !== false ||
+                    strpos($pCapLower, $capPattern1) !== false || strpos($pCapLower, $capPattern2) !== false ||
+                    strpos($pNameLower, $capPattern3) !== false || strpos($pNameLower, $capPattern4) !== false) {
+                    $score += 180;
+                }
+            }
+
             foreach ($keywords as $kw) {
-                if (strpos($pNameLower, $kw) !== false) $score += 20;
-                if (strpos($pDescLower, $kw) !== false) $score += 6;
+                if (strpos($pNameLower, $kw) !== false) $score += 25;
+                if (strpos($pDescLower, $kw) !== false) $score += 8;
                 if (strpos($pCatLower, $kw) !== false) $score += 10;
             }
 
-            foreach ($detectedIntents as $intent) {
-                foreach ($intentAttributes[$intent] as $term) {
-                    if (strpos($pDescLower, $term) !== false) {
-                        $score += 8;
+            $hasSubjectMatch = false;
+            if ($detectedMachine) {
+                foreach ($machineEntities[$detectedMachine] as $syn) {
+                    if (strpos($pNameLower, $syn) !== false || strpos($pSubLower, $syn) !== false) {
+                        $hasSubjectMatch = true;
+                        break;
+                    }
+                }
+            }
+            if (!$hasSubjectMatch) {
+                foreach ($keywords as $kw) {
+                    if (strpos($pNameLower, $kw) !== false || strpos($pSubLower, $kw) !== false || strpos($pDescLower, $kw) !== false) {
+                        $hasSubjectMatch = true;
+                        break;
                     }
                 }
             }
 
-            if ($score > 15) {
-                $descLines = preg_split('/[\r\n•]+/', $p['desc'] ?? '');
-                $matchedSnippets = [];
-                foreach ($descLines as $line) {
-                    $trimmedLine = trim($line);
-                    if (empty($trimmedLine)) continue;
-                    $lineLower = strtolower($trimmedLine);
-
-                    $hasMatch = false;
-                    foreach ($keywords as $kw) {
-                        if (strpos($lineLower, $kw) !== false) { $hasMatch = true; break; }
-                    }
-                    if (!$hasMatch) {
-                        foreach ($detectedIntents as $intent) {
-                            foreach ($intentAttributes[$intent] as $term) {
-                                if (strpos($lineLower, $term) !== false) { $hasMatch = true; break 2; }
-                            }
+            if ($hasSubjectMatch) {
+                foreach ($detectedIntents as $intent) {
+                    foreach ($intentAttributes[$intent] as $term) {
+                        if (strpos($pDescLower, $term) !== false) {
+                            $score += 15;
+                            break; // Award at most once per intent
                         }
                     }
-                    if ($hasMatch) {
-                        $matchedSnippets[] = $trimmedLine;
+                }
+            } else {
+                $score = 0; // Completely unrelated subject
+            }
+
+            if ($score > 25) {
+                $parsedSpecs = parseProductSpecs($p['desc'] ?? '', $p['priceDisplay'] ?? '');
+                
+                // Prioritize snippets based on detected intents
+                $descLines = preg_split('/[\r\n•]+/', $p['desc'] ?? '');
+                $matchedSnippets = [];
+
+                if (in_array('dimensi', $detectedIntents) && !empty($parsedSpecs['dimensi'])) {
+                    $matchedSnippets[] = $parsedSpecs['dimensi'];
+                }
+                if (in_array('daya', $detectedIntents) && !empty($parsedSpecs['daya'])) {
+                    $matchedSnippets[] = $parsedSpecs['daya'];
+                }
+                if (in_array('suhu', $detectedIntents) && !empty($parsedSpecs['suhu'])) {
+                    $matchedSnippets[] = $parsedSpecs['suhu'];
+                }
+                if (in_array('minyak', $detectedIntents) && !empty($parsedSpecs['minyak'])) {
+                    $matchedSnippets[] = $parsedSpecs['minyak'];
+                }
+
+                // If still few snippets, pick matched lines
+                if (count($matchedSnippets) < 4) {
+                    foreach ($descLines as $line) {
+                        $trimmedLine = trim(ltrim(trim($line), '-*• '));
+                        if (empty($trimmedLine) || in_array($trimmedLine, $matchedSnippets)) continue;
+                        $lineLower = strtolower($trimmedLine);
+
+                        $hasMatch = false;
+                        foreach ($keywords as $kw) {
+                            if (strpos($lineLower, $kw) !== false) { $hasMatch = true; break; }
+                        }
+                        if ($hasMatch) {
+                            $matchedSnippets[] = $trimmedLine;
+                            if (count($matchedSnippets) >= 4) break;
+                        }
                     }
                 }
 
@@ -1463,7 +1623,9 @@ if ($action === 'search_knowledge') {
                     'priceDisplay' => $p['priceDisplay'] ?? '',
                     'image' => !empty($p['images'][0]) ? $p['images'][0] : '',
                     'score' => $score,
-                    'snippets' => array_slice($matchedSnippets, 0, 4), 'matched_snippets' => array_slice($matchedSnippets, 0, 4)
+                    'parsed_specs' => $parsedSpecs,
+                    'snippets' => array_slice($matchedSnippets, 0, 4),
+                    'matched_snippets' => array_slice($matchedSnippets, 0, 4)
                 ];
             }
         }
@@ -1490,9 +1652,21 @@ if ($action === 'search_knowledge') {
             if ($detectedMachine) {
                 foreach ($machineEntities[$detectedMachine] as $syn) {
                     if (strpos($waTopicLower, $syn) !== false || strpos($waMachineLower, $syn) !== false || in_array($syn, $waTags)) {
-                        $score += 55;
+                        $score += 60;
                         break;
                     }
+                }
+            }
+
+            // Capacity boost for WhatsApp
+            if ($detectedCapacityNum !== null) {
+                $capPattern1 = $detectedCapacityNum . 'kg';
+                $capPattern2 = $detectedCapacityNum . ' kg';
+                $capPattern3 = $detectedCapacityNum . ' kilo';
+                if (strpos($waTitleLower, $capPattern1) !== false || strpos($waTitleLower, $capPattern2) !== false || strpos($waTitleLower, $capPattern3) !== false ||
+                    strpos($waContentLower, $capPattern1) !== false || strpos($waContentLower, $capPattern2) !== false || strpos($waContentLower, $capPattern3) !== false ||
+                    in_array($capPattern2, $waTags) || in_array($capPattern3, $waTags)) {
+                    $score += 190;
                 }
             }
 
@@ -1503,15 +1677,38 @@ if ($action === 'search_knowledge') {
                 if (in_array($kw, $waTags)) $score += 20;
             }
 
-            foreach ($detectedIntents as $intent) {
-                foreach ($intentAttributes[$intent] as $term) {
-                    if (strpos($waContentLower, $term) !== false || in_array($term, $waTags)) {
-                        $score += 12;
+            $hasWaSubjectMatch = false;
+            if ($detectedMachine) {
+                foreach ($machineEntities[$detectedMachine] as $syn) {
+                    if (strpos($waTopicLower, $syn) !== false || strpos($waMachineLower, $syn) !== false || in_array($syn, $waTags)) {
+                        $hasWaSubjectMatch = true;
+                        break;
+                    }
+                }
+            }
+            if (!$hasWaSubjectMatch) {
+                foreach ($keywords as $kw) {
+                    if (strpos($waTitleLower, $kw) !== false || strpos($waContentLower, $kw) !== false || strpos($waRawLower, $kw) !== false || in_array($kw, $waTags)) {
+                        $hasWaSubjectMatch = true;
+                        break;
                     }
                 }
             }
 
-            if ($score > 15) {
+            if ($hasWaSubjectMatch) {
+                foreach ($detectedIntents as $intent) {
+                    foreach ($intentAttributes[$intent] as $term) {
+                        if (strpos($waContentLower, $term) !== false || in_array($term, $waTags) || strpos($waTitleLower, $term) !== false) {
+                            $score += 20;
+                            break; // Award at most once per intent
+                        }
+                    }
+                }
+            } else {
+                $score = 0; // Unrelated subject
+            }
+
+            if ($score > 25) {
                 $matchedWhatsApp[] = [
                     'id' => $wa['id'],
                     'topic' => $wa['topic'],
@@ -1553,7 +1750,7 @@ if ($action === 'search_knowledge') {
                     if (strpos($titleLower, $kw) !== false) $score += 20;
                     if (strpos($contentLower, $kw) !== false) $score += 5;
                 }
-                if ($score > 15) {
+                if ($score > 25) {
                     $matchedArticles[] = [
                         'id' => $art['id'] ?? '',
                         'title' => $art['title'] ?? '',
@@ -1567,53 +1764,175 @@ if ($action === 'search_knowledge') {
         }
     }
 
-    // 4. SYNTHESIZE DIRECT ANSWER
+    // 4. INTELLIGENT AI-STYLE DIRECT ANSWER SYNTHESIS (STRICTLY GROUNDED IN DATABASE)
     $directAnswer = null;
-    $highlights = [];
-    if (!empty($matchedWhatsApp)) {
-        $topWa = $matchedWhatsApp[0];
-        $highlights[] = "📌 **Catatan Teknis Owner WhatsApp (" . $topWa['topic'] . ")**:\n" . $topWa['content'];
-    }
-    if (!empty($matchedProducts)) {
-        $topProd = $matchedProducts[0];
-        $prodInfo = "🏭 **Spesifikasi Website (" . $topProd['name'] . ")**:\n";
-        if (!empty($topProd['snippets'])) {
-            foreach ($topProd['snippets'] as $s) {
-                $prodInfo .= "• " . $s . "\n";
-            }
-        }
-        if (!empty($topProd['priceDisplay'])) {
-            $prodInfo .= "• Harga Estimasi: " . $topProd['priceDisplay'] . "\n";
-        }
-        $highlights[] = trim($prodInfo);
-    }
-
-    if (!empty($highlights)) {
-        $directAnswer = implode("\n\n", $highlights);
-    } else {
-        $directAnswer = "Belum ditemukan informasi spesifik untuk pertanyaan: \"$query\". Silakan coba kata kunci lain atau masukkan potongan chat WhatsApp baru di tab 'Kelola Chat WhatsApp'.";
-    }
-
+    $headline = '';
     $keyHighlights = [];
+
+    $topProd = !empty($matchedProducts) ? $matchedProducts[0] : null;
+    $topWa = !empty($matchedWhatsApp) ? $matchedWhatsApp[0] : null;
+
+    $machineTitle = $detectedMachine ? ucwords($detectedMachine) : ($topProd ? $topProd['name'] : 'Mesin Asianindo');
+    $capTitle = $detectedCapacityNum ? ($detectedCapacityNum . ' ' . ($detectedCapacityUnit ? strtoupper($detectedCapacityUnit) : 'Kg')) : '';
+
+    // CASE A: User specifically asking for DIMENSI / UKURAN
+    if (in_array('dimensi', $detectedIntents)) {
+        $dimensionFound = null;
+        $sourceType = null;
+
+        // Check product specs first
+        if ($topProd && !empty($topProd['parsed_specs']['dimensi'])) {
+            $dimensionFound = $topProd['parsed_specs']['dimensi'];
+            $sourceType = 'Katalog Website (' . $topProd['name'] . ')';
+        }
+
+        // Check if WhatsApp has specific dimension confirmation
+        if ($topWa && preg_match('/(?:dimensi|ukuran).*?(\d+\s*(?:cm|meter|mm)?\s*(?:x|×)\s*\d+\s*(?:cm|meter|mm)?(?:\s*(?:x|×)\s*\d+)?\s*(?:cm|meter|mm)?)/i', $topWa['answer'], $waDimMatch)) {
+            $dimensionFound = $waDimMatch[1];
+            $sourceType = 'Konfirmasi WhatsApp Owner (' . $topWa['title'] . ')';
+        }
+
+        if ($dimensionFound) {
+            $headline = "Dimensi $machineTitle " . ($capTitle ? "Kapasitas $capTitle" : "");
+            $ans = "📏 **Dimensi $machineTitle" . ($capTitle ? " (Kapasitas $capTitle)" : "") . " adalah:**\n";
+            $ans .= "### **" . $dimensionFound . "**\n\n";
+
+            // Add companion specs if available
+            $ans .= "**Spesifikasi Pelengkap Terkait:**\n";
+            if ($topProd && !empty($topProd['parsed_specs']['daya'])) {
+                $ans .= "• Daya Listrik: " . $topProd['parsed_specs']['daya'] . "\n";
+            }
+            if ($topProd && !empty($topProd['parsed_specs']['minyak'])) {
+                $ans .= "• Kebutuhan Minyak: " . $topProd['parsed_specs']['minyak'] . "\n";
+            }
+            if ($topProd && !empty($topProd['parsed_specs']['sistem'])) {
+                $ans .= "• Sistem: " . $topProd['parsed_specs']['sistem'] . "\n";
+            }
+            if ($topProd && !empty($topProd['parsed_specs']['pemanas'])) {
+                $ans .= "• Pemanas: " . $topProd['parsed_specs']['pemanas'] . "\n";
+            }
+            if ($topProd && !empty($topProd['priceDisplay'])) {
+                $ans .= "• Estimasi Harga: " . $topProd['priceDisplay'] . "\n";
+            }
+
+            if ($topWa && strpos($topWa['title'], 'Dimensi') !== false) {
+                $ans .= "\n💬 *Catatan Owner:* " . $topWa['answer'];
+            }
+
+            $directAnswer = $ans;
+            $keyHighlights[] = "Dimensi: " . $dimensionFound;
+            $keyHighlights[] = "Sumber: " . $sourceType;
+        } else {
+            $headline = "Dimensi $machineTitle " . ($capTitle ? "Kapasitas $capTitle" : "");
+            $directAnswer = "⚠️ **Informasi dimensi spesifik untuk varian $machineTitle " . ($capTitle ? "kapasitas $capTitle" : "") . " belum ditemukan di database produk maupun riwayat WhatsApp.**\n\nSistem hanya menyajikan data riil yang terverifikasi dan tidak mengarang spesifikasi. Silakan tanyakan langsung ke owner/teknisi Asianindo untuk mendapatkan ukuran dimensi presisinya.";
+        }
+    }
+    // CASE B: User specifically asking for SUHU / TEMPERATUR
+    elseif (in_array('suhu', $detectedIntents)) {
+        $headline = "Suhu Operasional $machineTitle " . ($capTitle ? "Kapasitas $capTitle" : "");
+        $tempFound = null;
+
+        if ($topWa && (strpos(strtolower($topWa['title']), 'suhu') !== false || strpos(strtolower($topWa['answer']), 'suhu') !== false)) {
+            $tempFound = $topWa['answer'];
+        } elseif ($topProd && !empty($topProd['parsed_specs']['suhu'])) {
+            $tempFound = $topProd['parsed_specs']['suhu'];
+        }
+
+        if ($tempFound) {
+            $ans = "🌡️ **Pengaturan Suhu Operasional $machineTitle" . ($capTitle ? " ($capTitle)" : "") . ":**\n\n";
+            $ans .= $tempFound;
+            if ($topProd && !empty($topProd['parsed_specs']['daya'])) {
+                $ans .= "\n\n• Daya Pemanas / Heater: " . $topProd['parsed_specs']['daya'];
+            }
+            $directAnswer = $ans;
+            $keyHighlights[] = "Parameter: Suhu Kerja";
+            $keyHighlights[] = "Mesin: " . $machineTitle;
+        } else {
+            $directAnswer = "⚠️ **Informasi suhu spesifik untuk $machineTitle belum tercatat di database.** Silakan konsultasikan langsung dengan owner/teknisi Asianindo.";
+        }
+    }
+    // CASE C: User specifically asking for DAYA / LISTRIK / WATT
+    elseif (in_array('daya', $detectedIntents)) {
+        $headline = "Daya Listrik $machineTitle " . ($capTitle ? "Kapasitas $capTitle" : "");
+        $powerFound = null;
+
+        if ($topProd && !empty($topProd['parsed_specs']['daya'])) {
+            $powerFound = $topProd['parsed_specs']['daya'];
+        } elseif ($topWa && (strpos(strtolower($topWa['answer']), 'watt') !== false || strpos(strtolower($topWa['answer']), 'daya') !== false)) {
+            $powerFound = $topWa['answer'];
+        }
+
+        if ($powerFound) {
+            $ans = "⚡ **Kebutuhan Daya Listrik $machineTitle" . ($capTitle ? " ($capTitle)" : "") . ":**\n";
+            $ans .= "### **" . $powerFound . "**\n\n";
+            if ($topProd && !empty($topProd['parsed_specs']['dimensi'])) {
+                $ans .= "• Dimensi Unit: " . $topProd['parsed_specs']['dimensi'] . "\n";
+            }
+            if ($topProd && !empty($topProd['priceDisplay'])) {
+                $ans .= "• Harga: " . $topProd['priceDisplay'] . "\n";
+            }
+            $directAnswer = $ans;
+            $keyHighlights[] = "Daya Listrik";
+            $keyHighlights[] = "Mesin: " . $machineTitle;
+        } else {
+            $directAnswer = "⚠️ **Informasi daya listrik untuk varian tersebut belum ditemukan di database.**";
+        }
+    }
+    // CASE D: User specifically asking for GARANSI / SERVIS
+    elseif (in_array('garansi', $detectedIntents)) {
+        $headline = "Garansi & Uji Coba Mesin Asianindo";
+        $directAnswer = "🛡️ **Ketentuan Garansi & Layanan Purna Jual CV Asianindo:**\n" .
+            "• **Garansi Resmi:** Garansi servis resmi selama **1 Tahun**.\n" .
+            "• **Quality Control (QC):** Setiap unit mesin WAJIB uji coba (*running test*) dan divideokan sebelum dikirim ke pembeli.\n" .
+            "• **Pengiriman:** Packing kayu kokoh & kargo rekanan ke seluruh Indonesia.\n" .
+            "• **Panduan:** Buku panduan, video tutorial, serta pendampingan langsung via Video Call / WhatsApp oleh teknisi ahli CV Asianindo.";
+        $keyHighlights[] = "Garansi 1 Tahun";
+        $keyHighlights[] = "QC Running Test";
+    }
+    // CASE E: GENERAL INQUIRY (Combine Top Verified Specs)
+    else {
+        $headline = "Spesifikasi $machineTitle " . ($capTitle ? "Kapasitas $capTitle" : "");
+        $highlights = [];
+
+        if ($topWa) {
+            $highlights[] = "📌 **Catatan Konsultasi Owner WhatsApp (" . $topWa['title'] . ")**:\n" . $topWa['answer'];
+        }
+
+        if ($topProd) {
+            $pInfo = "🏭 **Spesifikasi Katalog (" . $topProd['name'] . ")**:\n";
+            if (!empty($topProd['parsed_specs']['dimensi'])) $pInfo .= "• Dimensi: " . $topProd['parsed_specs']['dimensi'] . "\n";
+            if (!empty($topProd['parsed_specs']['daya'])) $pInfo .= "• Daya Listrik: " . $topProd['parsed_specs']['daya'] . "\n";
+            if (!empty($topProd['parsed_specs']['suhu'])) $pInfo .= "• Suhu: " . $topProd['parsed_specs']['suhu'] . "\n";
+            if (!empty($topProd['parsed_specs']['minyak'])) $pInfo .= "• Kebutuhan Minyak: " . $topProd['parsed_specs']['minyak'] . "\n";
+            if (!empty($topProd['priceDisplay'])) $pInfo .= "• Harga Estimasi: " . $topProd['priceDisplay'] . "\n";
+            $highlights[] = trim($pInfo);
+        }
+
+        if (!empty($highlights)) {
+            $directAnswer = implode("\n\n", $highlights);
+        } else {
+            $directAnswer = "⚠️ **Belum ditemukan data spesifik untuk pertanyaan: \"$query\".**\nSilakan gunakan kata kunci yang lebih spesifik atau masukkan obrolan chat baru di tab 'Kelola Chat WA'.";
+        }
+    }
+
     if (!empty($detectedMachine)) {
         $keyHighlights[] = "Mesin: " . ucwords($detectedMachine);
     }
-    if (!empty($detectedIntents)) {
-        foreach ($detectedIntents as $di) {
-            $keyHighlights[] = "Parameter: " . ucwords(str_replace('_', ' ', $di));
-        }
+    if (!empty($detectedCapacityNum)) {
+        $keyHighlights[] = "Kapasitas: " . $detectedCapacityNum . ' ' . ($detectedCapacityUnit ? strtoupper($detectedCapacityUnit) : 'Kg');
     }
 
     $directAnswerObj = [
-        'headline' => !empty($detectedMachine) ? ("Spesifikasi " . ucwords($detectedMachine) . " Asianindo") : ("Hasil Pengetahuan: " . $query),
+        'headline' => $headline,
         'summary' => $directAnswer,
-        'highlights' => $keyHighlights
+        'highlights' => array_values(array_unique(array_filter($keyHighlights)))
     ];
 
-    echo json_encode([
+    $finalOutput = [
         'success' => true,
         'query' => $query,
         'detected_machine' => $detectedMachine ? ucwords($detectedMachine) : null,
+        'detected_capacity' => $detectedCapacityNum ? ($detectedCapacityNum . ' ' . $detectedCapacityUnit) : null,
         'detected_intents' => $detectedIntents,
         'direct_answer' => $directAnswerObj,
         'products_found' => $matchedProducts,
@@ -1623,10 +1942,16 @@ if ($action === 'search_knowledge') {
         'results_whatsapp' => $matchedWhatsApp,
         'results_articles' => $matchedArticles,
         'total_found' => count($matchedProducts) + count($matchedWhatsApp) + count($matchedArticles)
-    ]);
+    ];
+
+    $encoded = json_encode($finalOutput, JSON_INVALID_UTF8_SUBSTITUTE | JSON_PARTIAL_OUTPUT_ON_ERROR);
+    if ($encoded === false) {
+        echo json_encode(['success' => false, 'error' => 'JSON encoding failed: ' . json_last_error_msg()]);
+    } else {
+        echo $encoded;
+    }
     exit;
 }
-
 
 http_response_code(400);
 echo json_encode(['error' => 'Invalid action']);
