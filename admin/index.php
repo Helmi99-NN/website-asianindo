@@ -764,7 +764,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
                     <!-- Bottom Sources Tag -->
                     <div class="mt-4 pt-3 border-t border-emerald-200/60 flex flex-wrap items-center justify-between text-xs text-gray-500 gap-2">
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-2 flex-wrap">
                             <span>Sumber:</span>
                             <span class="inline-flex items-center gap-1 font-semibold text-gray-700">
                                 <i class="fas fa-globe text-primary text-[10px]"></i>
@@ -774,6 +774,11 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                             <span class="inline-flex items-center gap-1 font-semibold text-emerald-700">
                                 <i class="fab fa-whatsapp text-emerald-600 text-[11px]"></i>
                                 <span x-text="(qaResults.whatsapp_found ? qaResults.whatsapp_found.length : 0) + ' Obrolan WhatsApp Owner'"></span>
+                            </span>
+                            <span>•</span>
+                            <span class="inline-flex items-center gap-1 font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/80 px-2 py-0.5 rounded" title="Tanggal pembaruan obrolan WhatsApp terakhir">
+                                <i class="fas fa-cloud-upload-alt text-[10px]"></i>
+                                <span>Pembaruan WA: <strong x-text="getLastWhatsAppUploadDate()"></strong></span>
                             </span>
                         </div>
                         <div class="text-[11px] text-gray-400">
@@ -883,7 +888,13 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                                 <span class="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded" x-text="wa.machine_category || 'Umum'"></span>
                                                 <span class="text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded" x-text="wa.sender || 'Owner'"></span>
                                             </div>
-                                            <span class="text-[11px] text-gray-400" x-text="wa.date || ''"></span>
+                                            <div class="flex items-center gap-2 flex-wrap">
+                                                <span class="inline-flex items-center gap-1 text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded" title="Tanggal obrolan diunggah ke sistem">
+                                                    <i class="fas fa-cloud-upload-alt text-[9px]"></i>
+                                                    <span x-text="'Diunggah: ' + formatUploadDate(wa.uploaded_at || wa.date)"></span>
+                                                </span>
+                                                <span class="text-[10px] text-gray-400" x-text="'Chat: ' + (wa.chat_date || wa.date || '')"></span>
+                                            </div>
                                         </div>
 
                                         <h4 class="font-bold text-sm text-gray-900 mb-2" x-text="wa.title"></h4>
@@ -977,6 +988,26 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <!-- ========================================== -->
     <div x-show="qaActiveTab === 'whatsapp_manage'" class="space-y-6">
 
+        <!-- Status Pembaruan Database WhatsApp -->
+        <div class="bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-md border border-emerald-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div>
+                    <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-300">Status Pembaruan Database WhatsApp</div>
+                    <div class="text-sm sm:text-base font-extrabold text-white flex items-center gap-2 mt-0.5">
+                        <span>Pembaruan Chat Terakhir:</span>
+                        <span class="text-emerald-300 bg-emerald-950/80 border border-emerald-500/50 px-2.5 py-0.5 rounded-lg text-xs sm:text-sm font-black" x-text="getLastWhatsAppUploadDate()"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="text-xs text-emerald-200/90 max-w-md leading-relaxed">
+                <i class="fas fa-info-circle text-emerald-400 mr-1"></i>
+                Setiap kali Anda mengekspor dan mengunggah obrolan baru dengan owner di masa depan, tanggal upload akan otomatis tercatat dan memperbarui database ini.
+            </div>
+        </div>
+
         <!-- Importer Box -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-7">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-4 border-b border-gray-100">
@@ -1010,12 +1041,20 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
             <!-- Import Form -->
             <form @submit.prevent="importWhatsAppChat()" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-gray-700 mb-1">Topik Utama / Catatan (Opsional)</label>
                         <input type="text" 
                                x-model="whatsappImportTopic" 
                                placeholder="Contoh: Diskusi Suhu & Kapasitas Spray Dryer..." 
+                               class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 focus:bg-white focus:border-emerald-500 rounded-xl text-xs sm:text-sm font-medium outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">
+                            <i class="fas fa-calendar-day text-emerald-600 mr-1"></i> Tanggal Upload / Pembaruan
+                        </label>
+                        <input type="date" 
+                               x-model="whatsappImportUploadDate" 
                                class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 focus:bg-white focus:border-emerald-500 rounded-xl text-xs sm:text-sm font-medium outline-none">
                     </div>
                     <div>
@@ -1108,11 +1147,18 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         <div>
                             <!-- Header Badges -->
                             <div class="flex items-center justify-between gap-2 mb-2 flex-wrap">
-                                <div class="flex items-center gap-1.5">
+                                <div class="flex items-center gap-1.5 flex-wrap">
                                     <span class="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100 border border-emerald-200 px-2 py-0.5 rounded" x-text="entry.machine_category || 'Umum'"></span>
                                     <span class="text-[10px] font-bold text-gray-600 bg-gray-200/80 px-2 py-0.5 rounded" x-text="entry.sender || 'Owner'"></span>
+                                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded" title="Tanggal obrolan diunggah ke sistem">
+                                        <i class="fas fa-cloud-upload-alt text-[9px]"></i>
+                                        <span>Upload: <strong x-text="formatUploadDate(entry.uploaded_at || entry.date)"></strong></span>
+                                    </span>
                                 </div>
-                                <span class="text-[10px] text-gray-400" x-text="entry.date || ''"></span>
+                                <div class="flex items-center gap-1 text-[10px] text-gray-400">
+                                    <i class="far fa-clock text-[9px]"></i>
+                                    <span x-text="'Tgl Chat: ' + (entry.chat_date || entry.date || '')"></span>
+                                </div>
                             </div>
 
                             <h4 class="font-bold text-sm text-gray-900 mb-1.5" x-text="entry.title"></h4>
@@ -1212,6 +1258,22 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     <input type="text" 
                            x-model="newWhatsAppEntry.sender" 
                            placeholder="Owner Asianindo" 
+                           class="w-full px-3.5 py-2 bg-gray-50 border border-gray-300 rounded-xl text-xs outline-none focus:border-emerald-500">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Tanggal Upload / Pembaruan</label>
+                    <input type="date" 
+                           x-model="newWhatsAppEntry.uploaded_at" 
+                           class="w-full px-3.5 py-2 bg-gray-50 border border-gray-300 rounded-xl text-xs outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Tanggal Chat (Di WhatsApp)</label>
+                    <input type="text" 
+                           x-model="newWhatsAppEntry.chat_date" 
+                           placeholder="Contoh: 12/08/2024" 
                            class="w-full px-3.5 py-2 bg-gray-50 border border-gray-300 rounded-xl text-xs outline-none focus:border-emerald-500">
                 </div>
             </div>

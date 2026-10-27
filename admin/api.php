@@ -1060,6 +1060,8 @@ function readWhatsAppKnowledge() {
         if (empty($item['topic'])) $item['topic'] = $item['machine_category'] ?? 'Umum';
         if (empty($item['answer'])) $item['answer'] = $item['content'] ?? '';
         if (empty($item['content'])) $item['content'] = $item['answer'] ?? '';
+        if (empty($item['uploaded_at'])) $item['uploaded_at'] = !empty($item['date']) ? $item['date'] : '2026-10-27 10:00:00';
+        if (empty($item['chat_date'])) $item['chat_date'] = !empty($item['date']) ? $item['date'] : '2024-08-12';
         if (empty($item['tags'])) $item['tags'] = [];
         elseif (is_string($item['tags'])) $item['tags'] = array_values(array_filter(array_map('trim', explode(',', $item['tags']))));
     }
@@ -1098,6 +1100,8 @@ if ($action === 'save_whatsapp_knowledge') {
     $question = trim($input['question'] ?? '');
     $sender = trim($input['sender'] ?? 'Owner CV Asianindo');
     $date = !empty($input['date']) ? $input['date'] : date('Y-m-d');
+    $uploadedAt = trim($input['uploaded_at'] ?? ($input['upload_date'] ?? date('Y-m-d H:i:s')));
+    $chatDate = trim($input['chat_date'] ?? ($input['date'] ?? date('Y-m-d')));
     
     $tagsRaw = $input['tags'] ?? '';
     if (is_array($tagsRaw)) {
@@ -1115,7 +1119,9 @@ if ($action === 'save_whatsapp_knowledge') {
         'question' => $question,
         'content' => $content,
         'answer' => $content,
-        'date' => $date,
+        'date' => $chatDate,
+        'chat_date' => $chatDate,
+        'uploaded_at' => $uploadedAt,
         'sender' => $sender,
         'tags' => array_values(array_unique(array_filter($tags)))
     ];
@@ -1159,6 +1165,7 @@ if ($action === 'import_whatsapp_chat') {
     $input = json_decode(file_get_contents('php://input'), true) ?: [];
     $rawText = trim($_POST['raw_chat'] ?? ($_POST['raw_text'] ?? ($input['raw_chat'] ?? ($input['raw_text'] ?? ''))));
     $defaultTopic = trim($_POST['topic'] ?? ($input['topic'] ?? 'Konsultasi Teknis'));
+    $uploadDateInput = trim($_POST['upload_date'] ?? ($input['upload_date'] ?? date('Y-m-d H:i:s')));
 
     if (empty($rawText)) {
         http_response_code(400);
@@ -1237,15 +1244,22 @@ if ($action === 'import_whatsapp_chat') {
         if (strpos($lowerText, 'watt') !== false || strpos($lowerText, 'listrik') !== false || strpos($lowerText, 'daya') !== false) $tags[] = 'daya';
         if (strpos($lowerText, 'harga') !== false) $tags[] = 'harga';
 
+        $chatDate = !empty($chunk[0]['date']) ? $chunk[0]['date'] : date('d/m/Y');
+        $contentStr = implode("\n\n", array_map(function($m) {
+            return $m['sender'] . ': ' . $m['text'];
+        }, $chunk));
+
         $entry = [
             'id' => 'wa_' . time() . '_' . rand(100, 999),
             'topic' => $detectedMachine !== 'Umum' ? $detectedMachine : $defaultTopic,
+            'machine_category' => $detectedMachine !== 'Umum' ? $detectedMachine : $defaultTopic,
             'machine_name' => 'Mesin ' . ($detectedMachine !== 'Umum' ? $detectedMachine : $defaultTopic) . ' Asianindo',
             'title' => $entryTitle,
-            'content' => implode("\n\n", array_map(function($m) {
-                return $m['sender'] . ': ' . $m['text'];
-            }, $chunk)),
+            'content' => $contentStr,
+            'answer' => $contentStr,
             'raw_chat' => $fullText,
+            'chat_date' => $chatDate,
+            'uploaded_at' => $uploadDateInput,
             'date' => date('Y-m-d'),
             'sender' => $chunk[count($chunk)-1]['sender'] ?? 'Owner CV Asianindo',
             'tags' => array_values(array_unique(array_filter($tags)))
@@ -1486,6 +1500,8 @@ if ($action === 'search_knowledge') {
                     'machine_category' => $wa['machine_category'] ?? $wa['topic'],
                     'tags' => $wa['tags'] ?? [],
                     'raw_chat' => $wa['raw_chat'] ?? '',
+                    'chat_date' => $wa['chat_date'] ?? ($wa['date'] ?? ''),
+                    'uploaded_at' => $wa['uploaded_at'] ?? ($wa['date'] ?? ''),
                     'date' => $wa['date'] ?? '',
                     'sender' => $wa['sender'] ?? 'Owner CV Asianindo',
                     'score' => $score

@@ -79,6 +79,7 @@ function adminApp() {
         isImportingWhatsApp: false,
         rawWhatsAppChatInput: '',
         whatsappImportTopic: '',
+        whatsappImportUploadDate: new Date().toISOString().slice(0, 10),
         newWhatsAppEntry: {
             id: '',
             title: '',
@@ -86,7 +87,9 @@ function adminApp() {
             question: '',
             answer: '',
             tags: '',
-            sender: 'Owner Asianindo'
+            sender: 'Owner Asianindo',
+            uploaded_at: new Date().toISOString().slice(0, 10),
+            chat_date: ''
         },
         isSavingWhatsAppEntry: false,
         showWhatsAppModal: false,
@@ -2468,6 +2471,9 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
                 if (this.whatsappImportTopic.trim()) {
                     fd.append('topic', this.whatsappImportTopic.trim());
                 }
+                if (this.whatsappImportUploadDate) {
+                    fd.append('upload_date', this.whatsappImportUploadDate);
+                }
 
                 const res = await fetch('api.php?action=import_whatsapp_chat', {
                     method: 'POST',
@@ -2510,7 +2516,9 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
                     question: entry.question || '',
                     answer: entry.answer || '',
                     tags: Array.isArray(entry.tags) ? entry.tags.join(', ') : (entry.tags || ''),
-                    sender: entry.sender || 'Owner Asianindo'
+                    sender: entry.sender || 'Owner Asianindo',
+                    uploaded_at: entry.uploaded_at ? (entry.uploaded_at.includes('T') ? entry.uploaded_at.slice(0, 10) : entry.uploaded_at.slice(0, 10)) : new Date().toISOString().slice(0, 10),
+                    chat_date: entry.chat_date || entry.date || ''
                 };
             } else {
                 this.editingWhatsAppId = null;
@@ -2521,7 +2529,9 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
                     question: '',
                     answer: '',
                     tags: '',
-                    sender: 'Owner Asianindo'
+                    sender: 'Owner Asianindo',
+                    uploaded_at: new Date().toISOString().slice(0, 10),
+                    chat_date: ''
                 };
             }
             this.showWhatsAppModal = true;
@@ -2544,6 +2554,10 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
                 fd.append('answer', this.newWhatsAppEntry.answer.trim());
                 fd.append('tags', this.newWhatsAppEntry.tags.trim());
                 fd.append('sender', this.newWhatsAppEntry.sender.trim() || 'Owner');
+                fd.append('uploaded_at', this.newWhatsAppEntry.uploaded_at || new Date().toISOString().slice(0, 10));
+                if (this.newWhatsAppEntry.chat_date) {
+                    fd.append('chat_date', this.newWhatsAppEntry.chat_date.trim());
+                }
 
                 const res = await fetch('api.php?action=save_whatsapp_knowledge', {
                     method: 'POST',
@@ -2585,6 +2599,43 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
             }
         },
 
+        getLastWhatsAppUploadDate() {
+            if (!this.whatsappKnowledgeList || this.whatsappKnowledgeList.length === 0) return 'Belum ada data';
+            let latest = null;
+            for (const item of this.whatsappKnowledgeList) {
+                const d = item.uploaded_at || item.date;
+                if (d) {
+                    const timeVal = new Date(d).getTime();
+                    if (!isNaN(timeVal)) {
+                        if (!latest || timeVal > latest.timeVal) {
+                            latest = { timeVal, raw: d };
+                        }
+                    } else if (!latest) {
+                        latest = { timeVal: 0, raw: d };
+                    }
+                }
+            }
+            return latest ? this.formatUploadDate(latest.raw) : '27 Okt 2026';
+        },
+
+        formatUploadDate(dateStr) {
+            if (!dateStr) return '-';
+            if (typeof dateStr === 'string' && (dateStr.includes('WIB') || dateStr.includes('wib'))) return dateStr;
+            try {
+                const d = new Date(dateStr);
+                if (isNaN(d.getTime())) {
+                    return dateStr;
+                }
+                return d.toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
+            } catch (e) {
+                return dateStr;
+            }
+        },
+
         filteredWhatsAppKnowledgeList() {
             let list = this.whatsappKnowledgeList || [];
             if (this.whatsappSelectedFilter && this.whatsappSelectedFilter !== 'all') {
@@ -2601,7 +2652,12 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
                     return title.includes(q) || ans.includes(q) || tags.includes(q) || cat.includes(q);
                 });
             }
-            return list;
+            // Sort by uploaded_at descending so the newest uploaded chats are at the top
+            return [...list].sort((a, b) => {
+                const da = new Date(a.uploaded_at || a.date || 0).getTime() || 0;
+                const db = new Date(b.uploaded_at || b.date || 0).getTime() || 0;
+                return db - da;
+            });
         }
     }
 }

@@ -8,7 +8,24 @@
     "raw_chat": "[12/08/24 10:15] Tim CS: Pak, customer tanya untuk mesin spray dryer suhunya disetting berapa ya untuk pengeringan ekstrak jahe dan susu?\n[12/08/24 10:18] Owner: Untuk ekstrak herbal atau susu, suhu inlet pasang di 170-180°C mas, jangan lebih dari 200°C biar rasa dan nutrisi nggak gosong. Suhu outlet nanti otomatis kebaca sekitar 75-80°C. Pemanas pakai heater 13kW wajib listrik 3 phase stabil ya. Kalau mau varian hemat listrik bisa custom burner gas LPG.",
     "date": "2024-08-12",
     "sender": "Owner CV Asianindo",
-    "tags": ["spray dryer", "suhu", "temperature", "heater", "180", "200", "derajat", "inlet", "outlet", "listrik", "daya", "watt"]
+    "tags": [
+      "spray dryer",
+      "suhu",
+      "temperature",
+      "heater",
+      "180",
+      "200",
+      "derajat",
+      "inlet",
+      "outlet",
+      "listrik",
+      "daya",
+      "watt"
+    ],
+    "uploaded_at": "2026-10-27 10:00:00",
+    "chat_date": "2024-08-12",
+    "machine_category": "Spray Dryer",
+    "answer": "Suhu operasional Mesin Spray Dryer CV Asianindo: Suhu inlet (masuk) diatur antara 150°C - 200°C tergantung jenis bahan cairan. Suhu outlet (keluar) stabil di 70°C - 90°C. Untuk bahan ekstrak herbal, sari buah, atau susu disarankan suhu inlet stabil di 170°C - 180°C agar nutrisi, warna, dan aroma tidak gosong/rusak. Pemanas menggunakan heater elektrik 13.000 Watt (atau burner gas LPG pada opsi custom). Listrik wajib 3 phase (380V)."
   },
   {
     "id": "wa_002",
@@ -19,7 +36,19 @@
     "raw_chat": "[14/09/24 14:20] Tim CS: Pak, spray dryer bisa untuk bahan yang kental kayak bubur buah nggak?\n[14/09/24 14:24] Owner: Nggak bisa langsung mas, spray dryer sistemnya disemprot lewat nozzle halus (atomizer). Jadi bahan harus cair encer homogen, maksimal 20-30 Brix. Kalau sari buah kental disaring dulu atau ditambah maltodextrin 10-15% sebagai pengikat bubuknya.",
     "date": "2024-09-14",
     "sender": "Owner CV Asianindo",
-    "tags": ["spray dryer", "kapasitas", "bahan", "nozzle", "maltodextrin", "cairan", "brix"]
+    "tags": [
+      "spray dryer",
+      "kapasitas",
+      "bahan",
+      "nozzle",
+      "maltodextrin",
+      "cairan",
+      "brix"
+    ],
+    "uploaded_at": "2026-10-27 10:00:00",
+    "chat_date": "2024-09-14",
+    "machine_category": "Spray Dryer",
+    "answer": "Kapasitas spray dryer Asianindo tersedia 1 Liter, 2 Liter, 3 Liter, 5 Liter, dan 10 Liter bahan cair per jam. Syarat bahan baku: harus berupa cairan terlarut homogen dengan total padatan (Brix) ideal 15 - 30%. Jika bahan terlalu kental bisa ditambah maltodextrin atau air agar nozel atomizing tidak mampet."
   },
   {
     "id": "wa_003",
@@ -30,7 +59,23 @@
     "raw_chat": "[05/09/24 09:30] Tim CS: Pak, ada tender UMKM olahan rendang, tanya suhu dan tekanan mesin retort kaleng berapa ya?\n[05/09/24 09:35] Owner: Suhu retort standar komersial di 121°C mas, tekanan 1.5 - 2 bar. Holding timenya untuk rendang daging sekitar 30-40 menit. Hasilnya rendang atau gulai dalam kaleng/retort pouch bisa awet 1 sampai 2 tahun di suhu ruang tanpa bahan pengawet kimia sama sekali. Mesin kita sudah pakai double safety valve dan kontrol otomatis digital.",
     "date": "2024-09-05",
     "sender": "Owner CV Asianindo",
-    "tags": ["retort", "sterilisasi", "suhu", "121", "tekanan", "bar", "holding", "rendang", "kaleng", "pouch", "pengawet"]
+    "tags": [
+      "retort",
+      "sterilisasi",
+      "suhu",
+      "121",
+      "tekanan",
+      "bar",
+      "holding",
+      "rendang",
+      "kaleng",
+      "pouch",
+      "pengawet"
+    ],
+    "uploaded_at": "2026-10-27 10:00:00",
+    "chat_date": "2024-09-05",
+    "machine_category": "Retort Sterilisasi",
+    "answer": "Suhu operasional Mesin Retort Sterilisasi CV Asianindo adalah 121°C (suhu standar commercial sterility internasional) dengan tekanan kerja 1.2 hingga 2.0 bar (safety valve di 2.5 bar). Waktu holding sterilisasi antara 15 hingga 45 menit tergantung jenis produk (rendang, gulai, sambal, sari jamu). Dengan proses retort ini, produk dalam kaleng atau retort pouch tahan hingga 12 - 24 bulan di suhu ruang tanpa bahan pengawet."
   },
   {
     "id": "wa_004",
@@ -41,7 +86,20 @@
     "raw_chat": "[18/07/24 16:10] Tim CS: Untuk retort 50 liter dan 100 liter bahannya apa pak? Aman nggak untuk BPOM?\n[18/07/24 16:15] Owner: Sangat aman, bahan full Stainless Steel SUS 304 tebal, sudah standar BPOM dan Dinas Kesehatan. Dilengkapi pressure gauge analog dan digital temperature controller. Kita ada kapasitas 50L, 100L, 200L, sampai 500L.",
     "date": "2024-07-18",
     "sender": "Owner CV Asianindo",
-    "tags": ["retort", "kapasitas", "material", "stainless", "sus 304", "50 liter", "100 liter", "bpom"]
+    "tags": [
+      "retort",
+      "kapasitas",
+      "material",
+      "stainless",
+      "sus 304",
+      "50 liter",
+      "100 liter",
+      "bpom"
+    ],
+    "uploaded_at": "2026-10-27 10:00:00",
+    "chat_date": "2024-07-18",
+    "machine_category": "Retort Sterilisasi",
+    "answer": "Mesin Retort Sterilisasi Asianindo dibuat menggunakan material Stainless Steel SUS 304 Food Grade tebal 4mm - 6mm berstandar bejana tekan. Kapasitas tersedia mulai dari 50 Liter (mini retort UMKM), 100 Liter, 200 Liter, hingga 500 Liter per batch. Pemanas bisa menggunakan electric heater, burner gas LPG, atau steam boiler."
   },
   {
     "id": "wa_005",
@@ -52,7 +110,24 @@
     "raw_chat": "[20/08/24 11:00] Tim CS: Pak, customer nanya kenapa keripik nangka nggak gosong kalau pakai vacuum frying?\n[20/08/24 11:05] Owner: Jelaskan ke pembeli, mesin vacuum frying kita goreng di suhu rendah cuma 80-85 derajat Celcius, divakum sampai -70 cmHg. Di kondisi vakum, air mendidih di suhu rendah. Jadi buah matang tanpa karamelisasi/gosong, warna aslinya tetap kuning cerah dan rasa manisnya murni. Ditambah free spinner jadi keripik langsung kering tanpa minyak berlebih.",
     "date": "2024-08-20",
     "sender": "Owner CV Asianindo",
-    "tags": ["vacuum frying", "suhu", "80", "85", "derajat", "tekanan", "vakum", "cmhg", "keripik buah", "nangka", "spinner", "minyak"]
+    "tags": [
+      "vacuum frying",
+      "suhu",
+      "80",
+      "85",
+      "derajat",
+      "tekanan",
+      "vakum",
+      "cmhg",
+      "keripik buah",
+      "nangka",
+      "spinner",
+      "minyak"
+    ],
+    "uploaded_at": "2026-10-27 10:00:00",
+    "chat_date": "2024-08-20",
+    "machine_category": "Vacuum Frying",
+    "answer": "Suhu penggorengan Mesin Vacuum Frying CV Asianindo adalah 80°C - 85°C (jauh di bawah penggorengan biasa 160°C). Tekanan vakum mencapai -68 s/d -75 cmHg (hampir hampa udara). Karena suhu rendah dan hampa, minyak tidak cepat hitam/tengik, warna buah (nangka, apel, salak, mangga, nanas) tetap cerah, rasa manis alami tidak hilang, dan keripik sangat renyah. Setiap unit paket hemat sudah include Spinner Peniris Minyak & Kompor LPG."
   },
   {
     "id": "wa_006",
@@ -63,7 +138,21 @@
     "raw_chat": "[28/08/24 13:40] Tim CS: Listrik rumah 1300 watt bisa buat vacuum frying nggak pak?\n[28/08/24 13:45] Owner: Bisa banget! Untuk kapasitas 1.5 kg dan 3 kg dayanya cuma 600 - 750 watt karena pemanasnya pakai LPG, listrik cuma buat pompa waterjet sirkulasi air vakum. Pengontrol suhu sudah otomatis ada selenoid cut-off gas.",
     "date": "2024-08-28",
     "sender": "Owner CV Asianindo",
-    "tags": ["vacuum frying", "daya", "listrik", "watt", "kapasitas", "1300 watt", "lpg", "pompa", "waterjet"]
+    "tags": [
+      "vacuum frying",
+      "daya",
+      "listrik",
+      "watt",
+      "kapasitas",
+      "1300 watt",
+      "lpg",
+      "pompa",
+      "waterjet"
+    ],
+    "uploaded_at": "2026-10-27 10:00:00",
+    "chat_date": "2024-08-28",
+    "machine_category": "Vacuum Frying",
+    "answer": "Kapasitas Mesin Vacuum Frying: 1.5 kg, 3 kg, 5 kg, 10 kg, 20 kg, hingga 50 kg per batch. Daya listrik pompa sirkulasi waterjet vakum: 1.5 kg (600W), 3 kg (750W), 5 kg (1100W), 10 kg (1500W). Pemanas tabung menggunakan kompor LPG dengan kontrol suhu otomatis solenoid valve (gas mati otomatis saat suhu tercapai)."
   },
   {
     "id": "wa_007",
@@ -74,7 +163,22 @@
     "raw_chat": "[02/09/24 15:10] Tim CS: Pak, peternak lebah tanya kenapa evaporasi madu suhunya nggak boleh lebih dari 60 derajat?\n[02/09/24 15:15] Owner: Kalau madu dipanaskan di atas 60°C, enzim diastasenya rusak mas, HMF-nya naik dan madunya rusak kualitasnya. Makanya pakai Evaporator Vakum kita disetting suhu 50-55°C di ruang vakum. Air menguap cepat tanpa merusak kualitas madu. Kapasitas kita ada 25L, 50L, dan 100L.",
     "date": "2024-09-02",
     "sender": "Owner CV Asianindo",
-    "tags": ["evaporator", "madu", "vco", "suhu", "50", "60", "derajat", "kadar air", "enzim", "vakum"]
+    "tags": [
+      "evaporator",
+      "madu",
+      "vco",
+      "suhu",
+      "50",
+      "60",
+      "derajat",
+      "kadar air",
+      "enzim",
+      "vakum"
+    ],
+    "uploaded_at": "2026-10-27 10:00:00",
+    "chat_date": "2024-09-02",
+    "machine_category": "Evaporator Vacuum",
+    "answer": "Suhu operasional Mesin Evaporator Vacuum diatur pada 50°C - 60°C. Fungsi utamanya adalah menurunkan kadar air pada cairan peka panas seperti Madu (menurunkan kadar air dari 24% menjadi 18-19% standar ekspor), VCO (Virgin Coconut Oil), sari buah kental, dan ekstrak cair tanpa merusak kandungan enzim, vitamin, dan warna aslinya."
   },
   {
     "id": "wa_008",
@@ -85,7 +189,22 @@
     "raw_chat": "[10/09/24 10:50] Tim CS: Suhu reaktor mesin pirolisis batok kelapa berapa derajat pak?\n[10/09/24 10:55] Owner: Suhu reaktor pirolisis di 350 sampai 500 derajat Celcius mas. Dinding reaktor kita pakai plat tebal 3mm tahan panas ekstrim. Pemanas bawah bisa kayu atau LPG. Tabung kondensor pendingin pakai stainless steel SUS 304.",
     "date": "2024-09-10",
     "sender": "Owner CV Asianindo",
-    "tags": ["pirolisis", "suhu", "350", "500", "derajat", "reaktor", "asap cair", "batok kelapa", "kondensor", "arang"]
+    "tags": [
+      "pirolisis",
+      "suhu",
+      "350",
+      "500",
+      "derajat",
+      "reaktor",
+      "asap cair",
+      "batok kelapa",
+      "kondensor",
+      "arang"
+    ],
+    "uploaded_at": "2026-10-27 10:00:00",
+    "chat_date": "2024-09-10",
+    "machine_category": "Pirolisis",
+    "answer": "Mesin Pirolisis CV Asianindo bekerja pada suhu reaktor 300°C - 500°C tanpa oksigen (anaerobik). Bahan baku berupa batok kelapa, kayu, atau serabut kelapa diuraikan oleh panas tinggi menghasilkan: 1. Asap Cair (Liquid Smoke) melalui kondensor pendingin, 2. Arang aktif (Biochar) di dalam tabung reaktor. Asap cair hasil kondensasi dapat digunakan sebagai pengawet makanan alami atau pembasmi hama pertanian."
   },
   {
     "id": "wa_009",
@@ -96,6 +215,20 @@
     "raw_chat": "[01/08/24 08:30] Tim CS: Kalau pembeli luar pulau tanya soal garansi dan pengiriman gimana penjelasannya pak?\n[01/08/24 08:35] Owner: Kasih tahu: 1. Garansi servis 1 tahun resmi CV Asianindo. 2. Sebelum kirim kita uji coba mesinnya dan divideokan. 3. Packing kayu tebal full aman. 4. Pas mesin sampai, teknisi kita siap video call pandu dari nol sampai bisa jalan produksinya.",
     "date": "2024-08-01",
     "sender": "Owner CV Asianindo",
-    "tags": ["garansi", "servis", "service", "pengiriman", "packing kayu", "qc", "tutorial", "teknisi", "1 tahun"]
+    "tags": [
+      "garansi",
+      "servis",
+      "service",
+      "pengiriman",
+      "packing kayu",
+      "qc",
+      "tutorial",
+      "teknisi",
+      "1 tahun"
+    ],
+    "uploaded_at": "2026-10-27 10:00:00",
+    "chat_date": "2024-08-01",
+    "machine_category": "Garansi & Layanan",
+    "answer": "Semua mesin produksi CV Asianindo mendapatkan Garansi Servis Resmi selama 1 Tahun. Sebelum barang dikirim ke pembeli, setiap unit mesin WAJIB melalui proses Quality Control (QC) dan uji coba (running test) menggunakan video. Pengiriman menggunakan packing kayu kokoh dan ekspedisi kargo rekanan ke seluruh wilayah Indonesia. Pembeli mendapatkan buku panduan, video tutorial, serta pendampingan langsung via video call/WhatsApp oleh teknisi ahli CV Asianindo."
   }
 ]
