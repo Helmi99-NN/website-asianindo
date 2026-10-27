@@ -627,7 +627,8 @@ function healProductImages(&$products) {
         $isVacuum = (stripos(($p['name'] ?? '') . ' ' . ($p['subCategory'] ?? ''), 'vacuum') !== false);
         if (isset($p['video']) && is_string($p['video'])) {
             $v = trim($p['video']);
-            $isBrokenVid = (strpos($v, 'media_6ac') !== false || (strpos($v, 'images/media_') === 0 && !file_exists(__DIR__ . '/../' . $v)));
+                    $fileExists = ($v !== '' && file_exists(__DIR__ . '/../' . $v));
+        $isBrokenVid = ($v !== '' && (!$fileExists || strpos($v, 'media_6ac') !== false || strpos($v, 'video_6ac') !== false));
             if ($isBrokenVid && $isVacuum) {
                 $p['video'] = 'videos/promo_vacuum_frying.mp4';
                 $healed = true;

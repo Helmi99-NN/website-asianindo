@@ -67,10 +67,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function sanitizeProductVideo(video, productName, subCategory) {
-        if (!video || typeof video !== 'string') return '';
+        const isVacuum = ((productName || '') + ' ' + (subCategory || '')).toLowerCase().includes('vacuum');
+        if (!video || typeof video !== 'string') return isVacuum ? 'videos/promo_vacuum_frying.mp4' : '';
         const trimmed = video.trim();
-        if (trimmed.includes('media_6ac') || trimmed.includes('images/media_')) {
-            const isVacuum = (productName + ' ' + subCategory).toLowerCase().includes('vacuum');
+        if (trimmed.includes('media_6ac') || trimmed.includes('video_6ac') || trimmed.includes('images/media_')) {
             return isVacuum ? 'videos/promo_vacuum_frying.mp4' : '';
         }
         return trimmed;
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Check for product video (Shopee style: placed at the very beginning)
     let validVideo = sanitizeProductVideo(product.video, product.name || '', product.subCategory || '');
-    if (!validVideo && (product.name || '').toLowerCase().includes('vacuum frying')) {
+    if (!validVideo && (product.name || '').toLowerCase().includes('vacuum')) {
         validVideo = 'videos/promo_vacuum_frying.mp4';
     }
 
@@ -134,8 +134,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    if (mainVideo) {
+        mainVideo.addEventListener('error', function() {
+            const isVacuum = ((product.name || '') + ' ' + (product.subCategory || '')).toLowerCase().includes('vacuum');
+            if (isVacuum && !mainVideo.src.includes('videos/promo_vacuum_frying.mp4')) {
+                mainVideo.src = 'videos/promo_vacuum_frying.mp4';
+                mainVideo.load();
+                playProductVideo(false);
+            }
+        });
+    }
+
     function playProductVideo(isUserClick = false) {
         if (!mainVideo) return;
+        mainVideo.controls = true;
         if (isUserClick) {
             mainVideo.muted = false;
         }

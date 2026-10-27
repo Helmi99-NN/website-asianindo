@@ -2215,7 +2215,11 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
 
         openVideoPreview(product) {
             if (!product) return;
-            const videoPath = product.video || (typeof product === 'string' ? product : '');
+            let videoPath = product.video || (typeof product === 'string' ? product : '');
+            const isVacuum = ((product.name || product.title || '') + ' ' + (product.subCategory || '')).toLowerCase().includes('vacuum');
+            if (videoPath.includes('video_6ac') || videoPath.includes('media_6ac') || !videoPath) {
+                if (isVacuum) videoPath = 'videos/promo_vacuum_frying.mp4';
+            }
             if (!videoPath) {
                 alert('Belum ada video produk yang tersedia untuk diputar.');
                 return;
