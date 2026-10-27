@@ -157,6 +157,14 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     <li><a href="#" @click.prevent="changeView('dashboard')" :class="currentView==='dashboard' ? 'bg-primary text-white shadow-md' : 'text-gray-300 hover:bg-sidebar-hover'" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm">
                         <i class="fas fa-chart-pie w-5 text-center"></i> Dashboard
                     </a></li>
+
+                    <li class="pt-4 pb-1 px-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Asisten & Tanya Jawab</li>
+                    
+                    <!-- Tanya Mesin & Chat WA -->
+                    <li><a href="#" @click.prevent="changeView('knowledge_qa')" :class="currentView==='knowledge_qa' ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md' : 'text-gray-300 hover:bg-sidebar-hover'" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm group">
+                        <i class="fas fa-brain w-5 text-center text-indigo-400 group-hover:scale-110 transition-transform"></i> Tanya Mesin (Q&A)
+                        <span class="ml-auto bg-gradient-to-r from-emerald-500 to-indigo-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">AI / WA</span>
+                    </a></li>
                     
                     <li class="pt-4 pb-1 px-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Konten</li>
                     
@@ -255,7 +263,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     <button @click="isSidebarOpen = !isSidebarOpen" class="md:hidden text-gray-700 hover:text-primary p-2 -ml-2 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none" aria-label="Toggle Menu">
                         <i class="fas fa-bars text-lg"></i>
                     </button>
-                    <h1 class="text-base sm:text-lg font-bold text-gray-800 capitalize truncate max-w-[200px] sm:max-w-none" x-text="currentView.replace('_', ' ')"></h1>
+                    <h1 class="text-base sm:text-lg font-bold text-gray-800 capitalize truncate max-w-[200px] sm:max-w-none" x-text="currentView === 'knowledge_qa' ? 'Pusat Tanya Jawab (AI & WhatsApp)' : (currentView === 'bulk_media' ? 'Edit Foto Massal Shopee' : currentView.replace('_', ' '))"></h1>
                 </div>
                 <a href="../" target="_blank" class="text-sm text-primary hover:text-primary-hover flex items-center gap-1.5 font-medium hidden md:flex">
                     <i class="fas fa-external-link-alt text-xs"></i> Lihat Website
@@ -555,6 +563,699 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             <button @click="saveProduct()" class="btn-primary"><i class="fas fa-save"></i> Simpan Produk</button>
             <button @click="changeView('products')" class="btn-secondary">Batal</button>
         </div>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- KNOWLEDGE Q&A & WHATSAPP CHAT INTELLIGENCE VIEW -->
+<!-- ================================================================ -->
+<div x-show="currentView==='knowledge_qa'" x-cloak class="space-y-6 pb-28">
+
+    <!-- Top Hero Banner & Navigation Tabs -->
+    <div class="bg-gradient-to-br from-indigo-900 via-slate-900 to-purple-950 text-white rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden border border-indigo-700/30">
+        <!-- Ambient light circles -->
+        <div class="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute right-1/3 -bottom-16 w-48 h-48 bg-purple-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div class="max-w-2xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-semibold text-indigo-200 mb-3">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Multi-Source Intelligence (Website Asianindo + WhatsApp Owner)</span>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white flex items-center gap-3">
+                    <i class="fas fa-brain text-indigo-400"></i>
+                    Pusat Tanya Jawab Mesin & Arsip WA
+                </h2>
+                <p class="text-indigo-200/90 text-sm sm:text-base mt-2 leading-relaxed">
+                    Cari tahu spesifikasi teknis, suhu operasional, daya listrik, kapasitas, atau obrolan konsultasi owner secara instan tanpa perlu mencari satu per satu ke setiap produk.
+                </p>
+            </div>
+
+            <!-- Tab Switcher Navigation -->
+            <div class="flex items-center bg-black/40 backdrop-blur-md p-1.5 rounded-xl border border-white/10 self-start md:self-auto shadow-inner">
+                <button type="button" 
+                        @click="qaActiveTab = 'search'" 
+                        :class="qaActiveTab === 'search' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/40 font-bold' : 'text-gray-300 hover:text-white hover:bg-white/5 font-medium'"
+                        class="px-4 py-2.5 rounded-lg text-xs sm:text-sm flex items-center gap-2 transition-all cursor-pointer">
+                    <i class="fas fa-search-plus"></i>
+                    <span>Tanya Jawab Pintar</span>
+                </button>
+                <button type="button" 
+                        @click="qaActiveTab = 'whatsapp_manage'" 
+                        :class="qaActiveTab === 'whatsapp_manage' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/40 font-bold' : 'text-gray-300 hover:text-white hover:bg-white/5 font-medium'"
+                        class="px-4 py-2.5 rounded-lg text-xs sm:text-sm flex items-center gap-2 transition-all cursor-pointer">
+                    <i class="fab fa-whatsapp text-sm"></i>
+                    <span>Kelola & Impor Chat WA</span>
+                    <span class="bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full ml-1" x-text="whatsappKnowledgeList.length"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 1: TANYA JAWAB PINTAR (SEARCH & Q&A) -->
+    <!-- ========================================== -->
+    <div x-show="qaActiveTab === 'search'" class="space-y-6">
+
+        <!-- Search Bar Card -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 sm:p-7">
+            <form @submit.prevent="askKnowledge()" class="space-y-4">
+                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider">
+                    Ketik Pertanyaan atau Parameter Mesin Yang Ingin Anda Cari:
+                </label>
+                <div class="relative flex flex-col sm:flex-row gap-3">
+                    <div class="relative flex-1">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-base"></i>
+                        <input type="text" 
+                               x-model="qaQuery" 
+                               placeholder="Contoh: Berapa suhu mesin spray dryer? atau daya listrik retort sterilisasi..." 
+                               class="w-full pl-12 pr-10 py-3.5 bg-gray-50 hover:bg-gray-50/80 focus:bg-white border border-gray-300 focus:border-indigo-500 rounded-xl text-sm sm:text-base font-medium focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none">
+                        <button type="button" 
+                                x-show="qaQuery" 
+                                @click="qaQuery = ''" 
+                                class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1">
+                            <i class="fas fa-times-circle"></i>
+                        </button>
+                    </div>
+                    <button type="submit" 
+                            :disabled="qaIsSearching"
+                            class="px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 transition-all disabled:opacity-50 cursor-pointer flex-shrink-0">
+                        <template x-if="qaIsSearching">
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <span>Menganalisa...</span>
+                            </div>
+                        </template>
+                        <template x-if="!qaIsSearching">
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-paper-plane"></i>
+                                <span>Tanya Sekarang</span>
+                            </div>
+                        </template>
+                    </button>
+                </div>
+
+                <!-- Source Filters & Options -->
+                <div class="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-gray-100 text-xs text-gray-600">
+                    <div class="flex items-center gap-4 flex-wrap">
+                        <span class="font-bold text-gray-700">Sumber Data:</span>
+                        <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+                            <input type="checkbox" x-model="qaSources.website" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 h-4 w-4">
+                            <span class="inline-flex items-center gap-1.5">
+                                <i class="fas fa-globe text-primary"></i>
+                                <strong>Katalog Website</strong> (Produk & Spesifikasi)
+                            </span>
+                        </label>
+                        <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+                            <input type="checkbox" x-model="qaSources.whatsapp" class="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 h-4 w-4">
+                            <span class="inline-flex items-center gap-1.5">
+                                <i class="fab fa-whatsapp text-emerald-600 text-sm"></i>
+                                <strong>Chat Konsultasi WhatsApp</strong> (Owner & Tim Teknis)
+                            </span>
+                        </label>
+                    </div>
+
+                    <div class="text-gray-400 italic">
+                        Tekan Enter atau klik Tanya Sekarang
+                    </div>
+                </div>
+            </form>
+
+            <!-- Quick Suggestions Chips -->
+            <div class="mt-5 pt-4 border-t border-gray-100">
+                <div class="flex items-center gap-2 mb-2.5">
+                    <i class="fas fa-bolt text-amber-500 text-xs"></i>
+                    <span class="text-xs font-bold text-gray-600">Pertanyaan Populer / Contoh Pencarian Cepat:</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <template x-for="(chip, idx) in qaHistory" :key="idx">
+                        <button type="button" 
+                                @click="setQaQuickQuery(chip)" 
+                                class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 border border-transparent rounded-lg text-xs font-medium text-gray-700 transition-all cursor-pointer">
+                            <i class="fas fa-question-circle text-gray-400 text-[10px]"></i>
+                            <span x-text="chip"></span>
+                        </button>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <!-- Searching Loading State -->
+        <div x-show="qaIsSearching" class="bg-white rounded-2xl border border-indigo-100 p-8 shadow-sm text-center">
+            <div class="w-14 h-14 bg-indigo-50 rounded-2xl mx-auto flex items-center justify-center text-indigo-600 mb-4 animate-bounce">
+                <i class="fas fa-brain text-2xl"></i>
+            </div>
+            <h3 class="font-bold text-gray-800 text-base">Sedang Menganalisa Pertanyaan...</h3>
+            <p class="text-xs text-gray-500 mt-1">Mencari spesifikasi teknis di database website dan riwayat konsultasi WhatsApp Owner.</p>
+        </div>
+
+        <!-- Results Container -->
+        <template x-if="qaHasSearched && !qaIsSearching && qaResults">
+            <div class="space-y-6">
+
+                <!-- 1. DIRECT SYNTHESIZED ANSWER BOX -->
+                <div class="bg-gradient-to-r from-emerald-50 via-teal-50 to-indigo-50 rounded-2xl p-6 sm:p-7 border-2 border-emerald-500/40 shadow-md relative overflow-hidden">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-md flex-shrink-0">
+                                <i class="fas fa-check-double text-base"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-black uppercase tracking-widest text-emerald-800 bg-emerald-100 border border-emerald-200 px-2 py-0.5 rounded-md inline-block mb-1">
+                                    Jawaban Langsung & Parameter Kunci
+                                </span>
+                                <h3 class="text-lg sm:text-xl font-extrabold text-gray-900" x-text="qaResults.direct_answer ? qaResults.direct_answer.headline : ('Hasil Pencarian: &quot;' + qaQuery + '&quot;')"></h3>
+                            </div>
+                        </div>
+
+                        <!-- Copy Button -->
+                        <button type="button" 
+                                @click="copyToClipboard(qaResults.direct_answer ? (qaResults.direct_answer.headline + '
+
+' + qaResults.direct_answer.summary) : qaQuery)"
+                                class="inline-flex items-center gap-2 px-3.5 py-2 bg-white hover:bg-gray-50 border border-gray-300 rounded-xl text-xs font-bold text-gray-700 shadow-xs transition-all cursor-pointer">
+                            <i :class="qaCopiedText ? 'fas fa-check text-emerald-600' : 'fas fa-copy text-gray-500'"></i>
+                            <span x-text="qaCopiedText ? 'Tersalin!' : 'Salin Jawaban'"></span>
+                        </button>
+                    </div>
+
+                    <!-- Direct Answer Content -->
+                    <template x-if="qaResults.direct_answer">
+                        <div class="space-y-4">
+                            <div class="text-sm sm:text-base text-gray-800 leading-relaxed font-normal bg-white/70 backdrop-blur-xs p-4 rounded-xl border border-emerald-200/50" 
+                                 x-html="qaResults.direct_answer.summary.replace(/
+/g, '<br>')">
+                            </div>
+
+                            <!-- Highlights Badges -->
+                            <template x-if="qaResults.direct_answer.highlights && qaResults.direct_answer.highlights.length > 0">
+                                <div class="flex flex-wrap gap-2 pt-2">
+                                    <template x-for="(hl, i) in qaResults.direct_answer.highlights" :key="i">
+                                        <div class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 text-gray-800 rounded-lg text-xs font-semibold shadow-2xs">
+                                            <i class="fas fa-check-circle text-emerald-500 text-[11px]"></i>
+                                            <span x-text="hl"></span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Bottom Sources Tag -->
+                    <div class="mt-4 pt-3 border-t border-emerald-200/60 flex flex-wrap items-center justify-between text-xs text-gray-500 gap-2">
+                        <div class="flex items-center gap-2">
+                            <span>Sumber:</span>
+                            <span class="inline-flex items-center gap-1 font-semibold text-gray-700">
+                                <i class="fas fa-globe text-primary text-[10px]"></i>
+                                <span x-text="(qaResults.products_found ? qaResults.products_found.length : 0) + ' Data Website'"></span>
+                            </span>
+                            <span>•</span>
+                            <span class="inline-flex items-center gap-1 font-semibold text-emerald-700">
+                                <i class="fab fa-whatsapp text-emerald-600 text-[11px]"></i>
+                                <span x-text="(qaResults.whatsapp_found ? qaResults.whatsapp_found.length : 0) + ' Obrolan WhatsApp Owner'"></span>
+                            </span>
+                        </div>
+                        <div class="text-[11px] text-gray-400">
+                            Pencarian: "<strong x-text="qaResults.query"></strong>"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. TWO COLUMN DETAILS GRID (WEBSITE CATALOG VS WHATSAPP ARCHIVES) -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                    <!-- COLUMN 1: WEBSITE CATALOG RESULTS -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold text-xs">
+                                    <i class="fas fa-globe"></i>
+                                </div>
+                                <h3 class="font-extrabold text-gray-800 text-sm sm:text-base">Spesifikasi Dari Katalog Website</h3>
+                            </div>
+                            <span class="text-xs font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full" 
+                                  x-text="(qaResults.products_found ? qaResults.products_found.length : 0) + ' Ditemukan'"></span>
+                        </div>
+
+                        <!-- Product Cards List -->
+                        <template x-if="qaResults.products_found && qaResults.products_found.length > 0">
+                            <div class="space-y-3">
+                                <template x-for="(prod, pidx) in qaResults.products_found" :key="prod.id || pidx">
+                                    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-2xs hover:shadow-md transition-shadow">
+                                        <div class="flex items-start gap-3">
+                                            <!-- Product Thumbnail -->
+                                            <div class="w-14 h-14 rounded-lg bg-gray-100 border border-gray-200 overflow-hidden flex-shrink-0 flex items-center justify-center">
+                                                <template x-if="prod.image">
+                                                    <img :src="prod.image.startsWith('http') ? prod.image : ('../' + prod.image.replace(/^..//, ''))" 
+                                                         :alt="prod.name" 
+                                                         class="w-full h-full object-cover">
+                                                </template>
+                                                <template x-if="!prod.image">
+                                                    <i class="fas fa-box text-gray-300 text-lg"></i>
+                                                </template>
+                                            </div>
+
+                                            <!-- Product Title & Category -->
+                                            <div class="flex-1 min-w-0">
+                                                <div class="flex items-center justify-between gap-2">
+                                                    <span class="text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded" x-text="prod.category || 'Mesin'"></span>
+                                                    <span class="text-xs font-bold text-gray-900" x-text="formatRupiah(prod.price)"></span>
+                                                </div>
+                                                <h4 class="font-bold text-sm text-gray-900 mt-1 truncate" x-text="prod.name"></h4>
+                                            </div>
+                                        </div>
+
+                                        <!-- Matched Snippets -->
+                                        <template x-if="prod.matched_snippets && prod.matched_snippets.length > 0">
+                                            <div class="mt-3 pt-3 border-t border-gray-100 space-y-1.5">
+                                                <div class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Potongan Spesifikasi Cocok:</div>
+                                                <template x-for="(snip, sidx) in prod.matched_snippets" :key="sidx">
+                                                    <div class="text-xs bg-amber-50/80 text-gray-800 p-2 rounded-lg border border-amber-200/50 font-mono leading-relaxed" x-text="snip"></div>
+                                                </template>
+                                            </div>
+                                        </template>
+
+                                        <!-- Actions -->
+                                        <div class="mt-3 pt-2.5 border-t border-gray-100 flex items-center justify-between">
+                                            <a :href="'../product-detail.php?id=' + prod.id" target="_blank" class="text-xs text-primary hover:underline font-medium inline-flex items-center gap-1">
+                                                <i class="fas fa-external-link-alt text-[10px]"></i> Buka Halaman Produk
+                                            </a>
+                                            <button type="button" @click="openEditProduct(prod)" class="text-xs text-gray-600 hover:text-gray-900 font-medium inline-flex items-center gap-1 cursor-pointer">
+                                                <i class="fas fa-edit text-[10px]"></i> Edit di CMS
+                                            </button>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+
+                        <!-- Empty State for Website -->
+                        <template x-if="!qaResults.products_found || qaResults.products_found.length === 0">
+                            <div class="bg-gray-50 rounded-xl border border-dashed border-gray-300 p-6 text-center text-xs text-gray-500">
+                                <i class="fas fa-info-circle text-gray-400 text-base mb-1 block"></i>
+                                Tidak ditemukan spesifikasi yang cocok di katalog website.
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- COLUMN 2: WHATSAPP ARCHIVE RESULTS -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">
+                                    <i class="fab fa-whatsapp"></i>
+                                </div>
+                                <h3 class="font-extrabold text-gray-800 text-sm sm:text-base">Arsip Obrolan WhatsApp Owner</h3>
+                            </div>
+                            <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full" 
+                                  x-text="(qaResults.whatsapp_found ? qaResults.whatsapp_found.length : 0) + ' Ditemukan'"></span>
+                        </div>
+
+                        <!-- WhatsApp Cards List -->
+                        <template x-if="qaResults.whatsapp_found && qaResults.whatsapp_found.length > 0">
+                            <div class="space-y-3">
+                                <template x-for="(wa, widx) in qaResults.whatsapp_found" :key="wa.id || widx">
+                                    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-2xs hover:shadow-md transition-shadow">
+                                        <!-- Header Badges -->
+                                        <div class="flex items-center justify-between gap-2 mb-2 flex-wrap">
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded" x-text="wa.machine_category || 'Umum'"></span>
+                                                <span class="text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded" x-text="wa.sender || 'Owner'"></span>
+                                            </div>
+                                            <span class="text-[11px] text-gray-400" x-text="wa.date || ''"></span>
+                                        </div>
+
+                                        <h4 class="font-bold text-sm text-gray-900 mb-2" x-text="wa.title"></h4>
+
+                                        <!-- Context Question if available -->
+                                        <template x-if="wa.question">
+                                            <div class="text-xs text-gray-500 italic bg-gray-50 p-2 rounded-lg border border-gray-200/60 mb-2.5 flex items-start gap-1.5">
+                                                <i class="fas fa-comment-dots text-gray-400 mt-0.5"></i>
+                                                <span x-text="'Tanya: &quot;' + wa.question + '&quot;'"></span>
+                                            </div>
+                                        </template>
+
+                                        <!-- Answer Note -->
+                                        <div class="text-xs sm:text-sm text-gray-800 bg-emerald-50/50 p-3 rounded-lg border border-emerald-100 leading-relaxed font-normal" 
+                                             x-html="wa.answer.replace(/
+/g, '<br>')">
+                                        </div>
+
+                                        <!-- Tags & Copy -->
+                                        <div class="mt-3 pt-2.5 border-t border-gray-100 flex items-center justify-between gap-2">
+                                            <div class="flex flex-wrap gap-1">
+                                                <template x-if="wa.tags && Array.isArray(wa.tags)">
+                                                    <template x-for="(tag, tidx) in wa.tags.slice(0, 3)" :key="tidx">
+                                                        <span class="text-[10px] text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded" x-text="'#' + tag"></span>
+                                                    </template>
+                                                </template>
+                                            </div>
+                                            <button type="button" @click="copyToClipboard(wa.answer)" class="text-xs text-emerald-600 hover:text-emerald-700 font-semibold inline-flex items-center gap-1 cursor-pointer">
+                                                <i class="fas fa-copy text-[11px]"></i> Salin Catatan
+                                            </button>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+
+                        <!-- Empty State for WhatsApp -->
+                        <template x-if="!qaResults.whatsapp_found || qaResults.whatsapp_found.length === 0">
+                            <div class="bg-gray-50 rounded-xl border border-dashed border-gray-300 p-6 text-center text-xs text-gray-500">
+                                <i class="fab fa-whatsapp text-gray-400 text-base mb-1 block"></i>
+                                Belum ada arsip chat WhatsApp yang cocok dengan kata kunci ini.
+                                <div class="mt-2">
+                                    <button type="button" @click="qaActiveTab = 'whatsapp_manage'" class="text-xs font-bold text-emerald-600 hover:underline">
+                                        + Impor / Tambah Chat WhatsApp Sekarang
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                </div>
+
+            </div>
+        </template>
+
+        <!-- Initial Placeholder State (Before Search) -->
+        <div x-show="!qaHasSearched && !qaIsSearching" class="bg-white rounded-2xl border border-gray-200 p-8 sm:p-12 text-center shadow-xs">
+            <div class="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-4 text-2xl">
+                <i class="fas fa-brain"></i>
+            </div>
+            <h3 class="font-extrabold text-gray-800 text-lg">Mulai Cari Pengetahuan Mesin Asianindo</h3>
+            <p class="text-sm text-gray-500 max-w-md mx-auto mt-1 mb-6">
+                Ketik pertanyaan di kolom pencarian atas atau klik salah satu tombol pertanyaan populer di atas untuk melihat spesifikasi dan diskusi owner secara instan.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto text-left">
+                <div class="p-4 rounded-xl bg-gray-50 border border-gray-200/80">
+                    <div class="text-indigo-600 font-bold text-xs uppercase mb-1 flex items-center gap-1.5">
+                        <i class="fas fa-thermometer-half"></i> Suhu & Tekanan
+                    </div>
+                    <p class="text-xs text-gray-600">Suhu inlet Spray Dryer, titik didih Evaporator vakum, retort sterilisasi.</p>
+                </div>
+                <div class="p-4 rounded-xl bg-gray-50 border border-gray-200/80">
+                    <div class="text-amber-600 font-bold text-xs uppercase mb-1 flex items-center gap-1.5">
+                        <i class="fas fa-bolt"></i> Daya Listrik & Watt
+                    </div>
+                    <p class="text-xs text-gray-600">Kapasitas heater, total daya motor penggerak, kebutuhan trafo/genset.</p>
+                </div>
+                <div class="p-4 rounded-xl bg-gray-50 border border-gray-200/80">
+                    <div class="text-emerald-600 font-bold text-xs uppercase mb-1 flex items-center gap-1.5">
+                        <i class="fab fa-whatsapp"></i> Catatan Konsultasi
+                    </div>
+                    <p class="text-xs text-gray-600">Jawaban langsung Owner/Pak Bambang mengenai tips produksi dan garansi.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: KELOLA & IMPOR CHAT WHATSAPP -->
+    <!-- ========================================== -->
+    <div x-show="qaActiveTab === 'whatsapp_manage'" class="space-y-6">
+
+        <!-- Importer Box -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-7">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-4 border-b border-gray-100">
+                <div>
+                    <h3 class="text-lg font-extrabold text-gray-900 flex items-center gap-2">
+                        <i class="fab fa-whatsapp text-emerald-600 text-xl"></i>
+                        Impor Obrolan WhatsApp Baru
+                    </h3>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-0.5">
+                        Tempelkan hasil ekspor chat WhatsApp atau unggah file teks (<code class="bg-gray-100 px-1 py-0.5 rounded text-gray-700">.txt</code>) obrolan dengan owner.
+                    </p>
+                </div>
+                <button type="button" 
+                        @click="openWhatsAppModal()" 
+                        class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-sm inline-flex items-center gap-2 transition-all self-start sm:self-auto cursor-pointer">
+                    <i class="fas fa-plus"></i>
+                    <span>+ Tambah Manual</span>
+                </button>
+            </div>
+
+            <!-- Panduan Cepat Ekspor Chat -->
+            <div class="bg-emerald-50/70 border border-emerald-200/60 rounded-xl p-4 mb-5 text-xs text-emerald-950 flex flex-col md:flex-row md:items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 font-bold">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <div class="flex-1">
+                    <strong class="font-bold">Cara Ekspor Chat dari HP:</strong>
+                    Buka WhatsApp -> Buka chat dengan Owner/Teknisi -> Klik <strong>Titik Tiga (Opsi)</strong> -> <strong>Lainnya</strong> -> <strong>Ekspor Chat</strong> -> Pilih <strong>Tanpa Media</strong> -> Kirim file <code>.txt</code> atau buka dan copy isinya ke form di bawah ini.
+                </div>
+            </div>
+
+            <!-- Import Form -->
+            <form @submit.prevent="importWhatsAppChat()" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Topik Utama / Catatan (Opsional)</label>
+                        <input type="text" 
+                               x-model="whatsappImportTopic" 
+                               placeholder="Contoh: Diskusi Suhu & Kapasitas Spray Dryer..." 
+                               class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 focus:bg-white focus:border-emerald-500 rounded-xl text-xs sm:text-sm font-medium outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Atau Unggah File (.txt) Ekspor WhatsApp</label>
+                        <input type="file" 
+                               accept=".txt" 
+                               @change="handleWhatsAppFileUpload($event)" 
+                               class="w-full text-xs text-gray-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Teks Chat WhatsApp (Paste di sini):</label>
+                    <textarea x-model="rawWhatsAppChatInput" 
+                              rows="6" 
+                              placeholder="[12/05/24, 14.20] Pak Bambang: Suhu spray dryer inlet setel di 180C, outlet kisaran 80C biar bubuknya kering sempurna.
+[12/05/24, 14.25] Anda: Kalau kapasitasnya berapa pak?
+[12/05/24, 14.26] Pak Bambang: Kapasitas penguapan air 5 liter per jam..." 
+                              class="w-full px-4 py-3 bg-gray-50 border border-gray-300 focus:bg-white focus:border-emerald-500 rounded-xl text-xs font-mono outline-none leading-relaxed"></textarea>
+                </div>
+
+                <div class="flex items-center justify-end gap-3 pt-2">
+                    <button type="button" 
+                            x-show="rawWhatsAppChatInput" 
+                            @click="rawWhatsAppChatInput = ''; whatsappImportTopic = ''" 
+                            class="px-4 py-2.5 text-xs text-gray-500 hover:text-gray-700 font-medium cursor-pointer">
+                        Kosongkan
+                    </button>
+                    <button type="submit" 
+                            :disabled="isImportingWhatsApp || !rawWhatsAppChatInput"
+                            class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg shadow-emerald-600/30 inline-flex items-center gap-2 transition-all disabled:opacity-50 cursor-pointer">
+                        <template x-if="isImportingWhatsApp">
+                            <span class="inline-flex items-center gap-2">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <span>Mengekstrak Obrolan...</span>
+                            </span>
+                        </template>
+                        <template x-if="!isImportingWhatsApp">
+                            <span class="inline-flex items-center gap-2">
+                                <i class="fas fa-file-import"></i>
+                                <span>Ekstrak & Simpan ke Pengetahuan</span>
+                            </span>
+                        </template>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Saved WhatsApp Knowledge List -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-7">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-100">
+                <div>
+                    <h3 class="text-base font-extrabold text-gray-900 flex items-center gap-2">
+                        <i class="fas fa-database text-indigo-600"></i>
+                        Arsip Pengetahuan WhatsApp Tersimpan
+                        <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full ml-1" 
+                              x-text="whatsappKnowledgeList.length + ' Data'"></span>
+                    </h3>
+                    <p class="text-xs text-gray-500 mt-0.5">Semua poin teknis ini otomatis dijadikan sumber jawaban saat ada pencarian atau pertanyaan di Tab 1.</p>
+                </div>
+
+                <!-- Filters & Search -->
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <div class="relative w-full sm:w-56">
+                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                        <input type="text" 
+                               x-model="whatsappSearchQuery" 
+                               placeholder="Cari di catatan WA..." 
+                               class="w-full pl-8 pr-3 py-1.5 bg-gray-50 border border-gray-300 rounded-lg text-xs outline-none focus:border-indigo-500">
+                    </div>
+                    <select x-model="whatsappSelectedFilter" class="px-3 py-1.5 bg-gray-50 border border-gray-300 rounded-lg text-xs font-medium outline-none cursor-pointer">
+                        <option value="all">Semua Kategori</option>
+                        <option value="Spray Dryer">Spray Dryer</option>
+                        <option value="Retort">Retort Sterilisasi</option>
+                        <option value="Vacuum Frying">Vacuum Frying</option>
+                        <option value="Pirolisis">Pirolisis</option>
+                        <option value="Evaporator">Evaporator</option>
+                        <option value="Garansi">Garansi & Servis</option>
+                    </select>
+                    <button type="button" @click="loadWhatsAppKnowledge()" class="p-2 text-gray-500 hover:text-indigo-600 hover:bg-gray-100 rounded-lg text-xs" title="Muat Ulang">
+                        <i class="fas fa-sync-alt" :class="isLoadingWhatsAppKnowledge ? 'fa-spin' : ''"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- List Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <template x-for="(entry, eidx) in filteredWhatsAppKnowledgeList()" :key="entry.id || eidx">
+                    <div class="bg-gray-50/70 hover:bg-white rounded-xl border border-gray-200 p-4 transition-all hover:shadow-md flex flex-col justify-between">
+                        <div>
+                            <!-- Header Badges -->
+                            <div class="flex items-center justify-between gap-2 mb-2 flex-wrap">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100 border border-emerald-200 px-2 py-0.5 rounded" x-text="entry.machine_category || 'Umum'"></span>
+                                    <span class="text-[10px] font-bold text-gray-600 bg-gray-200/80 px-2 py-0.5 rounded" x-text="entry.sender || 'Owner'"></span>
+                                </div>
+                                <span class="text-[10px] text-gray-400" x-text="entry.date || ''"></span>
+                            </div>
+
+                            <h4 class="font-bold text-sm text-gray-900 mb-1.5" x-text="entry.title"></h4>
+
+                            <template x-if="entry.question">
+                                <div class="text-xs text-gray-500 italic mb-2 line-clamp-2" x-text="'Konteks: &quot;' + entry.question + '&quot;'"></div>
+                            </template>
+
+                            <div class="text-xs text-gray-800 leading-relaxed font-normal bg-white p-3 rounded-lg border border-gray-200/70" 
+                                 x-html="entry.answer.replace(/
+/g, '<br>')">
+                            </div>
+
+                            <!-- Tags -->
+                            <template x-if="entry.tags && (Array.isArray(entry.tags) ? entry.tags.length > 0 : entry.tags)">
+                                <div class="flex flex-wrap gap-1 mt-2.5">
+                                    <template x-for="(t, ti) in (Array.isArray(entry.tags) ? entry.tags : entry.tags.split(','))" :key="ti">
+                                        <span class="text-[9px] text-gray-500 bg-gray-200/70 px-1.5 py-0.5 rounded" x-text="'#' + t.trim()"></span>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Card Footer Actions -->
+                        <div class="mt-4 pt-3 border-t border-gray-200/60 flex items-center justify-between text-xs">
+                            <button type="button" @click="copyToClipboard(entry.answer)" class="text-gray-500 hover:text-emerald-700 font-medium inline-flex items-center gap-1 cursor-pointer">
+                                <i class="fas fa-copy text-[10px]"></i> Salin
+                            </button>
+                            <div class="flex items-center gap-3">
+                                <button type="button" @click="openWhatsAppModal(entry)" class="text-indigo-600 hover:text-indigo-800 font-bold inline-flex items-center gap-1 cursor-pointer">
+                                    <i class="fas fa-edit text-[10px]"></i> Edit
+                                </button>
+                                <button type="button" @click="deleteWhatsAppEntry(entry.id)" class="text-red-500 hover:text-red-700 font-bold inline-flex items-center gap-1 cursor-pointer">
+                                    <i class="fas fa-trash text-[10px]"></i> Hapus
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Empty State for List -->
+            <template x-if="filteredWhatsAppKnowledgeList().length === 0">
+                <div class="py-12 text-center text-xs text-gray-400">
+                    <i class="fas fa-folder-open text-3xl mb-2 block text-gray-300"></i>
+                    Belum ada catatan yang sesuai dengan filter pencarian.
+                </div>
+            </template>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ========================================== -->
+<!-- MODAL TAMBAH / EDIT CATATAN WHATSAPP -->
+<!-- ========================================== -->
+<div x-show="showWhatsAppModal" 
+     x-cloak 
+     @keydown.escape.window="showWhatsAppModal = false" 
+     class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-xs p-4">
+    <div @click.outside="showWhatsAppModal = false" class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden flex flex-col border border-gray-200">
+        <!-- Header -->
+        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <h3 class="font-extrabold text-sm sm:text-base text-gray-900" x-text="editingWhatsAppId ? 'Edit Catatan WhatsApp' : 'Tambah Catatan Pengetahuan Baru'"></h3>
+            </div>
+            <button type="button" @click="showWhatsAppModal = false" class="text-gray-400 hover:text-gray-700 p-1 rounded-lg">
+                <i class="fas fa-times text-base"></i>
+            </button>
+        </div>
+
+        <!-- Form Body -->
+        <form @submit.prevent="saveWhatsAppEntry()" class="p-6 space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Judul Topik / Mesin <span class="text-red-500">*</span></label>
+                <input type="text" 
+                       x-model="newWhatsAppEntry.title" 
+                       placeholder="Contoh: Suhu Pengeringan Mesin Spray Dryer" 
+                       required 
+                       class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs sm:text-sm font-medium outline-none focus:border-emerald-500">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Kategori Mesin</label>
+                    <input type="text" 
+                           x-model="newWhatsAppEntry.machine_category" 
+                           placeholder="Contoh: Spray Dryer" 
+                           class="w-full px-3.5 py-2 bg-gray-50 border border-gray-300 rounded-xl text-xs outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Narasumber / Pengirim</label>
+                    <input type="text" 
+                           x-model="newWhatsAppEntry.sender" 
+                           placeholder="Owner Asianindo" 
+                           class="w-full px-3.5 py-2 bg-gray-50 border border-gray-300 rounded-xl text-xs outline-none focus:border-emerald-500">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Pertanyaan / Konteks Diskusi (Opsional)</label>
+                <input type="text" 
+                       x-model="newWhatsAppEntry.question" 
+                       placeholder="Berapa suhu inlet spray dryer untuk susu bubuk?" 
+                       class="w-full px-3.5 py-2 bg-gray-50 border border-gray-300 rounded-xl text-xs outline-none focus:border-emerald-500">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Jawaban / Spesifikasi Teknis / Solusi <span class="text-red-500">*</span></label>
+                <textarea x-model="newWhatsAppEntry.answer" 
+                          rows="4" 
+                          placeholder="Tuliskan suhu, daya listrik, tekanan, rasio bahan, atau penjelasan detail dari owner..." 
+                          required 
+                          class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs sm:text-sm outline-none focus:border-emerald-500 leading-relaxed"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Kata Kunci / Tags (Pisahkan Koma)</label>
+                <input type="text" 
+                       x-model="newWhatsAppEntry.tags" 
+                       placeholder="suhu, spray dryer, 180 celcius, susu, herbal" 
+                       class="w-full px-3.5 py-2 bg-gray-50 border border-gray-300 rounded-xl text-xs outline-none focus:border-emerald-500">
+            </div>
+
+            <!-- Footer Buttons -->
+            <div class="flex items-center justify-end gap-3 pt-3 border-t border-gray-100">
+                <button type="button" @click="showWhatsAppModal = false" class="px-4 py-2 text-xs font-medium text-gray-600 hover:bg-gray-100 rounded-xl">
+                    Batal
+                </button>
+                <button type="submit" 
+                        :disabled="isSavingWhatsAppEntry" 
+                        class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-md inline-flex items-center gap-2 cursor-pointer disabled:opacity-50">
+                    <template x-if="isSavingWhatsAppEntry">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </template>
+                    <span x-text="editingWhatsAppId ? 'Perbarui Catatan' : 'Simpan Catatan'"></span>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 

@@ -1044,6 +1044,550 @@ if ($action === 'delete_invoice') {
     exit;
 }
 
+// ==========================================
+// KNOWLEDGE BASE & SMART Q&A ASSISTANT API
+// ==========================================
+$WA_KNOWLEDGE_JSON = __DIR__ . '/../data/whatsapp_knowledge.json';
+
+function readWhatsAppKnowledge() {
+    global $WA_KNOWLEDGE_JSON;
+    if (!file_exists($WA_KNOWLEDGE_JSON)) return [];
+    $data = json_decode(file_get_contents($WA_KNOWLEDGE_JSON), true);
+    if (!is_array($data)) return [];
+    foreach ($data as &$item) {
+        if (empty($item['machine_category'])) $item['machine_category'] = $item['topic'] ?? ($item['machine_name'] ?? 'Umum');
+        if (empty($item['topic'])) $item['topic'] = $item['machine_category'] ?? 'Umum';
+        if (empty($item['answer'])) $item['answer'] = $item['content'] ?? '';
+        if (empty($item['content'])) $item['content'] = $item['answer'] ?? '';
+        if (empty($item['tags'])) $item['tags'] = [];
+        elseif (is_string($item['tags'])) $item['tags'] = array_values(array_filter(array_map('trim', explode(',', $item['tags']))));
+    }
+    return $data;
+}
+
+function writeWhatsAppKnowledge($data) {
+    global $WA_KNOWLEDGE_JSON;
+    $dir = dirname($WA_KNOWLEDGE_JSON);
+    if (!is_dir($dir)) mkdir($dir, 0777, true);
+    file_put_contents($WA_KNOWLEDGE_JSON, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+}
+
+if ($action === 'get_whatsapp_knowledge') {
+    echo json_encode(['success' => true, 'data' => readWhatsAppKnowledge()]);
+    exit;
+}
+
+if ($action === 'save_whatsapp_knowledge') {
+    $input = json_decode(file_get_contents('php://input'), true);
+    if (!$input || !is_array($input)) {
+        $input = $_POST;
+    }
+
+    $content = trim($input['answer'] ?? ($input['content'] ?? ''));
+    if (empty($content)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Konten jawaban/spesifikasi teknis tidak boleh kosong']);
+        exit;
+    }
+
+    $list = readWhatsAppKnowledge();
+    $id = !empty($input['id']) ? $input['id'] : ('wa_' . time() . '_' . rand(100, 999));
+    $topic = trim($input['machine_category'] ?? ($input['topic'] ?? 'Umum'));
+    $title = trim($input['title'] ?? 'Konsultasi Teknis');
+    $question = trim($input['question'] ?? '');
+    $sender = trim($input['sender'] ?? 'Owner CV Asianindo');
+    $date = !empty($input['date']) ? $input['date'] : date('Y-m-d');
+    
+    $tagsRaw = $input['tags'] ?? '';
+    if (is_array($tagsRaw)) {
+        $tags = array_values(array_filter(array_map('trim', $tagsRaw)));
+    } else {
+        $tags = array_values(array_filter(array_map('trim', explode(',', strtolower($tagsRaw . ',' . $topic)))));
+    }
+
+    $entry = [
+        'id' => $id,
+        'topic' => $topic,
+        'machine_category' => $topic,
+        'machine_name' => 'Mesin ' . $topic . ' Asianindo',
+        'title' => $title,
+        'question' => $question,
+        'content' => $content,
+        'answer' => $content,
+        'date' => $date,
+        'sender' => $sender,
+        'tags' => array_values(array_unique(array_filter($tags)))
+    ];
+
+    $found = false;
+    foreach ($list as $idx => $item) {
+        if ($item['id'] === $id) {
+            $list[$idx] = array_merge($item, $entry);
+            $found = true;
+            break;
+        }
+    }
+    if (!$found) {
+        array_unshift($list, $entry);
+    }
+
+    writeWhatsAppKnowledge($list);
+    echo json_encode(['success' => true, 'id' => $id, 'data' => $entry]);
+    exit;
+}
+
+if ($action === 'delete_whatsapp_knowledge') {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'] ?? ($_POST['id'] ?? '');
+    if (!$id) {
+        http_response_code(400);
+        echo json_encode(['error' => 'ID tidak ditemukan']);
+        exit;
+    }
+
+    $list = readWhatsAppKnowledge();
+    $list = array_values(array_filter($list, function($item) use ($id) {
+        return $item['id'] !== $id;
+    }));
+    writeWhatsAppKnowledge($list);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+if ($action === 'import_whatsapp_chat') {
+    $input = json_decode(file_get_contents('php://input'), true) ?: [];
+    $rawText = trim($_POST['raw_chat'] ?? ($_POST['raw_text'] ?? ($input['raw_chat'] ?? ($input['raw_text'] ?? ''))));
+    $defaultTopic = trim($_POST['topic'] ?? ($input['topic'] ?? 'Konsultasi Teknis'));
+
+    if (empty($rawText)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Teks chat WhatsApp kosong']);
+        exit;
+    }
+
+    $lines = explode("\n", $rawText);
+    $parsedMessages = [];
+    $currentMsg = null;
+
+    $regex1 = '/^\[?(\d{1,2}[\/\.-]\d{1,2}[\/\.-]\d{2,4})[,\s]+(\d{1,2}[:\.]\d{1,2}(?:[:\.]\d{1,2})?)\]?\s*(?:-\s*)?([^:]+):\s*(.*)$/i';
+
+    foreach ($lines as $line) {
+        $trimmed = trim($line);
+        if (empty($trimmed)) continue;
+
+        if (preg_match($regex1, $trimmed, $matches)) {
+            if ($currentMsg) {
+                $parsedMessages[] = $currentMsg;
+            }
+            $currentMsg = [
+                'date' => $matches[1],
+                'time' => $matches[2],
+                'sender' => trim($matches[3]),
+                'text' => trim($matches[4])
+            ];
+        } else {
+            if ($currentMsg) {
+                $currentMsg['text'] .= "\n" . $trimmed;
+            } else {
+                $currentMsg = [
+                    'date' => date('d/m/Y'),
+                    'time' => date('H:i'),
+                    'sender' => 'Catatan Teknis',
+                    'text' => $trimmed
+                ];
+            }
+        }
+    }
+    if ($currentMsg) {
+        $parsedMessages[] = $currentMsg;
+    }
+
+    $knownMachines = [
+        'spray dryer', 'vacuum frying', 'retort', 'pirolisis', 'evaporator',
+        'spinner', 'pasteurisasi', 'uht', 'mixer', 'pasta', 'roasting',
+        'kopi', 'madu', 'vco', 'keripik', 'penepung', 'diskmill', 'pengering', 'oven'
+    ];
+
+    $list = readWhatsAppKnowledge();
+    $addedCount = 0;
+
+    $chunkSize = 2;
+    for ($i = 0; $i < count($parsedMessages); $i += $chunkSize) {
+        $chunk = array_slice($parsedMessages, $i, $chunkSize);
+        $fullText = implode("\n", array_map(function($m) {
+            return '[' . $m['date'] . ' ' . $m['time'] . '] ' . $m['sender'] . ': ' . $m['text'];
+        }, $chunk));
+
+        $lowerText = strtolower($fullText);
+        $detectedMachine = 'Umum';
+        foreach ($knownMachines as $m) {
+            if (strpos($lowerText, $m) !== false) {
+                $detectedMachine = ucwords($m);
+                break;
+            }
+        }
+
+        $entryTitle = mb_substr($chunk[0]['text'], 0, 80);
+        if (mb_strlen($chunk[0]['text']) > 80) $entryTitle .= '...';
+
+        $tags = [$detectedMachine];
+        if (strpos($lowerText, 'suhu') !== false || strpos($lowerText, 'derajat') !== false) $tags[] = 'suhu';
+        if (strpos($lowerText, 'kapasitas') !== false || strpos($lowerText, 'liter') !== false || strpos($lowerText, 'kg') !== false) $tags[] = 'kapasitas';
+        if (strpos($lowerText, 'watt') !== false || strpos($lowerText, 'listrik') !== false || strpos($lowerText, 'daya') !== false) $tags[] = 'daya';
+        if (strpos($lowerText, 'harga') !== false) $tags[] = 'harga';
+
+        $entry = [
+            'id' => 'wa_' . time() . '_' . rand(100, 999),
+            'topic' => $detectedMachine !== 'Umum' ? $detectedMachine : $defaultTopic,
+            'machine_name' => 'Mesin ' . ($detectedMachine !== 'Umum' ? $detectedMachine : $defaultTopic) . ' Asianindo',
+            'title' => $entryTitle,
+            'content' => implode("\n\n", array_map(function($m) {
+                return $m['sender'] . ': ' . $m['text'];
+            }, $chunk)),
+            'raw_chat' => $fullText,
+            'date' => date('Y-m-d'),
+            'sender' => $chunk[count($chunk)-1]['sender'] ?? 'Owner CV Asianindo',
+            'tags' => array_values(array_unique(array_filter($tags)))
+        ];
+
+        array_unshift($list, $entry);
+        $addedCount++;
+    }
+
+    writeWhatsAppKnowledge($list);
+    echo json_encode([
+        'success' => true,
+        'added_count' => $addedCount,
+        'total_parsed_messages' => count($parsedMessages),
+        'message' => "Berhasil mengekstrak dan menyimpan $addedCount entri percakapan WhatsApp ke database!"
+    ]);
+    exit;
+}
+
+if ($action === 'search_knowledge') {
+    $input = json_decode(file_get_contents('php://input'), true) ?: [];
+    $query = trim($_POST['query'] ?? ($input['query'] ?? ($_GET['q'] ?? ($_GET['query'] ?? ''))));
+    
+    $includeProducts = true;
+    if (isset($_POST['include_products'])) {
+        $includeProducts = ($_POST['include_products'] === '1' || $_POST['include_products'] === 'true');
+    } elseif (isset($input['include_products'])) {
+        $includeProducts = (bool)$input['include_products'];
+    }
+
+    $includeWhatsapp = true;
+    if (isset($_POST['include_whatsapp'])) {
+        $includeWhatsapp = ($_POST['include_whatsapp'] === '1' || $_POST['include_whatsapp'] === 'true');
+    } elseif (isset($input['include_whatsapp'])) {
+        $includeWhatsapp = (bool)$input['include_whatsapp'];
+    }
+
+    $sources = [];
+    if ($includeProducts) $sources[] = 'products';
+    if ($includeWhatsapp) $sources[] = 'whatsapp';
+    $sources[] = 'articles';
+
+    if (empty($query)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Pertanyaan atau kata kunci pencarian tidak boleh kosong']);
+        exit;
+    }
+
+    $lowerQuery = strtolower($query);
+
+    $stopwords = [
+        'berapa', 'apa', 'apakah', 'bagaimana', 'mengapa', 'kenapa', 'siapa', 'dimana',
+        'mesin', 'dari', 'yang', 'dan', 'atau', 'pada', 'untuk', 'di', 'ke', 'adalah',
+        'ini', 'itu', 'bisa', 'tolong', 'cek', 'info', 'spesifikasi', 'spek', 'kak',
+        'pak', 'gan', 'mas', 'min', 'ya', 'sih', 'dong', 'kah', 'ada'
+    ];
+
+    $rawWords = preg_split('/[\s,\.\?!;:\(\)\-_]+/', $lowerQuery);
+    $keywords = [];
+    foreach ($rawWords as $w) {
+        $w = trim($w);
+        if (strlen($w) > 1 && !in_array($w, $stopwords)) {
+            $keywords[] = $w;
+        }
+    }
+
+    $machineEntities = [
+        'spray dryer' => ['spray dryer', 'spray dry', 'pengering semprot'],
+        'vacuum frying' => ['vacuum frying', 'vacum frying', 'keripik buah', 'penggoreng hampa'],
+        'retort' => ['retort', 'sterilisasi', 'sterilisator', 'autoclave', 'kaleng', 'pouch'],
+        'pirolisis' => ['pirolisis', 'pyrolysis', 'asap cair', 'batok kelapa', 'biochar'],
+        'evaporator' => ['evaporator', 'evaporasi', 'pengental madu', 'vco'],
+        'spinner' => ['spinner', 'peniris minyak', 'sentrifugal'],
+        'uht' => ['uht', 'sterilisasi uht', 'ultra high temperature'],
+        'pasteurisasi' => ['pasteurisasi', 'pasteurizer', 'susu pasteurisasi'],
+        'diskmill' => ['diskmill', 'penepung', 'gilingan tepung'],
+        'roasting' => ['roasting', 'sangrai', 'roaster kopi'],
+        'mixer' => ['mixer', 'pencampur', 'ribbon mixer'],
+        'pelet' => ['pelet', 'pellet', 'pakan ternak'],
+        'cup sealer' => ['cup sealer', 'sealer cup', 'penutup cup']
+    ];
+
+    $detectedMachine = null;
+    foreach ($machineEntities as $key => $synonyms) {
+        foreach ($synonyms as $syn) {
+            if (strpos($lowerQuery, $syn) !== false) {
+                $detectedMachine = $key;
+                break 2;
+            }
+        }
+    }
+
+    $intentAttributes = [
+        'suhu' => ['suhu', 'panas', 'temperatur', 'derajat', '°c', 'celcius', 'c', 'inlet', 'outlet', 'heater', 'pemanas', 'thermal', 'steam'],
+        'daya' => ['daya', 'listrik', 'watt', 'volt', 'hp', 'phase', 'kw', 'kwh', 'ampere'],
+        'kapasitas' => ['kapasitas', 'liter', 'ltr', 'kg', 'batch', 'volume', 'jam', 'ukuran'],
+        'material' => ['material', 'bahan', 'stainless', 'plat', 'sus 304', 'sus 316', 'food grade'],
+        'harga' => ['harga', 'biaya', 'tarif', 'rp', 'juta', 'ribu', 'nilai'],
+        'cara_kerja' => ['cara kerja', 'prinsip', 'metode', 'proses', 'fungsi', 'tata cara'],
+        'garansi' => ['garansi', 'servis', 'service', 'sparepart', 'rusak', 'jaminan']
+    ];
+
+    $detectedIntents = [];
+    foreach ($intentAttributes as $intent => $terms) {
+        foreach ($terms as $term) {
+            if (strpos($lowerQuery, $term) !== false) {
+                $detectedIntents[] = $intent;
+                break;
+            }
+        }
+    }
+
+    // 1. SEARCH PRODUCTS
+    $matchedProducts = [];
+    if (in_array('products', $sources)) {
+        $products = readData();
+        foreach ($products as $p) {
+            $score = 0;
+            $pNameLower = strtolower($p['name'] ?? '');
+            $pDescLower = strtolower($p['desc'] ?? '');
+            $pCatLower = strtolower($p['category'] ?? '');
+            $pSubLower = strtolower($p['subCategory'] ?? '');
+
+            if ($detectedMachine) {
+                foreach ($machineEntities[$detectedMachine] as $syn) {
+                    if (strpos($pNameLower, $syn) !== false || strpos($pSubLower, $syn) !== false) {
+                        $score += 50;
+                        break;
+                    }
+                }
+            }
+
+            foreach ($keywords as $kw) {
+                if (strpos($pNameLower, $kw) !== false) $score += 20;
+                if (strpos($pDescLower, $kw) !== false) $score += 6;
+                if (strpos($pCatLower, $kw) !== false) $score += 10;
+            }
+
+            foreach ($detectedIntents as $intent) {
+                foreach ($intentAttributes[$intent] as $term) {
+                    if (strpos($pDescLower, $term) !== false) {
+                        $score += 8;
+                    }
+                }
+            }
+
+            if ($score > 15) {
+                $descLines = preg_split('/[\r\n•]+/', $p['desc'] ?? '');
+                $matchedSnippets = [];
+                foreach ($descLines as $line) {
+                    $trimmedLine = trim($line);
+                    if (empty($trimmedLine)) continue;
+                    $lineLower = strtolower($trimmedLine);
+
+                    $hasMatch = false;
+                    foreach ($keywords as $kw) {
+                        if (strpos($lineLower, $kw) !== false) { $hasMatch = true; break; }
+                    }
+                    if (!$hasMatch) {
+                        foreach ($detectedIntents as $intent) {
+                            foreach ($intentAttributes[$intent] as $term) {
+                                if (strpos($lineLower, $term) !== false) { $hasMatch = true; break 2; }
+                            }
+                        }
+                    }
+                    if ($hasMatch) {
+                        $matchedSnippets[] = $trimmedLine;
+                    }
+                }
+
+                $matchedProducts[] = [
+                    'id' => $p['id'],
+                    'name' => $p['name'],
+                    'category' => $p['category'] ?? '',
+                    'subCategory' => $p['subCategory'] ?? '',
+                    'capacity' => $p['capacity'] ?? '',
+                    'price' => $p['price'] ?? 0,
+                    'priceDisplay' => $p['priceDisplay'] ?? '',
+                    'image' => !empty($p['images'][0]) ? $p['images'][0] : '',
+                    'score' => $score,
+                    'snippets' => array_slice($matchedSnippets, 0, 4), 'matched_snippets' => array_slice($matchedSnippets, 0, 4)
+                ];
+            }
+        }
+
+        usort($matchedProducts, function($a, $b) {
+            return $b['score'] - $a['score'];
+        });
+        $matchedProducts = array_slice($matchedProducts, 0, 6);
+    }
+
+    // 2. SEARCH WHATSAPP KNOWLEDGE
+    $matchedWhatsApp = [];
+    if (in_array('whatsapp', $sources)) {
+        $waKnowledge = readWhatsAppKnowledge();
+        foreach ($waKnowledge as $wa) {
+            $score = 0;
+            $waTopicLower = strtolower($wa['topic'] ?? '');
+            $waMachineLower = strtolower($wa['machine_name'] ?? '');
+            $waTitleLower = strtolower($wa['title'] ?? '');
+            $waContentLower = strtolower($wa['content'] ?? '');
+            $waRawLower = strtolower($wa['raw_chat'] ?? '');
+            $waTags = array_map('strtolower', $wa['tags'] ?? []);
+
+            if ($detectedMachine) {
+                foreach ($machineEntities[$detectedMachine] as $syn) {
+                    if (strpos($waTopicLower, $syn) !== false || strpos($waMachineLower, $syn) !== false || in_array($syn, $waTags)) {
+                        $score += 55;
+                        break;
+                    }
+                }
+            }
+
+            foreach ($keywords as $kw) {
+                if (strpos($waTitleLower, $kw) !== false) $score += 25;
+                if (strpos($waContentLower, $kw) !== false) $score += 15;
+                if (strpos($waRawLower, $kw) !== false) $score += 10;
+                if (in_array($kw, $waTags)) $score += 20;
+            }
+
+            foreach ($detectedIntents as $intent) {
+                foreach ($intentAttributes[$intent] as $term) {
+                    if (strpos($waContentLower, $term) !== false || in_array($term, $waTags)) {
+                        $score += 12;
+                    }
+                }
+            }
+
+            if ($score > 15) {
+                $matchedWhatsApp[] = [
+                    'id' => $wa['id'],
+                    'topic' => $wa['topic'],
+                    'machine_name' => $wa['machine_name'],
+                    'title' => $wa['title'],
+                    'content' => $wa['content'],
+                    'answer' => $wa['answer'] ?? $wa['content'],
+                    'question' => $wa['question'] ?? '',
+                    'machine_category' => $wa['machine_category'] ?? $wa['topic'],
+                    'tags' => $wa['tags'] ?? [],
+                    'raw_chat' => $wa['raw_chat'] ?? '',
+                    'date' => $wa['date'] ?? '',
+                    'sender' => $wa['sender'] ?? 'Owner CV Asianindo',
+                    'score' => $score
+                ];
+            }
+        }
+
+        usort($matchedWhatsApp, function($a, $b) {
+            return $b['score'] - $a['score'];
+        });
+        $matchedWhatsApp = array_slice($matchedWhatsApp, 0, 5);
+    }
+
+    // 3. SEARCH ARTICLES
+    $matchedArticles = [];
+    if (in_array('articles', $sources)) {
+        $artPath = __DIR__ . '/../data/articles.json';
+        if (file_exists($artPath)) {
+            $articles = json_decode(file_get_contents($artPath), true) ?? [];
+            foreach ($articles as $art) {
+                $score = 0;
+                $titleLower = strtolower($art['title'] ?? '');
+                $contentLower = strtolower($art['content'] ?? '');
+
+                foreach ($keywords as $kw) {
+                    if (strpos($titleLower, $kw) !== false) $score += 20;
+                    if (strpos($contentLower, $kw) !== false) $score += 5;
+                }
+                if ($score > 15) {
+                    $matchedArticles[] = [
+                        'id' => $art['id'] ?? '',
+                        'title' => $art['title'] ?? '',
+                        'excerpt' => $art['excerpt'] ?? mb_substr(strip_tags($art['content'] ?? ''), 0, 150) . '...',
+                        'score' => $score
+                    ];
+                }
+            }
+            usort($matchedArticles, function($a, $b) { return $b['score'] - $a['score']; });
+            $matchedArticles = array_slice($matchedArticles, 0, 3);
+        }
+    }
+
+    // 4. SYNTHESIZE DIRECT ANSWER
+    $directAnswer = null;
+    $highlights = [];
+    if (!empty($matchedWhatsApp)) {
+        $topWa = $matchedWhatsApp[0];
+        $highlights[] = "📌 **Catatan Teknis Owner WhatsApp (" . $topWa['topic'] . ")**:\n" . $topWa['content'];
+    }
+    if (!empty($matchedProducts)) {
+        $topProd = $matchedProducts[0];
+        $prodInfo = "🏭 **Spesifikasi Website (" . $topProd['name'] . ")**:\n";
+        if (!empty($topProd['snippets'])) {
+            foreach ($topProd['snippets'] as $s) {
+                $prodInfo .= "• " . $s . "\n";
+            }
+        }
+        if (!empty($topProd['priceDisplay'])) {
+            $prodInfo .= "• Harga Estimasi: " . $topProd['priceDisplay'] . "\n";
+        }
+        $highlights[] = trim($prodInfo);
+    }
+
+    if (!empty($highlights)) {
+        $directAnswer = implode("\n\n", $highlights);
+    } else {
+        $directAnswer = "Belum ditemukan informasi spesifik untuk pertanyaan: \"$query\". Silakan coba kata kunci lain atau masukkan potongan chat WhatsApp baru di tab 'Kelola Chat WhatsApp'.";
+    }
+
+    $keyHighlights = [];
+    if (!empty($detectedMachine)) {
+        $keyHighlights[] = "Mesin: " . ucwords($detectedMachine);
+    }
+    if (!empty($detectedIntents)) {
+        foreach ($detectedIntents as $di) {
+            $keyHighlights[] = "Parameter: " . ucwords(str_replace('_', ' ', $di));
+        }
+    }
+
+    $directAnswerObj = [
+        'headline' => !empty($detectedMachine) ? ("Spesifikasi " . ucwords($detectedMachine) . " Asianindo") : ("Hasil Pengetahuan: " . $query),
+        'summary' => $directAnswer,
+        'highlights' => $keyHighlights
+    ];
+
+    echo json_encode([
+        'success' => true,
+        'query' => $query,
+        'detected_machine' => $detectedMachine ? ucwords($detectedMachine) : null,
+        'detected_intents' => $detectedIntents,
+        'direct_answer' => $directAnswerObj,
+        'products_found' => $matchedProducts,
+        'whatsapp_found' => $matchedWhatsApp,
+        'articles_found' => $matchedArticles,
+        'results_products' => $matchedProducts,
+        'results_whatsapp' => $matchedWhatsApp,
+        'results_articles' => $matchedArticles,
+        'total_found' => count($matchedProducts) + count($matchedWhatsApp) + count($matchedArticles)
+    ]);
+    exit;
+}
+
+
 http_response_code(400);
 echo json_encode(['error' => 'Invalid action']);
 

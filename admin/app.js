@@ -59,6 +59,42 @@ function adminApp() {
         videoPreviewTitle: '',
         videoPreviewUrl: '',
 
+        // ==================== KNOWLEDGE Q&A & WHATSAPP CHAT STATES ====================
+        qaQuery: '',
+        qaSources: { website: true, whatsapp: true },
+        qaIsSearching: false,
+        qaHasSearched: false,
+        qaResults: null,
+        qaActiveTab: 'search', // 'search' | 'whatsapp_manage'
+        qaHistory: [
+            'Berapa suhu mesin spray dryer?',
+            'Berapa daya listrik mesin spray dryer?',
+            'Berapa suhu dan tekanan retort sterilisasi?',
+            'Berapa suhu vacuum frying untuk keripik buah?',
+            'Berapa suhu evaporator vakum untuk madu?',
+            'Bagaimana garansi mesin Asianindo?'
+        ],
+        whatsappKnowledgeList: [],
+        isLoadingWhatsAppKnowledge: false,
+        isImportingWhatsApp: false,
+        rawWhatsAppChatInput: '',
+        whatsappImportTopic: '',
+        newWhatsAppEntry: {
+            id: '',
+            title: '',
+            machine_category: 'Spray Dryer',
+            question: '',
+            answer: '',
+            tags: '',
+            sender: 'Owner Asianindo'
+        },
+        isSavingWhatsAppEntry: false,
+        showWhatsAppModal: false,
+        editingWhatsAppId: null,
+        whatsappSearchQuery: '',
+        whatsappSelectedFilter: 'all',
+        qaCopiedText: false,
+
         // ==================== INVOICE GENERATOR STATES ====================
         savedInvoices: [],
         showSavedInvoicesModal: false,
@@ -301,6 +337,11 @@ function adminApp() {
                     this.loadProducts().then(() => this.initBulkMedia());
                 } else {
                     this.initBulkMedia();
+                }
+            } else if (view === 'knowledge_qa') {
+                this.loadWhatsAppKnowledge();
+                if (!this.products || this.products.length === 0) {
+                    this.loadProducts();
                 }
             }
         },
@@ -2322,6 +2363,241 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
                 }
             }
             this.showMediaPickerModal = false;
+        },
+
+        // ==================== KNOWLEDGE Q&A & WHATSAPP CHAT METHODS ====================
+        async askKnowledge(customQuery = null) {
+            const q = (customQuery !== null ? customQuery : this.qaQuery).trim();
+            if (!q) {
+                alert('Silakan ketik pertanyaan terlebih dahulu.');
+                return;
+            }
+            this.qaQuery = q;
+            this.qaIsSearching = true;
+            this.qaHasSearched = true;
+
+            try {
+                let fd = new FormData();
+                fd.append('query', q);
+                fd.append('include_products', this.qaSources.website ? '1' : '0');
+                fd.append('include_whatsapp', this.qaSources.whatsapp ? '1' : '0');
+
+                const res = await fetch('api.php?action=search_knowledge', {
+                    method: 'POST',
+                    body: fd
+                });
+                const data = await res.json();
+                if (data.success) {
+                    this.qaResults = data;
+                } else {
+                    alert(data.error || 'Gagal mencari jawaban.');
+                }
+            } catch (e) {
+                console.error('Error searching knowledge:', e);
+                alert('Terjadi kesalahan jaringan saat mencari pengetahuan.');
+            } finally {
+                this.qaIsSearching = false;
+            }
+        },
+
+        setQaQuickQuery(q) {
+            this.qaQuery = q;
+            this.askKnowledge(q);
+        },
+
+        copyToClipboard(text) {
+            if (!text) return;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    this.qaCopiedText = true;
+                    setTimeout(() => { this.qaCopiedText = false; }, 2000);
+                }).catch(err => {
+                    this.fallbackCopyText(text);
+                });
+            } else {
+                this.fallbackCopyText(text);
+            }
+        },
+
+        fallbackCopyText(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            try {
+                document.execCommand('copy');
+                this.qaCopiedText = true;
+                setTimeout(() => { this.qaCopiedText = false; }, 2000);
+            } catch (e) {
+                console.error('Fallback copy failed', e);
+            }
+            document.body.removeChild(ta);
+        },
+
+        async loadWhatsAppKnowledge() {
+            this.isLoadingWhatsAppKnowledge = true;
+            try {
+                const res = await fetch('api.php?action=get_whatsapp_knowledge');
+                const data = await res.json();
+                if (data.success && Array.isArray(data.data)) {
+                    this.whatsappKnowledgeList = data.data;
+                }
+            } catch (e) {
+                console.error('Failed to load whatsapp knowledge:', e);
+            } finally {
+                this.isLoadingWhatsAppKnowledge = false;
+            }
+        },
+
+        async importWhatsAppChat() {
+            if (!this.rawWhatsAppChatInput.trim()) {
+                alert('Silakan tempel (paste) teks obrolan WhatsApp terlebih dahulu.');
+                return;
+            }
+            this.isImportingWhatsApp = true;
+            try {
+                let fd = new FormData();
+                fd.append('raw_chat', this.rawWhatsAppChatInput);
+                if (this.whatsappImportTopic.trim()) {
+                    fd.append('topic', this.whatsappImportTopic.trim());
+                }
+
+                const res = await fetch('api.php?action=import_whatsapp_chat', {
+                    method: 'POST',
+                    body: fd
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert(data.message || 'Chat WhatsApp berhasil diimpor!');
+                    this.rawWhatsAppChatInput = '';
+                    this.whatsappImportTopic = '';
+                    await this.loadWhatsAppKnowledge();
+                } else {
+                    alert(data.error || 'Gagal mengimpor chat WhatsApp.');
+                }
+            } catch (e) {
+                console.error('Error importing WhatsApp chat:', e);
+                alert('Terjadi kesalahan jaringan saat mengimpor chat.');
+            } finally {
+                this.isImportingWhatsApp = false;
+            }
+        },
+
+        handleWhatsAppFileUpload(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.rawWhatsAppChatInput = e.target.result;
+            };
+            reader.readAsText(file);
+        },
+
+        openWhatsAppModal(entry = null) {
+            if (entry) {
+                this.editingWhatsAppId = entry.id;
+                this.newWhatsAppEntry = {
+                    id: entry.id,
+                    title: entry.title || '',
+                    machine_category: entry.machine_category || 'Spray Dryer',
+                    question: entry.question || '',
+                    answer: entry.answer || '',
+                    tags: Array.isArray(entry.tags) ? entry.tags.join(', ') : (entry.tags || ''),
+                    sender: entry.sender || 'Owner Asianindo'
+                };
+            } else {
+                this.editingWhatsAppId = null;
+                this.newWhatsAppEntry = {
+                    id: '',
+                    title: '',
+                    machine_category: 'Spray Dryer',
+                    question: '',
+                    answer: '',
+                    tags: '',
+                    sender: 'Owner Asianindo'
+                };
+            }
+            this.showWhatsAppModal = true;
+        },
+
+        async saveWhatsAppEntry() {
+            if (!this.newWhatsAppEntry.answer.trim()) {
+                alert('Mohon isi konten jawaban atau spesifikasi teknis.');
+                return;
+            }
+            this.isSavingWhatsAppEntry = true;
+            try {
+                let fd = new FormData();
+                if (this.editingWhatsAppId) {
+                    fd.append('id', this.editingWhatsAppId);
+                }
+                fd.append('title', this.newWhatsAppEntry.title.trim() || 'Konsultasi Teknis');
+                fd.append('machine_category', this.newWhatsAppEntry.machine_category.trim() || 'Umum');
+                fd.append('question', this.newWhatsAppEntry.question.trim());
+                fd.append('answer', this.newWhatsAppEntry.answer.trim());
+                fd.append('tags', this.newWhatsAppEntry.tags.trim());
+                fd.append('sender', this.newWhatsAppEntry.sender.trim() || 'Owner');
+
+                const res = await fetch('api.php?action=save_whatsapp_knowledge', {
+                    method: 'POST',
+                    body: fd
+                });
+                const data = await res.json();
+                if (data.success) {
+                    this.showWhatsAppModal = false;
+                    await this.loadWhatsAppKnowledge();
+                } else {
+                    alert(data.error || 'Gagal menyimpan catatan WhatsApp.');
+                }
+            } catch (e) {
+                console.error('Error saving whatsapp entry:', e);
+                alert('Terjadi kesalahan jaringan.');
+            } finally {
+                this.isSavingWhatsAppEntry = false;
+            }
+        },
+
+        async deleteWhatsAppEntry(id) {
+            if (!confirm('Yakin ingin menghapus catatan WhatsApp ini?')) return;
+            try {
+                let fd = new FormData();
+                fd.append('id', id);
+                const res = await fetch('api.php?action=delete_whatsapp_knowledge', {
+                    method: 'POST',
+                    body: fd
+                });
+                const data = await res.json();
+                if (data.success) {
+                    await this.loadWhatsAppKnowledge();
+                } else {
+                    alert(data.error || 'Gagal menghapus.');
+                }
+            } catch (e) {
+                console.error('Error deleting whatsapp entry:', e);
+                alert('Terjadi kesalahan jaringan.');
+            }
+        },
+
+        filteredWhatsAppKnowledgeList() {
+            let list = this.whatsappKnowledgeList || [];
+            if (this.whatsappSelectedFilter && this.whatsappSelectedFilter !== 'all') {
+                const cat = this.whatsappSelectedFilter.toLowerCase();
+                list = list.filter(item => (item.machine_category || '').toLowerCase().includes(cat));
+            }
+            if (this.whatsappSearchQuery && this.whatsappSearchQuery.trim()) {
+                const q = this.whatsappSearchQuery.toLowerCase().trim();
+                list = list.filter(item => {
+                    const title = (item.title || '').toLowerCase();
+                    const ans = (item.answer || '').toLowerCase();
+                    const tags = Array.isArray(item.tags) ? item.tags.join(' ').toLowerCase() : (item.tags || '').toLowerCase();
+                    const cat = (item.machine_category || '').toLowerCase();
+                    return title.includes(q) || ans.includes(q) || tags.includes(q) || cat.includes(q);
+                });
+            }
+            return list;
         }
     }
 }
