@@ -310,9 +310,85 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     </div>
     
     <!-- Analytics Chart -->
-    <div class="card mb-8">
-        <div class="card-header"><h3 class="font-bold text-gray-700"><i class="fas fa-chart-line text-blue-500 mr-2"></i>Tren Pengunjung & Interaksi (30 Hari Terakhir)</h3></div>
-        <div class="card-body p-4 relative h-52 sm:h-64 md:h-[350px]">
+    <div class="card mb-8 overflow-hidden shadow-xs border border-gray-200">
+        <!-- Card Header with Dynamic Title & Period Switcher -->
+        <div class="p-4 sm:p-5 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white">
+            <div>
+                <h3 class="font-extrabold text-gray-800 text-base sm:text-lg flex items-center gap-2">
+                    <i class="fas fa-chart-line text-blue-500"></i>
+                    <span>Tren Pengunjung & Interaksi</span>
+                </h3>
+                <p class="text-xs text-gray-500 mt-1">
+                    Visualisasi aktivitas pengunjung website dan interaksi tombol WhatsApp 
+                    <span class="font-semibold text-primary" x-text="'(' + getAnalyticsPeriodLabel() + ')'"></span>
+                </p>
+            </div>
+
+            <!-- Period Switcher Buttons -->
+            <div class="flex items-center gap-1 bg-gray-100/80 p-1 rounded-xl self-start md:self-auto overflow-x-auto max-w-full no-scrollbar">
+                <button type="button" 
+                        @click="setAnalyticsPeriod('7d')" 
+                        :class="analyticsPeriod === '7d' ? 'bg-white text-primary shadow-xs font-bold' : 'text-gray-600 hover:text-gray-900 font-medium'" 
+                        class="px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer whitespace-nowrap">
+                    7 Hari
+                </button>
+                <button type="button" 
+                        @click="setAnalyticsPeriod('30d')" 
+                        :class="analyticsPeriod === '30d' ? 'bg-white text-primary shadow-xs font-bold' : 'text-gray-600 hover:text-gray-900 font-medium'" 
+                        class="px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer whitespace-nowrap">
+                    30 Hari
+                </button>
+                <button type="button" 
+                        @click="setAnalyticsPeriod('month')" 
+                        :class="analyticsPeriod === 'month' ? 'bg-white text-primary shadow-xs font-bold' : 'text-gray-600 hover:text-gray-900 font-medium'" 
+                        class="px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer whitespace-nowrap">
+                    Bulan Ini
+                </button>
+                <button type="button" 
+                        @click="setAnalyticsPeriod('90d')" 
+                        :class="analyticsPeriod === '90d' ? 'bg-white text-primary shadow-xs font-bold' : 'text-gray-600 hover:text-gray-900 font-medium'" 
+                        class="px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer whitespace-nowrap">
+                    90 Hari
+                </button>
+                <button type="button" 
+                        @click="setAnalyticsPeriod('year')" 
+                        :class="analyticsPeriod === 'year' ? 'bg-white text-primary shadow-xs font-bold' : 'text-gray-600 hover:text-gray-900 font-medium'" 
+                        class="px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer whitespace-nowrap">
+                    Tahun Ini
+                </button>
+                <button type="button" 
+                        @click="setAnalyticsPeriod('all')" 
+                        :class="analyticsPeriod === 'all' ? 'bg-white text-primary shadow-xs font-bold' : 'text-gray-600 hover:text-gray-900 font-medium'" 
+                        class="px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer whitespace-nowrap">
+                    Semua
+                </button>
+            </div>
+        </div>
+
+        <!-- Period Stats Summary Ribbon -->
+        <div class="px-4 sm:px-5 py-2.5 bg-gray-50/80 border-b border-gray-100 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-2 sm:gap-4 flex-wrap">
+                <span class="text-gray-500 font-medium">Ringkasan Periode:</span>
+                <span class="inline-flex items-center gap-1.5 font-bold text-blue-700 bg-blue-50 border border-blue-200/60 px-2.5 py-1 rounded-lg">
+                    <i class="fas fa-users text-blue-500 text-[11px]"></i>
+                    <span x-text="analyticsPeriodSummary.visitors + ' Pengunjung'"></span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2.5 py-1 rounded-lg">
+                    <i class="fab fa-whatsapp text-emerald-500 text-xs"></i>
+                    <span x-text="analyticsPeriodSummary.wa_clicks + ' Klik WA'"></span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 text-gray-700 bg-white border border-gray-200 px-2.5 py-1 rounded-lg font-medium shadow-2xs">
+                    <i class="fas fa-chart-bar text-gray-400 text-[11px]"></i>
+                    <span>Rata-rata: <strong class="text-gray-900" x-text="analyticsPeriodSummary.avg_visitors"></strong> / <span x-text="analyticsPeriod === 'year' || (analyticsPeriod === 'all' && analyticsPeriodSummary.isMonthly) ? 'bulan' : 'hari'"></span></span>
+                </span>
+            </div>
+            <div class="text-[11px] text-gray-400">
+                <span x-text="analyticsPeriodSummary.count_points + ' titik data'"></span>
+            </div>
+        </div>
+
+        <!-- Chart Canvas -->
+        <div class="p-4 sm:p-5 relative h-56 sm:h-72 md:h-[350px]">
             <canvas id="analyticsChart"></canvas>
         </div>
     </div>

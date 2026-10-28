@@ -9,6 +9,8 @@ function adminApp() {
 
         // Data Models
         analytics: { visitors: 0, wa_clicks: 0, messages: 0, product_views: {} },
+        analyticsPeriod: '30d',
+        analyticsPeriodSummary: { visitors: 0, wa_clicks: 0, avg_visitors: 0, count_points: 0, isMonthly: false },
         chartInstance: null,
         products: [],
         searchQuery: '',
@@ -379,33 +381,162 @@ function adminApp() {
             } catch(e) {}
         },
 
+        setAnalyticsPeriod(period) {
+            this.analyticsPeriod = period;
+            this.renderChart();
+        },
+
+        getAnalyticsPeriodLabel() {
+            const labels = {
+                '7d': '7 Hari Terakhir',
+                '30d': '30 Hari Terakhir',
+                'month': 'Bulan Ini',
+                '90d': '90 Hari (3 Bulan)',
+                'year': 'Tahun Ini',
+                'all': 'Semua Riwayat'
+            };
+            return labels[this.analyticsPeriod] || '30 Hari Terakhir';
+        },
+
         renderChart() {
             let ctx = document.getElementById('analyticsChart');
-            if(!ctx) return;
+            if (!ctx) return;
             
             let labels = [];
             let visitorsData = [];
             let waData = [];
+            let isMonthly = false;
             
-            // Get last 30 days
             let today = new Date();
-            for(let i = 29; i >= 0; i--) {
-                let d = new Date(today);
-                d.setDate(d.getDate() - i);
-                let dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-                let displayDate = d.toLocaleDateString('id-ID', {day: 'numeric', month: 'short'});
-                labels.push(displayDate);
-                
-                if(this.analytics.history && this.analytics.history[dateStr]) {
-                    visitorsData.push(this.analytics.history[dateStr].visitors || 0);
-                    waData.push(this.analytics.history[dateStr].wa_clicks || 0);
+            let history = this.analytics && this.analytics.history ? this.analytics.history : {};
+            let period = this.analyticsPeriod || '30d';
+
+            if (period === '7d') {
+                for (let i = 6; i >= 0; i--) {
+                    let d = new Date(today);
+                    d.setDate(d.getDate() - i);
+                    let dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+                    labels.push(d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }));
+                    let rec = history[dateStr] || {};
+                    visitorsData.push(rec.visitors || 0);
+                    waData.push(rec.wa_clicks || 0);
+                }
+            } else if (period === '30d') {
+                for (let i = 29; i >= 0; i--) {
+                    let d = new Date(today);
+                    d.setDate(d.getDate() - i);
+                    let dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+                    labels.push(d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }));
+                    let rec = history[dateStr] || {};
+                    visitorsData.push(rec.visitors || 0);
+                    waData.push(rec.wa_clicks || 0);
+                }
+            } else if (period === 'month') {
+                let currentDay = today.getDate();
+                for (let day = 1; day <= currentDay; day++) {
+                    let d = new Date(today.getFullYear(), today.getMonth(), day);
+                    let dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+                    labels.push(d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }));
+                    let rec = history[dateStr] || {};
+                    visitorsData.push(rec.visitors || 0);
+                    waData.push(rec.wa_clicks || 0);
+                }
+            } else if (period === '90d') {
+                for (let i = 89; i >= 0; i--) {
+                    let d = new Date(today);
+                    d.setDate(d.getDate() - i);
+                    let dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+                    labels.push(d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }));
+                    let rec = history[dateStr] || {};
+                    visitorsData.push(rec.visitors || 0);
+                    waData.push(rec.wa_clicks || 0);
+                }
+            } else if (period === 'year') {
+                isMonthly = true;
+                let currentYear = today.getFullYear();
+                let currentMonth = today.getMonth();
+                for (let m = 0; m <= currentMonth; m++) {
+                    let d = new Date(currentYear, m, 1);
+                    labels.push(d.toLocaleDateString('id-ID', { month: 'short', year: 'numeric' }));
+                    let mPrefix = currentYear + '-' + String(m + 1).padStart(2, '0');
+                    let mVisitors = 0;
+                    let mWa = 0;
+                    for (let [k, val] of Object.entries(history)) {
+                        if (k.startsWith(mPrefix)) {
+                            mVisitors += (val.visitors || 0);
+                            mWa += (val.wa_clicks || 0);
+                        }
+                    }
+                    visitorsData.push(mVisitors);
+                    waData.push(mWa);
+                }
+            } else if (period === 'all') {
+                let allDates = Object.keys(history).sort();
+                if (allDates.length === 0) {
+                    for (let i = 29; i >= 0; i--) {
+                        let d = new Date(today);
+                        d.setDate(d.getDate() - i);
+                        let dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+                        labels.push(d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }));
+                        visitorsData.push(0);
+                        waData.push(0);
+                    }
                 } else {
-                    visitorsData.push(0);
-                    waData.push(0);
+                    let firstDate = new Date(allDates[0]);
+                    let diffDays = Math.ceil((today - firstDate) / (1000 * 60 * 60 * 24));
+                    if (diffDays <= 60) {
+                        for (let i = diffDays; i >= 0; i--) {
+                            let d = new Date(today);
+                            d.setDate(d.getDate() - i);
+                            let dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+                            labels.push(d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }));
+                            let rec = history[dateStr] || {};
+                            visitorsData.push(rec.visitors || 0);
+                            waData.push(rec.wa_clicks || 0);
+                        }
+                    } else {
+                        isMonthly = true;
+                        let startYear = firstDate.getFullYear();
+                        let startMonth = firstDate.getMonth();
+                        let endYear = today.getFullYear();
+                        let endMonth = today.getMonth();
+                        for (let y = startYear; y <= endYear; y++) {
+                            let mStart = (y === startYear) ? startMonth : 0;
+                            let mEnd = (y === endYear) ? endMonth : 11;
+                            for (let m = mStart; m <= mEnd; m++) {
+                                let d = new Date(y, m, 1);
+                                labels.push(d.toLocaleDateString('id-ID', { month: 'short', year: (startYear !== endYear ? 'numeric' : undefined) }));
+                                let mPrefix = y + '-' + String(m + 1).padStart(2, '0');
+                                let mVisitors = 0;
+                                let mWa = 0;
+                                for (let [k, val] of Object.entries(history)) {
+                                    if (k.startsWith(mPrefix)) {
+                                        mVisitors += (val.visitors || 0);
+                                        mWa += (val.wa_clicks || 0);
+                                    }
+                                }
+                                visitorsData.push(mVisitors);
+                                waData.push(mWa);
+                            }
+                        }
+                    }
                 }
             }
 
-            if(this.chartInstance) {
+            // Summary stats
+            let totalVisitors = visitorsData.reduce((a, b) => a + b, 0);
+            let totalWa = waData.reduce((a, b) => a + b, 0);
+            let countPoints = labels.length;
+            let avgVisitors = countPoints > 0 ? (totalVisitors / countPoints).toFixed(1) : '0';
+            this.analyticsPeriodSummary = {
+                visitors: totalVisitors,
+                wa_clicks: totalWa,
+                avg_visitors: avgVisitors,
+                count_points: countPoints,
+                isMonthly: isMonthly
+            };
+
+            if (this.chartInstance) {
                 this.chartInstance.destroy();
             }
 
@@ -421,7 +552,9 @@ function adminApp() {
                             backgroundColor: 'rgba(59, 130, 246, 0.1)',
                             borderWidth: 2,
                             tension: 0.3,
-                            fill: true
+                            fill: true,
+                            pointRadius: labels.length > 50 ? 1 : 3,
+                            pointHoverRadius: 5
                         },
                         {
                             label: 'Klik WA',
@@ -430,7 +563,9 @@ function adminApp() {
                             backgroundColor: 'rgba(34, 197, 94, 0.1)',
                             borderWidth: 2,
                             tension: 0.3,
-                            fill: true
+                            fill: true,
+                            pointRadius: labels.length > 50 ? 1 : 3,
+                            pointHoverRadius: 5
                         }
                     ]
                 },
@@ -438,10 +573,21 @@ function adminApp() {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { position: 'bottom' }
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            padding: 10,
+                            boxPadding: 4
+                        }
                     },
                     scales: {
-                        y: { beginAtZero: true, ticks: { precision: 0 } }
+                        y: { beginAtZero: true, ticks: { precision: 0 } },
+                        x: {
+                            ticks: {
+                                maxTicksLimit: labels.length > 30 ? 15 : labels.length
+                            }
+                        }
                     }
                 }
             });
