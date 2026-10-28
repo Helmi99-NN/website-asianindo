@@ -166,7 +166,9 @@ if ($action === 'get_admin_orders') {
     $where = [];
     $params = [];
 
-    if ($status !== 'all') {
+    if ($status === 'shipments' || $status === 'processing') {
+        $where[] = "o.status IN ('payment_verified', 'processing', 'shipped')";
+    } elseif ($status !== 'all') {
         $where[] = 'o.status = ?';
         $params[] = $status;
     }
@@ -336,7 +338,13 @@ if ($action === 'get_ecommerce_stats') {
         'total_orders' => (int)$db->query("SELECT COUNT(*) FROM orders")->fetchColumn(),
         'pending_payment' => (int)$db->query("SELECT COUNT(*) FROM orders WHERE status = 'pending_payment'")->fetchColumn(),
         'pending_verifications' => (int)$db->query("SELECT COUNT(*) FROM orders WHERE status = 'payment_uploaded'")->fetchColumn(),
-        'active_shipments' => (int)$db->query("SELECT COUNT(*) FROM shipments WHERE status IN ('preparing', 'shipped', 'in_transit')")->fetchColumn(),
+        'active_shipments' => (int)$db->query("
+            SELECT COUNT(DISTINCT o.id) 
+            FROM orders o 
+            LEFT JOIN shipments s ON s.order_id = o.id 
+            WHERE o.status IN ('payment_verified', 'processing', 'shipped')
+              AND (s.status IS NULL OR s.status IN ('preparing', 'shipped', 'in_transit'))
+        ")->fetchColumn(),
         'total_sales' => (int)($db->query("SELECT SUM(total) FROM orders WHERE status NOT IN ('cancelled', 'pending_payment', 'payment_uploaded')")->fetchColumn() ?? 0),
         'total_customers' => (int)$db->query("SELECT COUNT(*) FROM customers")->fetchColumn()
     ];

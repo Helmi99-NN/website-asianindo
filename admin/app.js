@@ -329,7 +329,7 @@ function adminApp() {
                 this.orderFilter = 'payment_uploaded';
                 this.loadOrders();
             } else if (view === 'shipments') {
-                this.orderFilter = 'processing'; // or something to show shippable orders
+                this.orderFilter = 'shipments';
                 this.loadOrders();
             } else if (view === 'customers') {
                 this.loadCustomers();
@@ -702,6 +702,7 @@ function adminApp() {
         getOrderStatusLabel(status) {
             const map = {
                 'all': 'Semua',
+                'shipments': 'Pengiriman & Resi',
                 'pending_payment': 'Menunggu Bayar',
                 'payment_uploaded': 'Bukti Diunggah',
                 'payment_verified': 'Diproses (Lunas)',
