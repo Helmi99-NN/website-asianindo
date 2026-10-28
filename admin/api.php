@@ -158,6 +158,48 @@ if (!isset($_SESSION['is_admin'])) {
 
 require_once __DIR__ . '/../database/db.php';
 
+// Helper: Reset all test orders
+function resetOrdersData($db) {
+    if (!$db) return false;
+    try {
+        $db->exec("SET FOREIGN_KEY_CHECKS = 0");
+        $db->exec("DELETE FROM order_items");
+        $db->exec("DELETE FROM payments");
+        $db->exec("DELETE FROM shipments");
+        $db->exec("DELETE FROM orders");
+        $db->exec("ALTER TABLE order_items AUTO_INCREMENT = 1");
+        $db->exec("ALTER TABLE payments AUTO_INCREMENT = 1");
+        $db->exec("ALTER TABLE shipments AUTO_INCREMENT = 1");
+        $db->exec("ALTER TABLE orders AUTO_INCREMENT = 1");
+        $db->exec("SET FOREIGN_KEY_CHECKS = 1");
+        return true;
+    } catch (Exception $e) {
+        error_log("Error resetting orders: " . $e->getMessage());
+        return false;
+    }
+}
+
+// One-time automatic reset for test orders
+$RESET_FLAG = __DIR__ . '/../data/orders_reset_20261028.flag';
+if (!file_exists($RESET_FLAG) && isset($_SESSION['is_admin'])) {
+    $dbInstance = getDB();
+    if ($dbInstance) {
+        resetOrdersData($dbInstance);
+        @file_put_contents($RESET_FLAG, date('Y-m-d H:i:s') . " - Test orders reset completed upon request.\n");
+    }
+}
+
+if ($action === 'reset_orders') {
+    $db = getDB();
+    if (resetOrdersData($db)) {
+        echo json_encode(['success' => true, 'message' => 'Seluruh data pesanan uji coba berhasil di-reset.']);
+    } else {
+        http_response_code(500);
+        echo json_encode(['error' => 'Gagal mereset data pesanan']);
+    }
+    exit;
+}
+
 if ($action === 'get_admin_orders') {
     $db = getDB();
     $status = $_GET['status'] ?? 'all';

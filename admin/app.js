@@ -572,6 +572,29 @@ function adminApp() {
             } catch(e) {}
         },
 
+        async resetTestOrders() {
+            if (!confirm('Apakah Anda yakin ingin mereset/menghapus seluruh data pesanan uji coba?\n\nSemua riwayat pesanan, status pembayaran, dan pengiriman uji coba akan dikosongkan.')) {
+                return;
+            }
+            this.isSaving = true;
+            try {
+                let res = await fetch('api.php?action=reset_orders', { method: 'POST' });
+                let data = await res.json();
+                if (data.success) {
+                    alert(data.message || 'Seluruh data pesanan uji coba berhasil di-reset.');
+                    await this.loadOrders();
+                    await this.loadEcommerceStats();
+                } else {
+                    alert(data.error || 'Gagal mereset pesanan.');
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Terjadi kesalahan saat mereset data pesanan.');
+            } finally {
+                this.isSaving = false;
+            }
+        },
+
         async loadOrders() {
             try {
                 let url = `api.php?action=get_admin_orders&status=${this.orderFilter}`;

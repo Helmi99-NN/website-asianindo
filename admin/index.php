@@ -2256,9 +2256,20 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             <i class="fas" :class="{'fa-box-open text-primary': currentView==='orders', 'fa-money-check-alt text-orange-500': currentView==='payments', 'fa-truck text-blue-500': currentView==='shipments'}"></i>
             <span x-text="currentView === 'orders' ? 'Semua Pesanan' : (currentView === 'payments' ? 'Verifikasi Pembayaran' : 'Pengiriman & Resi')"></span>
         </h2>
-        <div class="relative w-full md:w-72">
-            <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
-            <input type="text" x-model="orderSearch" @input.debounce.500ms="loadOrders()" placeholder="Cari No. Pesanan / Nama..." class="form-input !pl-10">
+        <div class="flex items-center gap-3 w-full md:w-auto">
+            <button x-show="currentView === 'orders'" 
+                    @click="resetTestOrders()" 
+                    type="button" 
+                    class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold rounded-xl shadow-2xs transition-colors cursor-pointer shrink-0" 
+                    title="Hapus riwayat pesanan coba-coba">
+                <i class="fas fa-trash-alt text-red-500 text-xs"></i>
+                <span class="hidden sm:inline">Reset Pesanan Uji Coba</span>
+                <span class="sm:hidden">Reset Pesanan</span>
+            </button>
+            <div class="relative w-full md:w-72">
+                <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
+                <input type="text" x-model="orderSearch" @input.debounce.500ms="loadOrders()" placeholder="Cari No. Pesanan / Nama..." class="form-input !pl-10">
+            </div>
         </div>
     </div>
 
