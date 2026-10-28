@@ -615,14 +615,57 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                 </div>
                 <p class="text-xs text-gray-400 mt-2"><i class="fas fa-info-circle"></i> Gambar pertama akan menjadi foto sampul utama (cover).</p>
             </div>
-            <div class="form-group">
-                <label class="form-label">Video Produk (Maks 15MB)</label>
-                <input type="file" accept="video/*" @change="handleVideo($event)" class="form-input text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-primary-light file:text-primary file:font-medium file:cursor-pointer">
-                <div x-show="videoPreview || productForm.existing_video" class="mt-2 flex items-center gap-3">
-                    <p class="text-sm text-green-600"><i class="fas fa-check-circle mr-1"></i>Video tersedia</p>
-                    <button type="button" @click="openVideoPreview({ name: productForm.name || 'Video Produk', video: videoPreviewUrl || productForm.existing_video })" class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-100 hover:bg-emerald-200 px-2.5 py-1 rounded-md transition-colors border border-emerald-300 shadow-2xs">
-                        <i class="fas fa-play text-[10px]"></i> Cek / Putar Video
+            <div class="form-group bg-gray-50/70 p-4 rounded-xl border border-gray-200">
+                <div class="flex items-center justify-between mb-2">
+                    <label class="form-label !mb-0 font-bold text-gray-800">
+                        <i class="fas fa-video text-blue-600 mr-1.5"></i> Video Produk
+                    </label>
+                    <span class="text-[11px] text-gray-500">Maks 30MB (MP4/WebM)</span>
+                </div>
+
+                <!-- If video is currently attached or previewing -->
+                <div x-show="videoPreview || (productForm.existing_video && productForm.existing_video.trim() !== '')" class="mb-3 p-3 bg-white rounded-lg border border-emerald-200 shadow-2xs">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-play text-xs"></i>
+                            </span>
+                            <div class="min-w-0">
+                                <p class="text-xs font-bold text-gray-800 truncate" x-text="videoFile ? videoFile.name : (productForm.existing_video || 'Video Aktif')"></p>
+                                <p class="text-[10px] text-emerald-600 flex items-center gap-1 font-medium">
+                                    <i class="fas fa-check-circle"></i> Video terpasang & siap tampil di katalog website
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <button type="button" @click="openVideoPreview({ name: productForm.name || 'Video Produk', video: videoPreviewUrl || productForm.existing_video })" class="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 px-2.5 py-1.5 rounded-lg transition-colors shadow-2xs cursor-pointer">
+                                <i class="fas fa-play text-[10px]"></i> Putar Video
+                            </button>
+                            <button type="button" @click="removeProductFormVideo()" class="inline-flex items-center gap-1 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer" title="Hapus video ini dari produk">
+                                <i class="fas fa-trash-alt text-[10px]"></i> Hapus
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Controls & Sources -->
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <label class="btn-secondary !py-2 !px-3 text-xs inline-flex items-center gap-1.5 cursor-pointer bg-white hover:bg-gray-100 border border-gray-300 font-semibold shadow-2xs">
+                        <i class="fas fa-cloud-upload-alt text-blue-600"></i>
+                        <span>Upload File Baru</span>
+                        <input type="file" accept="video/mp4,video/*" @change="handleVideo($event)" class="hidden">
+                    </label>
+                    <button type="button" @click="openMediaPickerForProductFormVideo()" class="btn-secondary !py-2 !px-3 text-xs inline-flex items-center gap-1.5 bg-white hover:bg-gray-100 border border-gray-300 font-semibold shadow-2xs cursor-pointer">
+                        <i class="fas fa-photo-video text-amber-600"></i>
+                        <span>Pilih dari Galeri Media</span>
                     </button>
+                </div>
+                <!-- Manual Path / URL Input -->
+                <div class="mt-2.5">
+                    <div class="flex items-center gap-2">
+                        <span class="text-[11px] text-gray-500 whitespace-nowrap">Atau Path/URL:</span>
+                        <input type="text" x-model="productForm.existing_video" placeholder="videos/video_xxx.mp4 atau https://..." class="form-input !py-1 text-xs font-mono">
+                    </div>
                 </div>
             </div>
         </div>
@@ -1554,7 +1597,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                             </div>
 
                             <!-- Modification status badge -->
-                            <div class="mt-2.5">
+                            <div class="mt-2.5 flex items-center justify-between flex-wrap gap-2">
                                 <template x-if="isProductMediaModified(p)">
                                     <div class="flex items-center gap-2">
                                         <span class="inline-flex items-center gap-1 text-[10px] font-bold text-orange-700 bg-orange-100 border border-orange-200 px-2 py-0.5 rounded-full animate-pulse">
@@ -1570,6 +1613,9 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                         <i class="fas fa-check text-emerald-500"></i> Tersimpan
                                     </span>
                                 </template>
+                                <button type="button" @click="openEditProduct(p)" class="text-[11px] text-primary hover:text-primary-hover font-semibold inline-flex items-center gap-1 hover:underline ml-auto" title="Buka form edit lengkap produk ini">
+                                    <i class="fas fa-edit text-[10px]"></i> Edit di Form Produk
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -1734,7 +1780,10 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
                             <!-- Video Produk -->
                             <div class="bg-gray-50/60 p-3 rounded-xl border border-gray-200/80">
-                                <span class="font-bold text-xs text-gray-700 block mb-2">Video Produk</span>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-bold text-xs text-gray-700">Video Produk</span>
+                                    <span class="text-[10px] text-gray-400">Maks 30MB</span>
+                                </div>
                                 <div class="flex items-center gap-3">
                                     <!-- Video Thumbnail or Upload Box -->
                                     <template x-if="p.video">
@@ -1752,10 +1801,13 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                                 <button type="button" @click="openVideoPreview(p)" class="w-6 h-6 bg-emerald-500 hover:bg-emerald-600 text-white rounded flex items-center justify-center text-[10px] shadow-xs transition-colors" title="Putar & Cek Video">
                                                     <i class="fas fa-play ml-0.5"></i>
                                                 </button>
-                                                <label class="w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded flex items-center justify-center text-[10px] cursor-pointer shadow-xs transition-colors" title="Ganti video">
+                                                <label class="w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded flex items-center justify-center text-[10px] cursor-pointer shadow-xs transition-colors" title="Ganti video (upload file)">
                                                     <i class="fas fa-sync-alt"></i>
                                                     <input type="file" accept="video/mp4,video/*" @change="uploadVideoForProduct(p.id, $event)" class="hidden">
                                                 </label>
+                                                <button type="button" @click="openMediaPicker(p.id, 'video')" class="w-6 h-6 bg-amber-500 hover:bg-amber-600 text-white rounded flex items-center justify-center text-[10px] shadow-xs transition-colors" title="Pilih dari Galeri Media">
+                                                    <i class="fas fa-photo-video"></i>
+                                                </button>
                                                 <button type="button" @click="removeVideoForProduct(p.id)" class="w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded flex items-center justify-center text-[10px] shadow-xs transition-colors" title="Hapus video">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
@@ -1770,18 +1822,28 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                         </div>
                                     </template>
 
-                                    <!-- Guide notes & Quick Play Button -->
-                                    <div class="text-[11px] text-gray-500 leading-tight space-y-1">
-                                        <p class="font-medium text-gray-700">• Ukuran: Maks 30MB</p>
-                                        <p>• Durasi: 10–60 detik (MP4/WebM)</p>
+                                    <!-- Guide notes & Quick Play / Pick Button -->
+                                    <div class="text-[11px] text-gray-500 leading-tight space-y-1 min-w-0">
                                         <template x-if="p.video">
-                                            <button type="button" @click="openVideoPreview(p)" class="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-100/80 hover:bg-emerald-200/80 px-2.5 py-1 rounded-md transition-colors mt-0.5 border border-emerald-300/60 shadow-2xs">
-                                                <i class="fas fa-play-circle text-xs text-emerald-600"></i>
-                                                <span>Cek / Putar Video</span>
-                                            </button>
+                                            <p class="font-mono text-[10px] text-gray-700 truncate max-w-[200px]" :title="p.video" x-text="p.video"></p>
                                         </template>
+                                        <div class="flex items-center gap-2 pt-0.5 flex-wrap">
+                                            <template x-if="p.video">
+                                                <button type="button" @click="openVideoPreview(p)" class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-100/80 hover:bg-emerald-200 px-2 py-0.5 rounded transition-colors border border-emerald-300/60 shadow-2xs">
+                                                    <i class="fas fa-play text-[9px] text-emerald-600"></i> Putar Video
+                                                </button>
+                                            </template>
+                                            <button type="button" @click="openMediaPicker(p.id, 'video')" class="text-[10px] text-primary hover:underline font-semibold">
+                                                <i class="fas fa-photo-video text-[9px]"></i> Dari Galeri Media
+                                            </button>
+                                            <template x-if="p.video">
+                                                <button type="button" @click="removeVideoForProduct(p.id)" class="text-[10px] text-red-600 hover:underline font-semibold">
+                                                    Hapus
+                                                </button>
+                                            </template>
+                                        </div>
                                         <template x-if="!p.video">
-                                            <p class="text-[10px] text-gray-400">Video tampil di galeri utama produk.</p>
+                                            <p class="text-[10px] text-gray-400">Video tampil di galeri utama katalog.</p>
                                         </template>
                                     </div>
                                 </div>
@@ -3812,8 +3874,8 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     <i class="fas fa-photo-video text-sm"></i>
                 </div>
                 <div>
-                    <h3 class="font-bold text-base text-gray-800">Pilih dari Galeri Media CMS</h3>
-                    <p class="text-[11px] text-gray-400">Pilih foto yang sudah tersimpan di Galeri Media untuk ditambahkan ke produk.</p>
+                    <h3 class="font-bold text-base text-gray-800" x-text="(mediaPickerTargetType === 'video' || mediaPickerTargetType === 'product_form_video') ? 'Pilih Video dari Galeri Media' : 'Pilih dari Galeri Media CMS'"></h3>
+                    <p class="text-[11px] text-gray-400" x-text="(mediaPickerTargetType === 'video' || mediaPickerTargetType === 'product_form_video') ? 'Pilih file video MP4/WebM yang sudah tersimpan di server.' : 'Pilih foto atau media yang sudah tersimpan di Galeri Media.'"></p>
                 </div>
             </div>
             <button @click="showMediaPickerModal = false" class="text-gray-400 hover:text-red-500 p-1">
@@ -3823,12 +3885,19 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
         <!-- Filter & Search Toolbar -->
         <div class="px-6 py-3 border-b bg-white flex flex-wrap items-center justify-between gap-3">
-            <div class="relative w-full sm:w-72">
-                <i class="fas fa-search absolute left-3 top-2.5 text-gray-400 text-xs"></i>
-                <input type="text" x-model="mediaSearch" placeholder="Cari nama file foto..." class="form-input !pl-9 !py-1.5 text-xs">
+            <div class="flex items-center gap-2 flex-wrap">
+                <div class="relative w-full sm:w-64">
+                    <i class="fas fa-search absolute left-3 top-2.5 text-gray-400 text-xs"></i>
+                    <input type="text" x-model="mediaSearch" placeholder="Cari nama file media..." class="form-input !pl-9 !py-1.5 text-xs">
+                </div>
+                <div class="flex items-center gap-1 text-xs" x-show="mediaPickerTargetType !== 'video' && mediaPickerTargetType !== 'product_form_video'">
+                    <button type="button" @click="mediaTypeFilter = 'all'" :class="mediaTypeFilter === 'all' ? 'bg-gray-900 text-white font-bold' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'" class="px-2.5 py-1 rounded-md transition-colors text-[11px]">Semua</button>
+                    <button type="button" @click="mediaTypeFilter = 'image'" :class="mediaTypeFilter === 'image' ? 'bg-[#EE4D2D] text-white font-bold' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'" class="px-2.5 py-1 rounded-md transition-colors text-[11px]">Foto</button>
+                    <button type="button" @click="mediaTypeFilter = 'video'" :class="mediaTypeFilter === 'video' ? 'bg-blue-600 text-white font-bold' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'" class="px-2.5 py-1 rounded-md transition-colors text-[11px]">Video</button>
+                </div>
             </div>
             <div class="text-xs text-gray-500">
-                <span x-text="mediaPickerSelectedUrls.length"></span> foto dipilih
+                <span class="font-bold text-gray-700" x-text="mediaPickerSelectedUrls.length"></span> dipilih
             </div>
         </div>
 
@@ -3837,7 +3906,16 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
             <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
                 <template x-for="m in filteredMedia()" :key="m.name">
                     <div @click="toggleSelectMediaPickerUrl(m.path)" class="relative rounded-xl border-2 overflow-hidden aspect-square bg-gray-50 cursor-pointer group transition-all" :class="mediaPickerSelectedUrls.includes(m.path) ? 'border-[#EE4D2D] ring-2 ring-[#EE4D2D]/30' : 'border-gray-200 hover:border-gray-400'">
-                        <img :src="'../' + m.path" class="w-full h-full object-cover">
+                        <template x-if="m.type === 'video' || (m.path && /\.(mp4|webm|mov|mkv)$/i.test(m.path))">
+                            <div class="w-full h-full bg-gray-950 flex flex-col items-center justify-center p-2 text-white relative">
+                                <i class="fas fa-play-circle text-2xl text-emerald-400 mb-1 group-hover:scale-110 transition-transform"></i>
+                                <span class="text-[9px] font-mono text-gray-300 truncate w-full text-center" x-text="m.name"></span>
+                                <span class="absolute top-1.5 left-1.5 bg-emerald-600 text-white text-[8px] font-bold px-1.5 py-0.2 rounded shadow-xs">VIDEO</span>
+                            </div>
+                        </template>
+                        <template x-if="!(m.type === 'video' || (m.path && /\.(mp4|webm|mov|mkv)$/i.test(m.path)))">
+                            <img :src="'../' + m.path" class="w-full h-full object-cover">
+                        </template>
                         <!-- Checkbox Overlay -->
                         <div class="absolute top-1.5 right-1.5 w-5 h-5 rounded-full flex items-center justify-center transition-colors" :class="mediaPickerSelectedUrls.includes(m.path) ? 'bg-[#EE4D2D] text-white shadow-xs' : 'bg-black/40 text-white/70 group-hover:bg-black/60'">
                             <i class="fas fa-check text-[10px]"></i>
@@ -3855,12 +3933,12 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         <!-- Modal Footer -->
         <div class="px-6 py-3.5 border-t bg-gray-50 flex items-center justify-between">
             <span class="text-xs text-gray-500">
-                Mode: <strong x-text="mediaPickerTargetType === 'promo' ? 'Foto Promosi (1 foto)' : (mediaPickerTargetType === 'replace_index' ? 'Ganti 1 Foto' : 'Galeri Produk (Bisa pilih banyak)')"></strong>
+                Mode: <strong x-text="mediaPickerTargetType === 'promo' ? 'Foto Promosi (1 foto)' : ((mediaPickerTargetType === 'video' || mediaPickerTargetType === 'product_form_video') ? 'Pilih Video (1 video)' : (mediaPickerTargetType === 'replace_index' ? 'Ganti 1 Foto' : 'Galeri Produk (Bisa pilih banyak)'))"></strong>
             </span>
             <div class="flex items-center gap-2">
                 <button @click="showMediaPickerModal = false" class="btn-secondary text-xs !py-2">Batal</button>
                 <button @click="applyMediaPickerSelection()" :disabled="mediaPickerSelectedUrls.length === 0" class="bg-[#EE4D2D] hover:bg-[#d73211] text-white font-bold text-xs py-2 px-5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
-                    Gunakan Foto Terpilih (<span x-text="mediaPickerSelectedUrls.length"></span>)
+                    Gunakan Media Terpilih (<span x-text="mediaPickerSelectedUrls.length"></span>)
                 </button>
             </div>
         </div>

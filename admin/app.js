@@ -48,7 +48,8 @@ function adminApp() {
         // Media Library Picker Modal States
         showMediaPickerModal: false,
         mediaPickerTargetProductId: null,
-        mediaPickerTargetType: 'gallery', // 'gallery', 'promo', 'replace_index'
+        mediaPickerTargetType: 'gallery', // 'gallery', 'promo', 'replace_index', 'video', 'product_form_video'
+        mediaTypeFilter: 'all', // 'all', 'image', 'video'
         mediaPickerReplaceIndex: null,
         mediaPickerSelectedUrls: [],
 
@@ -634,9 +635,16 @@ function adminApp() {
             alert('URL disalin: ' + text);
         },
         filteredMedia() {
-            if(!this.mediaSearch) return this.mediaItems;
+            let list = Array.isArray(this.mediaItems) ? this.mediaItems : [];
+            const isVideoTarget = this.mediaPickerTargetType === 'video' || this.mediaPickerTargetType === 'product_form_video';
+            if (isVideoTarget || this.mediaTypeFilter === 'video') {
+                list = list.filter(m => (m.type === 'video' || (m.path && /\.(mp4|webm|mov|mkv)$/i.test(m.path))));
+            } else if (this.mediaTypeFilter === 'image') {
+                list = list.filter(m => !(m.type === 'video' || (m.path && /\.(mp4|webm|mov|mkv)$/i.test(m.path))));
+            }
+            if (!this.mediaSearch) return list;
             let q = this.mediaSearch.toLowerCase();
-            return this.mediaItems.filter(m => m.name.toLowerCase().includes(q));
+            return list.filter(m => m.name.toLowerCase().includes(q));
         },
         formatBytes(bytes) {
             if (bytes === 0) return '0 Bytes';
@@ -1486,20 +1494,35 @@ function adminApp() {
         },
 
         openEditProduct(p) {
-            this.editingId = p.id;
+            const latest = (Array.isArray(this.products) ? this.products.find(x => String(x.id) === String(p.id)) : null) || p;
+            this.editingId = latest.id;
             let specs = [];
-            if (p.specs) { for (let k in p.specs) specs.push({key: k, val: p.specs[k]}); }
+            if (latest.specs) { for (let k in latest.specs) specs.push({key: k, val: latest.specs[k]}); }
             if (!specs.length) specs.push({key: '', val: ''});
-            let rawDesc = p.description || p.desc || '';
+            let rawDesc = latest.description || latest.desc || '';
             this.productForm = {
-                id: p.id, name: p.name, category: p.category || 'Mesin Industri', subCategory: p.subCategory || '',
-                price: p.price, priceRange: p.priceRange || '', description: this.cleanDesc(rawDesc),
-                features: (p.features && p.features.length) ? [...p.features] : [''],
-                specs: specs, images: p.images && p.images.length ? [...p.images] : (p.image ? [p.image] : []), existing_video: p.video || '',
-                meta_title: p.meta_title || '', meta_description: p.meta_description || '', slug: p.slug || ''
+                id: latest.id, name: latest.name, category: latest.category || 'Mesin Industri', subCategory: latest.subCategory || '',
+                price: latest.price, priceRange: latest.priceRange || '', description: this.cleanDesc(rawDesc),
+                features: (latest.features && latest.features.length) ? [...latest.features] : [''],
+                specs: specs, images: latest.images && latest.images.length ? [...latest.images] : (latest.image ? [latest.image] : []), existing_video: latest.video || '',
+                meta_title: latest.meta_title || '', meta_description: latest.meta_description || '', slug: latest.slug || ''
             };
             this.resetMedia();
             this.changeView('product_form');
+        },
+
+        removeProductFormVideo() {
+            this.productForm.existing_video = '';
+            this.videoPreview = false;
+            this.videoFile = null;
+            if (this.videoPreviewUrl) {
+                try { URL.revokeObjectURL(this.videoPreviewUrl); } catch(e) {}
+                this.videoPreviewUrl = null;
+            }
+        },
+
+        openMediaPickerForProductFormVideo() {
+            this.openMediaPicker('__product_form__', 'product_form_video');
         },
 
         resetMedia() {
@@ -1555,7 +1578,6 @@ function adminApp() {
             }
             fd.append('images', JSON.stringify(this.productForm.images));
             if (this.videoFile) fd.append('video', this.videoFile);
-            if (this.videoFile) fd.append('video', this.videoFile);
             this.productForm.features.forEach(f => { if (f.trim()) fd.append('features[]', f); });
             this.productForm.specs.forEach(s => {
                 if (s.key.trim() && s.val.trim()) { fd.append('specs_keys[]', s.key); fd.append('specs_vals[]', s.val); }
@@ -1563,7 +1585,12 @@ function adminApp() {
             try {
                 let res = await fetch('api.php?action=save_product', { method: 'POST', body: fd });
                 let data = await res.json();
-                if (res.ok && data.success) { alert('Produk berhasil disimpan!'); this.loadProducts(); this.changeView('products'); }
+                if (res.ok && data.success) {
+                    alert('Produk berhasil disimpan!');
+                    await this.loadProducts();
+                    this.initBulkMedia();
+                    this.changeView('products');
+                }
                 else alert(data.error || 'Gagal menyimpan');
             } catch (e) { alert('Kesalahan jaringan'); }
             this.isSaving = false;
@@ -2390,10 +2417,6 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
         openVideoPreview(product) {
             if (!product) return;
             let videoPath = product.video || (typeof product === 'string' ? product : '');
-            const isVacuum = ((product.name || product.title || '') + ' ' + (product.subCategory || '')).toLowerCase().includes('vacuum');
-            if (videoPath.includes('video_6ac') || videoPath.includes('media_6ac') || !videoPath) {
-                if (isVacuum) videoPath = 'videos/promo_vacuum_frying.mp4';
-            }
             if (!videoPath) {
                 alert('Belum ada video produk yang tersedia untuk diputar.');
                 return;
@@ -2482,6 +2505,22 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
                         item._origImages = [...item.images];
                         item._origPromo = item.promo_image;
                         item._origVideo = item.video;
+
+                        // Immediately update local this.products in memory
+                        if (Array.isArray(this.products)) {
+                            const pIdx = this.products.findIndex(p => String(p.id) === String(item.id));
+                            if (pIdx >= 0) {
+                                this.products[pIdx].images = [...item.images];
+                                this.products[pIdx].promo_image = item.promo_image;
+                                this.products[pIdx].video = item.video;
+                            }
+                        }
+
+                        // Also sync productForm if currently viewing this product
+                        if (String(this.productForm.id) === String(item.id)) {
+                            this.productForm.images = [...item.images];
+                            this.productForm.existing_video = item.video;
+                        }
                     });
                     await this.loadProducts();
                     this.bulkMediaToastText = `${json.updated_count} / ${modifiedItems.length} berhasil diperbarui`;
@@ -2510,7 +2549,11 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
         },
 
         toggleSelectMediaPickerUrl(path) {
-            if (this.mediaPickerTargetType === 'promo' || this.mediaPickerTargetType === 'replace_index') {
+            const isSingle = this.mediaPickerTargetType === 'promo' || 
+                             this.mediaPickerTargetType === 'replace_index' || 
+                             this.mediaPickerTargetType === 'video' || 
+                             this.mediaPickerTargetType === 'product_form_video';
+            if (isSingle) {
                 this.mediaPickerSelectedUrls = [path];
             } else {
                 const idx = this.mediaPickerSelectedUrls.indexOf(path);
@@ -2524,10 +2567,22 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
                 this.showMediaPickerModal = false;
                 return;
             }
+            if (this.mediaPickerTargetType === 'product_form_video') {
+                this.productForm.existing_video = this.mediaPickerSelectedUrls[0];
+                this.videoFile = null;
+                if (this.videoPreviewUrl) {
+                    try { URL.revokeObjectURL(this.videoPreviewUrl); } catch(e) {}
+                    this.videoPreviewUrl = null;
+                }
+                this.showMediaPickerModal = false;
+                return;
+            }
             const item = this.bulkMediaItems.find(p => p.id === this.mediaPickerTargetProductId);
             if (item) {
                 if (this.mediaPickerTargetType === 'promo') {
                     item.promo_image = this.mediaPickerSelectedUrls[0];
+                } else if (this.mediaPickerTargetType === 'video') {
+                    item.video = this.mediaPickerSelectedUrls[0];
                 } else if (this.mediaPickerTargetType === 'replace_index') {
                     if (this.mediaPickerReplaceIndex !== null) {
                         item.images[this.mediaPickerReplaceIndex] = this.mediaPickerSelectedUrls[0];

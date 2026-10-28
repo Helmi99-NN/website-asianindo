@@ -532,7 +532,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/48657037646_0.webp",
             "images/products/48657037646_1.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/48657037646_0.webp",
         "sold": 12
     },
@@ -605,7 +605,7 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/47162044891_0.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/47162044891_0.webp",
         "sold": 55
     },
@@ -994,7 +994,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/44117136952_3.webp",
             "images/products/44117136952_4.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/44117136952_0.webp",
         "sold": 25
     },
@@ -1022,7 +1022,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/43963305789_3.webp",
             "images/products/43963305789_4.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/43963305789_0.webp",
         "sold": 76
     },
@@ -1155,7 +1155,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/43663536813_5.webp",
             "images/products/43663536813_6.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/43663536813_0.webp",
         "sold": 50
     },
@@ -1259,7 +1259,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/43363525334_3.webp",
             "images/products/43363525334_4.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/43363525334_0.webp",
         "sold": 24
     },
@@ -1539,7 +1539,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/42863303439_2.webp",
             "images/products/42863303439_3.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/42863303439_0.webp",
         "sold": 42
     },
@@ -1720,7 +1720,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/42318411920_2.webp",
             "images/products/42318411920_3.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/42318411920_0.webp",
         "sold": 18
     },
@@ -1802,7 +1802,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/42263305456_3.webp",
             "images/products/42263305456_4.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/42263305456_0.webp",
         "sold": 45
     },
@@ -1882,7 +1882,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/42063934893_3.webp",
             "images/products/42063934893_4.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/42063934893_0.webp",
         "sold": 22
     },
@@ -1988,7 +1988,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41963939367_4.webp",
             "images/products/41963939367_5.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/41963939367_0.webp",
         "sold": 242
     },
@@ -2069,7 +2069,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41813297422_3.webp",
             "images/products/41813297422_4.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/41813297422_0.webp",
         "sold": 265
     },
@@ -2307,7 +2307,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41313294609_2.webp",
             "images/products/41313294609_3.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/41313294609_0.webp",
         "sold": 27
     },
@@ -2589,7 +2589,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/40562477376_2.webp",
             "images/products/40562477376_3.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/40562477376_0.webp",
         "sold": 29
     },
@@ -2617,7 +2617,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/40367136920_3.webp",
             "images/products/40367136920_4.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/40367136920_0.webp",
         "sold": 38
     },
@@ -2901,7 +2901,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/29189786844_3.webp",
             "images/products/29189786844_4.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/29189786844_0.webp",
         "sold": 94
     },
@@ -3365,7 +3365,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/25288260659_2.webp",
             "images/products/25288260659_3.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/25288260659_0.webp",
         "sold": 33
     },
@@ -3417,7 +3417,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/24346436426_2.webp",
             "images/products/24346436426_3.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/24346436426_0.webp",
         "sold": 12
     },
@@ -3445,7 +3445,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/24296416070_3.webp",
             "images/products/24296416070_4.webp"
         ],
-        "video": "videos/promo_vacuum_frying.mp4",
+        "video": "videos/video_iklan_produk.mp4",
         "promo_image": "images/products/24296416070_0.webp",
         "sold": 62
     },
