@@ -533,15 +533,36 @@ if ($action === 'get_analytics') {
 
 // Media Library Endpoints
 if ($action === 'get_media') {
+    $videoDir = __DIR__ . '/../videos/';
     if (!is_dir($UPLOAD_DIR)) mkdir($UPLOAD_DIR, 0777, true);
-    $files = array_diff(scandir($UPLOAD_DIR), ['.', '..']);
+    if (!is_dir($videoDir)) mkdir($videoDir, 0777, true);
+
     $media = [];
+    // Scan images/
+    $files = array_diff(scandir($UPLOAD_DIR), ['.', '..']);
     foreach ($files as $file) {
         $path = $UPLOAD_DIR . $file;
         if (is_file($path)) {
+            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            $isVideo = in_array($ext, ['mp4', 'webm', 'mov', 'avi']);
             $media[] = [
                 'name' => $file,
                 'path' => 'images/' . $file,
+                'type' => $isVideo ? 'video' : 'image',
+                'size' => filesize($path),
+                'mtime' => filemtime($path)
+            ];
+        }
+    }
+    // Scan videos/
+    $vfiles = array_diff(scandir($videoDir), ['.', '..']);
+    foreach ($vfiles as $file) {
+        $path = $videoDir . $file;
+        if (is_file($path)) {
+            $media[] = [
+                'name' => $file,
+                'path' => 'videos/' . $file,
+                'type' => 'video',
                 'size' => filesize($path),
                 'mtime' => filemtime($path)
             ];
@@ -557,9 +578,15 @@ if ($action === 'delete_media') {
     $input = json_decode($inputJSON, true) ?? [];
     $filename = $input['filename'] ?? $_POST['filename'] ?? '';
     if ($filename && strpos($filename, '..') === false) {
-        $path = $UPLOAD_DIR . basename($filename);
-        if (file_exists($path) && is_file($path)) {
-            unlink($path);
+        $base = basename($filename);
+        $pathImg = $UPLOAD_DIR . $base;
+        $pathVid = __DIR__ . '/../videos/' . $base;
+        if (file_exists($pathImg) && is_file($pathImg)) {
+            unlink($pathImg);
+            echo json_encode(['success' => true]);
+            exit;
+        } elseif (file_exists($pathVid) && is_file($pathVid)) {
+            unlink($pathVid);
             echo json_encode(['success' => true]);
             exit;
         }
@@ -673,23 +700,7 @@ function healProductImages(&$products) {
             $healed = true;
         }
 
-        // Auto-heal broken video paths
-        $isVacuum = (stripos(($p['name'] ?? '') . ' ' . ($p['subCategory'] ?? ''), 'vacuum') !== false);
-        if (isset($p['video']) && is_string($p['video'])) {
-            $v = trim($p['video']);
-                    $fileExists = ($v !== '' && file_exists(__DIR__ . '/../' . $v));
-        $isBrokenVid = ($v !== '' && (!$fileExists || strpos($v, 'media_6ac') !== false || strpos($v, 'video_6ac') !== false));
-            if ($isBrokenVid && $isVacuum) {
-                $p['video'] = 'videos/promo_vacuum_frying.mp4';
-                $healed = true;
-            } elseif ($isBrokenVid && !file_exists(__DIR__ . '/../' . $v)) {
-                $p['video'] = '';
-                $healed = true;
-            }
-        } elseif ($isVacuum && empty($p['video'])) {
-            $p['video'] = 'videos/promo_vacuum_frying.mp4';
-            $healed = true;
-        }
+        // Video paths set by admin are preserved as-is without forceful override
 
         // Auto-heal promo_image: default to leftmost cover photo if empty
         if ((!isset($p['promo_image']) || trim($p['promo_image']) === '') && !empty($p['images']) && is_array($p['images'])) {

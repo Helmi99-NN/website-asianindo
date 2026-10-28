@@ -61,24 +61,7 @@ foreach ($products as $idx => &$p) {
         $wasChanged = true;
     }
 
-    // Video Healing: make sure all products with videos have valid, physically existing MP4 files
-    $isVacuum = (stripos(($p['name'] ?? '') . ' ' . ($p['subCategory'] ?? ''), 'vacuum') !== false);
-    if (isset($p['video']) && is_string($p['video'])) {
-        $v = trim($p['video']);
-        $fileExists = ($v !== '' && file_exists(__DIR__ . '/' . $v));
-        $isBrokenVid = ($v !== '' && (!$fileExists || strpos($v, 'media_6ac') !== false || strpos($v, 'video_6ac') !== false));
-        if ($isBrokenVid && $isVacuum) {
-            $p['video'] = 'videos/promo_vacuum_frying.mp4';
-            $wasChanged = true;
-        } elseif ($isBrokenVid && !$fileExists) {
-            $p['video'] = '';
-            $wasChanged = true;
-        }
-    } elseif ($isVacuum) {
-        $p['video'] = 'videos/promo_vacuum_frying.mp4';
-        $wasChanged = true;
-    }
-
+    // Video preservation: preserve existing video configuration set by admin
     // Promo Image Healing: default to leftmost cover image
     if ((!isset($p['promo_image']) || trim($p['promo_image']) === '') && !empty($p['images']) && is_array($p['images'])) {
         $p['promo_image'] = $p['images'][0];

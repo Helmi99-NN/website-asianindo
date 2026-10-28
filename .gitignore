@@ -10,5 +10,7 @@ update_socials2.js
 update_socials3.js
 data/*
 !data/whatsapp_knowledge.json
+!data/products.json
+!data/products.js
 database/config.php
 video_promo/

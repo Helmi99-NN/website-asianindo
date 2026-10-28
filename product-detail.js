@@ -66,14 +66,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         return trimmed;
     }
 
-    function sanitizeProductVideo(video, productName, subCategory) {
-        const isVacuum = ((productName || '') + ' ' + (subCategory || '')).toLowerCase().includes('vacuum');
-        if (!video || typeof video !== 'string') return isVacuum ? 'videos/promo_vacuum_frying.mp4' : '';
-        const trimmed = video.trim();
-        if (trimmed.includes('media_6ac') || trimmed.includes('video_6ac') || trimmed.includes('images/media_')) {
-            return isVacuum ? 'videos/promo_vacuum_frying.mp4' : '';
-        }
-        return trimmed;
+    function sanitizeProductVideo(video) {
+        if (!video || typeof video !== 'string') return '';
+        return video.trim();
     }
 
     if (Array.isArray(product.images) && product.images.length > 0) {
@@ -83,10 +78,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Check for product video (Shopee style: placed at the very beginning)
-    let validVideo = sanitizeProductVideo(product.video, product.name || '', product.subCategory || '');
-    if (!validVideo && (product.name || '').toLowerCase().includes('vacuum')) {
-        validVideo = 'videos/promo_vacuum_frying.mp4';
-    }
+    let validVideo = sanitizeProductVideo(product.video);
 
     // Build unified media items array: Video is always index 0 if available!
     const mediaItems = [];
@@ -135,13 +127,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (mainVideo) {
-        mainVideo.addEventListener('error', function() {
-            const isVacuum = ((product.name || '') + ' ' + (product.subCategory || '')).toLowerCase().includes('vacuum');
-            if (isVacuum && !mainVideo.src.includes('videos/promo_vacuum_frying.mp4')) {
-                mainVideo.src = 'videos/promo_vacuum_frying.mp4';
-                mainVideo.load();
-                playProductVideo(false);
-            }
+        mainVideo.addEventListener('error', function(e) {
+            console.warn('Video failed to load:', mainVideo.src, e);
         });
     }
 
@@ -365,11 +352,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Rating
     let starsHtml = '';
-    for (let i = 0; i < product.rating; i++) {
+    const rScore = product.rating || 5;
+    for (let i = 0; i < rScore; i++) {
         starsHtml += '<span class="material-symbols-outlined" style="font-variation-settings: \'FILL\' 1;">star</span>';
     }
     document.getElementById('product-rating').innerHTML = starsHtml;
-    document.getElementById('product-reviews').innerText = `${product.reviews} Penilaian`;
+    const revCount = product.reviews || 0;
+    const soldCount = product.sold || revCount;
+    document.getElementById('product-reviews').innerHTML = `<span class="font-bold text-on-surface">${revCount}</span> Penilaian <span class="text-outline-variant/60 mx-1.5">|</span> <span class="font-bold text-on-surface">${soldCount}</span> Terjual`;
 
     // Capacity Variants Selector (Smart Family Matcher)
     function parseCapValue(p) {
