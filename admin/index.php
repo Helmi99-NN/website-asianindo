@@ -163,8 +163,9 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                     
                     <!-- Tanya Mesin & Chat WA -->
                     <li><a href="#" @click.prevent="changeView('knowledge_qa')" :class="currentView==='knowledge_qa' ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md' : 'text-gray-300 hover:bg-sidebar-hover'" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm group">
-                        <i class="fas fa-brain w-5 text-center text-indigo-400 group-hover:scale-110 transition-transform"></i> Tanya Mesin (Q&A)
-                        <span class="ml-auto bg-gradient-to-r from-emerald-500 to-indigo-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">AI / WA</span>
+                        <i class="fas fa-brain w-5 text-center transition-transform group-hover:scale-110" :class="currentView==='knowledge_qa' ? 'text-white' : 'text-indigo-400 group-hover:text-indigo-300'"></i>
+                        <span class="font-medium whitespace-nowrap truncate">Tanya Mesin</span>
+                        <span class="ml-auto inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider whitespace-nowrap shrink-0 bg-gradient-to-r from-emerald-500 to-indigo-500 text-white shadow-xs">AI / WA</span>
                     </a></li>
                     
                     <li class="pt-4 pb-1 px-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Konten</li>
@@ -732,9 +733,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
                         <!-- Copy Button -->
                         <button type="button" 
-                                @click="copyToClipboard(qaResults.direct_answer ? (qaResults.direct_answer.headline + '
-
-' + qaResults.direct_answer.summary) : qaQuery)"
+                                @click="copyQaDirectAnswer()"
                                 class="inline-flex items-center gap-2 px-3.5 py-2 bg-white hover:bg-gray-50 border border-gray-300 rounded-xl text-xs font-bold text-gray-700 shadow-xs transition-all cursor-pointer">
                             <i :class="qaCopiedText ? 'fas fa-check text-emerald-600' : 'fas fa-copy text-gray-500'"></i>
                             <span x-text="qaCopiedText ? 'Tersalin!' : 'Salin Jawaban'"></span>
@@ -909,8 +908,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
                                         <!-- Answer Note -->
                                         <div class="text-xs sm:text-sm text-gray-800 bg-emerald-50/50 p-3 rounded-lg border border-emerald-100 leading-relaxed font-normal" 
-                                             x-html="wa.answer.replace(/
-/g, '<br>')">
+                                             x-html="formatQaMarkdown(wa.answer)">
                                         </div>
 
                                         <!-- Tags & Copy -->
@@ -1182,8 +1180,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                             </template>
 
                             <div class="text-xs text-gray-800 leading-relaxed font-normal bg-white p-3 rounded-lg border border-gray-200/70" 
-                                 x-html="entry.answer.replace(/
-/g, '<br>')">
+                                 x-html="formatQaMarkdown(entry.answer)">
                             </div>
 
                             <!-- Tags -->

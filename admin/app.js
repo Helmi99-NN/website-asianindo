@@ -2445,6 +2445,17 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
             document.body.removeChild(ta);
         },
 
+        copyQaDirectAnswer() {
+            if (!this.qaResults || !this.qaResults.direct_answer) {
+                this.copyToClipboard(this.qaQuery);
+                return;
+            }
+            const headline = this.qaResults.direct_answer.headline || '';
+            const summary = this.qaResults.direct_answer.summary || '';
+            const text = (headline ? headline + '\n\n' : '') + summary;
+            this.copyToClipboard(text);
+        },
+
         formatQaMarkdown(text) {
             if (!text) return '';
             let html = String(text)
