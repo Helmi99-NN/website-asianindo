@@ -953,9 +953,9 @@
                                         <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
                                             <button type="button" 
                                                     onclick="event.preventDefault(); event.stopPropagation(); window.openCatalogVideoModal('${videoUrl}', '${safeName}', '${pTarget}')" 
-                                                    class="w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-black/70 hover:bg-red-600 backdrop-blur-md flex items-center justify-center text-white border-2 border-white/80 shadow-2xl hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer group/playbtn" 
+                                                    class="w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white/45 hover:bg-white/85 backdrop-blur-[2px] flex items-center justify-center text-primary/80 hover:text-primary border border-white/80 shadow-sm hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer group/playbtn" 
                                                     title="Putar Video ${safeName}">
-                                                <span class="material-symbols-outlined text-2xl sm:text-3xl text-white ml-0.5" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                                                <span class="material-symbols-outlined text-2xl sm:text-3xl text-primary/85 group-hover/playbtn:text-primary ml-0.5 transition-colors" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
                                             </button>
                                         </div>
                                     ` : ''}
@@ -972,9 +972,9 @@
                                         <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
                                             <button type="button" 
                                                     onclick="event.preventDefault(); event.stopPropagation(); window.openCatalogVideoModal('${videoUrl}', '${safeName}', '${pTarget}')" 
-                                                    class="w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-black/70 hover:bg-red-600 backdrop-blur-md flex items-center justify-center text-white border-2 border-white/80 shadow-2xl hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer group/playbtn" 
+                                                    class="w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white/45 hover:bg-white/85 backdrop-blur-[2px] flex items-center justify-center text-primary/80 hover:text-primary border border-white/80 shadow-sm hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer group/playbtn" 
                                                     title="Putar Video ${safeName}">
-                                                <span class="material-symbols-outlined text-2xl sm:text-3xl text-white ml-0.5" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                                                <span class="material-symbols-outlined text-2xl sm:text-3xl text-primary/85 group-hover/playbtn:text-primary ml-0.5 transition-colors" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
                                             </button>
                                         </div>
                                     ` : ''}
@@ -985,7 +985,6 @@
                     ${p.images && p.images.length > 1 ? `<div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10 pointer-events-none opacity-0 group-hover/gallery:opacity-100 transition-opacity duration-300">
                         ${p.images.map((_, i) => `<div class="w-1.5 h-1.5 rounded-full bg-black/40 border border-white/60 shadow-sm"></div>`).join('')}
                     </div>` : ''}
-                    ${hasVideo ? `<button type="button" onclick="event.preventDefault(); event.stopPropagation(); window.openCatalogVideoModal('${videoUrl}', '${safeName}', '${pTarget}')" class="absolute bottom-2 left-2 z-20 bg-black/85 hover:bg-red-600 backdrop-blur-md text-white px-2.5 py-1 rounded-full font-caption text-[10px] sm:text-xs font-bold shadow-md flex items-center gap-1.5 border border-white/30 cursor-pointer transition-colors group/vbtn" title="Tonton Video Produk"><span class="material-symbols-outlined text-[13px] sm:text-[15px] text-red-400 group-hover/vbtn:text-white" style="font-variation-settings: 'FILL' 1;">play_circle</span><span>Putar Video</span></button>` : ''}
                     ${p.badge ? `<div class="absolute top-2 left-2 z-10 ${p.badgeColor} px-2 py-0.5 rounded-full font-caption text-[10px] sm:text-xs font-bold shadow-sm pointer-events-none">${p.badge}</div>` : ''}
                     <div class="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-lg text-primary font-caption border border-primary/15 text-[10px] sm:text-xs shadow-sm pointer-events-none">${p.subCategory}</div>
                 </div>
