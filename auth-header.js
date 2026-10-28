@@ -95,15 +95,7 @@ window.addToCart = async function(product, qty = 1) {
 // Global Buy Now (Direct Checkout)
 window.buyNow = async function(product, qty = 1) {
     try {
-        const sessionRes = await fetch('auth_api.php?action=check_session');
-        const session = await sessionRes.json();
-        
-        if (!session.logged_in) {
-            window.location.href = 'login.html?redirect=' + encodeURIComponent('checkout.html?product_id=' + (product.id || product.slug) + '&qty=' + qty);
-            return;
-        }
-
-        // Store direct buy item in sessionStorage
+        // Store direct buy item in sessionStorage (supports guest checkout without login barrier)
         sessionStorage.setItem('checkout_items', JSON.stringify([{
             product_id: product.id || product.slug,
             product_name: product.name,
@@ -112,6 +104,7 @@ window.buyNow = async function(product, qty = 1) {
             quantity: qty,
             weight_grams: product.weight_grams || 25000
         }]));
+        sessionStorage.setItem('is_from_cart', 'false');
 
         window.location.href = 'checkout.html';
     } catch (e) {

@@ -915,9 +915,15 @@
             const delay = Math.min(index * 80, 400);
             // Compute fallbacks for fields the admin panel may not preserve
             const priceDisplay = p.priceDisplay || (p.price ? 'Rp ' + p.price.toLocaleString('id-ID') : 'Hubungi Kami');
-            const waMsg = p.waMsg || ('Halo, saya tertarik dengan ' + (p.name || ''));
-            const waUrl = `https://wa.me/6285335850517?text=${encodeURIComponent(waMsg)}`;
             const pTarget = p.slug || p.id;
+            const capText = formatProductCapacity(p);
+            const waMsg = `Halo Admin CV Asianindo, saya melihat produk ini di katalog website:\n` +
+                          `• *Produk:* ${p.name || ''}\n` +
+                          `• *Kapasitas:* ${capText}\n` +
+                          `• *Harga Pabrik:* ${priceDisplay}\n` +
+                          `• *Link Produk:* https://asianindomachine.com/product.html?id=${pTarget}\n\n` +
+                          `Saya ingin minta penawaran harga resmi, ketersediaan stok, dan info pengirimannya. Terima kasih!`;
+            const waUrl = `https://wa.me/6285335850517?text=${encodeURIComponent(waMsg)}`;
             const isVacuum = (p.name || '').toLowerCase().includes('vacuum') || (p.subCategory || '').toLowerCase().includes('vacuum');
             let videoUrl = (p.video && String(p.video).trim() !== '') ? String(p.video).trim() : '';
             if (videoUrl.includes('video_6ac') || videoUrl.includes('media_6ac')) {

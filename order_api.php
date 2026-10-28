@@ -187,12 +187,7 @@ if ($action === 'get_shipping_options' || $action === 'calculate_shipping') {
     exit;
 }
 
-if (!$customer_id) {
-    echo json_encode(['success' => false, 'error' => 'Silakan login terlebih dahulu.']);
-    exit;
-}
-
-// === CREATE ORDER ===
+// === CREATE ORDER (Supports Seamless Guest Checkout) ===
 if ($action === 'create_order') {
     $d = getInput();
     $items = $d['items'] ?? [];
@@ -207,6 +202,44 @@ if ($action === 'create_order') {
 
     $shipping_name = trim($d['shipping_name'] ?? $_SESSION['customer_name'] ?? '');
     $shipping_phone = trim($d['shipping_phone'] ?? '');
+
+    // Guest Customer Auto-Resolver
+    if (!$customer_id) {
+        if (empty($shipping_phone)) {
+            echo json_encode(['success' => false, 'error' => 'Nomor WhatsApp / HP wajib diisi.']);
+            exit;
+        }
+
+        $cleanPhone = preg_replace('/[^0-9]/', '', $shipping_phone);
+        try {
+            $stmt_c = $pdo->prepare("SELECT id, name, email FROM customers WHERE phone LIKE ? OR phone LIKE ? LIMIT 1");
+            $stmt_c->execute(['%' . substr($cleanPhone, -9), $cleanPhone]);
+            $foundCust = $stmt_c->fetch(PDO::FETCH_ASSOC);
+            if ($foundCust) {
+                $customer_id = (int)$foundCust['id'];
+                $_SESSION['customer_id'] = $customer_id;
+                $_SESSION['customer_name'] = $foundCust['name'];
+                $_SESSION['customer_email'] = $foundCust['email'];
+            } else {
+                $guestEmail = 'guest_' . $cleanPhone . '_' . time() . '@asianindomachine.com';
+                $dummyHash = password_hash(bin2hex(random_bytes(8)), PASSWORD_DEFAULT);
+                $ins = $pdo->prepare("INSERT INTO customers (name, email, phone, password_hash, address, city, province, postal_code, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?,NOW(),NOW())");
+                $ins->execute([$shipping_name ?: 'Pelanggan Asianindo', $guestEmail, $cleanPhone, $dummyHash, $d['shipping_address'] ?? '', $d['shipping_city'] ?? '', $d['shipping_province'] ?? '', $d['shipping_postal_code'] ?? '']);
+                $customer_id = (int)$pdo->lastInsertId();
+                $_SESSION['customer_id'] = $customer_id;
+                $_SESSION['customer_name'] = $shipping_name ?: 'Pelanggan Asianindo';
+                $_SESSION['customer_email'] = $guestEmail;
+            }
+        } catch (Throwable $eCust) {
+            error_log("Guest customer creation notice: " . $eCust->getMessage());
+        }
+    }
+
+    if (!$customer_id) {
+        echo json_encode(['success' => false, 'error' => 'Silakan isi nomor WhatsApp Anda terlebih dahulu.']);
+        exit;
+    }
+
     $shipping_address = trim($d['shipping_address'] ?? '');
     $shipping_city = trim($d['shipping_city'] ?? '');
     $shipping_province = trim($d['shipping_province'] ?? '');
@@ -403,6 +436,11 @@ if ($action === 'create_order') {
         }
         echo json_encode(['success' => false, 'error' => 'Gagal membuat pesanan: ' . $e->getMessage()]);
     }
+    exit;
+}
+
+if (!$customer_id) {
+    echo json_encode(['success' => false, 'error' => 'Silakan login terlebih dahulu.']);
     exit;
 }
 

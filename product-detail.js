@@ -371,10 +371,109 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('product-rating').innerHTML = starsHtml;
     document.getElementById('product-reviews').innerText = `${product.reviews} Penilaian`;
 
-    // Action buttons
+    // Capacity Variants Selector (Smart Family Matcher)
+    function parseCapValue(p) {
+        const name = (p.name || '').toLowerCase();
+        const cap = (p.capacity || '').toLowerCase();
+        const str = name + ' ' + cap;
+        let m = str.match(/(\d+(?:[.,]\d+)?)\s*(?:-|s\/d|sampai)?\s*(?:\d+(?:[.,]\d+)?)?\s*ton\b/i);
+        if (m) return parseFloat(m[1].replace(',', '.')) * 1000;
+        m = str.match(/(\d+(?:[.,]\d+)?)\s*(?:-|s\/d|sampai)?\s*(?:\d+(?:[.,]\d+)?)?\s*kg\b/i);
+        if (m) return parseFloat(m[1].replace(',', '.'));
+        m = str.match(/(\d+(?:[.,]\d+)?)\s*(?:-|s\/d|sampai)?\s*(?:\d+(?:[.,]\d+)?)?\s*(?:liter|ltr|l)\b/i);
+        if (m) return parseFloat(m[1].replace(',', '.'));
+        m = str.match(/(\d+)\s*(?:rak|loyang|butir)\b/i);
+        if (m) return parseFloat(m[1]);
+        return 99999;
+    }
+
+    function renderCapacityVariants() {
+        const container = document.getElementById('capacity-variants-container');
+        const listEl = document.getElementById('capacity-variants-list');
+        if (!container || !listEl) return;
+
+        const nameLower = (product.name || '').toLowerCase();
+        let familyKeyword = '';
+        const keywords = ['vacuum frying', 'pirolisis', 'spray dryer', 'roasting kopi', 'pasteurisasi', 'evaporator', 'retort', 'pencacah', 'dehydrator', 'vacuum drying', 'penepung', 'pelet', 'peniris minyak', 'spinner'];
+        for (let kw of keywords) {
+            if (nameLower.includes(kw)) {
+                familyKeyword = kw;
+                break;
+            }
+        }
+        if (!familyKeyword && product.subCategory) {
+            familyKeyword = product.subCategory.toLowerCase();
+        }
+        if (!familyKeyword) return;
+
+        const allProducts = window.CATALOG_PRODUCTS || products;
+        const siblings = allProducts.filter(p => {
+            const sName = (p.name || '').toLowerCase();
+            const sPrice = typeof p.price === 'number' ? p.price : parseInt(String(p.price || '0').replace(/\D/g, ''), 10);
+            const isAcc = (sPrice > 0 && sPrice < 1500000) && /\b(karet|seal|sparepart|onderdil|baut|selang)\b/i.test(sName);
+            if (isAcc) return false;
+            return sName.includes(familyKeyword);
+        });
+
+        if (siblings.length <= 1) return;
+
+        siblings.sort((a, b) => parseCapValue(a) - parseCapValue(b));
+
+        const seenCap = new Set();
+        const uniqueVariants = [];
+        siblings.forEach(s => {
+            let capLabel = s.capacity || '';
+            const m = (s.name || '').match(/(\d+(?:[.,]\d+)?\s*(?:kg|liter|ton|rak|loyang))/i);
+            if (m) capLabel = m[1].replace('.', ',');
+            if (!capLabel) capLabel = 'Standar';
+            const capKey = capLabel.toLowerCase();
+            if (!seenCap.has(capKey)) {
+                seenCap.add(capKey);
+                uniqueVariants.push({ product: s, label: capLabel });
+            }
+        });
+
+        if (uniqueVariants.length <= 1) return;
+
+        let html = '';
+        uniqueVariants.forEach(item => {
+            const isCurrent = (item.product.id === product.id || item.product.slug === product.id || item.product.id === product.slug);
+            const targetId = item.product.slug || item.product.id;
+            if (isCurrent) {
+                html += `<span class="px-3 py-1.5 rounded-xl bg-primary text-white text-xs font-bold shadow-sm border border-primary flex items-center gap-1 cursor-default"><span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">check_circle</span><span>${item.label}</span></span>`;
+            } else {
+                html += `<a href="product.html?id=${targetId}" class="px-3 py-1.5 rounded-xl bg-white hover:bg-primary/5 text-gray-800 hover:text-primary text-xs font-semibold border border-gray-300 hover:border-primary transition-all shadow-2xs hover:shadow-xs">${item.label}</a>`;
+            }
+        });
+
+        listEl.innerHTML = html;
+        container.classList.remove('hidden');
+    }
+
+    renderCapacityVariants();
+
+    // Action buttons & Formatted WhatsApp Lead Message
     const waNumber = "6285335850517";
-    const waMessage = encodeURIComponent(product.waMsg || `Halo, saya tertarik dengan ${product.name}`);
-    document.getElementById('btn-whatsapp').href = `https://wa.me/${waNumber}?text=${waMessage}`;
+    const productPriceText = product.priceDisplay || (product.price ? 'Rp ' + Number(product.price).toLocaleString('id-ID') : 'Hubungi Kami');
+    const productCapText = product.capacity || '-';
+    const currentUrl = window.location.href;
+    const waOrderMessage = `*FORM PEMESANAN MESIN - CV ASIANINDO*\n` +
+        `----------------------------------------\n` +
+        `Halo Admin Asianindo, saya ingin memesan / konsultasi mesin berikut:\n\n` +
+        `• *Nama Produk:* ${product.name}\n` +
+        `• *Kapasitas:* ${productCapText}\n` +
+        `• *Harga Pabrik:* ${productPriceText}\n` +
+        `• *Jumlah:* 1 Unit\n` +
+        `• *Link Produk:* ${currentUrl}\n\n` +
+        `Mohon dibantu info:\n` +
+        `1. Ketersediaan stok / estimasi waktu fabrikasi\n` +
+        `2. Ongkos kirim kargo ke alamat saya\n` +
+        `3. Nomor rekening resmi CV Asianindo / Surat Penawaran Resmi\n\n` +
+        `Terima kasih!`;
+    const waBtn = document.getElementById('btn-whatsapp');
+    if (waBtn) {
+        waBtn.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(waOrderMessage)}`;
+    }
 
     const btnBuyNow = document.getElementById('btn-buy-now');
     if (btnBuyNow) {

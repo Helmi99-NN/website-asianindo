@@ -130,28 +130,25 @@
                 if(!resAuth.ok) throw new Error();
                 const dataAuth = await resAuth.json();
                 if(!dataAuth.success) {
-                    window.location.href = 'login.html?redirect=checkout.html';
-                    return;
-                }
-                
-                // Pre-fill customer data
-                const user = dataAuth.customer || dataAuth.user;
-                if(user) {
-                    if(user.name) document.getElementById('ship_name').value = user.name;
-                    if(user.phone) document.getElementById('ship_phone').value = user.phone;
-                    if(user.address) document.getElementById('ship_address').value = user.address;
-                    if(user.postal_code) document.getElementById('ship_postal').value = user.postal_code;
-
+                    // Guest checkout allowed!
                     if (typeof setupSearchableWilayah === 'function') {
-                        setupSearchableWilayah('ship_province', 'ship_city', 'ship_district', 'ship_village', 'ship_postal', user.province || '', user.city || '', user.district || '', user.village || '', updateShippingOptions);
+                        setupSearchableWilayah('ship_province', 'ship_city', 'ship_district', 'ship_village', 'ship_postal', '', '', '', '', updateShippingOptions);
                     }
-                } else if (typeof setupSearchableWilayah === 'function') {
-                    setupSearchableWilayah('ship_province', 'ship_city', 'ship_district', 'ship_village', 'ship_postal', '', '', '', '', updateShippingOptions);
-                }
-            } catch(e) {
-                console.error("Auth check failed", e);
-                if (typeof setupSearchableWilayah === 'function') {
-                    setupSearchableWilayah('ship_province', 'ship_city', 'ship_district', 'ship_village', 'ship_postal', '', '', '', '', updateShippingOptions);
+                } else {
+                    // Pre-fill customer data
+                    const user = dataAuth.customer || dataAuth.user;
+                    if(user) {
+                        if(user.name) document.getElementById('ship_name').value = user.name;
+                        if(user.phone) document.getElementById('ship_phone').value = user.phone;
+                        if(user.address) document.getElementById('ship_address').value = user.address;
+                        if(user.postal_code) document.getElementById('ship_postal').value = user.postal_code;
+
+                        if (typeof setupSearchableWilayah === 'function') {
+                            setupSearchableWilayah('ship_province', 'ship_city', 'ship_district', 'ship_village', 'ship_postal', user.province || '', user.city || '', user.district || '', user.village || '', updateShippingOptions);
+                        }
+                    } else if (typeof setupSearchableWilayah === 'function') {
+                        setupSearchableWilayah('ship_province', 'ship_city', 'ship_district', 'ship_village', 'ship_postal', '', '', '', '', updateShippingOptions);
+                    }
                 }
             }
 
@@ -498,6 +495,110 @@
             if(finalTotalDisplayEl) finalTotalDisplayEl.textContent = formatRupiah(totalToPayNow);
         }
 
+        async function placeOrderViaWhatsApp() {
+            const btnWa = document.getElementById('btn-wa-order');
+            
+            // Validate basic inputs
+            const reqFields = ['ship_name', 'ship_phone', 'ship_address', 'ship_city', 'ship_province'];
+            for(let f of reqFields) {
+                if(!document.getElementById(f).value.trim()) {
+                    alert('Harap lengkapi nama, nomor WhatsApp, dan alamat pengiriman terlebih dahulu.');
+                    document.getElementById(f).focus();
+                    return;
+                }
+            }
+
+            if(btnWa) {
+                btnWa.disabled = true;
+                btnWa.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">sync</span> Memproses Pesanan...';
+            }
+
+            const fd = new FormData();
+            fd.append('action', 'create_order');
+            fd.append('items', JSON.stringify(checkoutItems));
+            fd.append('is_from_cart', isFromCart);
+            fd.append('shipping_name', document.getElementById('ship_name').value);
+            let fullShipAddress = document.getElementById('ship_address').value;
+            const shipVill = document.getElementById('ship_village') ? document.getElementById('ship_village').value.trim() : '';
+            const shipDist = document.getElementById('ship_district') ? document.getElementById('ship_district').value.trim() : '';
+            if (shipVill && !fullShipAddress.toLowerCase().includes(shipVill.toLowerCase())) {
+                fullShipAddress = fullShipAddress ? `${fullShipAddress}, Kel. ${shipVill}` : `Kel. ${shipVill}`;
+            }
+            if (shipDist && !fullShipAddress.toLowerCase().includes(shipDist.toLowerCase())) {
+                fullShipAddress = fullShipAddress ? `${fullShipAddress}, Kec. ${shipDist}` : `Kec. ${shipDist}`;
+            }
+            fd.append('shipping_address', fullShipAddress);
+            fd.append('shipping_city', document.getElementById('ship_city').value);
+            fd.append('shipping_province', document.getElementById('ship_province').value);
+            fd.append('shipping_postal_code', document.getElementById('ship_postal').value);
+            fd.append('shipping_cost', shippingCost);
+            fd.append('expedition', selectedExpedition);
+            fd.append('payment_scheme', selectedPaymentScheme);
+            fd.append('payment_method_code', selectedPaymentMethod);
+            fd.append('payment_gateway', selectedPaymentGateway);
+            fd.append('payment_fee', paymentFee);
+            fd.append('notes', document.getElementById('notes').value);
+
+            let createdOrderNum = '';
+            try {
+                const res = await fetch('order_api.php?action=create_order', { method: 'POST', body: fd });
+                const data = await res.json();
+                if(data.success) {
+                    createdOrderNum = data.order_number;
+                    if(isFromCart) sessionStorage.removeItem('checkout_items');
+                }
+            } catch(e) {
+                console.warn('Background order creation notice:', e);
+            }
+
+            // Build complete WhatsApp message
+            const custName = document.getElementById('ship_name').value.trim();
+            const custPhone = document.getElementById('ship_phone').value.trim();
+            const city = document.getElementById('ship_city').value.trim();
+            const prov = document.getElementById('ship_province').value.trim();
+
+            let itemsSummary = '';
+            let totalItemPrice = 0;
+            checkoutItems.forEach((it, idx) => {
+                const itemTotal = (it.price || 0) * (it.quantity || 1);
+                totalItemPrice += itemTotal;
+                itemsSummary += `${idx + 1}. *${it.product_name || it.name}*\n   Jumlah: ${it.quantity} Unit | Harga: ${formatRupiah(itemTotal)}\n`;
+            });
+
+            const schemeLabel = selectedPaymentScheme === 'dp50' ? 'Uang Muka / DP 50%' : 'Pelunasan Penuh 100%';
+            const currentBill = selectedPaymentScheme === 'dp50' ? Math.ceil((totalItemPrice + shippingCost) * 0.5) : (totalItemPrice + shippingCost);
+
+            const waMsg = `*PESANAN MESIN BARU - CV ASIANINDO*\n` +
+                `----------------------------------------\n` +
+                (createdOrderNum ? `📋 *No. Pesanan:* *${createdOrderNum}*\n\n` : '') +
+                `👤 *DATA PEMESAN:*\n` +
+                `• *Nama:* ${custName}\n` +
+                `• *No. WhatsApp:* ${custPhone}\n` +
+                `• *Alamat Pengiriman:* ${fullShipAddress}, ${city}, ${prov}\n\n` +
+                `📦 *PRODUK YANG DIPESAN:*\n` +
+                itemsSummary + `\n` +
+                `🚚 *PENGIRIMAN:*\n` +
+                `• *Ekspedisi:* ${selectedExpedition}\n` +
+                `• *Estimasi Ongkir:* ${shippingCost > 0 ? formatRupiah(shippingCost) : 'Menunggu Konfirmasi Admin'}\n\n` +
+                `💳 *SKEMA PEMBAYARAN:*\n` +
+                `• *Pilihan Skema:* ${schemeLabel}\n` +
+                `• *Estimasi Tagihan Transfer:* *${formatRupiah(currentBill)}*\n\n` +
+                (document.getElementById('notes').value.trim() ? `📝 *Catatan Tambahan:*\n${document.getElementById('notes').value.trim()}\n\n` : '') +
+                (createdOrderNum ? `🔗 *Link Pembayaran / Invoice:*\nhttps://asianindomachine.com/pembayaran.html?order_number=${createdOrderNum}\n\n` : '') +
+                `Halo Admin CV Asianindo, saya telah mengisi formulir pesanan di atas melalui website Asianindo. Mohon dibantu konfirmasi pesanan, invoice resmi, dan jadwal kirimnya. Terima kasih!`;
+
+            window.open(`https://wa.me/6285335850517?text=${encodeURIComponent(waMsg)}`, '_blank');
+
+            if(createdOrderNum) {
+                window.location.href = `pembayaran.html?order_number=${createdOrderNum}`;
+            } else {
+                if(btnWa) {
+                    btnWa.disabled = false;
+                    btnWa.innerHTML = '<span class="material-symbols-outlined text-lg">chat</span><span>Order Cepat via WhatsApp</span>';
+                }
+            }
+        }
+
         async function placeOrder() {
             const btn = document.getElementById('btn-submit');
             
@@ -618,6 +719,13 @@
             <div class="flex-1 space-y-6">
                 <!-- Alamat Pengiriman -->
                 <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="mb-4 bg-primary/5 border border-primary/20 rounded-xl p-3 flex items-center justify-between text-xs text-gray-700">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-base">person</span>
+                            <span>Bisa belanja langsung tanpa wajib akun/login.</span>
+                        </div>
+                        <a href="login.html?redirect=checkout.html" class="text-primary font-bold hover:underline">Sudah punya akun? Masuk &rarr;</a>
+                    </div>
                     <h2 class="text-lg font-heading font-bold mb-4 flex items-center gap-2 text-gray-900">
                         <span class="material-symbols-outlined text-primary">location_on</span>
                         Alamat Pengiriman
