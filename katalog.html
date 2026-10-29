@@ -799,8 +799,8 @@
         }
         fetchLiveViews();
         // Contextual floating WhatsApp button if query parameter exists
-        const urlParams = new URLSearchParams(window.location.search);
-        const searchQ = urlParams.get('q');
+        const searchParams = new URLSearchParams(window.location.search);
+        const searchQ = searchParams.get('q');
         if (searchQ) {
             const floatingWa = document.querySelector('.wa-pulse');
             if (floatingWa) {

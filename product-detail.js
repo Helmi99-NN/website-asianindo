@@ -487,8 +487,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Update ALL WhatsApp buttons on the product page (including floating button wa-pulse)
     document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
         link.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(waOrderMessage)}`;
-    }););
-    }
+    });
 
     const btnAddCart = document.getElementById('btn-add-cart');
     if (btnAddCart) {

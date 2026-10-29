@@ -150,6 +150,10 @@
                         setupSearchableWilayah('ship_province', 'ship_city', 'ship_district', 'ship_village', 'ship_postal', '', '', '', '', updateShippingOptions);
                     }
                 }
+            } catch(e) {
+                if (typeof setupSearchableWilayah === 'function') {
+                    setupSearchableWilayah('ship_province', 'ship_city', 'ship_district', 'ship_village', 'ship_postal', '', '', '', '', updateShippingOptions);
+                }
             }
 
             // Load items
