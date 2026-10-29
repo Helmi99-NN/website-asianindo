@@ -359,7 +359,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('product-rating').innerHTML = starsHtml;
     const revCount = product.reviews || 0;
     const soldCount = product.sold || revCount;
-    document.getElementById('product-reviews').innerHTML = `<span class="font-bold text-on-surface">${revCount}</span> Penilaian <span class="text-outline-variant/60 mx-1.5">|</span> <span class="font-bold text-on-surface">${soldCount}</span> Terjual`;
+    document.getElementById('product-reviews').innerHTML = `${revCount} Penilaian`;
 
     // Capacity Variants Selector (Smart Family Matcher)
     function parseCapValue(p) {
