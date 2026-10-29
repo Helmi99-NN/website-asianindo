@@ -798,6 +798,16 @@
                 });
         }
         fetchLiveViews();
+        // Contextual floating WhatsApp button if query parameter exists
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchQ = urlParams.get('q');
+        if (searchQ) {
+            const floatingWa = document.querySelector('.wa-pulse');
+            if (floatingWa) {
+                const floatingMsg = `Halo Admin CV Asianindo, saya sedang mencari mesin *${searchQ}* di katalog website Asianindo. Boleh minta rekomendasi kapasitas dan penawaran resminya? Terima kasih!`;
+                floatingWa.href = `https://wa.me/6285335850517?text=${encodeURIComponent(floatingMsg)}`;
+            }
+        }
 
         // Asynchronously load the latest products to bypass CDN cache
         fetch('data/products.json?v=' + new Date().getTime())
@@ -916,13 +926,16 @@
             // Compute fallbacks for fields the admin panel may not preserve
             const priceDisplay = p.priceDisplay || (p.price ? 'Rp ' + p.price.toLocaleString('id-ID') : 'Hubungi Kami');
             const pTarget = p.slug || p.id;
-            const capText = formatProductCapacity(p);
-            const waMsg = `Halo Admin CV Asianindo, saya melihat produk ini di katalog website:\n` +
+            let capText = formatProductCapacity(p);
+            capText = (capText || '-').replace(/\s*\(\s*on proses\s*\)/i, '').replace(/\s*on proses/i, '').trim();
+            if (!capText) capText = '-';
+
+            const waMsg = `Halo Admin CV Asianindo, saya melihat produk ini di katalog website dan ingin konsultasi / tanya penawaran:\n\n` +
                           `• *Produk:* ${p.name || ''}\n` +
                           `• *Kapasitas:* ${capText}\n` +
-                          `• *Harga Pabrik:* ${priceDisplay}\n` +
+                          `• *Harga Resmi Pabrik:* ${priceDisplay}\n` +
                           `• *Link Produk:* https://asianindomachine.com/product.html?id=${pTarget}\n\n` +
-                          `Saya ingin minta penawaran harga resmi, ketersediaan stok, dan info pengirimannya. Terima kasih!`;
+                          `Boleh minta info penawaran harga resmi, ketersediaan unit, dan konsultasi spesifikasinya? Terima kasih!`;
             const waUrl = `https://wa.me/6285335850517?text=${encodeURIComponent(waMsg)}`;
             let videoUrl = (p.video && String(p.video).trim() !== '') ? String(p.video).trim() : '';
             const hasVideo = Boolean(videoUrl);
@@ -1641,7 +1654,9 @@
                 detailBtn.href = `product.html?id=${productId}`;
             }
             if (waBtn && title) {
-                const waText = `Halo Admin Asianindo, saya melihat video untuk produk "${title}". Boleh minta info spesifikasi dan penawarannya?`;
+                const waText = `Halo Admin CV Asianindo, saya melihat video untuk produk "${title}" di katalog website Asianindo:\n\n` +
+                               (productId ? `• *Link Produk:* https://asianindomachine.com/product.html?id=${productId}\n\n` : '') +
+                               `Boleh minta info penawaran resmi, spesifikasi teknis, dan ketersediaan unitnya? Terima kasih!`;
                 waBtn.href = `https://wa.me/6285335850517?text=${encodeURIComponent(waText)}`;
             }
 

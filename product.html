@@ -614,7 +614,19 @@
 
         function renderProductCard(p, index) {
             const delay = Math.min(index * 80, 400);
-            const waUrl = `https://wa.me/6285335850517?text=${encodeURIComponent(p.waMsg)}`;
+            const pTarget = p.slug || p.id;
+            const priceDisplay = p.priceDisplay || (p.price ? 'Rp ' + Number(p.price).toLocaleString('id-ID') : 'Hubungi Kami');
+            let capText = (p.capacity || '').replace(/<[^>]*>?/gm, '').trim();
+            capText = (capText || '-').replace(/\s*\(\s*on proses\s*\)/i, '').replace(/\s*on proses/i, '').trim();
+            if (!capText) capText = '-';
+
+            const waMsg = `Halo Admin CV Asianindo, saya melihat produk ini di website dan ingin konsultasi / pemesanan:\n\n` +
+                          `• *Produk:* ${p.name || ''}\n` +
+                          `• *Kapasitas:* ${capText}\n` +
+                          `• *Harga Resmi Pabrik:* ${priceDisplay}\n` +
+                          `• *Link Produk:* https://asianindomachine.com/product.html?id=${pTarget}\n\n` +
+                          `Boleh minta info penawaran harga resmi dan ketersediaan stoknya? Terima kasih!`;
+            const waUrl = `https://wa.me/6285335850517?text=${encodeURIComponent(waMsg)}`;
             return `
             <article class="product-card bg-white rounded-2xl border border-outline-variant/15 overflow-hidden flex flex-col group reveal" style="transition-delay: ${delay}ms;">
                 <div class="aspect-[4/3] bg-surface-container-low relative overflow-hidden">
