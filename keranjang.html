@@ -142,25 +142,38 @@
         }
 
         async function checkLoginAndLoad() {
-            try {
-                const res = await fetch('auth_api.php?action=check_session');
-                const data = await res.json();
-                
-                if (!data.logged_in) {
-                    window.location.href = 'login.html?redirect=keranjang.html';
-                    return;
-                }
-
-                await loadCart();
-            } catch (e) {
-                window.location.href = 'login.html?redirect=keranjang.html';
-            }
+            // Guest Friendly: load cart immediately without login barrier
+            await loadCart();
         }
 
         async function loadCart() {
             try {
                 const res = await fetch('cart_api.php?action=get_cart');
                 const data = await res.json();
+                let serverItems = (data.success && data.items) ? data.items : [];
+                
+                // Merge guest cart items from localStorage
+                let guestItems = [];
+                try {
+                    guestItems = JSON.parse(localStorage.getItem('guest_cart') || '[]');
+                } catch(e) {}
+
+                guestItems.forEach(g => {
+                    const exists = serverItems.find(s => String(s.product_id) === String(g.product_id));
+                    if (!exists) {
+                        serverItems.push({
+                            product_id: g.product_id,
+                            product_name: g.product_name,
+                            product_image: g.product_image,
+                            product_price: g.product_price,
+                            quantity: g.quantity,
+                            weight_grams: g.weight_grams,
+                            capacity: g.capacity
+                        });
+                    }
+                });
+                data.success = true;
+                data.items = serverItems;
                 
                 const loading = document.getElementById('loading-state');
                 const emptyState = document.getElementById('empty-state');
@@ -301,6 +314,38 @@
             const selectAllBottom = document.getElementById('select-all-bottom');
             if (selectAllTop) selectAllTop.checked = allSelected;
             if (selectAllBottom) selectAllBottom.checked = allSelected;
+        }
+
+        
+        function orderViaWhatsAppFast() {
+            const selected = cartItems.filter(i => i.selected);
+            if (selected.length === 0) {
+                alert('Pilih minimal satu mesin untuk dipesan via WhatsApp.');
+                return;
+            }
+
+            let summaryText = '';
+            let totalNominal = 0;
+            selected.forEach((item, idx) => {
+                const itemPrice = parseInt(item.product_price || item.price || 0);
+                const itemQty = parseInt(item.quantity || 1);
+                const sub = itemPrice * itemQty;
+                totalNominal += sub;
+                summaryText += `${idx + 1}. *${item.product_name}*\n   • Jumlah: ${itemQty} Unit\n   • Subtotal: ${formatRupiah(sub)}\n`;
+            });
+
+            const waMsg = `*FORM PEMESANAN KERANJANG MESIN - CV ASIANINDO*\n` +
+                `----------------------------------------\n` +
+                `Halo Admin Asianindo, saya ingin memesan mesin-mesin berikut dari keranjang website:\n\n` +
+                summaryText + `\n` +
+                `• *Total Estimasi:* ${formatRupiah(totalNominal)}\n\n` +
+                `Mohon dibantu info:\n` +
+                `1. Ketersediaan stok / waktu fabrikasi\n` +
+                `2. Ongkos kirim kargo ke lokasi saya\n` +
+                `3. Nomor rekening resmi CV Asianindo / Surat Penawaran Resmi\n\n` +
+                `Terima kasih!`;
+
+            window.open(`https://wa.me/6285335850517?text=${encodeURIComponent(waMsg)}`, '_blank');
         }
 
         function proceedToCheckout() {

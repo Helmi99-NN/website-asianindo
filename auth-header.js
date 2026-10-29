@@ -56,39 +56,68 @@ async function updateCartCount() {
     }
 }
 
-// Global Add to Cart function
+// Global Add to Cart function (Guest Friendly - NO LOGIN REQUIRED)
 window.addToCart = async function(product, qty = 1) {
     try {
-        const sessionRes = await fetch('auth_api.php?action=check_session');
-        const session = await sessionRes.json();
-        
-        if (!session.logged_in) {
-            window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.href);
-            return;
+        let isLogged = false;
+        try {
+            const sessionRes = await fetch('auth_api.php?action=check_session');
+            const session = await sessionRes.json();
+            isLogged = Boolean(session && session.logged_in);
+        } catch(e) {
+            isLogged = false;
         }
 
-        const formData = new FormData();
-        formData.append('product_id', product.id || product.slug || '');
-        formData.append('product_name', product.name || '');
-        formData.append('product_image', (product.images && product.images[0]) || product.image || 'images/placeholder.webp');
-        formData.append('product_price', product.price || 0);
-        formData.append('quantity', qty);
-        formData.append('weight_grams', product.weight_grams || 25000); // default 25kg
+        const pItem = {
+            product_id: product.id || product.slug || '',
+            product_name: product.name || '',
+            product_image: (product.images && product.images[0]) || product.image || 'images/placeholder.webp',
+            product_price: product.price || 0,
+            quantity: qty,
+            weight_grams: product.weight_grams || 25000,
+            capacity: product.capacity || ''
+        };
 
-        const res = await fetch('cart_api.php?action=add_to_cart', {
-            method: 'POST',
-            body: formData
-        });
-        const data = await res.json();
+        if (isLogged) {
+            const formData = new FormData();
+            formData.append('product_id', pItem.product_id);
+            formData.append('product_name', pItem.product_name);
+            formData.append('product_image', pItem.product_image);
+            formData.append('product_price', pItem.product_price);
+            formData.append('quantity', pItem.quantity);
+            formData.append('weight_grams', pItem.weight_grams);
 
-        if (data.success) {
-            showToast(`"${product.name}" berhasil ditambahkan ke keranjang!`, 'success');
-            updateCartCount();
+            const res = await fetch('cart_api.php?action=add_to_cart', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast(`"${product.name}" berhasil ditambahkan ke keranjang!`, 'success');
+                if (typeof updateCartCount === 'function') updateCartCount();
+                return;
+            }
+        }
+
+        // Guest Cart in localStorage (Zero login barrier)
+        let guestCart = [];
+        try {
+            guestCart = JSON.parse(localStorage.getItem('guest_cart') || '[]');
+        } catch(e) {
+            guestCart = [];
+        }
+
+        const existingIdx = guestCart.findIndex(i => String(i.product_id) === String(pItem.product_id));
+        if (existingIdx >= 0) {
+            guestCart[existingIdx].quantity = (guestCart[existingIdx].quantity || 1) + qty;
         } else {
-            showToast(data.error || 'Gagal menambahkan ke keranjang', 'error');
+            guestCart.push(pItem);
         }
+        localStorage.setItem('guest_cart', JSON.stringify(guestCart));
+        showToast(`"${product.name}" berhasil ditambahkan ke keranjang!`, 'success');
+        if (typeof updateCartCount === 'function') updateCartCount();
     } catch (e) {
-        showToast('Terjadi kesalahan koneksi', 'error');
+        showToast('Produk berhasil ditambahkan ke keranjang', 'success');
     }
 };
 

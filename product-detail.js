@@ -442,7 +442,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     renderCapacityVariants();
 
-        // Action buttons & Formatted WhatsApp Lead Message
+        // Action buttons & Formatted WhatsApp Lead Message (Direct fast order, NO LOGIN REQUIRED)
     const waNumber = "6285335850517";
     const productPriceText = product.priceDisplay || (product.price ? 'Rp ' + Number(product.price).toLocaleString('id-ID') : 'Hubungi Kami');
     
@@ -460,32 +460,38 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!productCapText) productCapText = '-';
 
     const currentUrl = window.location.href;
-    const waOrderMessage = `Halo Admin CV Asianindo, saya melihat produk ini di website dan ingin konsultasi / pemesanan:\n\n` +
+    const waOrderMessage = `*FORM PEMESANAN MESIN - CV ASIANINDO*\n` +
+        `----------------------------------------\n` +
+        `Halo Admin Asianindo, saya ingin memesan / konsultasi mesin berikut:\n\n` +
         `• *Nama Produk:* ${product.name}\n` +
         `• *Kapasitas:* ${productCapText}\n` +
-        `• *Harga Resmi Pabrik:* ${productPriceText}\n` +
+        `• *Harga Pabrik:* ${productPriceText}\n` +
+        `• *Jumlah:* 1 Unit\n` +
         `• *Link Produk:* ${currentUrl}\n\n` +
-        `Boleh minta info ketersediaan stok / estimasi waktu fabrikasi, ongkos kirim ke alamat saya, dan surat penawaran resminya? Terima kasih!`;
+        `Mohon dibantu info:\n` +
+        `1. Ketersediaan stok / estimasi waktu fabrikasi\n` +
+        `2. Ongkos kirim kargo ke alamat saya\n` +
+        `3. Nomor rekening resmi CV Asianindo / Surat Penawaran Resmi\n\n` +
+        `Terima kasih!`;
 
     const waBtn = document.getElementById('btn-whatsapp');
     if (waBtn) {
         waBtn.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(waOrderMessage)}`;
     }
 
-    // Update ALL WhatsApp buttons on the product page (including floating button wa-pulse and header buttons)
-    document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
-        link.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(waOrderMessage)}`;
-    });
-
+    // Direct Buy Now -> Direct Fast Order to WhatsApp without login barrier!
     const btnBuyNow = document.getElementById('btn-buy-now');
     if (btnBuyNow) {
-        btnBuyNow.addEventListener('click', () => {
-            if (typeof window.buyNow === 'function') {
-                window.buyNow(product, 1);
-            } else {
-                window.location.href = 'checkout.html?product_id=' + (product.id || product.slug) + '&qty=1';
-            }
+        btnBuyNow.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(waOrderMessage)}`, '_blank');
         });
+    }
+
+    // Update ALL WhatsApp buttons on the product page (including floating button wa-pulse)
+    document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
+        link.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(waOrderMessage)}`;
+    }););
     }
 
     const btnAddCart = document.getElementById('btn-add-cart');
