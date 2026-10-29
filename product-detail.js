@@ -468,11 +468,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         `• *Harga Pabrik:* ${productPriceText}\n` +
         `• *Jumlah:* 1 Unit\n` +
         `• *Link Produk:* ${currentUrl}\n\n` +
-        `Mohon dibantu info:\n` +
-        `1. Ketersediaan stok / estimasi waktu fabrikasi\n` +
-        `2. Ongkos kirim kargo ke alamat saya\n` +
-        `3. Nomor rekening resmi CV Asianindo / Surat Penawaran Resmi\n\n` +
-        `Terima kasih!`;
+        `Boleh minta info ketersediaan stok dan estimasi waktu fabrikasi serta ongkos kirim ke alamat saya, terima kasih.`;
 
     const waBtn = document.getElementById('btn-whatsapp');
     if (waBtn) {
