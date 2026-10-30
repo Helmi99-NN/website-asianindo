@@ -432,9 +432,9 @@
                         </button>
                         <!-- Sort -->
                         <select class="px-4 py-3 rounded-xl border border-outline-variant/40 bg-white text-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-on-surface shadow-ambient font-label-md min-w-[170px]" id="sort-select">
-                            <option value="capacity-low" selected>Kapasitas Terkecil ke Terbesar</option>
+                            <option value="most-viewed" selected>Paling Sering Diklik (Terpopuler)</option>
+                            <option value="capacity-low">Kapasitas Terkecil ke Terbesar</option>
                             <option value="capacity-high">Kapasitas Terbesar</option>
-                            <option value="most-viewed">Paling Sering Dibuka (Terpopuler)</option>
                             <option value="price-low">Harga Terendah</option>
                             <option value="price-high">Harga Tertinggi</option>
                             <option value="popular">Ulasan Terbanyak</option>
@@ -1031,7 +1031,7 @@
                     ${p.images && p.images.length > 1 ? `<div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10 pointer-events-none opacity-0 group-hover/gallery:opacity-100 transition-opacity duration-300">
                         ${p.images.map((_, i) => `<div class="w-1.5 h-1.5 rounded-full bg-black/40 border border-white/60 shadow-sm"></div>`).join('')}
                     </div>` : ''}
-                    ${p.badge ? `<div class="absolute top-2 left-2 z-10 ${p.badgeColor} px-2 py-0.5 rounded-full font-caption text-[10px] sm:text-xs font-bold shadow-sm pointer-events-none">${p.badge}</div>` : ''}
+                    ${p.badge ? `<div class="absolute top-2 left-2 z-10 ${p.badgeColor} px-2 py-0.5 rounded-full font-caption text-[10px] sm:text-xs font-bold shadow-sm pointer-events-none">${p.badge}</div>` : (getProductScore(p) >= 790 ? `<div class="absolute top-2 left-2 z-10 bg-amber-500 text-white px-2 py-0.5 rounded-full font-caption text-[10px] sm:text-xs font-bold shadow-sm pointer-events-none flex items-center gap-1">🔥 Terpopuler</div>` : '')}
                     <div class="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-lg text-primary font-caption border border-primary/15 text-[10px] sm:text-xs shadow-sm pointer-events-none">${p.subCategory}</div>
                 </div>
                 <div class="p-3 sm:p-5 flex flex-col flex-grow gap-1.5 sm:gap-2.5">
@@ -1040,9 +1040,15 @@
                         <span class="material-symbols-outlined text-primary text-sm sm:text-base">scale</span>
                         <span class="text-on-surface-variant text-[11px] sm:text-xs font-medium truncate">${formatProductCapacity(p)}</span>
                     </div>
-                    <div class="flex items-center gap-1">
-                        ${renderStars(p.rating || 5)}
-                        <span class="text-[10px] sm:text-xs text-on-surface-variant ml-0.5">(${p.reviews || 0})</span>
+                    <div class="flex items-center justify-between text-xs text-on-surface-variant flex-wrap gap-1">
+                        <div class="flex items-center gap-1">
+                            ${renderStars(p.rating || 5)}
+                            <span class="text-[10px] sm:text-xs text-on-surface-variant ml-0.5">(${p.reviews || 0})</span>
+                        </div>
+                        <div class="flex items-center gap-1 text-[11px] font-semibold text-primary/80" title="Total dilihat / diklik calon pembeli">
+                            <span class="material-symbols-outlined text-[14px] text-primary" style="font-variation-settings: 'FILL' 1;">visibility</span>
+                            <span>${getProductScore(p)}x dilihat</span>
+                        </div>
                     </div>
                     <p class="font-headline-sm text-primary-container text-sm sm:text-lg font-black mt-0.5 sm:mt-1">${priceDisplay}</p>
                     <div class="flex gap-1.5 sm:gap-2 mt-auto pt-1.5 sm:pt-2">
@@ -1172,30 +1178,28 @@
                     });
                     break;
                 case 'most-viewed':
+                default:
                     filtered.sort((a, b) => {
+                        // Aksesoris / pelengkap ditempatkan setelah mesin utama
+                        const accA = parseProductCapacity(a).isAccessory;
+                        const accB = parseProductCapacity(b).isAccessory;
+                        if (accA !== accB) return accA ? 1 : -1;
+
                         const viewsA = getProductScore(a);
                         const viewsB = getProductScore(b);
                         if (viewsB !== viewsA) {
-                            return viewsB - viewsA; // Paling sering dibuka paling atas
+                            return viewsB - viewsA; // Paling sering dibuka / diklik paling atas
                         }
                         const scoreA = (a.reviews || 0) * 10 + (a.rating || 5);
                         const scoreB = (b.reviews || 0) * 10 + (b.rating || 5);
-                        return scoreB - scoreA;
+                        if (scoreB !== scoreA) return scoreB - scoreA;
+                        return (b.price || 0) - (a.price || 0);
                     });
                     break;
                 case 'price-low': filtered.sort((a, b) => a.price - b.price); break;
                 case 'price-high': filtered.sort((a, b) => b.price - a.price); break;
                 case 'popular': filtered.sort((a, b) => (b.reviews || 0) - (a.reviews || 0)); break;
                 case 'newest': break; // original order
-                default:
-                    filtered.sort((a, b) => {
-                        const capA = parseProductCapacity(a).value;
-                        const capB = parseProductCapacity(b).value;
-                        if (capA !== capB) return capA - capB;
-                        if (a.price && b.price && a.price !== b.price) return a.price - b.price;
-                        return (b.reviews || 0) - (a.reviews || 0);
-                    });
-                    break;
             }
 
             return filtered;
@@ -1335,7 +1339,7 @@
             else urlParams.delete('price');
 
             const sort = document.getElementById('sort-select').value;
-            if (sort !== "capacity-low") urlParams.set('sort', sort);
+            if (sort !== "most-viewed") urlParams.set('sort', sort);
             else urlParams.delete('sort');
 
             if (currentPage !== 1) urlParams.set('page', currentPage);
@@ -1446,7 +1450,7 @@
             document.querySelectorAll('.filter-sub, .filter-cap').forEach(c => c.checked = false);
             priceRange.value = 200;
             priceLabel.textContent = 'Rp 200 Juta';
-            document.getElementById('sort-select').value = 'capacity-low';
+            document.getElementById('sort-select').value = 'most-viewed';
             updateView();
         }
 
@@ -1598,7 +1602,7 @@
             if (urlSort) {
                 document.getElementById('sort-select').value = urlSort;
             } else {
-                document.getElementById('sort-select').value = 'capacity-low';
+                document.getElementById('sort-select').value = 'most-viewed';
             }
 
             const urlPage = urlParams.get('page');
@@ -1618,11 +1622,11 @@
             if (state.sort) {
                 document.getElementById('sort-select').value = state.sort;
             } else {
-                document.getElementById('sort-select').value = 'capacity-low';
+                document.getElementById('sort-select').value = 'most-viewed';
             }
             if (state.page) currentPage = state.page;
         } else {
-            document.getElementById('sort-select').value = 'capacity-low';
+            document.getElementById('sort-select').value = 'most-viewed';
         }
 
         render();
