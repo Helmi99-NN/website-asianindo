@@ -7,13 +7,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "60 kg bahan baku",
-        "price": 25300000,
-        "priceDisplay": "Rp 25.300.000",
+        "price": 26800000,
+        "priceDisplay": "Rp 26.800.000",
         "rating": 5,
         "reviews": 35,
         "badge": "Terlaris",
         "badgeColor": "bg-[#FFB800] text-black font-bold",
-        "desc": "\u2022 Mesin pirolisis adalah alat yang menggunakan panas tinggi dalam kondisi minim atau tanpa oksigen untuk mengolah limbah organik atau sampah, mengubahnya menjadi produk lain seperti bahan pengawet dan asap cair. Mesin ini berperan penting dalam pengelolaan sampah, terutama kayu, batok kelapa, serabut kelapa, dan dapat menghasilkan produk yang bernilai tambah.\n\u2022 SPESIFIKASI\n\u2022 Kapasitas 60 kg bahan baku\n\u2022 - Bahan Stainless steel 3mm\n\u2022 - Terdiri dari tabung reaktor, tabung kondensor\n\u2022 - Safety valve, thermo analog, dan presure gauge\n\u2022 CARA KERJA\n\u2022 MESIN PIROLISIS\n\u2022 1. Pemanasan: Limbah organik atau sampah dimasukkan ke dalam reaktor dan dipanaskan pada suhu tinggi (misalnya, 300-800\u00b0C) tanpa adanya oksigen.\n\u2022 2. Penguraian: Proses pirolisis menyebabkan bahan organik terurai menjadi molekul yang lebih kecil, menghasilkan bahan pengawet dan asap cair.\n\u2022 3. Pemurnian: Produk bahan pengawet dan asap cair dapat dipisahkan dan dimurnikan untuk digunakan lebih lanjut, sedangkan residu padat dapat diolah menjadi karbon aktif atau produk lain.",
+        "desc": "Mesin pirolisis adalah alat yang menggunakan panas tinggi dalam kondisi minim atau tanpa oksigen untuk mengolah limbah organik atau sampah, mengubahnya menjadi produk lain seperti bahan pengawet dan asap cair. Mesin ini berperan penting dalam pengelolaan sampah, terutama kayu, batok kelapa, serabut kelapa, dan dapat menghasilkan produk yang bernilai tambah. \n\n<strong>SPESIFIKASI</strong>\n Kapasitas 60 kg bahan baku\n- Bahan Stainless steel 3mm\n- Terdiri dari tabung reaktor, tabung kondensor\n- Safety valve, thermo analog, dan presure gauge\n\n<strong>\n\n<strong>CARA KERJA</strong>\nMESIN PIROLISIS</strong>\n1. Pemanasan: Limbah organik atau sampah dimasukkan ke dalam reaktor dan dipanaskan pada suhu tinggi (misalnya, 300-800°C) tanpa adanya oksigen.\n2. Penguraian: Proses pirolisis menyebabkan bahan organik terurai menjadi molekul yang lebih kecil, menghasilkan bahan pengawet dan asap cair.\n3. Pemurnian: Produk bahan pengawet dan asap cair dapat dipisahkan dan dimurnikan untuk digunakan lebih lanjut, sedangkan residu padat dapat diolah menjadi karbon aktif atau produk lain.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/57953083490",
         "waMsg": "Halo, saya tertarik dengan MESIN PIROLISIS (PENGUBAH LIMBAH ORGANIK MENJADI BAHAN PENGAWET ATAU ASAP CAIR) ASIANINDO",
         "images": [
@@ -22,8 +22,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/57953083490_2.webp",
             "images/products/57953083490_3.webp",
             "images/products/57953083490_4.webp"
-        ],
-        "promo_image": "images/products/57953083490_0.webp"
+        ]
     },
     {
         "id": "56751958827",
@@ -33,13 +32,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "200 ltr/jam",
-        "price": 150000000,
-        "priceDisplay": "Rp 150.000.000",
+        "price": 336500000,
+        "priceDisplay": "Rp 336.500.000",
         "rating": 5,
         "reviews": 7,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN STERILISASI UHT\n\u2022 Mesin Sterilisasi UHT merupakan mesin yang memiliki metode untuk menjaga kualitas pangan yang bersifat cair dengan menggunakan pemanasan intensif dalam waktu cepat. Mesin sterilisasi ini, digunakan untuk mensterilisasi minuman antara lain susu, yogurt, teh, sirup, minuman herbal, dan lain-lain.\n\u2022 SPESIFIKASI\n\u2022 - HARGA : Rp.235.000.000\n\u2022 - Kapasitas = 200 ltr/jam\n\u2022 KELENGKAPAN\n\u2022 1.Feed tank 2.UHT unit 3.Aseptic tank 4.Thermal oil 5.Water Boiler 6.Cooling Tower\n\u2022 - \u2060Sistem Sterilisasi = indirect\n\u2022 - \u2060Modul UHT menggunakan sistem pemanas steam sudah termasuk internal boiler dengan pemanas electric heater\n\u2022 - \u2060Media pendingin = cooling water\n\u2022 - \u2060Suhu sterilisasi = 60\n\u2022 - 145*C (bisa disetting)\n\u2022 - \u2060Lama holding sterilisasi = 5\n\u2022 - 10 detik\n\u2022 - \u2060Suhu output produk = 30\n\u2022 - 40*C\n\u2022 - \u2060Type heat exchanger = Shell & Tube HE\n\u2022 - \u2060Sistem control operational = automatic PLC & HMI\n\u2022 - \u2060Material = stainless steel SUS 304",
+        "desc": "MESIN STERILISASI UHT\n\nMesin Sterilisasi UHT merupakan mesin yang memiliki metode untuk menjaga kualitas pangan yang bersifat cair dengan menggunakan pemanasan intensif dalam waktu cepat. Mesin sterilisasi ini, digunakan untuk mensterilisasi minuman antara lain susu, yogurt, teh, sirup, minuman herbal, dan lain-lain.\n\n<strong>SPESIFIKASI</strong>\n- HARGA : Rp.235.000.000\n- Kapasitas = 200 ltr/jam \n\n<strong>KELENGKAPAN</strong>\n1.Feed tank 2.UHT unit 3.Aseptic tank 4.Thermal oil 5.Water Boiler 6.Cooling Tower\n- ⁠Sistem Sterilisasi = indirect\n- ⁠Modul UHT menggunakan sistem pemanas steam sudah termasuk internal boiler dengan pemanas electric heater\n- ⁠Media pendingin = cooling water\n- ⁠Suhu sterilisasi = 60\n- 145*C (bisa disetting)\n- ⁠Lama holding sterilisasi = 5\n- 10 detik\n- ⁠Suhu output produk = 30\n- 40*C\n- ⁠Type heat exchanger = Shell & Tube HE\n- ⁠Sistem control operational = automatic PLC & HMI\n- ⁠Material = stainless steel SUS 304",
         "shopeeUrl": "https://shopee.co.id/product/69832393/56751958827",
         "waMsg": "Halo, saya tertarik dengan Mesin Sterilisasi UHT kapasitas 200 liter Asianindo",
         "images": [
@@ -47,8 +46,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/56751958827_1.webp",
             "images/products/56751958827_2.webp",
             "images/products/56751958827_3.webp"
-        ],
-        "promo_image": "images/products/56751958827_0.webp"
+        ]
     },
     {
         "id": "56602739295",
@@ -58,19 +56,18 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 96950000,
-        "priceDisplay": "Rp 96.950.000",
+        "price": 98450000,
+        "priceDisplay": "Rp 98.450.000",
         "rating": 5,
         "reviews": 24,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN RETORT STERILISASI\n\u2022 Mesin retort ini ideal untuk sterilisasi produk makanan dalam kemasan tertutup. Menggunakan suhu tinggi dan tekanan untuk membunuh mikroorganisme berbahaya. Memperpanjang umur simpan produk. Bekerja sesuai Perka BPOM untuk produk steril komersial makanan olahan dalam kemasan non refrigerator. Awet tanpa pendinginan.\n\u2022 SPESIFIKASI\n\u2022 - TIPE MESIN : RVRL_500 OT IJT\n\u2022 - SISTEM KONTROL : OTOMATIS\n\u2022 - BAHAN : STAINLESS STEEL\n\u2022 - SISTEM PENGUNCIAN : RADIAL\n\u2022 - VOLUME TABUNG : 500 LITER\n\u2022 - DIMENSI TABUNG : 75 X 120 CM\n\u2022 - TEMPERATUR DIGITAL : SUPPORT DATA LOGGER\n\u2022 - MESIN PENDUKUNG : 1 SET BOILER\n\u2022 - PELENGKAP : 1 SET KOMPOR + REGULATOR",
+        "desc": "MESIN RETORT STERILISASI\n\nMesin retort ini ideal untuk sterilisasi produk makanan dalam kemasan tertutup. Menggunakan suhu tinggi dan tekanan untuk membunuh mikroorganisme berbahaya. Memperpanjang umur simpan produk. Bekerja sesuai Perka BPOM untuk produk steril komersial makanan olahan dalam kemasan non refrigerator. Awet tanpa pendinginan.\n\n<strong>SPESIFIKASI</strong>\n- TIPE MESIN : RVRL_500 OT IJT\n- SISTEM KONTROL : OTOMATIS\n- BAHAN : STAINLESS STEEL\n- SISTEM PENGUNCIAN : RADIAL\n- VOLUME TABUNG : 500 LITER\n- DIMENSI TABUNG : 75 X 120 CM\n- TEMPERATUR DIGITAL : SUPPORT DATA LOGGER\n- MESIN PENDUKUNG : 1 SET BOILER\n- PELENGKAP : 1 SET KOMPOR + REGULATOR",
         "shopeeUrl": "https://shopee.co.id/product/69832393/56602739295",
         "waMsg": "Halo, saya tertarik dengan Retort Sterilisasi 500 Liter Pengawet Olahan Makanan & Bumbu Tanpa Bahan Pengawet | CV Asianindo",
         "images": [
             "images/products/56602739295_0.webp"
-        ],
-        "promo_image": "images/products/56602739295_0.webp"
+        ]
     },
     {
         "id": "56552981517",
@@ -80,21 +77,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "30 kg/jam",
-        "price": 7550000,
-        "priceDisplay": "Rp 7.550.000",
+        "price": 9050000,
+        "priceDisplay": "Rp 9.050.000",
         "rating": 5,
         "reviews": 13,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN EXTRUDER CETAK PELET APUNG LENGKAP FEEDER\n\u2022 Model: Horizontal\n\u2022 FUNGSI\n\u2022 Mesin cetak pelet apung Penggerak:Bensin Material Rangka: UNP 8 dan plat mild steel Transmisi: Pulley dan V-belt Kapasitas: 30 kg/jam Sistem Pemanas: Gas LPG / Heater (pilih salah satu) Cetakan (Die): Tersedia ukuran 2 mm, 3 mm, 4 mm, 5 mm (pilih salah satu)",
+        "desc": "MESIN EXTRUDER CETAK PELET APUNG LENGKAP FEEDER\n\nModel: Horizontal \n\n<strong>FUNGSI</strong>\n Mesin cetak pelet apung Penggerak:Bensin Material Rangka: UNP 8 dan plat mild steel Transmisi: Pulley dan V-belt Kapasitas: 30 kg/jam Sistem Pemanas: Gas LPG / Heater (pilih salah satu) Cetakan (Die): Tersedia ukuran 2 mm, 3 mm, 4 mm, 5 mm (pilih salah satu)",
         "shopeeUrl": "https://shopee.co.id/product/69832393/56552981517",
         "waMsg": "Halo, saya tertarik dengan Mesin Pelet Apung Kapasitas 30 Kg Penggerak Bensin CV Asianindo",
         "images": [
             "images/products/56552981517_0.webp",
             "images/products/56552981517_1.webp",
             "images/products/56552981517_2.webp"
-        ],
-        "promo_image": "images/products/56552981517_0.webp"
+        ]
     },
     {
         "id": "56301311142",
@@ -104,21 +100,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "25liter",
-        "price": 15250000,
-        "priceDisplay": "Rp 15.250.000",
+        "price": 16750000,
+        "priceDisplay": "Rp 16.750.000",
         "rating": 5,
         "reviews": 21,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Ekstrak Kapasitas 25liter pengubah cair menjadi bubuk\n\u2022 KETERANGAN PRODUK:\n\u2022 - Mengeringkan bahan ekstrak dengan cepat dan efisien\n\u2022 - Mengurangi kadar air dalam ekstrak untuk memperpanjang umur simpan\n\u2022 - Mempertahankan kualitas dan kandungan nutrisi dari bahan ekstrak\n\u2022 - Menghasilkan ekstrak yang kering dan mudah disimpan atau diolah lebih lanjut\n\u2022 - Dilengkapi dengan suhu dan waktu pengeringan yang dapat diatur sesuai kebutuhan\n\u2022 - Desain yang simple dan mudah dioperasikan.\n\u2022 SPESIFIKASI:\n\u2022 - Bahan Full Stainless Steel\n\u2022 - Tabung Double Jacket\n\u2022 - Suhu Terkontrol Otomatis\n\u2022 - Pengaduk otomatis\n\u2022 - free kompor\n\u2022 Nb: sebelum mesin kami kirim sudah kami uji coba ( trial ). jadi tidak ada kendala pada saat tiba di lokasi.",
+        "desc": "Mesin Ekstrak Kapasitas 25liter pengubah cair menjadi bubuk\n\n<strong>KETERANGAN PRODUK:</strong>\n- Mengeringkan bahan ekstrak dengan cepat dan efisien\n- Mengurangi kadar air dalam ekstrak untuk memperpanjang umur simpan\n- Mempertahankan kualitas dan kandungan nutrisi dari bahan ekstrak\n- Menghasilkan ekstrak yang kering dan mudah disimpan atau diolah lebih lanjut\n- Dilengkapi dengan suhu dan waktu pengeringan yang dapat diatur sesuai kebutuhan\n- Desain yang simple dan mudah dioperasikan.\n\n<strong>SPESIFIKASI:</strong>\n- Bahan Full Stainless Steel\n- Tabung Double Jacket\n- Suhu Terkontrol Otomatis\n- Pengaduk otomatis\n- free kompor\n\nNb: sebelum mesin kami kirim sudah kami uji coba ( trial ). jadi tidak ada kendala pada saat tiba di lokasi.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/56301311142",
         "waMsg": "Halo, saya tertarik dengan Mesin Ekstrak Kapasitas 25liter CV Asianindo",
         "images": [
             "images/products/56301311142_0.webp",
             "images/products/56301311142_1.webp",
             "images/products/56301311142_2.webp"
-        ],
-        "promo_image": "images/products/56301311142_0.webp"
+        ]
     },
     {
         "id": "56102990950",
@@ -128,20 +123,19 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "30 kg/jam",
-        "price": 27500000,
-        "priceDisplay": "Rp 27.500.000",
+        "price": 29000000,
+        "priceDisplay": "Rp 29.000.000",
         "rating": 5,
         "reviews": 6,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN EXTRUDER CETAK PELET APUNG LENGKAP FEEDER\n\u2022 Model: Horizontal\n\u2022 FUNGSI\n\u2022 Mesin cetak pelet apung Penggerak:Diesel Material Rangka: UNP 8 dan plat mild steel Transmisi: Pulley dan V-belt Kapasitas: 30 kg/jam Sistem Pemanas: Gas LPG / Heater (pilih salah satu) Cetakan (Die): Tersedia ukuran 2 mm, 3 mm, 4 mm, 5 mm (pilih salah satu)",
+        "desc": "MESIN EXTRUDER CETAK PELET APUNG LENGKAP FEEDER\n\nModel: Horizontal \n\n<strong>FUNGSI</strong>\n Mesin cetak pelet apung Penggerak:Diesel Material Rangka: UNP 8 dan plat mild steel Transmisi: Pulley dan V-belt Kapasitas: 30 kg/jam Sistem Pemanas: Gas LPG / Heater (pilih salah satu) Cetakan (Die): Tersedia ukuran 2 mm, 3 mm, 4 mm, 5 mm (pilih salah satu)",
         "shopeeUrl": "https://shopee.co.id/product/69832393/56102990950",
         "waMsg": "Halo, saya tertarik dengan Mesin Pelet Apung Kapasitas 30 Kg Penggerak Diesel CV Asianindo",
         "images": [
             "images/products/56102990950_0.webp",
             "images/products/56102990950_1.webp"
-        ],
-        "promo_image": "images/products/56102990950_0.webp"
+        ]
     },
     {
         "id": "56002865707",
@@ -151,13 +145,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "produksi 55 kg per jam. Dengan",
-        "price": 8500000,
-        "priceDisplay": "Rp 8.500.000",
+        "price": 10000000,
+        "priceDisplay": "Rp 10.000.000",
         "rating": 5,
         "reviews": 36,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Giling Bumbu FFC 23\n\u2022 SPESIFIKASI MESIN:\n\u2022 - Model: FFC 23\n\u2022 - Penggerak: Dinamo Motor atau Motor bensin\n\u2022 - Produktivitas: 55 kg/jam\n\u2022 - Rangka: Besi\n\u2022 - Isi Paket: 3 pcs saringan (halus, sedang, kasar)\n\u2022 Ideal untuk kebutuhan giling bumbu Anda. Mesin ini dirancang untuk efisiensi tinggi dengan kapasitas produksi 55 kg per jam. Dengan rangka besi yang kokoh, mesin ini menjamin daya tahan dan kinerja jangka panjang. Paket lengkap dengan 3 jenis saringan untuk memenuhi berbagai kebutuhan penggilingan.\n\u2022 Penggunaan Fleksibel: Mesin giling bumbu ini cocok digunakan dengan berbagai jenis motor. Pilihan antara dinamo motor atau motor bensin memberikan fleksibilitas dalam pengoperasian. Rangka besi menambah keandalan mesin. Dapatkan hasil terbaik dengan menggunakan semua 3 saringan yang termasuk dalam paket.",
+        "desc": "Mesin Giling Bumbu FFC 23\n\n<strong>SPESIFIKASI MESIN:</strong>\n- Model: FFC 23\n- Penggerak: Dinamo Motor atau Motor bensin\n- Produktivitas: 55 kg/jam\n- Rangka: Besi\n- Isi Paket: 3 pcs saringan (halus, sedang, kasar)\n\nIdeal untuk kebutuhan giling bumbu Anda. Mesin ini dirancang untuk efisiensi tinggi dengan kapasitas produksi 55 kg per jam. Dengan rangka besi yang kokoh, mesin ini menjamin daya tahan dan kinerja jangka panjang. Paket lengkap dengan 3 jenis saringan untuk memenuhi berbagai kebutuhan penggilingan.\n\nPenggunaan Fleksibel: Mesin giling bumbu ini cocok digunakan dengan berbagai jenis motor. Pilihan antara dinamo motor atau motor bensin memberikan fleksibilitas dalam pengoperasian. Rangka besi menambah keandalan mesin. Dapatkan hasil terbaik dengan menggunakan semua 3 saringan yang termasuk dalam paket.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/56002865707",
         "waMsg": "Halo, saya tertarik dengan Mesin Giling Bumbu FFC Kapasitas 100kg Asianindo",
         "images": [
@@ -165,8 +159,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/56002865707_1.webp",
             "images/products/56002865707_2.webp",
             "images/products/56002865707_3.webp"
-        ],
-        "promo_image": "images/products/56002865707_0.webp"
+        ]
     },
     {
         "id": "54652750018",
@@ -176,19 +169,18 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 62950000,
-        "priceDisplay": "Rp 62.950.000",
+        "price": 64450000,
+        "priceDisplay": "Rp 64.450.000",
         "rating": 5,
         "reviews": 21,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN RETORT STERILISASI\n\u2022 Mesin retort ini ideal untuk sterilisasi produk makanan dalam kemasan tertutup. Menggunakan suhu tinggi dan tekanan untuk membunuh mikroorganisme berbahaya. Memperpanjang umur simpan produk. Bekerja sesuai Perka BPOM untuk produk steril komersial makanan olahan dalam kemasan non refrigerator. Awet tanpa pendinginan.\n\u2022 SPESIFIKASI\n\u2022 - TIPE MESIN : RVRL_200 OT IJT\n\u2022 - SISTEM KONTROL : OTOMATIS\n\u2022 - BAHAN : STAINLESS STEEL\n\u2022 - SISTEM PENGUNCIAN : RADIAL\n\u2022 - VOLUME TABUNG : 200 LITER\n\u2022 - DIMENSI TABUNG : 60 X 100 CM\n\u2022 - TEMPERATUR DIGITAL : SUPPORT DATA LOGGER\n\u2022 - MESIN PENDUKUNG : 1 SET BOILER\n\u2022 - PELENGKAP : 1 SET KOMPOR + REGULATOR",
+        "desc": "MESIN RETORT STERILISASI\n\nMesin retort ini ideal untuk sterilisasi produk makanan dalam kemasan tertutup. Menggunakan suhu tinggi dan tekanan untuk membunuh mikroorganisme berbahaya. Memperpanjang umur simpan produk. Bekerja sesuai Perka BPOM untuk produk steril komersial makanan olahan dalam kemasan non refrigerator. Awet tanpa pendinginan.\n\n<strong>SPESIFIKASI</strong>\n- TIPE MESIN : RVRL_200 OT IJT\n- SISTEM KONTROL : OTOMATIS\n- BAHAN : STAINLESS STEEL\n- SISTEM PENGUNCIAN : RADIAL\n- VOLUME TABUNG : 200 LITER\n- DIMENSI TABUNG : 60 X 100 CM\n- TEMPERATUR DIGITAL : SUPPORT DATA LOGGER\n- MESIN PENDUKUNG : 1 SET BOILER\n- PELENGKAP : 1 SET KOMPOR + REGULATOR",
         "shopeeUrl": "https://shopee.co.id/product/69832393/54652750018",
         "waMsg": "Halo, saya tertarik dengan Retort Sterilisasi 200 Liter Pengawet Olahan Makanan & Bumbu Tanpa Bahan Pengawet | CV Asianindo",
         "images": [
             "images/products/54652750018_0.webp"
-        ],
-        "promo_image": "images/products/54652750018_0.webp"
+        ]
     },
     {
         "id": "53753791084",
@@ -198,21 +190,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Pengering / Dryer",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 23200000,
-        "priceDisplay": "Rp 23.200.000",
+        "price": 24700000,
+        "priceDisplay": "Rp 24.700.000",
         "rating": 5,
         "reviews": 49,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Pengering Karpet",
+        "desc": "Mesin Pengering Karpet",
         "shopeeUrl": "https://shopee.co.id/product/69832393/53753791084",
         "waMsg": "Halo, saya tertarik dengan Mesin Pengering Karpet Kapasitas 100 Kg Asianindo",
         "images": [
             "images/products/53753791084_0.webp",
             "images/products/53753791084_1.webp",
             "images/products/53753791084_2.webp"
-        ],
-        "promo_image": "images/products/53753791084_0.webp"
+        ]
     },
     {
         "id": "53655297862",
@@ -222,13 +213,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "10 kg / proses",
-        "price": 33500000,
-        "priceDisplay": "Rp 33.500.000",
+        "price": 35000000,
+        "priceDisplay": "Rp 35.000.000",
         "rating": 5,
         "reviews": 11,
         "badge": "Terlaris",
         "badgeColor": "bg-[#FFB800] text-black font-bold",
-        "desc": "\u2022 Mesin Pirolisis Plastik adalah alat pengolah limbah plastik menggunakan panas tinggi dalam kondisi minim oksigen untuk mengubah plastik menjadi bahan bakar cair seperti premium, minyak tanah, solar ringan, serta gas yang dapat dimanfaatkan kembali sebagai sumber panas. Teknologi ini menjadi solusi modern untuk mengurangi limbah plastik sekaligus menghasilkan produk bernilai tinggi yang dapat dimanfaatkan untuk kebutuhan industri maupun energi.\n\u2022 Dengan metode pemanasan tertutup, proses pirolisis memecah struktur plastik tanpa pembakaran terbuka, sehingga lebih aman, efisien, dan ramah lingkungan. Mesin ini cocok digunakan untuk pengusaha daur ulang, pengolahan limbah, hingga industri skala kecil dan menengah.\n\u2022 SPESIFIKASI MESIN:\n\u2022 - Kapasitas 10 kg / proses\n\u2022 - Material Stainless Steel 3 mm (kecuali bagian dudukan/jagrak)\n\u2022 - Komponen lengkap: tabung reaktor, kondensor pendingin, pipa penyalur gas, dan bak sirkulasi air\n\u2022 - Dilengkapi: pressure gauge (Pengatur Suhu otomatis dan manual)\n\u2022 - FITUR\n\u2022 Termometer Ruangan Terpasang|\n\u2022 - Bahan Bakar : Oli Bekas\n\u2022 - Dilengkapi Safety Valve, Pengukur Tekanan, dan Kran Hasil\n\u2022 - Dilengkapi Penahan panas di sekeliling tabung utama reaktor\n\u2022 - Hasil minyak terbagi 2 : Setara Solar dan Premium\n\u2022 - Dilengkapi Set Kompor\n\u2022 CARA KERJA\n\u2022 MESIN PIROLISIS\n\u2022 Plastik:\n\u2022 1. Pemanasan Plastik (jenis PP, PE, dan sejenisnya) dimasukkan ke dalam reaktor, kemudian dipanaskan hingga suhu tinggi sekitar 350\u2013500\u00b0C dalam kondisi tanpa oksigen.\n\u2022 2. Penguraian (Thermal Cracking) Pada suhu tinggi ini, plastik mulai terurai menjadi gas hidrokarbon. Gas tersebut kemudian dialirkan menuju kondensor.\n\u2022 3. Kondensasi & Pemurnian Gas hasil pirolisis didinginkan dalam kondensor hingga berubah menjadi cairan bahan bakar seperti:\n\u2022 - Minyak pirolisis (setara premium)\n\u2022 - Solar ringan\n\u2022 Sementara residu padat dapat digunakan sebagai carbon black, dan sebagian gas dapat dipakai kembali sebagai bahan bakar pemanas.",
+        "desc": "Mesin Pirolisis Plastik adalah alat pengolah limbah plastik menggunakan panas tinggi dalam kondisi minim oksigen untuk mengubah plastik menjadi bahan bakar cair seperti premium, minyak tanah, solar ringan, serta gas yang dapat dimanfaatkan kembali sebagai sumber panas. Teknologi ini menjadi solusi modern untuk mengurangi limbah plastik sekaligus menghasilkan produk bernilai tinggi yang dapat dimanfaatkan untuk kebutuhan industri maupun energi.\n\nDengan metode pemanasan tertutup, proses pirolisis memecah struktur plastik tanpa pembakaran terbuka, sehingga lebih aman, efisien, dan ramah lingkungan. Mesin ini cocok digunakan untuk pengusaha daur ulang, pengolahan limbah, hingga industri skala kecil dan menengah.\n\n<strong>SPESIFIKASI MESIN:</strong>\n- Kapasitas 10 kg / proses\n- Material Stainless Steel 3 mm (kecuali bagian dudukan/jagrak)\n- Komponen lengkap: tabung reaktor, kondensor pendingin, pipa penyalur gas, dan bak sirkulasi air\n- Dilengkapi: pressure gauge (Pengatur Suhu otomatis dan manual)\n- <strong>FITUR</strong>\nTermometer Ruangan Terpasang|\n- Bahan Bakar : Oli Bekas\n- Dilengkapi Safety Valve, Pengukur Tekanan, dan Kran Hasil\n- Dilengkapi Penahan panas di sekeliling tabung utama reaktor\n- Hasil minyak terbagi 2 : Setara Solar dan Premium\n- Dilengkapi Set Kompor\n\n<strong>\n\n<strong>CARA KERJA</strong>\nMESIN PIROLISIS</strong>\nPlastik:\n1. Pemanasan Plastik (jenis PP, PE, dan sejenisnya) dimasukkan ke dalam reaktor, kemudian dipanaskan hingga suhu tinggi sekitar 350–500°C dalam kondisi tanpa oksigen.\n2. Penguraian (Thermal Cracking) Pada suhu tinggi ini, plastik mulai terurai menjadi gas hidrokarbon. Gas tersebut kemudian dialirkan menuju kondensor.\n3. Kondensasi & Pemurnian Gas hasil pirolisis didinginkan dalam kondensor hingga berubah menjadi cairan bahan bakar seperti:\n- Minyak pirolisis (setara premium)\n- Solar ringan\n\nSementara residu padat dapat digunakan sebagai carbon black, dan sebagian gas dapat dipakai kembali sebagai bahan bakar pemanas.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/53655297862",
         "waMsg": "Halo, saya tertarik dengan Mesin Pirolisis Sampah Plastik Kapasitas 10 Kg CV Asianindo",
         "images": [
@@ -237,8 +228,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/53655297862_2.webp",
             "images/products/53655297862_3.webp",
             "images/products/53655297862_4.webp"
-        ],
-        "promo_image": "images/products/53655297862_0.webp"
+        ]
     },
     {
         "id": "53601958931",
@@ -254,7 +244,7 @@ window.CATALOG_PRODUCTS = [
         "reviews": 26,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN STERILISASI UHT\n\u2022 Mesin Sterilisasi UHT merupakan mesin yang memiliki metode untuk menjaga kualitas pangan yang bersifat cair dengan menggunakan pemanasan intensif dalam waktu cepat. Mesin sterilisasi ini, digunakan untuk mensterilisasi minuman antara lain susu, yogurt, teh, sirup, minuman herbal, dan lain-lain.\n\u2022 SPESIFIKASI\n\u2022 - Kapasitas = 1000 ltr/jam\n\u2022 - \u2060Sistem Sterilisasi = indirect\n\u2022 - \u2060Modul UHT menggunakan sistem pemanas steam sudah termasuk internal boiler dengan pemanas electric heater\n\u2022 - \u2060Media pendingin = cooling water\n\u2022 - \u2060Suhu sterilisasi = 60\n\u2022 - 145*C (bisa disetting)\n\u2022 - \u2060Lama holding sterilisasi = 5\n\u2022 - 10 detik\n\u2022 - \u2060Suhu output produk = 30\n\u2022 - 40*C\n\u2022 - \u2060Type heat exchanger = Shell & Tube HE\n\u2022 - \u2060Sistem control operational = automatic PLC & HMI\n\u2022 - \u2060Material = stainless steel SUS 304",
+        "desc": "MESIN STERILISASI UHT\n\nMesin Sterilisasi UHT merupakan mesin yang memiliki metode untuk menjaga kualitas pangan yang bersifat cair dengan menggunakan pemanasan intensif dalam waktu cepat. Mesin sterilisasi ini, digunakan untuk mensterilisasi minuman antara lain susu, yogurt, teh, sirup, minuman herbal, dan lain-lain.\n\n<strong>SPESIFIKASI</strong>\n- Kapasitas = 1000 ltr/jam\n- ⁠Sistem Sterilisasi = indirect\n- ⁠Modul UHT menggunakan sistem pemanas steam sudah termasuk internal boiler dengan pemanas electric heater\n- ⁠Media pendingin = cooling water\n- ⁠Suhu sterilisasi = 60\n- 145*C (bisa disetting)\n- ⁠Lama holding sterilisasi = 5\n- 10 detik\n- ⁠Suhu output produk = 30\n- 40*C\n- ⁠Type heat exchanger = Shell & Tube HE\n- ⁠Sistem control operational = automatic PLC & HMI\n- ⁠Material = stainless steel SUS 304",
         "shopeeUrl": "https://shopee.co.id/product/69832393/53601958931",
         "waMsg": "Halo, saya tertarik dengan Mesin Sterilisasi UHT kapasitas 1000 liter Asianindo",
         "images": [
@@ -262,8 +252,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/53601958931_1.webp",
             "images/products/53601958931_2.webp",
             "images/products/53601958931_3.webp"
-        ],
-        "promo_image": "images/products/53601958931_0.webp"
+        ]
     },
     {
         "id": "53552860864",
@@ -273,13 +262,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 5750000,
-        "priceDisplay": "Rp 5.750.000",
+        "price": 7250000,
+        "priceDisplay": "Rp 7.250.000",
         "rating": 5,
         "reviews": 31,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Giling Bumbu FFC 15\n\u2022 Mesin giling bumbu dengan model FFC 15, ideal untuk kebutuhan Anda. Dengan penggerak dinamo motor atau motor bensin, mesin ini siap menghasilkan tepung hingga 55 kg per jam. Rangka besi yang kokoh menjamin daya tahan lama. Cocok untuk penggunaan industri kecil maupun menengah.\n\u2022 SPESIFIKASI\n\u2022 Lengkap\n\u2022 - Model: FFC 15\n\u2022 - Penggerak: Dinamo Motor/Motor bensin\n\u2022 - Produktivitas: 55 kg/Jam\n\u2022 - Rangka: Besi\n\u2022 - Isi Paket: 3 pcs saringan (halus, sedang, kasar)\n\u2022 Semua\n\u2022 SPESIFIKASI\n\u2022 dirancang untuk efisiensi dan kinerja optimal. Pastikan Anda memilih mesin yang tepat untuk kebutuhan produksi Anda.",
+        "desc": "Mesin Giling Bumbu FFC 15\n\nMesin giling bumbu dengan model FFC 15, ideal untuk kebutuhan Anda. Dengan penggerak dinamo motor atau motor bensin, mesin ini siap menghasilkan tepung hingga 55 kg per jam. Rangka besi yang kokoh menjamin daya tahan lama. Cocok untuk penggunaan industri kecil maupun menengah.\n\n<strong>SPESIFIKASI</strong>\nLengkap\n- Model: FFC 15\n- Penggerak: Dinamo Motor/Motor bensin\n- Produktivitas: 55 kg/Jam\n- Rangka: Besi\n- Isi Paket: 3 pcs saringan (halus, sedang, kasar)\n\nSemua \n\n<strong>SPESIFIKASI</strong>\ndirancang untuk efisiensi dan kinerja optimal. Pastikan Anda memilih mesin yang tepat untuk kebutuhan produksi Anda.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/53552860864",
         "waMsg": "Halo, saya tertarik dengan Mesin Giling Bumbu Kapasitas 50kg Asianindo",
         "images": [
@@ -287,8 +276,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/53552860864_1.webp",
             "images/products/53552860864_2.webp",
             "images/products/53552860864_3.webp"
-        ],
-        "promo_image": "images/products/53552860864_0.webp"
+        ]
     },
     {
         "id": "50455293845",
@@ -298,13 +286,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "40 kg / proses",
-        "price": 73500000,
-        "priceDisplay": "Rp 73.500.000",
+        "price": 75000000,
+        "priceDisplay": "Rp 75.000.000",
         "rating": 5,
         "reviews": 29,
         "badge": "Terlaris",
         "badgeColor": "bg-[#FFB800] text-black font-bold",
-        "desc": "\u2022 Mesin Pirolisis Plastik adalah alat pengolah limbah plastik menggunakan panas tinggi dalam kondisi minim oksigen untuk mengubah plastik menjadi bahan bakar cair seperti premium, minyak tanah, solar ringan, serta gas yang dapat dimanfaatkan kembali sebagai sumber panas. Teknologi ini menjadi solusi modern untuk mengurangi limbah plastik sekaligus menghasilkan produk bernilai tinggi yang dapat dimanfaatkan untuk kebutuhan industri maupun energi.\n\u2022 Dengan metode pemanasan tertutup, proses pirolisis memecah struktur plastik tanpa pembakaran terbuka, sehingga lebih aman, efisien, dan ramah lingkungan. Mesin ini cocok digunakan untuk pengusaha daur ulang, pengolahan limbah, hingga industri skala kecil dan menengah.\n\u2022 SPESIFIKASI MESIN:\n\u2022 - Kapasitas 40 kg / proses\n\u2022 - Material Stainless Steel 3 mm (kecuali bagian dudukan/jagrak)\n\u2022 - Komponen lengkap: tabung reaktor, kondensor pendingin, pipa penyalur gas, dan bak sirkulasi air\n\u2022 - Dilengkapi: pressure gauge (Pengatur Suhu otomatis dan manual)\n\u2022 - FITUR\n\u2022 Termometer Ruangan Terpasang|\n\u2022 - Bahan Bakar : Oli Bekas\n\u2022 - Dilengkapi Safety Valve, Pengukur Tekanan, dan Kran Hasil\n\u2022 - Dilengkapi Penahan panas di sekeliling tabung utama reaktor\n\u2022 - Hasil minyak terbagi 2 : Setara Solar dan Premium\n\u2022 - Dilengkapi Set Kompor\n\u2022 CARA KERJA\n\u2022 MESIN PIROLISIS\n\u2022 Plastik:\n\u2022 1. Pemanasan Plastik (jenis PP, PE, dan sejenisnya) dimasukkan ke dalam reaktor, kemudian dipanaskan hingga suhu tinggi sekitar 350\u2013500\u00b0C dalam kondisi tanpa oksigen.\n\u2022 2. Penguraian (Thermal Cracking) Pada suhu tinggi ini, plastik mulai terurai menjadi gas hidrokarbon. Gas tersebut kemudian dialirkan menuju kondensor.\n\u2022 3. Kondensasi & Pemurnian Gas hasil pirolisis didinginkan dalam kondensor hingga berubah menjadi cairan bahan bakar seperti:\n\u2022 - Minyak pirolisis (setara premium)\n\u2022 - Solar ringan\n\u2022 Sementara residu padat dapat digunakan sebagai carbon black, dan sebagian gas dapat dipakai kembali sebagai bahan bakar pemanas.",
+        "desc": "Mesin Pirolisis Plastik adalah alat pengolah limbah plastik menggunakan panas tinggi dalam kondisi minim oksigen untuk mengubah plastik menjadi bahan bakar cair seperti premium, minyak tanah, solar ringan, serta gas yang dapat dimanfaatkan kembali sebagai sumber panas. Teknologi ini menjadi solusi modern untuk mengurangi limbah plastik sekaligus menghasilkan produk bernilai tinggi yang dapat dimanfaatkan untuk kebutuhan industri maupun energi.\n\nDengan metode pemanasan tertutup, proses pirolisis memecah struktur plastik tanpa pembakaran terbuka, sehingga lebih aman, efisien, dan ramah lingkungan. Mesin ini cocok digunakan untuk pengusaha daur ulang, pengolahan limbah, hingga industri skala kecil dan menengah.\n\n<strong>SPESIFIKASI MESIN:</strong>\n- Kapasitas 40 kg / proses\n- Material Stainless Steel 3 mm (kecuali bagian dudukan/jagrak)\n- Komponen lengkap: tabung reaktor, kondensor pendingin, pipa penyalur gas, dan bak sirkulasi air\n- Dilengkapi: pressure gauge (Pengatur Suhu otomatis dan manual)\n- <strong>FITUR</strong>\nTermometer Ruangan Terpasang|\n- Bahan Bakar : Oli Bekas\n- Dilengkapi Safety Valve, Pengukur Tekanan, dan Kran Hasil\n- Dilengkapi Penahan panas di sekeliling tabung utama reaktor\n- Hasil minyak terbagi 2 : Setara Solar dan Premium\n- Dilengkapi Set Kompor\n\n<strong>\n\n<strong>CARA KERJA</strong>\nMESIN PIROLISIS</strong>\nPlastik:\n1. Pemanasan Plastik (jenis PP, PE, dan sejenisnya) dimasukkan ke dalam reaktor, kemudian dipanaskan hingga suhu tinggi sekitar 350–500°C dalam kondisi tanpa oksigen.\n2. Penguraian (Thermal Cracking) Pada suhu tinggi ini, plastik mulai terurai menjadi gas hidrokarbon. Gas tersebut kemudian dialirkan menuju kondensor.\n3. Kondensasi & Pemurnian Gas hasil pirolisis didinginkan dalam kondensor hingga berubah menjadi cairan bahan bakar seperti:\n- Minyak pirolisis (setara premium)\n- Solar ringan\n\nSementara residu padat dapat digunakan sebagai carbon black, dan sebagian gas dapat dipakai kembali sebagai bahan bakar pemanas.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/50455293845",
         "waMsg": "Halo, saya tertarik dengan Mesin Pirolisis Sampah Plastik Kapasitas 40 Kg CV Asianindo",
         "images": [
@@ -313,8 +301,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/50455293845_2.webp",
             "images/products/50455293845_3.webp",
             "images/products/50455293845_4.webp"
-        ],
-        "promo_image": "images/products/50455293845_0.webp"
+        ]
     },
     {
         "id": "50052816753",
@@ -324,13 +311,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "Lebar media Max 55",
-        "price": 150000000,
-        "priceDisplay": "Rp 150.000.000",
+        "price": 151500000,
+        "priceDisplay": "Rp 151.500.000",
         "rating": 5,
         "reviews": 43,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN SABLON PLASTIK\n\u2022 Mesin Sablon Plastik 4 Warna.\n\u2022 SPESIFIKASI\n\u2022 - Dimensi P 500cm x L 130cm x T 170cm\n\u2022 - Bodi UNP/Plat esser\n\u2022 - Kapasitas Lebar media Max 55\n\u2022 - Lebar Gambar max 50 cm\n\u2022 - Kecepatan max 50rpm\n\u2022 - Power Main 2 motor 2 HP VS (Variable speed)\n\u2022 - Blower 4 X 150watt\n\u2022 - Transmisi Gear Box\n\u2022 - Inventer\n\u2022 - Heater\n\u2022 - Doctorblade\n\u2022 - Tension 1\n\u2022 - Gearbox\n\u2022 CATATAN\n\u2022 Spek bisa berubah tergantung permintaan pembeli. garansi 1 tahun setelah mesin sampai di lokasi dan dipandu oleh ahli di bidangnya.\n\u2022 Harga 4 Warna : Rp 185.000.000",
+        "desc": "MESIN SABLON PLASTIK\n\nMesin Sablon Plastik 4 Warna.\n\n<strong>SPESIFIKASI</strong>\n- Dimensi P 500cm x L 130cm x T 170cm\n- Bodi UNP/Plat esser\n- Kapasitas Lebar media Max 55\n- Lebar Gambar max 50 cm\n- Kecepatan max 50rpm\n- Power Main 2 motor 2 HP VS (Variable speed)\n- Blower 4 X 150watt\n- Transmisi Gear Box\n- Inventer\n- Heater\n- Doctorblade\n- Tension 1\n- Gearbox\n\n<strong>CATATAN</strong>\n\nSpek bisa berubah tergantung permintaan pembeli. garansi 1 tahun setelah mesin sampai di lokasi dan dipandu oleh ahli di bidangnya.\n\nHarga 4 Warna : Rp 185.000.000",
         "shopeeUrl": "https://shopee.co.id/product/69832393/50052816753",
         "waMsg": "Halo, saya tertarik dengan 4 Warna Mesin Sablon Plastik Asianindo (Rotogravure)",
         "images": [
@@ -340,8 +327,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/50052816753_3.webp",
             "images/products/50052816753_4.webp",
             "images/products/50052816753_5.webp"
-        ],
-        "promo_image": "images/products/50052816753_0.webp"
+        ]
     },
     {
         "id": "50005306338",
@@ -351,13 +337,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "20 kg / proses",
-        "price": 57500000,
-        "priceDisplay": "Rp 57.500.000",
+        "price": 59000000,
+        "priceDisplay": "Rp 59.000.000",
         "rating": 5,
         "reviews": 9,
         "badge": "Terlaris",
         "badgeColor": "bg-[#FFB800] text-black font-bold",
-        "desc": "\u2022 Mesin Pirolisis Plastik adalah alat pengolah limbah plastik menggunakan panas tinggi dalam kondisi minim oksigen untuk mengubah plastik menjadi bahan bakar cair seperti premium, minyak tanah, solar ringan, serta gas yang dapat dimanfaatkan kembali sebagai sumber panas. Teknologi ini menjadi solusi modern untuk mengurangi limbah plastik sekaligus menghasilkan produk bernilai tinggi yang dapat dimanfaatkan untuk kebutuhan industri maupun energi.\n\u2022 Dengan metode pemanasan tertutup, proses pirolisis memecah struktur plastik tanpa pembakaran terbuka, sehingga lebih aman, efisien, dan ramah lingkungan. Mesin ini cocok digunakan untuk pengusaha daur ulang, pengolahan limbah, hingga industri skala kecil dan menengah.\n\u2022 SPESIFIKASI MESIN:\n\u2022 - Kapasitas 20 kg / proses\n\u2022 - Material Stainless Steel 3 mm (kecuali bagian dudukan/jagrak)\n\u2022 - Komponen lengkap: tabung reaktor, kondensor pendingin, pipa penyalur gas, dan bak sirkulasi air\n\u2022 - Dilengkapi: pressure gauge (Pengatur Suhu otomatis dan manual)\n\u2022 - FITUR\n\u2022 Termometer Ruangan Terpasang|\n\u2022 - Bahan Bakar : Oli Bekas\n\u2022 - Dilengkapi Safety Valve, Pengukur Tekanan, dan Kran Hasil\n\u2022 - Dilengkapi Penahan panas di sekeliling tabung utama reaktor\n\u2022 - Hasil minyak terbagi 2 : Setara Solar dan Premium\n\u2022 - Dilengkapi Set Kompor\n\u2022 CARA KERJA\n\u2022 MESIN PIROLISIS\n\u2022 Plastik:\n\u2022 1. Pemanasan Plastik (jenis PP, PE, dan sejenisnya) dimasukkan ke dalam reaktor, kemudian dipanaskan hingga suhu tinggi sekitar 350\u2013500\u00b0C dalam kondisi tanpa oksigen.\n\u2022 2. Penguraian (Thermal Cracking) Pada suhu tinggi ini, plastik mulai terurai menjadi gas hidrokarbon. Gas tersebut kemudian dialirkan menuju kondensor.\n\u2022 3. Kondensasi & Pemurnian Gas hasil pirolisis didinginkan dalam kondensor hingga berubah menjadi cairan bahan bakar seperti:\n\u2022 - Minyak pirolisis (setara premium)\n\u2022 - Solar ringan\n\u2022 Sementara residu padat dapat digunakan sebagai carbon black, dan sebagian gas dapat dipakai kembali sebagai bahan bakar pemanas.",
+        "desc": "Mesin Pirolisis Plastik adalah alat pengolah limbah plastik menggunakan panas tinggi dalam kondisi minim oksigen untuk mengubah plastik menjadi bahan bakar cair seperti premium, minyak tanah, solar ringan, serta gas yang dapat dimanfaatkan kembali sebagai sumber panas. Teknologi ini menjadi solusi modern untuk mengurangi limbah plastik sekaligus menghasilkan produk bernilai tinggi yang dapat dimanfaatkan untuk kebutuhan industri maupun energi.\n\nDengan metode pemanasan tertutup, proses pirolisis memecah struktur plastik tanpa pembakaran terbuka, sehingga lebih aman, efisien, dan ramah lingkungan. Mesin ini cocok digunakan untuk pengusaha daur ulang, pengolahan limbah, hingga industri skala kecil dan menengah.\n\n<strong>SPESIFIKASI MESIN:</strong>\n- Kapasitas 20 kg / proses\n- Material Stainless Steel 3 mm (kecuali bagian dudukan/jagrak)\n- Komponen lengkap: tabung reaktor, kondensor pendingin, pipa penyalur gas, dan bak sirkulasi air\n- Dilengkapi: pressure gauge (Pengatur Suhu otomatis dan manual)\n- <strong>FITUR</strong>\nTermometer Ruangan Terpasang|\n- Bahan Bakar : Oli Bekas\n- Dilengkapi Safety Valve, Pengukur Tekanan, dan Kran Hasil\n- Dilengkapi Penahan panas di sekeliling tabung utama reaktor\n- Hasil minyak terbagi 2 : Setara Solar dan Premium\n- Dilengkapi Set Kompor\n\n<strong>\n\n<strong>CARA KERJA</strong>\nMESIN PIROLISIS</strong>\nPlastik:\n1. Pemanasan Plastik (jenis PP, PE, dan sejenisnya) dimasukkan ke dalam reaktor, kemudian dipanaskan hingga suhu tinggi sekitar 350–500°C dalam kondisi tanpa oksigen.\n2. Penguraian (Thermal Cracking) Pada suhu tinggi ini, plastik mulai terurai menjadi gas hidrokarbon. Gas tersebut kemudian dialirkan menuju kondensor.\n3. Kondensasi & Pemurnian Gas hasil pirolisis didinginkan dalam kondensor hingga berubah menjadi cairan bahan bakar seperti:\n- Minyak pirolisis (setara premium)\n- Solar ringan\n\nSementara residu padat dapat digunakan sebagai carbon black, dan sebagian gas dapat dipakai kembali sebagai bahan bakar pemanas.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/50005306338",
         "waMsg": "Halo, saya tertarik dengan Mesin Pirolisis Sampah Plastik Kapasitas 20 Kg CV Asianindo",
         "images": [
@@ -366,8 +352,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/50005306338_2.webp",
             "images/products/50005306338_3.webp",
             "images/products/50005306338_4.webp"
-        ],
-        "promo_image": "images/products/50005306338_0.webp"
+        ]
     },
     {
         "id": "50003108008",
@@ -377,13 +362,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Destilasi",
         "capacitySize": "small",
         "capacity": "100 liter / proses",
-        "price": 37500000,
-        "priceDisplay": "Rp 37.500.000",
+        "price": 39000000,
+        "priceDisplay": "Rp 39.000.000",
         "rating": 5,
         "reviews": 38,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin destilasi merupakan salah satu mesin yang digunakan sebagai pengolah minyak atsiri. Mesin ini bisa mengolah berbagai jenis dedaunan dengan memakai sistim penguapan. Untuk bahan yang dipakai dalam pembuatan dari minyak atsiri yaitu daun cengkeh, daun kayu putih, daun sirih, daun kayu manis, daun cendana, dan berbagai jenis daun lainnya yang bisa mengeluarkan minyak.\n\u2022 SPESIFIKASI\n\u2022 - Kapasitas 100 liter / proses\n\u2022 - Tabung reaktan Stainless Steel 304 Food Grade, 3 mm\n\u2022 - Bahan bakar LPG (bisa dimodifikasi minyak tanah, kayu bakar)\n\u2022 - Dimensi Panggung : \u00d8 130 cm dengan tinggi x 130 cm\n\u2022 - Tabung Reaktor    : 60 x 60 x 140 cm\n\u2022 - Kondensor: \u00d8 45 cm dengan tinggi 140 cm\n\u2022 - Bak Air : \u00d8 45 cm tinggi 130 cm\n\u2022 - Keranjang : \u00d8 86 cm tinggi 122 cm\n\u2022 - Boiler       : \u00d8 45 cm tinggi 140 cm\n\u2022 - Listrik      : 250 watt",
+        "desc": "Mesin destilasi merupakan salah satu mesin yang digunakan sebagai pengolah minyak atsiri. Mesin ini bisa mengolah berbagai jenis dedaunan dengan memakai sistim penguapan. Untuk bahan yang dipakai dalam pembuatan dari minyak atsiri yaitu daun cengkeh, daun kayu putih, daun sirih, daun kayu manis, daun cendana, dan berbagai jenis daun lainnya yang bisa mengeluarkan minyak. \n\n<strong>SPESIFIKASI</strong>\n- Kapasitas 100 liter / proses\n- Tabung reaktan Stainless Steel 304 Food Grade, 3 mm\n- Bahan bakar LPG (bisa dimodifikasi minyak tanah, kayu bakar)\n- Dimensi Panggung : Ø 130 cm dengan tinggi x 130 cm\n- Tabung Reaktor    : 60 x 60 x 140 cm\n- Kondensor: Ø 45 cm dengan tinggi 140 cm\n- Bak Air : Ø 45 cm tinggi 130 cm\n- Keranjang : Ø 86 cm tinggi 122 cm\n- Boiler       : Ø 45 cm tinggi 140 cm\n- Listrik      : 250 watt",
         "shopeeUrl": "https://shopee.co.id/product/69832393/50003108008",
         "waMsg": "Halo, saya tertarik dengan Mesin Destilasi Minyak Nilam Atsiri 100 Kilogram CV Asianindo",
         "images": [
@@ -391,8 +376,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/50003108008_1.webp",
             "images/products/50003108008_2.webp",
             "images/products/50003108008_3.webp"
-        ],
-        "promo_image": "images/products/50003108008_0.webp"
+        ]
     },
     {
         "id": "49902759187",
@@ -402,19 +386,18 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 48950000,
-        "priceDisplay": "Rp 48.950.000",
+        "price": 50450000,
+        "priceDisplay": "Rp 50.450.000",
         "rating": 5,
         "reviews": 48,
         "badge": "Terlaris",
         "badgeColor": "bg-[#FFB800] text-black font-bold",
-        "desc": "\u2022 MESIN RETORT STERILISASI\n\u2022 Mesin retort ini ideal untuk sterilisasi produk makanan dalam kemasan tertutup. Menggunakan suhu tinggi dan tekanan untuk membunuh mikroorganisme berbahaya. Memperpanjang umur simpan produk. Bekerja sesuai Perka BPOM untuk produk steril komersial makanan olahan dalam kemasan non refrigerator. Awet tanpa pendinginan.\n\u2022 SPESIFIKASI\n\u2022 - TIPE MESIN : RVRL_100 OT IJT\n\u2022 - SISTEM KONTROL : OTOMATIS\n\u2022 - BAHAN : STAINLESS STEEL\n\u2022 - SISTEM PENGUNCIAN : RADIAL\n\u2022 - VOLUME TABUNG : 100 LITER\n\u2022 - DIMENSI TABUNG : 50 X 60 CM\n\u2022 - TEMPERATUR DIGITAL : SUPPORT DATA LOGGER\n\u2022 - MESIN PENDUKUNG : 1 SET BOILER\n\u2022 - PELENGKAP : 1 SET KOMPOR + REGULATOR",
+        "desc": "MESIN RETORT STERILISASI\n\nMesin retort ini ideal untuk sterilisasi produk makanan dalam kemasan tertutup. Menggunakan suhu tinggi dan tekanan untuk membunuh mikroorganisme berbahaya. Memperpanjang umur simpan produk. Bekerja sesuai Perka BPOM untuk produk steril komersial makanan olahan dalam kemasan non refrigerator. Awet tanpa pendinginan.\n\n<strong>SPESIFIKASI</strong>\n- TIPE MESIN : RVRL_100 OT IJT\n- SISTEM KONTROL : OTOMATIS\n- BAHAN : STAINLESS STEEL\n- SISTEM PENGUNCIAN : RADIAL\n- VOLUME TABUNG : 100 LITER\n- DIMENSI TABUNG : 50 X 60 CM\n- TEMPERATUR DIGITAL : SUPPORT DATA LOGGER\n- MESIN PENDUKUNG : 1 SET BOILER\n- PELENGKAP : 1 SET KOMPOR + REGULATOR",
         "shopeeUrl": "https://shopee.co.id/product/69832393/49902759187",
         "waMsg": "Halo, saya tertarik dengan Retort Sterilisasi 100 Liter Pengawet Olahan Makanan & Bumbu Tanpa Bahan Pengawet | CV Asianindo",
         "images": [
             "images/products/49902759187_0.webp"
-        ],
-        "promo_image": "images/products/49902759187_0.webp"
+        ]
     },
     {
         "id": "49702828188",
@@ -424,20 +407,19 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "produksi hingga 280 butir baks",
-        "price": 8500000,
-        "priceDisplay": "Rp 8.500.000",
+        "price": 10000000,
+        "priceDisplay": "Rp 10.000.000",
         "rating": 5,
         "reviews": 35,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Pencetak Bakso CV Asianindo adalah solusi tepat untuk meningkatkan produktivitas usaha bakso Anda. Dengan kapasitas produksi hingga 280 butir bakso per menit, mesin ini membantu mencetak bakso secara cepat, seragam, dan higienis sehingga usaha Anda semakin efisien.\n\u2022 SPESIFIKASI MESIN:\n\u2022 - Voltase: 220\u2013240V\n\u2022 - Frekuensi: 50/60Hz\n\u2022 - Daya Listrik: 1.100 Watt\n\u2022 - Kapasitas Produksi: 280 butir/menit\n\u2022 - Kecepatan Aduk: 1.420 rpm\n\u2022 - Ukuran Cetak Bakso: 18 mm / 26 mm / 39 mm (dapat disesuaikan sesuai kebutuhan kecil-besarnya bakso)\n\u2022 - Berat Mesin: 74 Kg\n\u2022 - Dimensi (P x L x T): 750 x 450 x 1250 mm\n\u2022 KEUNGGULAN MESIN: Pencetak Bakso CV Asianindo: -Meningkatkan kapasitas produksi dengan cepat dan stabil\n\u2022 - Hasil bakso lebih seragam dan higienis\n\u2022 - Ukuran cetak fleksibel sesuai kebutuhan usaha\n\u2022 - Desain kokoh dan tahan lama, cocok untuk usaha kecil hingga industri\n\u2022 - Hemat tenaga kerja, hemat waktu, dan lebih efisien\n\u2022 Cocok Digunakan Untuk:\n\u2022 - Usaha bakso skala kecil hingga besar\n\u2022 - Restoran, katering, dan dapur produksi makanan olahan\n\u2022 Dengan Mesin Pencetak Bakso CV Asianindo, Anda dapat memproduksi bakso lebih banyak dalam waktu singkat dan menjaga kualitas produk tetap konsisten.",
+        "desc": "Mesin Pencetak Bakso CV Asianindo adalah solusi tepat untuk meningkatkan produktivitas usaha bakso Anda. Dengan kapasitas produksi hingga 280 butir bakso per menit, mesin ini membantu mencetak bakso secara cepat, seragam, dan higienis sehingga usaha Anda semakin efisien.\n\n<strong>SPESIFIKASI MESIN:</strong>\n- Voltase: 220–240V\n- Frekuensi: 50/60Hz\n- Daya Listrik: 1.100 Watt\n- Kapasitas Produksi: 280 butir/menit\n- Kecepatan Aduk: 1.420 rpm\n- Ukuran Cetak Bakso: 18 mm / 26 mm / 39 mm (dapat disesuaikan sesuai kebutuhan kecil-besarnya bakso)\n- Berat Mesin: 74 Kg\n- Dimensi (P x L x T): 750 x 450 x 1250 mm\n\n<strong>KEUNGGULAN MESIN:</strong> Pencetak Bakso CV Asianindo: -Meningkatkan kapasitas produksi dengan cepat dan stabil\n- Hasil bakso lebih seragam dan higienis\n- Ukuran cetak fleksibel sesuai kebutuhan usaha\n- Desain kokoh dan tahan lama, cocok untuk usaha kecil hingga industri\n- Hemat tenaga kerja, hemat waktu, dan lebih efisien\n\nCocok Digunakan Untuk:\n- Usaha bakso skala kecil hingga besar\n- Restoran, katering, dan dapur produksi makanan olahan\n\nDengan Mesin Pencetak Bakso CV Asianindo, Anda dapat memproduksi bakso lebih banyak dalam waktu singkat dan menjaga kualitas produk tetap konsisten.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/49702828188",
         "waMsg": "Halo, saya tertarik dengan Mesin Cetak Bakso Otomatis Kapasitas Besar 280 Butir/ Menit | CV Asianindo",
         "images": [
             "images/products/49702828188_0.webp",
             "images/products/49702828188_1.webp"
-        ],
-        "promo_image": "images/products/49702828188_0.webp"
+        ]
     },
     {
         "id": "49552834007",
@@ -447,13 +429,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 27500000,
-        "priceDisplay": "Rp 27.500.000",
+        "price": 29000000,
+        "priceDisplay": "Rp 29.000.000",
         "rating": 5,
         "reviews": 44,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Pengemas Otomatis (Packaging)\n\u2022 Merupakan mesin yang berfungsi untuk mengemas berbagai macam produk secara otomatis. kemasan produk yang menarik akan meningkatkan daya tarik suatu produk pada saat di jual. Kondisi baru dan bergaransi. Ada setelan untuk pengaturan berat kemasan, mulai berat 5 gram, 10 gram, 50 gram, sampai 250 gram.\n\u2022 Beberapa contoh kemasan untuk mesin packaging otomatis :\n\u2022 - packing gula pasir\n\u2022 - packing cairan\n\u2022 - pengemas kopi\n\u2022 - pengemas bubuk\n\u2022 - dll\n\u2022 Daya listrik 1800 watt Berat mesin +- 350 kg Material pengemas Al + PE ,OPP + PE, NY + PE , dan bahan kertas pengemas lain.",
+        "desc": "Mesin Pengemas Otomatis (Packaging)\n\nMerupakan mesin yang berfungsi untuk mengemas berbagai macam produk secara otomatis. kemasan produk yang menarik akan meningkatkan daya tarik suatu produk pada saat di jual. Kondisi baru dan bergaransi. Ada setelan untuk pengaturan berat kemasan, mulai berat 5 gram, 10 gram, 50 gram, sampai 250 gram.\n\nBeberapa contoh kemasan untuk mesin packaging otomatis :\n- packing gula pasir\n- packing cairan\n- pengemas kopi\n- pengemas bubuk\n- dll\n\nDaya listrik 1800 watt Berat mesin +- 350 kg Material pengemas Al + PE ,OPP + PE, NY + PE , dan bahan kertas pengemas lain.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/49552834007",
         "waMsg": "Halo, saya tertarik dengan Mesin Packaging Otomatis Kapasitas 250 Gram (Pengemas) Asianindo",
         "images": [
@@ -462,8 +444,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/49552834007_2.webp",
             "images/products/49552834007_3.webp",
             "images/products/49552834007_4.webp"
-        ],
-        "promo_image": "images/products/49552834007_0.webp"
+        ]
     },
     {
         "id": "49305322858",
@@ -473,13 +454,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "50 kg / proses",
-        "price": 84500000,
-        "priceDisplay": "Rp 84.500.000",
+        "price": 86000000,
+        "priceDisplay": "Rp 86.000.000",
         "rating": 5,
         "reviews": 24,
         "badge": "Terlaris",
         "badgeColor": "bg-[#FFB800] text-black font-bold",
-        "desc": "\u2022 Mesin Pirolisis Plastik adalah alat pengolah limbah plastik menggunakan panas tinggi dalam kondisi minim oksigen untuk mengubah plastik menjadi bahan bakar cair seperti premium, minyak tanah, solar ringan, serta gas yang dapat dimanfaatkan kembali sebagai sumber panas. Teknologi ini menjadi solusi modern untuk mengurangi limbah plastik sekaligus menghasilkan produk bernilai tinggi yang dapat dimanfaatkan untuk kebutuhan industri maupun energi.\n\u2022 Dengan metode pemanasan tertutup, proses pirolisis memecah struktur plastik tanpa pembakaran terbuka, sehingga lebih aman, efisien, dan ramah lingkungan. Mesin ini cocok digunakan untuk pengusaha daur ulang, pengolahan limbah, hingga industri skala kecil dan menengah.\n\u2022 SPESIFIKASI MESIN:\n\u2022 - Kapasitas 50 kg / proses\n\u2022 - Material Stainless Steel 3 mm (kecuali bagian dudukan/jagrak)\n\u2022 - Komponen lengkap: tabung reaktor, kondensor pendingin, pipa penyalur gas, dan bak sirkulasi air\n\u2022 - Dilengkapi: pressure gauge (Pengatur Suhu otomatis dan manual)\n\u2022 - FITUR\n\u2022 Termometer Ruangan Terpasang|\n\u2022 - Bahan Bakar : Oli Bekas\n\u2022 - Dilengkapi Safety Valve, Pengukur Tekanan, dan Kran Hasil\n\u2022 - Dilengkapi Penahan panas di sekeliling tabung utama reaktor\n\u2022 - Hasil minyak terbagi 2 : Setara Solar dan Premium\n\u2022 - Dilengkapi Set Kompor\n\u2022 CARA KERJA\n\u2022 MESIN PIROLISIS\n\u2022 Plastik:\n\u2022 1. Pemanasan Plastik (jenis PP, PE, dan sejenisnya) dimasukkan ke dalam reaktor, kemudian dipanaskan hingga suhu tinggi sekitar 350\u2013500\u00b0C dalam kondisi tanpa oksigen.\n\u2022 2. Penguraian (Thermal Cracking) Pada suhu tinggi ini, plastik mulai terurai menjadi gas hidrokarbon. Gas tersebut kemudian dialirkan menuju kondensor.\n\u2022 3. Kondensasi & Pemurnian Gas hasil pirolisis didinginkan dalam kondensor hingga berubah menjadi cairan bahan bakar seperti:\n\u2022 - Minyak pirolisis (setara premium)\n\u2022 - Solar ringan\n\u2022 Sementara residu padat dapat digunakan sebagai carbon black, dan sebagian gas dapat dipakai kembali sebagai bahan bakar pemanas.",
+        "desc": "Mesin Pirolisis Plastik adalah alat pengolah limbah plastik menggunakan panas tinggi dalam kondisi minim oksigen untuk mengubah plastik menjadi bahan bakar cair seperti premium, minyak tanah, solar ringan, serta gas yang dapat dimanfaatkan kembali sebagai sumber panas. Teknologi ini menjadi solusi modern untuk mengurangi limbah plastik sekaligus menghasilkan produk bernilai tinggi yang dapat dimanfaatkan untuk kebutuhan industri maupun energi.\n\nDengan metode pemanasan tertutup, proses pirolisis memecah struktur plastik tanpa pembakaran terbuka, sehingga lebih aman, efisien, dan ramah lingkungan. Mesin ini cocok digunakan untuk pengusaha daur ulang, pengolahan limbah, hingga industri skala kecil dan menengah.\n\n<strong>SPESIFIKASI MESIN:</strong>\n- Kapasitas 50 kg / proses\n- Material Stainless Steel 3 mm (kecuali bagian dudukan/jagrak)\n- Komponen lengkap: tabung reaktor, kondensor pendingin, pipa penyalur gas, dan bak sirkulasi air\n- Dilengkapi: pressure gauge (Pengatur Suhu otomatis dan manual)\n- <strong>FITUR</strong>\nTermometer Ruangan Terpasang|\n- Bahan Bakar : Oli Bekas\n- Dilengkapi Safety Valve, Pengukur Tekanan, dan Kran Hasil\n- Dilengkapi Penahan panas di sekeliling tabung utama reaktor\n- Hasil minyak terbagi 2 : Setara Solar dan Premium\n- Dilengkapi Set Kompor\n\n<strong>\n\n<strong>CARA KERJA</strong>\nMESIN PIROLISIS</strong>\nPlastik:\n1. Pemanasan Plastik (jenis PP, PE, dan sejenisnya) dimasukkan ke dalam reaktor, kemudian dipanaskan hingga suhu tinggi sekitar 350–500°C dalam kondisi tanpa oksigen.\n2. Penguraian (Thermal Cracking) Pada suhu tinggi ini, plastik mulai terurai menjadi gas hidrokarbon. Gas tersebut kemudian dialirkan menuju kondensor.\n3. Kondensasi & Pemurnian Gas hasil pirolisis didinginkan dalam kondensor hingga berubah menjadi cairan bahan bakar seperti:\n- Minyak pirolisis (setara premium)\n- Solar ringan\n\nSementara residu padat dapat digunakan sebagai carbon black, dan sebagian gas dapat dipakai kembali sebagai bahan bakar pemanas.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/49305322858",
         "waMsg": "Halo, saya tertarik dengan Mesin Pirolisis Sampah Plastik Kapasitas 50 Kg CV Asianindo",
         "images": [
@@ -488,8 +469,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/49305322858_2.webp",
             "images/products/49305322858_3.webp",
             "images/products/49305322858_4.webp"
-        ],
-        "promo_image": "images/products/49305322858_0.webp"
+        ]
     },
     {
         "id": "48657037646",
@@ -499,21 +479,19 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "4kg - 8kg",
-        "price": 12000000,
-        "priceDisplay": "Rp 12.000.000",
+        "price": 13500000,
+        "priceDisplay": "Rp 13.500.000",
         "rating": 5,
         "reviews": 8,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin vacuum drying adalah alat untuk mengeringkan produk pada suhu rendah secara konstan.\n\u2022 CARA KERJA\n\u2022 nya hanya melakukan pemanasan pada produk disertai dengan proses pemakuman (hampa).\n\u2022 SPESIFIKASI\n\u2022 Model : 4 Rak\n\u2022 Kapasitas : 4kg\n\u2022 - 8kg Dimensi : 150 x 122 x 160 cm Bahan : Stainless Steel Daya : 750 Watt Pemanas : Kompor LPG Suhu : Terkontrol Otomatis",
+        "desc": "Mesin vacuum drying adalah alat untuk mengeringkan produk pada suhu rendah secara konstan.\n\n<strong>CARA KERJA</strong>\nnya hanya melakukan pemanasan pada produk disertai dengan proses pemakuman (hampa).\n\n<strong>SPESIFIKASI</strong>\n\nModel : 4 Rak\n\nKapasitas : 4kg\n- 8kg Dimensi : 150 x 122 x 160 cm Bahan : Stainless Steel Daya : 750 Watt Pemanas : Kompor LPG Suhu : Terkontrol Otomatis",
         "shopeeUrl": "https://shopee.co.id/product/69832393/48657037646",
         "waMsg": "Halo, saya tertarik dengan Mesin Vacuum Drying 4 Rak CV Asianindo",
         "images": [
             "images/products/48657037646_0.webp",
             "images/products/48657037646_1.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/48657037646_0.webp"
+        ]
     },
     {
         "id": "48454144421",
@@ -523,13 +501,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "50 liter per proses",
-        "price": 12500000,
-        "priceDisplay": "Rp 12.500.000",
+        "price": 14000000,
+        "priceDisplay": "Rp 14.000.000",
         "rating": 5,
         "reviews": 10,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Mixer VCO ini dirancang khusus untuk mendukung proses produksi Virgin Coconut Oil (VCO) agar lebih homogen, efisien, dan konsisten. Mesin ini sangat cocok digunakan oleh pelaku usaha VCO, UMKM, hingga skala industri kecil yang membutuhkan proses pencampuran dengan hasil maksimal dan standar higienis.\n\u2022 Seluruh bagian mesin menggunakan bahan stainless steel, sehingga aman untuk produk pangan, tahan korosi, dan mudah dibersihkan. Dengan kapasitas 50 liter per proses, mesin ini mampu meningkatkan kapasitas produksi sekaligus menjaga kualitas VCO yang dihasilkan.\n\u2022 SPESIFIKASI PRODUK:\n\u2022 - Kapasitas: 50 Liter / proses\n\u2022 - Bahan mesin: Stainless Steel\n\u2022 - Berat mesin: \u00b1250 kg\n\u2022 - Sistem pengadukan stabil dan merata\n\u2022 - Konstruksi kokoh untuk penggunaan jangka panjang\n\u2022 Informasi & pemesanan: Silakan hubungi admin kami untuk konsultasi\n\u2022 SPESIFIKASI\n\u2022 dan kebutuhan mesin sesuai kapasitas usaha Anda.",
+        "desc": "Mesin Mixer VCO ini dirancang khusus untuk mendukung proses produksi Virgin Coconut Oil (VCO) agar lebih homogen, efisien, dan konsisten. Mesin ini sangat cocok digunakan oleh pelaku usaha VCO, UMKM, hingga skala industri kecil yang membutuhkan proses pencampuran dengan hasil maksimal dan standar higienis.\n\nSeluruh bagian mesin menggunakan bahan stainless steel, sehingga aman untuk produk pangan, tahan korosi, dan mudah dibersihkan. Dengan kapasitas 50 liter per proses, mesin ini mampu meningkatkan kapasitas produksi sekaligus menjaga kualitas VCO yang dihasilkan.\n\n<strong>SPESIFIKASI PRODUK:</strong>\n- Kapasitas: 50 Liter / proses\n- Bahan mesin: Stainless Steel\n- Berat mesin: ±250 kg\n- Sistem pengadukan stabil dan merata\n- Konstruksi kokoh untuk penggunaan jangka panjang\n\nInformasi & pemesanan: Silakan hubungi admin kami untuk konsultasi \n\n<strong>SPESIFIKASI</strong>\ndan kebutuhan mesin sesuai kapasitas usaha Anda.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/48454144421",
         "waMsg": "Halo, saya tertarik dengan Mesin Mixer VCO 50 Liter CV Asianindo",
         "images": [
@@ -537,8 +515,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/48454144421_1.webp",
             "images/products/48454144421_2.webp",
             "images/products/48454144421_3.webp"
-        ],
-        "promo_image": "images/products/48454144421_0.webp"
+        ]
     },
     {
         "id": "47702734686",
@@ -548,19 +525,18 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 650000,
-        "priceDisplay": "Rp 650.000",
+        "price": 2150000,
+        "priceDisplay": "Rp 2.150.000",
         "rating": 5,
         "reviews": 46,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Perlindungan Ekstra untuk Pengiriman Aman Packing Kayu ini dirancang khusus untuk memberikan perlindungan ekstra pada mesin selama proses pengiriman.\n\u2022 KEUNGGULAN\n\u2022 Produk:\n\u2022 - Perlindungan ekstra untuk barang mudah pecah\n\u2022 - Ideal untuk pengiriman jarak jauh Dengan menggunakan packing kayu ini, Anda dapat memastikan barang Anda tiba dengan aman di tempat tujuan, memberikan ketenangan pikiran saat mengirimkan barang-barang berharga Anda.",
+        "desc": "Perlindungan Ekstra untuk Pengiriman Aman Packing Kayu ini dirancang khusus untuk memberikan perlindungan ekstra pada mesin selama proses pengiriman. \n\n<strong>KEUNGGULAN</strong>\nProduk:\n- Perlindungan ekstra untuk barang mudah pecah\n- Ideal untuk pengiriman jarak jauh Dengan menggunakan packing kayu ini, Anda dapat memastikan barang Anda tiba dengan aman di tempat tujuan, memberikan ketenangan pikiran saat mengirimkan barang-barang berharga Anda.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/47702734686",
         "waMsg": "Halo, saya tertarik dengan Packing Kayu - Tambahan Perlindungan Ekstra untuk Pengiriman Aman",
         "images": [
             "images/products/47702734686_0.webp"
-        ],
-        "promo_image": "images/products/47702734686_0.webp"
+        ]
     },
     {
         "id": "47162044891",
@@ -576,14 +552,12 @@ window.CATALOG_PRODUCTS = [
         "reviews": 31,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Karet Tabung Penggorengan Mesin Vacuum Frying",
+        "desc": "Karet Tabung Penggorengan Mesin Vacuum Frying",
         "shopeeUrl": "https://shopee.co.id/product/69832393/47162044891",
         "waMsg": "Halo, saya tertarik dengan Karet Mesin Vacuum Frying",
         "images": [
             "images/products/47162044891_0.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/47162044891_0.webp"
+        ]
     },
     {
         "id": "47152827894",
@@ -593,13 +567,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 150000000,
-        "priceDisplay": "Rp 150.000.000",
+        "price": 151500000,
+        "priceDisplay": "Rp 151.500.000",
         "rating": 5,
         "reviews": 10,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN SABLON PLASTIK\n\u2022 Mesin Sablon Plastik 3 Warna.\n\u2022 SPESIFIKASI\n\u2022 - Bodi UNP/Plat esser\n\u2022 - As mild steel\n\u2022 - Panjang 350 cm x lebar 140cm x tinggi 170cm\n\u2022 - Lebar media max 55cm\n\u2022 - Kecepatan max 50rpm\n\u2022 - Motor 2,5 HP VS (Variable Speed)\n\u2022 - Blower 3x150 watt\n\u2022 - Motor roll 0,5 HP VS\n\u2022 - Heater (Pemanas)\n\u2022 - Tension 1\n\u2022 - Gearbox\n\u2022 CATATAN\n\u2022 Spek bisa berubah tergantung permintaan pembeli. garansi 1 tahun setelah mesin sampai di lokasi dan dipandu oleh ahli di bidangnya.",
+        "desc": "MESIN SABLON PLASTIK\n\nMesin Sablon Plastik 3 Warna.\n\n<strong>SPESIFIKASI</strong>\n- Bodi UNP/Plat esser\n- As mild steel\n- Panjang 350 cm x lebar 140cm x tinggi 170cm\n- Lebar media max 55cm\n- Kecepatan max 50rpm\n- Motor 2,5 HP VS (Variable Speed)\n- Blower 3x150 watt\n- Motor roll 0,5 HP VS\n- Heater (Pemanas)\n- Tension 1\n- Gearbox\n\n<strong>CATATAN</strong>\n\nSpek bisa berubah tergantung permintaan pembeli. garansi 1 tahun setelah mesin sampai di lokasi dan dipandu oleh ahli di bidangnya.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/47152827894",
         "waMsg": "Halo, saya tertarik dengan 3 Warna Mesin Sablon Asianindo (Rotogravure)",
         "images": [
@@ -609,8 +583,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/47152827894_3.webp",
             "images/products/47152827894_4.webp",
             "images/products/47152827894_5.webp"
-        ],
-        "promo_image": "images/products/47152827894_0.webp"
+        ]
     },
     {
         "id": "46652866176",
@@ -620,21 +593,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 10500000,
-        "priceDisplay": "Rp 10.500.000",
+        "price": 12000000,
+        "priceDisplay": "Rp 12.000.000",
         "rating": 5,
         "reviews": 32,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 SPESIFIKASI\n\u2022 - Tipe: Meja Getar\n\u2022 - Meja Sortasi: Terdiri dari 3 buah ayakan Disusun bertingkat, bahan Stainless Steel Ayakan atas 8mm,Tengah 6mm dan bawah 4mm\n\u2022 - Penggerak Motor Listrik\n\u2022 1pk 220v\n\u2022 - Kerangka penyangga: Besi profil kotak\n\u2022 - Penggerak: Motor listrik 1PK, 220 v\n\u2022 - Sistem tranmisi: Pulley dan sabuk vbelt",
+        "desc": "<strong>SPESIFIKASI</strong>\n- Tipe: Meja Getar\n- Meja Sortasi: Terdiri dari 3 buah ayakan Disusun bertingkat, bahan Stainless Steel Ayakan atas 8mm,Tengah 6mm dan bawah 4mm\n- Penggerak Motor Listrik\n\n1pk 220v\n- Kerangka penyangga: Besi profil kotak\n- Penggerak: Motor listrik 1PK, 220 v\n- Sistem tranmisi: Pulley dan sabuk vbelt",
         "shopeeUrl": "https://shopee.co.id/product/69832393/46652866176",
         "waMsg": "Halo, saya tertarik dengan Mesin Sortasi Kopi 3 Tingkat Asianindo",
         "images": [
             "images/products/46652866176_0.webp",
             "images/products/46652866176_1.webp",
             "images/products/46652866176_2.webp"
-        ],
-        "promo_image": "images/products/46652866176_0.webp"
+        ]
     },
     {
         "id": "46502823202",
@@ -644,20 +616,19 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "small",
         "capacity": "500 kg per proses ( continue )",
-        "price": 16250000,
-        "priceDisplay": "Rp 16.250.000",
+        "price": 17750000,
+        "priceDisplay": "Rp 17.750.000",
         "rating": 5,
         "reviews": 22,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin sortasi adalah mesin yang berfungsi untuk memisahkan bahan-bahan berdasarkan ukuran, bentuk, warna, densitas, dan tekstur. Mesin sortasi dapat digunakan untuk memisahkan biji-bijian seperti kedelai, kopi, dan beras.\n\u2022 Tujuan dari sortasi adalah untuk mendapatkan kualitas yang lebih baik dan seragam, serta untuk memberikan standarisasi dan perbaikan cara pengolahan.\n\u2022 SPESIFIKASI\n\u2022 - kapasitas 500 kg per proses ( continue )\n\u2022 - model getar\n\u2022 - bahan full stainless\n\u2022 - penggerak dinamo 1 hp\n\u2022 - daya listrik 900 watt\n\u2022 - untuk lubang sortasi bisa custom sesuai permintaan.\n\u2022 melayani pengadaan kebutuhan untuk dinas maupun swasta",
+        "desc": "Mesin sortasi adalah mesin yang berfungsi untuk memisahkan bahan-bahan berdasarkan ukuran, bentuk, warna, densitas, dan tekstur. Mesin sortasi dapat digunakan untuk memisahkan biji-bijian seperti kedelai, kopi, dan beras. \n\nTujuan dari sortasi adalah untuk mendapatkan kualitas yang lebih baik dan seragam, serta untuk memberikan standarisasi dan perbaikan cara pengolahan. \n\n<strong>SPESIFIKASI</strong>\n- kapasitas 500 kg per proses ( continue )\n- model getar\n- bahan full stainless\n- penggerak dinamo 1 hp\n- daya listrik 900 watt\n- untuk lubang sortasi bisa custom sesuai permintaan.\n\nmelayani pengadaan kebutuhan untuk dinas maupun swasta",
         "shopeeUrl": "https://shopee.co.id/product/69832393/46502823202",
         "waMsg": "Halo, saya tertarik dengan Mesin Sortasi Kapasitas 500 Kg full stainless untuk menyortir kerang, biji kakao, biji kopi, dll Asianindo",
         "images": [
             "images/products/46502823202_0.webp",
             "images/products/46502823202_1.webp"
-        ],
-        "promo_image": "images/products/46502823202_0.webp"
+        ]
     },
     {
         "id": "45605810742",
@@ -667,21 +638,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "50 Liter (Cooling Tank Stainle",
-        "price": 43950000,
-        "priceDisplay": "Rp 43.950.000",
+        "price": 45450000,
+        "priceDisplay": "Rp 45.450.000",
         "rating": 5,
         "reviews": 15,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Pendingin Susu Kapasitas 50 Liter (Cooling Tank Stainless Steel)\n\u2022 Mesin Pendingin Susu 50L atau Cooling Tank digunakan untuk mendinginkan produk cair dengan suhu yang dapat disesuaikan. Mesin ini banyak digunakan pada industri makanan dan minuman, khususnya produk berbasis liquid yang membutuhkan suhu stabil dan merata.\n\u2022 Dilengkapi control panel untuk mengatur suhu dan kinerja mesin. Sistem tangki double jacket dengan lapisan isolasi membantu menjaga suhu tetap stabil selama proses pendinginan.\n\u2022 SPESIFIKASI\n\u2022 Lengkap Kapasitas tangki: 50 Liter Dimensi: \u00d8 500 x Tinggi 600 mm Material tangki: Plat HL dengan Polyurethane Sistem pengaduk: Paddle + Elektro Motor (36 RPM) Rangka: Pipa kotak stainless steel Sistem pendingin: Kompresor 2 HP\n\u2022 KELEBIHAN\n\u2022 Produk Pendinginan lebih cepat dan merata Suhu stabil untuk produk cair Kompresor full cover stainless steel Desain sederhana dan kokoh Mudah dioperasikan dan dirawat\n\u2022 Cocok Untuk Produksi: Pendinginan susu Produk minuman cair Bahan makanan berbasis liquid Proses produksi industri makanan & minuman\n\u2022 Kualitas & Keamanan:Menggunakan material stainless steel food grade yang aman untuk produk makanan dan minuman. Cocok untuk kebutuhan produksi skala UMKM hingga industri kecil.",
+        "desc": "Mesin Pendingin Susu Kapasitas 50 Liter (Cooling Tank Stainless Steel)\n\nMesin Pendingin Susu 50L atau Cooling Tank digunakan untuk mendinginkan produk cair dengan suhu yang dapat disesuaikan. Mesin ini banyak digunakan pada industri makanan dan minuman, khususnya produk berbasis liquid yang membutuhkan suhu stabil dan merata.\n\nDilengkapi control panel untuk mengatur suhu dan kinerja mesin. Sistem tangki double jacket dengan lapisan isolasi membantu menjaga suhu tetap stabil selama proses pendinginan.\n\n<strong>SPESIFIKASI</strong>\nLengkap Kapasitas tangki: 50 Liter Dimensi: Ø 500 x Tinggi 600 mm Material tangki: Plat HL dengan Polyurethane Sistem pengaduk: Paddle + Elektro Motor (36 RPM) Rangka: Pipa kotak stainless steel Sistem pendingin: Kompresor 2 HP\n\n<strong>KELEBIHAN</strong>\nProduk Pendinginan lebih cepat dan merata Suhu stabil untuk produk cair Kompresor full cover stainless steel Desain sederhana dan kokoh Mudah dioperasikan dan dirawat\n\nCocok Untuk Produksi: Pendinginan susu Produk minuman cair Bahan makanan berbasis liquid Proses produksi industri makanan & minuman\n\nKualitas & Keamanan:Menggunakan material stainless steel food grade yang aman untuk produk makanan dan minuman. Cocok untuk kebutuhan produksi skala UMKM hingga industri kecil.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/45605810742",
         "waMsg": "Halo, saya tertarik dengan Mesin Pendingin Susu 50 Liter CV Asianindo",
         "images": [
             "images/products/45605810742_0.webp",
             "images/products/45605810742_1.webp",
             "images/products/45605810742_2.webp"
-        ],
-        "promo_image": "images/products/45605810742_0.webp"
+        ]
     },
     {
         "id": "45602828086",
@@ -691,20 +661,19 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "produksi hingga 280 butir baks",
-        "price": 8500000,
-        "priceDisplay": "Rp 8.500.000",
+        "price": 10000000,
+        "priceDisplay": "Rp 10.000.000",
         "rating": 5,
         "reviews": 15,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Pencetak Bakso CV Asianindo adalah solusi tepat untuk meningkatkan produktivitas usaha bakso Anda. Dengan kapasitas produksi hingga 280 butir bakso per menit, mesin ini membantu mencetak bakso secara cepat, seragam, dan higienis sehingga usaha Anda semakin efisien.\n\u2022 SPESIFIKASI MESIN:\n\u2022 - Voltase: 220\u2013240V\n\u2022 - Frekuensi: 50/60Hz\n\u2022 - Daya Listrik: 1.100 Watt\n\u2022 - Kapasitas Produksi: 280 butir/menit\n\u2022 - Kecepatan Aduk: 1.420 rpm\n\u2022 - Ukuran Cetak Bakso: 18 mm / 26 mm / 39 mm (dapat disesuaikan sesuai kebutuhan kecil-besarnya bakso)\n\u2022 - Berat Mesin: 74 Kg\n\u2022 - Dimensi (P x L x T): 750 x 450 x 1250 mm\n\u2022 KEUNGGULAN MESIN: Pencetak Bakso CV Asianindo: -Meningkatkan kapasitas produksi dengan cepat dan stabil\n\u2022 - Hasil bakso lebih seragam dan higienis\n\u2022 - Ukuran cetak fleksibel sesuai kebutuhan usaha\n\u2022 - Desain kokoh dan tahan lama, cocok untuk usaha kecil hingga industri\n\u2022 - Hemat tenaga kerja, hemat waktu, dan lebih efisien\n\u2022 Cocok Digunakan Untuk:\n\u2022 - Usaha bakso skala kecil hingga besar\n\u2022 - Restoran, katering, dan dapur produksi makanan olahan\n\u2022 Dengan Mesin Pencetak Bakso CV Asianindo, Anda dapat memproduksi bakso lebih banyak dalam waktu singkat dan menjaga kualitas produk tetap konsisten.",
+        "desc": "Mesin Pencetak Bakso CV Asianindo adalah solusi tepat untuk meningkatkan produktivitas usaha bakso Anda. Dengan kapasitas produksi hingga 280 butir bakso per menit, mesin ini membantu mencetak bakso secara cepat, seragam, dan higienis sehingga usaha Anda semakin efisien.\n\n<strong>SPESIFIKASI MESIN:</strong>\n- Voltase: 220–240V\n- Frekuensi: 50/60Hz\n- Daya Listrik: 1.100 Watt\n- Kapasitas Produksi: 280 butir/menit\n- Kecepatan Aduk: 1.420 rpm\n- Ukuran Cetak Bakso: 18 mm / 26 mm / 39 mm (dapat disesuaikan sesuai kebutuhan kecil-besarnya bakso)\n- Berat Mesin: 74 Kg\n- Dimensi (P x L x T): 750 x 450 x 1250 mm\n\n<strong>KEUNGGULAN MESIN:</strong> Pencetak Bakso CV Asianindo: -Meningkatkan kapasitas produksi dengan cepat dan stabil\n- Hasil bakso lebih seragam dan higienis\n- Ukuran cetak fleksibel sesuai kebutuhan usaha\n- Desain kokoh dan tahan lama, cocok untuk usaha kecil hingga industri\n- Hemat tenaga kerja, hemat waktu, dan lebih efisien\n\nCocok Digunakan Untuk:\n- Usaha bakso skala kecil hingga besar\n- Restoran, katering, dan dapur produksi makanan olahan\n\nDengan Mesin Pencetak Bakso CV Asianindo, Anda dapat memproduksi bakso lebih banyak dalam waktu singkat dan menjaga kualitas produk tetap konsisten.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/45602828086",
         "waMsg": "Halo, saya tertarik dengan Mesin Cetak Bakso Otomatis Kapasitas Besar 280 Butir/ Menit | CV Asianindo",
         "images": [
             "images/products/45602828086_0.webp",
             "images/products/45602828086_1.webp"
-        ],
-        "promo_image": "images/products/45602828086_0.webp"
+        ]
     },
     {
         "id": "45353113473",
@@ -714,13 +683,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "5 kg / proses",
-        "price": 22500000,
-        "priceDisplay": "Rp 22.500.000",
+        "price": 24000000,
+        "priceDisplay": "Rp 24.000.000",
         "rating": 5,
         "reviews": 14,
         "badge": "Terlaris",
         "badgeColor": "bg-[#FFB800] text-black font-bold",
-        "desc": "\u2022 Mesin Pirolisis Plastik adalah alat pengolah limbah plastik menggunakan panas tinggi dalam kondisi minim oksigen untuk mengubah plastik menjadi bahan bakar cair seperti premium, minyak tanah, solar ringan, serta gas yang dapat dimanfaatkan kembali sebagai sumber panas. Teknologi ini menjadi solusi modern untuk mengurangi limbah plastik sekaligus menghasilkan produk bernilai tinggi yang dapat dimanfaatkan untuk kebutuhan industri maupun energi.\n\u2022 Dengan metode pemanasan tertutup, proses pirolisis memecah struktur plastik tanpa pembakaran terbuka, sehingga lebih aman, efisien, dan ramah lingkungan. Mesin ini cocok digunakan untuk pengusaha daur ulang, pengolahan limbah, hingga industri skala kecil dan menengah.\n\u2022 SPESIFIKASI\n\u2022 - Kapasitas 5 kg / proses\n\u2022 - Material Stainless Steel 3 mm (kecuali bagian dudukan/jagrak)\n\u2022 - Komponen lengkap: tabung reaktor, kondensor pendingin, pipa penyalur gas, dan bak sirkulasi air\n\u2022 - Reaktor diameter 60 cm, tinggi 180 cm\n\u2022 - Dilengkapi: pressure gauge (Pengatur Suhu otomatis dan manual)\n\u2022 - FITUR\n\u2022 Termometer Ruangan Terpasang\n\u2022 - Bahan Bakar : Oli Bekas\n\u2022 - Dilengkapi Safety Valve, Pengukur Tekanan, dan Kran Hasil\n\u2022 - Dilengkapi Penahan panas di sekeliling tabung utama reaktor\n\u2022 - Hasil minyak terbagi 2 : Setara Solar dan Premium\n\u2022 - Dilengkapi Set Kompor\n\u2022 CARA KERJA\n\u2022 MESIN PIROLISIS\n\u2022 Plastik:\n\u2022 1. Pemanasan Plastik (jenis PP, PE, dan sejenisnya) dimasukkan ke dalam reaktor, kemudian dipanaskan hingga suhu tinggi sekitar 350\u2013500\u00b0C dalam kondisi tanpa oksigen.\n\u2022 2. Penguraian (Thermal Cracking) Pada suhu tinggi ini, plastik mulai terurai menjadi gas hidrokarbon. Gas tersebut kemudian dialirkan menuju kondensor.\n\u2022 3. Kondensasi & Pemurnian Gas hasil pirolisis didinginkan dalam kondensor hingga berubah menjadi cairan bahan bakar seperti:\n\u2022 - Minyak pirolisis (setara premium)\n\u2022 - Solar ringan\n\u2022 Sementara residu padat dapat digunakan sebagai carbon black, dan sebagian gas dapat dipakai kembali sebagai bahan bakar pemanas.",
+        "desc": "Mesin Pirolisis Plastik adalah alat pengolah limbah plastik menggunakan panas tinggi dalam kondisi minim oksigen untuk mengubah plastik menjadi bahan bakar cair seperti premium, minyak tanah, solar ringan, serta gas yang dapat dimanfaatkan kembali sebagai sumber panas. Teknologi ini menjadi solusi modern untuk mengurangi limbah plastik sekaligus menghasilkan produk bernilai tinggi yang dapat dimanfaatkan untuk kebutuhan industri maupun energi.\n\nDengan metode pemanasan tertutup, proses pirolisis memecah struktur plastik tanpa pembakaran terbuka, sehingga lebih aman, efisien, dan ramah lingkungan. Mesin ini cocok digunakan untuk pengusaha daur ulang, pengolahan limbah, hingga industri skala kecil dan menengah.\n\n<strong>SPESIFIKASI</strong>\n- Kapasitas 5 kg / proses\n- Material Stainless Steel 3 mm (kecuali bagian dudukan/jagrak)\n- Komponen lengkap: tabung reaktor, kondensor pendingin, pipa penyalur gas, dan bak sirkulasi air\n- Reaktor diameter 60 cm, tinggi 180 cm\n- Dilengkapi: pressure gauge (Pengatur Suhu otomatis dan manual)\n- <strong>FITUR</strong>\nTermometer Ruangan Terpasang\n- Bahan Bakar : Oli Bekas\n- Dilengkapi Safety Valve, Pengukur Tekanan, dan Kran Hasil\n- Dilengkapi Penahan panas di sekeliling tabung utama reaktor\n- Hasil minyak terbagi 2 : Setara Solar dan Premium\n- Dilengkapi Set Kompor\n\n<strong>\n\n<strong>CARA KERJA</strong>\nMESIN PIROLISIS</strong>\nPlastik:\n1. Pemanasan Plastik (jenis PP, PE, dan sejenisnya) dimasukkan ke dalam reaktor, kemudian dipanaskan hingga suhu tinggi sekitar 350–500°C dalam kondisi tanpa oksigen.\n2. Penguraian (Thermal Cracking) Pada suhu tinggi ini, plastik mulai terurai menjadi gas hidrokarbon. Gas tersebut kemudian dialirkan menuju kondensor.\n3. Kondensasi & Pemurnian Gas hasil pirolisis didinginkan dalam kondensor hingga berubah menjadi cairan bahan bakar seperti:\n- Minyak pirolisis (setara premium)\n- Solar ringan\n\nSementara residu padat dapat digunakan sebagai carbon black, dan sebagian gas dapat dipakai kembali sebagai bahan bakar pemanas.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/45353113473",
         "waMsg": "Halo, saya tertarik dengan Mesin Pirolisis Sampah Plastik Kapasitas 5 Kg CV Asianindo",
         "images": [
@@ -728,8 +697,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/45353113473_1.webp",
             "images/products/45353113473_2.webp",
             "images/products/45353113473_3.webp"
-        ],
-        "promo_image": "images/products/45353113473_0.webp"
+        ]
     },
     {
         "id": "45203005945",
@@ -739,20 +707,19 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 3250000,
-        "priceDisplay": "Rp 3.250.000",
+        "price": 4750000,
+        "priceDisplay": "Rp 4.750.000",
         "rating": 5,
         "reviews": 6,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Deskripsi Produk:\n\u2022 - Nama Produk: meja stainless\n\u2022 - Dimensi: 120 x 70 x 85 cm",
+        "desc": "Deskripsi Produk:\n- Nama Produk: meja stainless\n- Dimensi: 120 x 70 x 85 cm",
         "shopeeUrl": "https://shopee.co.id/product/69832393/45203005945",
         "waMsg": "Halo, saya tertarik dengan Meja Stainless Dimensi: 120 x 70 x 85 cm Furniture Asianindo",
         "images": [
             "images/products/45203005945_0.webp",
             "images/products/45203005945_1.webp"
-        ],
-        "promo_image": "images/products/45203005945_0.webp"
+        ]
     },
     {
         "id": "45200352018",
@@ -762,21 +729,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Destilasi",
         "capacitySize": "small",
         "capacity": "500 liter / proses",
-        "price": 92500000,
-        "priceDisplay": "Rp 92.500.000",
+        "price": 94000000,
+        "priceDisplay": "Rp 94.000.000",
         "rating": 5,
         "reviews": 45,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin destilasi merupakan salah satu mesin yang digunakan sebagai pembuat minyak atsiri. Mesin ini bisa mengolah berbagai jenis dedaunan dengan memakai sistim penguapan. Untuk bahan yang dipakai dalam pembuatan dari minyak atsiri yaitu daun cengkeh, daun kayu putih, daun sirih, daun kayu manis, daun cendana, dan berbagai jenis daun lainnya yang bisa mengeluarkan minyak.\n\u2022 SPESIFIKASI\n\u2022 - Kapasitas 500 liter / proses\n\u2022 - Tabung reaktan Stainless Steel 304 Food Grade, 3 mm\n\u2022 - Bahan bakar LPG (bisa dimodifikasi minyak tanah, kayu bakar)\n\u2022 \ufe0f\n\u2022 KEUNGGULAN\n\u2022 - Hasil minyak atsiri murni dan berkualitas tinggi\n\u2022 - Material stainless steel higienis & tahan lama\n\u2022 - Proses efisien dengan sistem penguapan modern\n\u2022 - Cocok untuk industri minyak atsiri, penelitian, hingga produksi herbal alami\n\u2022 Tingkatkan produktivitas dan kualitas hasil destilasi Anda bersama CV Asianindo \u2013 Mesin Hebat, Usaha Kuat!",
+        "desc": "Mesin destilasi merupakan salah satu mesin yang digunakan sebagai pembuat minyak atsiri. Mesin ini bisa mengolah berbagai jenis dedaunan dengan memakai sistim penguapan. Untuk bahan yang dipakai dalam pembuatan dari minyak atsiri yaitu daun cengkeh, daun kayu putih, daun sirih, daun kayu manis, daun cendana, dan berbagai jenis daun lainnya yang bisa mengeluarkan minyak.\n\n<strong>SPESIFIKASI</strong>\n- Kapasitas 500 liter / proses\n- Tabung reaktan Stainless Steel 304 Food Grade, 3 mm\n- Bahan bakar LPG (bisa dimodifikasi minyak tanah, kayu bakar)\n\n️\n\n<strong>KEUNGGULAN</strong>\n- Hasil minyak atsiri murni dan berkualitas tinggi\n- Material stainless steel higienis & tahan lama\n- Proses efisien dengan sistem penguapan modern\n- Cocok untuk industri minyak atsiri, penelitian, hingga produksi herbal alami\n\nTingkatkan produktivitas dan kualitas hasil destilasi Anda bersama CV Asianindo – Mesin Hebat, Usaha Kuat!",
         "shopeeUrl": "https://shopee.co.id/product/69832393/45200352018",
         "waMsg": "Halo, saya tertarik dengan Mesin Destilasi Minyak Nilam Atsiri 500 Liter CV Asianindo",
         "images": [
             "images/products/45200352018_0.webp",
             "images/products/45200352018_1.webp",
             "images/products/45200352018_2.webp"
-        ],
-        "promo_image": "images/products/45200352018_0.webp"
+        ]
     },
     {
         "id": "44800722742",
@@ -785,14 +751,14 @@ window.CATALOG_PRODUCTS = [
         "category": "Mesin Makanan",
         "subCategory": "Lainnya",
         "capacitySize": "small",
-        "capacity": "Kontinu 10\u201320 Kg/Proses | CV A",
-        "price": 15750000,
-        "priceDisplay": "Rp 15.750.000",
+        "capacity": "Kontinu 10–20 Kg/Proses | CV A",
+        "price": 17250000,
+        "priceDisplay": "Rp 17.250.000",
         "rating": 5,
         "reviews": 23,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Press Kemiri \u2013 Kapasitas Kontinu 10\u201320 Kg/Proses | CV Asianindo\n\u2022 Ingin hasil perasan kemiri lebih maksimal, bersih, dan cepat\n\u2022 - Mesin Press Kemiri CV Asianindo hadir untuk membantu proses produksi minyak kemiri menjadi lebih efisien dan higienis. Cocok untuk usaha minyak herbal, kosmetik, minyak rambut, hingga industri rumahan dan UMKM.\n\u2022 \u2705\n\u2022 SPESIFIKASI MESIN:\n\u2022 - Kapasitas kerja: 10\u201320 kg per proses (kontinu)\n\u2022 - Motor dinamo: 3 HP\n\u2022 - Bahan plat: Stainless steel (food grade, mudah dibersihkan)\n\u2022 - Rangka: Besi kuat & kokoh\n\u2022 - Gearbox: WPA ratio 1:60\n\u2022 - Tipe sistem: Screw press (tekanan maksimal, hasil optimal)\n\u2022 - Daya listrik: \u00b1 1200 Watt / 220V\n\u2022 \ud83c\udfaf Cocok Untuk\n\u2022 - Produksi minyak kemiri murni\n\u2022 - Home industry minyak rambut/herbal\n\u2022 - UMKM produksi kosmetik alami\n\u2022 - Produsen bahan baku kecantikan & Kesehatan\n\u2022 Dapatkan mesin berkualitas langsung dari pabrik dan dukungan teknis kami! Hubungi admin untuk konsultasi dan penawaran terbaik \ud83d\udcac\n\u2022 CV Asianindo \u2014 Mesin Hebat, Usaha Kuat",
+        "desc": "Mesin Press Kemiri – Kapasitas Kontinu 10–20 Kg/Proses | CV Asianindo\n\nIngin hasil perasan kemiri lebih maksimal, bersih, dan cepat\n- Mesin Press Kemiri CV Asianindo hadir untuk membantu proses produksi minyak kemiri menjadi lebih efisien dan higienis. Cocok untuk usaha minyak herbal, kosmetik, minyak rambut, hingga industri rumahan dan UMKM.\n\n✅ \n\n<strong>SPESIFIKASI MESIN:</strong>\n- Kapasitas kerja: 10–20 kg per proses (kontinu)\n- Motor dinamo: 3 HP\n- Bahan plat: Stainless steel (food grade, mudah dibersihkan)\n- Rangka: Besi kuat & kokoh\n- Gearbox: WPA ratio 1:60\n- Tipe sistem: Screw press (tekanan maksimal, hasil optimal)\n- Daya listrik: ± 1200 Watt / 220V\n\n🎯 Cocok Untuk\n- Produksi minyak kemiri murni\n- Home industry minyak rambut/herbal\n- UMKM produksi kosmetik alami\n- Produsen bahan baku kecantikan & Kesehatan\n\nDapatkan mesin berkualitas langsung dari pabrik dan dukungan teknis kami! Hubungi admin untuk konsultasi dan penawaran terbaik 💬\n\nCV Asianindo — Mesin Hebat, Usaha Kuat",
         "shopeeUrl": "https://shopee.co.id/product/69832393/44800722742",
         "waMsg": "Halo, saya tertarik dengan Mesin Press Kemiri Kapasitas Continue 10 - 20 kg Per Proses",
         "images": [
@@ -801,8 +767,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/44800722742_2.webp",
             "images/products/44800722742_3.webp",
             "images/products/44800722742_4.webp"
-        ],
-        "promo_image": "images/products/44800722742_0.webp"
+        ]
     },
     {
         "id": "44755313720",
@@ -812,13 +777,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "30 kg / proses",
-        "price": 61500000,
-        "priceDisplay": "Rp 61.500.000",
+        "price": 63000000,
+        "priceDisplay": "Rp 63.000.000",
         "rating": 5,
         "reviews": 20,
         "badge": "Terlaris",
         "badgeColor": "bg-[#FFB800] text-black font-bold",
-        "desc": "\u2022 Mesin Pirolisis Plastik adalah alat pengolah limbah plastik menggunakan panas tinggi dalam kondisi minim oksigen untuk mengubah plastik menjadi bahan bakar cair seperti premium, minyak tanah, solar ringan, serta gas yang dapat dimanfaatkan kembali sebagai sumber panas. Teknologi ini menjadi solusi modern untuk mengurangi limbah plastik sekaligus menghasilkan produk bernilai tinggi yang dapat dimanfaatkan untuk kebutuhan industri maupun energi.\n\u2022 Dengan metode pemanasan tertutup, proses pirolisis memecah struktur plastik tanpa pembakaran terbuka, sehingga lebih aman, efisien, dan ramah lingkungan. Mesin ini cocok digunakan untuk pengusaha daur ulang, pengolahan limbah, hingga industri skala kecil dan menengah.\n\u2022 SPESIFIKASI MESIN:\n\u2022 - Kapasitas 30 kg / proses\n\u2022 - Material Stainless Steel 3 mm (kecuali bagian dudukan/jagrak)\n\u2022 - Komponen lengkap: tabung reaktor, kondensor pendingin, pipa penyalur gas, dan bak sirkulasi air\n\u2022 - Dilengkapi: pressure gauge (Pengatur Suhu otomatis dan manual)\n\u2022 - FITUR\n\u2022 Termometer Ruangan Terpasang|\n\u2022 - Bahan Bakar : Oli Bekas\n\u2022 - Dilengkapi Safety Valve, Pengukur Tekanan, dan Kran Hasil\n\u2022 - Dilengkapi Penahan panas di sekeliling tabung utama reaktor\n\u2022 - Hasil minyak terbagi 2 : Setara Solar dan Premium\n\u2022 - Dilengkapi Set Kompor\n\u2022 CARA KERJA\n\u2022 MESIN PIROLISIS\n\u2022 Plastik:\n\u2022 1. Pemanasan Plastik (jenis PP, PE, dan sejenisnya) dimasukkan ke dalam reaktor, kemudian dipanaskan hingga suhu tinggi sekitar 350\u2013500\u00b0C dalam kondisi tanpa oksigen.\n\u2022 2. Penguraian (Thermal Cracking) Pada suhu tinggi ini, plastik mulai terurai menjadi gas hidrokarbon. Gas tersebut kemudian dialirkan menuju kondensor.\n\u2022 3. Kondensasi & Pemurnian Gas hasil pirolisis didinginkan dalam kondensor hingga berubah menjadi cairan bahan bakar seperti:\n\u2022 - Minyak pirolisis (setara premium)\n\u2022 - Solar ringan\n\u2022 Sementara residu padat dapat digunakan sebagai carbon black, dan sebagian gas dapat dipakai kembali sebagai bahan bakar pemanas.",
+        "desc": "Mesin Pirolisis Plastik adalah alat pengolah limbah plastik menggunakan panas tinggi dalam kondisi minim oksigen untuk mengubah plastik menjadi bahan bakar cair seperti premium, minyak tanah, solar ringan, serta gas yang dapat dimanfaatkan kembali sebagai sumber panas. Teknologi ini menjadi solusi modern untuk mengurangi limbah plastik sekaligus menghasilkan produk bernilai tinggi yang dapat dimanfaatkan untuk kebutuhan industri maupun energi.\n\nDengan metode pemanasan tertutup, proses pirolisis memecah struktur plastik tanpa pembakaran terbuka, sehingga lebih aman, efisien, dan ramah lingkungan. Mesin ini cocok digunakan untuk pengusaha daur ulang, pengolahan limbah, hingga industri skala kecil dan menengah.\n\n<strong>SPESIFIKASI MESIN:</strong>\n- Kapasitas 30 kg / proses\n- Material Stainless Steel 3 mm (kecuali bagian dudukan/jagrak)\n- Komponen lengkap: tabung reaktor, kondensor pendingin, pipa penyalur gas, dan bak sirkulasi air\n- Dilengkapi: pressure gauge (Pengatur Suhu otomatis dan manual)\n- <strong>FITUR</strong>\nTermometer Ruangan Terpasang|\n- Bahan Bakar : Oli Bekas\n- Dilengkapi Safety Valve, Pengukur Tekanan, dan Kran Hasil\n- Dilengkapi Penahan panas di sekeliling tabung utama reaktor\n- Hasil minyak terbagi 2 : Setara Solar dan Premium\n- Dilengkapi Set Kompor\n\n<strong>\n\n<strong>CARA KERJA</strong>\nMESIN PIROLISIS</strong>\nPlastik:\n1. Pemanasan Plastik (jenis PP, PE, dan sejenisnya) dimasukkan ke dalam reaktor, kemudian dipanaskan hingga suhu tinggi sekitar 350–500°C dalam kondisi tanpa oksigen.\n2. Penguraian (Thermal Cracking) Pada suhu tinggi ini, plastik mulai terurai menjadi gas hidrokarbon. Gas tersebut kemudian dialirkan menuju kondensor.\n3. Kondensasi & Pemurnian Gas hasil pirolisis didinginkan dalam kondensor hingga berubah menjadi cairan bahan bakar seperti:\n- Minyak pirolisis (setara premium)\n- Solar ringan\n\nSementara residu padat dapat digunakan sebagai carbon black, dan sebagian gas dapat dipakai kembali sebagai bahan bakar pemanas.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/44755313720",
         "waMsg": "Halo, saya tertarik dengan Mesin Pirolisis Sampah Plastik Kapasitas 30 Kg CV Asianindo",
         "images": [
@@ -827,8 +792,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/44755313720_2.webp",
             "images/products/44755313720_3.webp",
             "images/products/44755313720_4.webp"
-        ],
-        "promo_image": "images/products/44755313720_0.webp"
+        ]
     },
     {
         "id": "44463491612",
@@ -838,13 +802,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 28500000,
-        "priceDisplay": "Rp 28.500.000",
+        "price": 30000000,
+        "priceDisplay": "Rp 30.000.000",
         "rating": 5,
         "reviews": 34,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin power shreder :  Mesin power shredder adalah mesin yang dirancang untuk menghancurkan atau mencacah berbagai material menjadi potongan-potongan kecil atau serpihan.\n\u2022 FUNGSI\n\u2022 nya bervariasi, mulai dari pengelolaan sampah, penghancuran dokumen, hingga pengolahan material untuk daur ulang atau produksi bahan bakar alternatif.\n\u2022 Beberapa\n\u2022 KELEBIHAN\n\u2022 menggunakan mesin shredder adalah:\n\u2022 - Pengurangan volume:\n\u2022 Material yang dihancurkan akan memiliki volume yang lebih kecil, sehingga lebih mudah ditangani.\n\u2022 - Memudahkan daur ulang: Material yang dihancurkan dapat dipisahkan dan diproses ulang dengan lebih mudah.\n\u2022 - Meningkatkan keamanan: Dokumen yang dihancurkan tidak dapat dibaca atau digunakan kembali, menjaga kerahasiaan informasi.\n\u2022 - Alternatif bahan bakar: Beberapa material yang dihancurkan dapat digunakan sebagai bahan bakar alternatif.",
+        "desc": "Mesin power shreder :  Mesin power shredder adalah mesin yang dirancang untuk menghancurkan atau mencacah berbagai material menjadi potongan-potongan kecil atau serpihan. \n\n<strong>FUNGSI</strong>\nnya bervariasi, mulai dari pengelolaan sampah, penghancuran dokumen, hingga pengolahan material untuk daur ulang atau produksi bahan bakar alternatif. \n\nBeberapa \n\n<strong>KELEBIHAN</strong>\nmenggunakan mesin shredder adalah:\n- Pengurangan volume:\n\nMaterial yang dihancurkan akan memiliki volume yang lebih kecil, sehingga lebih mudah ditangani.\n- Memudahkan daur ulang: Material yang dihancurkan dapat dipisahkan dan diproses ulang dengan lebih mudah.\n- Meningkatkan keamanan: Dokumen yang dihancurkan tidak dapat dibaca atau digunakan kembali, menjaga kerahasiaan informasi.\n- Alternatif bahan bakar: Beberapa material yang dihancurkan dapat digunakan sebagai bahan bakar alternatif.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/44463491612",
         "waMsg": "Halo, saya tertarik dengan Mesin Power Shreder Pengancur Kayu, Ranting, Batang, dan Benda Keras Lainnya Asianindo",
         "images": [
@@ -855,8 +819,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/44463491612_4.webp",
             "images/products/44463491612_5.webp",
             "images/products/44463491612_6.webp"
-        ],
-        "promo_image": "images/products/44463491612_0.webp"
+        ]
     },
     {
         "id": "44417140614",
@@ -866,13 +829,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "small",
         "capacity": "5 kg",
-        "price": 7950000,
-        "priceDisplay": "Rp 7.950.000",
+        "price": 9450000,
+        "priceDisplay": "Rp 9.450.000",
         "rating": 5,
         "reviews": 36,
         "badge": "Terlaris",
         "badgeColor": "bg-[#FFB800] text-black font-bold",
-        "desc": "\u2022 - Ideal untuk Pengolahan Berbagai Bahan\n\u2022 - Mesin sangrai roasting stainless ini sangat berguna untuk mensangrai berbagai macam bahan. Cocok untuk kopi, jahe, pelet, dan beras. Dengan kapasitas 5 kg, mesin ini memungkinkan Anda untuk menghasilkan sangrai dalam jumlah yang cukup besar. Sangrai bahan-bahan ini menjadi pilihan tepat untuk kebutuhan Anda.\n\u2022 - SPESIFIKASI\n\u2022 dan\n\u2022 FUNGSI\n\u2022 - Mesin ini dirancang khusus untuk proses sangrai. Terbuat dari material stainless, membuatnya tahan lama dan mudah dibersihkan. Tidak hanya untuk kopi, mesin ini juga cocok untuk jahe, pelet, dan beras. Nikmati kemudahan dalam mengolah bahan dengan mesin sangrai ini.",
+        "desc": "- Ideal untuk Pengolahan Berbagai Bahan\n- Mesin sangrai roasting stainless ini sangat berguna untuk mensangrai berbagai macam bahan. Cocok untuk kopi, jahe, pelet, dan beras. Dengan kapasitas 5 kg, mesin ini memungkinkan Anda untuk menghasilkan sangrai dalam jumlah yang cukup besar. Sangrai bahan-bahan ini menjadi pilihan tepat untuk kebutuhan Anda.\n- <strong>SPESIFIKASI</strong>\ndan \n\n<strong>FUNGSI</strong>\n- Mesin ini dirancang khusus untuk proses sangrai. Terbuat dari material stainless, membuatnya tahan lama dan mudah dibersihkan. Tidak hanya untuk kopi, mesin ini juga cocok untuk jahe, pelet, dan beras. Nikmati kemudahan dalam mengolah bahan dengan mesin sangrai ini.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/44417140614",
         "waMsg": "Halo, saya tertarik dengan Mesin Sangrai Kopi kapasitas 5 kg Asianindo",
         "images": [
@@ -880,8 +843,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/44417140614_1.webp",
             "images/products/44417140614_2.webp",
             "images/products/44417140614_3.webp"
-        ],
-        "promo_image": "images/products/44417140614_0.webp"
+        ]
     },
     {
         "id": "44413733167",
@@ -891,21 +853,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Destilasi",
         "capacitySize": "small",
         "capacity": "10 kg / proses",
-        "price": 19300000,
-        "priceDisplay": "Rp 19.300.000",
+        "price": 20800000,
+        "priceDisplay": "Rp 20.800.000",
         "rating": 5,
         "reviews": 34,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin destilasi merupakan salah satu mesin yang digunakan sebagai pengolah minyak atsiri. Mesin ini bisa mengolah berbagai jenis dedaunan dengan memakai sistim penguapan. Untuk bahan yang dipakai dalam pembuatan dari minyak atsiri yaitu daun cengkeh, daun kayu putih, daun sirih, daun kayu manis, daun cendana, dan berbagai jenis daun lainnya yang bisa mengeluarkan minyak.\n\u2022 SPESIFIKASI\n\u2022 - Kapasitas 10 kg / proses\n\u2022 - Tabung reaktan Stainless Steel Food Grade, 3 mm\n\u2022 - Bahan bakar LPG (bisa dimodifikasi minyak tanah, kayu bakar)\n\u2022 - Dimensi Tabung : \u00d8 50 cm keseluruhan 66 cm x 66 cm x 150 cm\n\u2022 - Keranjang \u00d8 46 cm dengan tinggi 59 cm\n\u2022 - Kondensor \u00d8 39 cm keseluruhan 58 cm x 58 cm x 126 cm\n\u2022 - Boiler \u00d8 41 x 90 cm\n\u2022 - Listrik 250 watt",
+        "desc": "Mesin destilasi merupakan salah satu mesin yang digunakan sebagai pengolah minyak atsiri. Mesin ini bisa mengolah berbagai jenis dedaunan dengan memakai sistim penguapan. Untuk bahan yang dipakai dalam pembuatan dari minyak atsiri yaitu daun cengkeh, daun kayu putih, daun sirih, daun kayu manis, daun cendana, dan berbagai jenis daun lainnya yang bisa mengeluarkan minyak.\n\n<strong>SPESIFIKASI</strong>\n- Kapasitas 10 kg / proses\n- Tabung reaktan Stainless Steel Food Grade, 3 mm\n- Bahan bakar LPG (bisa dimodifikasi minyak tanah, kayu bakar)\n- Dimensi Tabung : Ø 50 cm keseluruhan 66 cm x 66 cm x 150 cm\n- Keranjang Ø 46 cm dengan tinggi 59 cm\n- Kondensor Ø 39 cm keseluruhan 58 cm x 58 cm x 126 cm\n- Boiler Ø 41 x 90 cm\n- Listrik 250 watt",
         "shopeeUrl": "https://shopee.co.id/product/69832393/44413733167",
         "waMsg": "Halo, saya tertarik dengan Mesin Destilasi Minyak Nilam Atsiri 10 Liter CV Asianindo",
         "images": [
             "images/products/44413733167_0.webp",
             "images/products/44413733167_1.webp",
             "images/products/44413733167_2.webp"
-        ],
-        "promo_image": "images/products/44413733167_0.webp"
+        ]
     },
     {
         "id": "44163526171",
@@ -915,13 +876,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Pengering / Dryer",
         "capacitySize": "small",
         "capacity": "200 kg/proses",
-        "price": 25450000,
-        "priceDisplay": "Rp 25.450.000",
+        "price": 26950000,
+        "priceDisplay": "Rp 26.950.000",
         "rating": 5,
         "reviews": 13,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Rotary Dryer Dapat digunakan untuk mengeringkan gabah, jagung, kedelai, kopi, cengkeh, kayu manis, jahe, kunyit, lengkuas, kedelai, kerupuk, kunir, kemiri, rempah -rempah lainnya.\n\u2022 Dilengkapi panel otomatis :\n\u2022 - Dapat men-setting suhu sesuai kebutuhan produk yang akan dikeringkan\n\u2022 - Dapat men-setting waktu yang dibutuhkn untuk mengeringkan\n\u2022 SPESIFIKASI\n\u2022 - Material bahan tabung plat besi\n\u2022 - Rangka unp 5\n\u2022 - Panjang : 120 cm\n\u2022 - Diameter : 70 cm\n\u2022 - Kapasitas : 200 kg/proses\n\u2022 - Penggerak : motor listrik 1,5 hp atau diesel 7 pk\n\u2022 - Pemanas : Jet Burner / oli bekas\n\u2022 - BBM : Lpg\n\u2022 KETERANGAN LAIN:  bisa menyesuaikan bahan material tabung dan rangka sesuai permintaan info lebih lanjut bisa menghubungi admin kami\n\u2022 BAHAN BAKAR PILIHAN:\n\u2022 1. GAS LPG\n\u2022 2. LISTRIK / ELEMENT",
+        "desc": "Mesin Rotary Dryer Dapat digunakan untuk mengeringkan gabah, jagung, kedelai, kopi, cengkeh, kayu manis, jahe, kunyit, lengkuas, kedelai, kerupuk, kunir, kemiri, rempah -rempah lainnya.\n\nDilengkapi panel otomatis :\n- Dapat men-setting suhu sesuai kebutuhan produk yang akan dikeringkan\n- Dapat men-setting waktu yang dibutuhkn untuk mengeringkan\n\n<strong>SPESIFIKASI</strong>\n- Material bahan tabung plat besi\n- Rangka unp 5\n- Panjang : 120 cm\n- Diameter : 70 cm\n- Kapasitas : 200 kg/proses\n- Penggerak : motor listrik 1,5 hp atau diesel 7 pk\n- Pemanas : Jet Burner / oli bekas\n- BBM : Lpg\n\n<strong>KETERANGAN LAIN:</strong>  bisa menyesuaikan bahan material tabung dan rangka sesuai permintaan info lebih lanjut bisa menghubungi admin kami \n\nBAHAN BAKAR PILIHAN:\n1. GAS LPG\n2. LISTRIK / ELEMENT",
         "shopeeUrl": "https://shopee.co.id/product/69832393/44163526171",
         "waMsg": "Halo, saya tertarik dengan Mesin Rotary Dryer Statis 200Kg Pengering Makanan CV Asianindo",
         "images": [
@@ -929,8 +890,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/44163526171_1.webp",
             "images/products/44163526171_2.webp",
             "images/products/44163526171_3.webp"
-        ],
-        "promo_image": "images/products/44163526171_0.webp"
+        ]
     },
     {
         "id": "44117136952",
@@ -939,14 +899,14 @@ window.CATALOG_PRODUCTS = [
         "category": "Mesin Makanan",
         "subCategory": "Vacuum Frying",
         "capacitySize": "small",
-        "capacity": "1,5 kg",
-        "price": 13950000,
-        "priceDisplay": "Rp 13.950.000",
+        "capacity": "1",
+        "price": 14450000,
+        "priceDisplay": "Rp 14.450.000",
         "rating": 5,
         "reviews": 17,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN VACUUM FRYING\n\u2022 Mesin ini berfungsi untuk : memproduksi kripik atau camilan  jadi, yang berbahan dasar dari buah\n\u2022 - buahan atau umbi\n\u2022 - umbian. cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim k lokasi sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidakmenimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya.\n\u2022 nb : free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\u2022 NOTE\n\u2022 Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan di dinas pemerintahan ( Tender ) info lebih lanjut bisa menghubungi  Admin kami\n\u2022 deskripsi produk :\n\u2022 - Kapasitas 1,5 kg on proses\n\u2022 - Dimensi 90 cm \u00d7 80 cm \u00d7 58 cm\n\u2022 - Tabung D 30 cm \u00d7 P 45 cm\n\u2022 - Sistem vacuum : Water jet 1/2 HP\n\u2022 - Daya listrik 600 watt / 220 volt\n\u2022 - Suhu terkontrol otomatis\n\u2022 - Kebutuhan minyak 15 liter\n\u2022 - Pemanas kompor LPG\n\u2022 KETERANGAN\n\u2022 - Unit mesin 100% Baru\n\u2022 - Garansi servis 1 tahun ( non spare part )\n\u2022 MENGAPA HARUS ASIANINDO\n\u2022 - - SERTIFIKASI TKDN: Diakui Kementrian\n\u2022 - Perindustrian (Kualitas Standar Nasional).\n\u2022 - PAKET KOMPLIT: Harga sudah termasuk Spinner Peniris Minyak & Kompor LPG. Tinggal pakai!\n\u2022 - PENDAMPINGAN AHLI: Takut gak bisa pakai\n\u2022 - - Kami pandu via Video Call sampai hasil keripik Anda renyah & cantik.\n\u2022 Cocok bagi para pemula usaha pembuatan keripik buah ( jeruk, apel, nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
+        "desc": "MESIN VACUUM FRYING\n\nMesin ini berfungsi untuk : memproduksi kripik atau camilan  jadi, yang berbahan dasar dari buah\n- buahan atau umbi\n- umbian. cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim k lokasi sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidakmenimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya. \n\nnb : free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\n<strong>NOTE</strong>\n Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan di dinas pemerintahan ( Tender ) info lebih lanjut bisa menghubungi  Admin kami \n\ndeskripsi produk :\n- Kapasitas 1,5 kg on proses\n- Dimensi 90 cm × 80 cm × 58 cm\n- Tabung D 30 cm × P 45 cm\n- Sistem vacuum : Water jet 1/2 HP\n- Daya listrik 600 watt / 220 volt\n- Suhu terkontrol otomatis\n- Kebutuhan minyak 15 liter\n- Pemanas kompor LPG   \n\n<strong>KETERANGAN</strong>\n- Unit mesin 100% Baru\n- Garansi servis 1 tahun ( non spare part )\n\n<strong>MENGAPA HARUS ASIANINDO</strong>\n- - SERTIFIKASI TKDN: Diakui Kementrian\n- Perindustrian (Kualitas Standar Nasional).\n- PAKET KOMPLIT: Harga sudah termasuk Spinner Peniris Minyak & Kompor LPG. Tinggal pakai!\n- PENDAMPINGAN AHLI: Takut gak bisa pakai\n- - Kami pandu via Video Call sampai hasil keripik Anda renyah & cantik.\n\nCocok bagi para pemula usaha pembuatan keripik buah ( jeruk, apel, nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/44117136952",
         "waMsg": "Halo, saya tertarik dengan Mesin Vacuum Frying 1,5kg TKDN Kemenperin - Paket Usaha Keripik Buah (Free Spinner & Kompor).",
         "images": [
@@ -955,9 +915,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/44117136952_2.webp",
             "images/products/44117136952_3.webp",
             "images/products/44117136952_4.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/44117136952_0.webp"
+        ]
     },
     {
         "id": "43963305789",
@@ -973,7 +931,7 @@ window.CATALOG_PRODUCTS = [
         "reviews": 53,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN VACUUM FRYING\n\u2022 Mesin Vacuum Frying ini berfungsi untuk : memproduksi kripik atau camilan\n\u2022 jadi, yang berbahan dasar dari buah\n\u2022 - buahan atau umbi\n\u2022 - umbian. Mesin Vacuum Frying ini cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim ke lokasi Mesin Vacuum Frying sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidak menimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan Mesin Vacuum Frying sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya.\n\u2022 nb : Mesin Vacuum Frying free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).\n\u2022 pada saat pengoperasian mesin\n\u2022 akan dipandu oleh ahlinya.\n\u2022 NOTE\n\u2022 Toko kami juga menyediakan semua kebutuhan mesin yang anda\n\u2022 butuhkan, baik untuk kebutuhan\n\u2022 pribadi maupun untuk pengadaan di dinas pemerintahan ( Tender )\n\u2022 Deskripsi Produk Mesin Vacuum Frying\n\u2022 :\n\u2022 - Kapasitas 5 kg on proses\n\u2022 - Sistem vacuum : Water jet 2HP\n\u2022 - Daya listrik 900 watt / 220 volt\n\u2022 - Suhu terkontrol otomatis\n\u2022 - Kebutuhan minyak 75 liter\n\u2022 - Pemanas kompor LPG\n\u2022 KETERANGAN\n\u2022 - Unit mesin 100% Baru\n\u2022 - Garansi servis 1 tahun ( non spare\n\u2022 part )..\n\u2022 Cocok bagi para pemula usaha pembuatan keripik buah ( jeruk, apel, nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
+        "desc": "MESIN VACUUM FRYING\n\nMesin Vacuum Frying ini berfungsi untuk : memproduksi kripik atau camilan\n\njadi, yang berbahan dasar dari buah\n- buahan atau umbi\n- umbian. Mesin Vacuum Frying ini cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim ke lokasi Mesin Vacuum Frying sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidak menimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan Mesin Vacuum Frying sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya.\n\nnb : Mesin Vacuum Frying free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).\n\npada saat pengoperasian mesin\n\nakan dipandu oleh ahlinya.\n\n<strong>NOTE</strong>\n Toko kami juga menyediakan semua kebutuhan mesin yang anda\n\nbutuhkan, baik untuk kebutuhan\n\npribadi maupun untuk pengadaan di dinas pemerintahan ( Tender )\n\nDeskripsi Produk Mesin Vacuum Frying\n\n:\n- Kapasitas 5 kg on proses\n- Sistem vacuum : Water jet 2HP\n- Daya listrik 900 watt / 220 volt\n- Suhu terkontrol otomatis\n- Kebutuhan minyak 75 liter\n- Pemanas kompor LPG\n\n<strong>KETERANGAN</strong>\n- Unit mesin 100% Baru\n- Garansi servis 1 tahun ( non spare\n\npart )..\n\nCocok bagi para pemula usaha pembuatan keripik buah ( jeruk, apel, nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43963305789",
         "waMsg": "Halo, saya tertarik dengan ASIANINDO Mesin Vacuum Frying Kapasitas 5 kg untuk Kripik Buah & Camilan Buku Panduan Gratis Spinner Kompor Garansi 1 Tahun",
         "images": [
@@ -982,9 +940,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/43963305789_2.webp",
             "images/products/43963305789_3.webp",
             "images/products/43963305789_4.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/43963305789_0.webp"
+        ]
     },
     {
         "id": "43917145224",
@@ -994,13 +950,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "small",
         "capacity": "20kg",
-        "price": 23950000,
-        "priceDisplay": "Rp 23.950.000",
+        "price": 25450000,
+        "priceDisplay": "Rp 25.450.000",
         "rating": 5,
         "reviews": 23,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 SPESIFIKASI\n\u2022 Kapasitas 20kg\n\u2022 Tebal Bahan Drum 3 mm Stainless steel\n\u2022 Body Mild Steel\n\u2022 Rangka Pipa Kotak\n\u2022 Thermo control digital\n\u2022 Blower Cyclone dan Blower cooling bean/pendingin\n\u2022 Burner Tungku 3 baris\n\u2022 KELENGKAPAN\n\u2022 Lampu, Burn, Stik Checker Kopi, Manometer, Selang dan Regulator\n\u2022 - pada saat awal pengoperasian akan dipandu oleh ahlinya dan kami kawal sampai bisa\n\u2022 - garansi mesin 1 tahun ( non sparepart ).",
+        "desc": "<strong>SPESIFIKASI</strong>\n\n· Kapasitas 20kg · Tebal Bahan Drum 3 mm Stainless steel · Body Mild Steel · Rangka Pipa Kotak · Thermo control digital · Blower Cyclone dan Blower cooling bean/pendingin · Burner Tungku 3 baris · \n\n<strong>KELENGKAPAN</strong>\nLampu, Burn, Stik Checker Kopi, Manometer, Selang dan Regulator\n- pada saat awal pengoperasian akan dipandu oleh ahlinya dan kami kawal sampai bisa\n- garansi mesin 1 tahun ( non sparepart ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43917145224",
         "waMsg": "Halo, saya tertarik dengan Mesin Roasting Kopi Kapasitas 20kg CV Asianindo",
         "images": [
@@ -1008,8 +964,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/43917145224_1.webp",
             "images/products/43917145224_2.webp",
             "images/products/43917145224_3.webp"
-        ],
-        "promo_image": "images/products/43917145224_0.webp"
+        ]
     },
     {
         "id": "43863487649",
@@ -1019,21 +974,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "60 liter/proses",
-        "price": 11950000,
-        "priceDisplay": "Rp 11.950.000",
+        "price": 13450000,
+        "priceDisplay": "Rp 13.450.000",
         "rating": 5,
         "reviews": 35,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Retort menggunakan suhu steril komersial 121 derajat dengan tekanan 6-14 psi\n\u2022 Dimana mesin ini bekerja sesuai dengan Perka BPOM tentang produk  steril komersil makanan olahan dalam kemasan non refrigerator\n\u2022 Awet tanpa pendinginan.\n\u2022 SPESIFIKASI\n\u2022 Kapasitas 60 liter/proses Dimensi: + 50x50x90 cm Material: Full Stainless Steel Keranjang Vorporasi Stainless Steel d:3mm Burner: LPG Stove Pressure Gauge Manual Thermo Control Safety Valve Emergency Valve Operational Pressure 14,5 psi Operational Temperature 100-110 oC",
+        "desc": "Retort menggunakan suhu steril komersial 121 derajat dengan tekanan 6-14 psi \n\nDimana mesin ini bekerja sesuai dengan Perka BPOM tentang produk  steril komersil makanan olahan dalam kemasan non refrigerator\n\nAwet tanpa pendinginan.\n\n<strong>SPESIFIKASI</strong>\n Kapasitas 60 liter/proses Dimensi: + 50x50x90 cm Material: Full Stainless Steel Keranjang Vorporasi Stainless Steel d:3mm Burner: LPG Stove Pressure Gauge Manual Thermo Control Safety Valve Emergency Valve Operational Pressure 14,5 psi Operational Temperature 100-110 oC",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43863487649",
         "waMsg": "Halo, saya tertarik dengan Mesin Mini Retort Sterilisasi Kapasitas 50 liter Asianindo",
         "images": [
             "images/products/43863487649_0.webp",
             "images/products/43863487649_1.webp",
             "images/products/43863487649_2.webp"
-        ],
-        "promo_image": "images/products/43863487649_0.webp"
+        ]
     },
     {
         "id": "43813944097",
@@ -1043,21 +997,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "25 kg",
-        "price": 6350000,
-        "priceDisplay": "Rp 6.350.000",
+        "price": 7850000,
+        "priceDisplay": "Rp 7.850.000",
         "rating": 5,
         "reviews": 37,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 * Kapasitas : 25 kg\n\u2022 - Bahan Stainless Steel\n\u2022 - Dimensi : 46x46x90 cm\n\u2022 - Rangka MS\n\u2022 - Kontrol tekanan\n\u2022 - Safety Valve\n\u2022 - Gratis Kompor LPG",
+        "desc": "* Kapasitas : 25 kg\n- Bahan Stainless Steel\n- Dimensi : 46x46x90 cm\n- Rangka MS\n- Kontrol tekanan\n- Safety Valve\n- Gratis Kompor LPG",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43813944097",
         "waMsg": "Halo, saya tertarik dengan Mesin Presto 25kg Asianindo",
         "images": [
             "images/products/43813944097_0.webp",
             "images/products/43813944097_1.webp",
             "images/products/43813944097_2.webp"
-        ],
-        "promo_image": "images/products/43813944097_0.webp"
+        ]
     },
     {
         "id": "43663950850",
@@ -1067,13 +1020,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Spray Dryer",
         "capacitySize": "small",
         "capacity": "10Liter Bahan/jam",
-        "price": 85450000,
-        "priceDisplay": "Rp 85.450.000",
+        "price": 86950000,
+        "priceDisplay": "Rp 86.950.000",
         "rating": 5,
         "reviews": 26,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Kapasitas 10Liter Bahan/jam\n\u2022 Dimensi 185x175x260 cm\n\u2022 Ruang Pengering Stainless steel Food Grade\n\u2022 Material Rangka Full Stainless Steel\n\u2022 Total Daya 15.000 Watt\n\u2022 Air Compressor 3HP\n\u2022 Heater Elektrik 13.000 Watt\n\u2022 Blower 2pcs, 600 Watt\n\u2022 Cyclone stainless steel Food Grade\n\u2022 1 Buah Tabung Dinding, 1 Buah Pemanas Atas",
+        "desc": "·  Kapasitas 10Liter Bahan/jam ·  Dimensi 185x175x260 cm ·  Ruang Pengering Stainless steel Food Grade ·  Material Rangka Full Stainless Steel ·  Total Daya 15.000 Watt ·  Air Compressor 3HP ·  Heater Elektrik 13.000 Watt ·  Blower 2pcs, 600 Watt ·  Cyclone stainless steel Food Grade ·  1 Buah Tabung Dinding, 1 Buah Pemanas Atas",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43663950850",
         "waMsg": "Halo, saya tertarik dengan Mesin Spray Dryer 10 Liter Asianindo",
         "images": [
@@ -1082,8 +1035,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/43663950850_2.webp",
             "images/products/43663950850_3.webp",
             "images/products/43663950850_4.webp"
-        ],
-        "promo_image": "images/products/43663950850_0.webp"
+        ]
     },
     {
         "id": "43663536813",
@@ -1093,13 +1045,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Vacuum Frying",
         "capacitySize": "small",
         "capacity": "5 kg on proses",
-        "price": 15992000,
-        "priceDisplay": "Rp 15.992.000",
+        "price": 17450000,
+        "priceDisplay": "Rp 17.450.000",
         "rating": 5,
         "reviews": 9,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN VACUUM FRYING\n\u2022 Mesin Vacuum Frying ini berfungsi untuk : memproduksi kripik atau camilan\n\u2022 jadi, yang berbahan dasar dari buah\n\u2022 - buahan atau umbi\n\u2022 - umbian. Mesin Vacuum Frying ini cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim ke lokasi Mesin Vacuum Frying sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidak menimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan Mesin Vacuum Frying sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya.\n\u2022 nb : Mesin Vacuum Frying free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).\n\u2022 pada saat pengoperasian mesin\n\u2022 akan dipandu oleh ahlinya.\n\u2022 NOTE\n\u2022 Toko kami juga menyediakan semua kebutuhan mesin yang anda\n\u2022 butuhkan, baik untuk kebutuhan\n\u2022 pribadi maupun untuk pengadaan di dinas pemerintahan ( Tender )\n\u2022 Deskripsi Produk Mesin Vacuum Frying\n\u2022 :\n\u2022 - Kapasitas 5 kg on proses\n\u2022 - Sistem vacuum : Water jet 1,5HP\n\u2022 - Daya listrik 1.100 watt / 220 volt\n\u2022 - Suhu terkontrol otomatis\n\u2022 - Kebutuhan minyak 45 liter\n\u2022 - Pemanas kompor LPG\n\u2022 KETERANGAN\n\u2022 - Unit mesin 100% Baru\n\u2022 - Garansi servis 1 tahun ( non spare part )\n\u2022 MENGAPA HARUS ASIANINDO\n\u2022 - - SERTIFIKASI TKDN: Diakui Kementrian\n\u2022 - Perindustrian (Kualitas Standar Nasional).\n\u2022 - PAKET KOMPLIT: Harga sudah termasuk Spinner Peniris Minyak & Kompor LPG. Tinggal pakai!\n\u2022 - PENDAMPINGAN AHLI: Takut gak bisa pakai\n\u2022 - - Kami pandu via Video Call sampai hasil keripik Anda renyah & cantik.\n\u2022 Cocok bagi para pemula usaha pembuatan keripik buah ( jeruk, apel, nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
+        "desc": "MESIN VACUUM FRYING\n\nMesin Vacuum Frying ini berfungsi untuk : memproduksi kripik atau camilan\n\njadi, yang berbahan dasar dari buah\n- buahan atau umbi\n- umbian. Mesin Vacuum Frying ini cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim ke lokasi Mesin Vacuum Frying sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidak menimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan Mesin Vacuum Frying sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya.\n\nnb : Mesin Vacuum Frying free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).\n\npada saat pengoperasian mesin\n\nakan dipandu oleh ahlinya.\n\n<strong>NOTE</strong>\n Toko kami juga menyediakan semua kebutuhan mesin yang anda\n\nbutuhkan, baik untuk kebutuhan\n\npribadi maupun untuk pengadaan di dinas pemerintahan ( Tender )\n\nDeskripsi Produk Mesin Vacuum Frying\n\n:\n- Kapasitas 5 kg on proses\n- Sistem vacuum : Water jet 1,5HP\n- Daya listrik 1.100 watt / 220 volt\n- Suhu terkontrol otomatis\n- Kebutuhan minyak 45 liter\n- Pemanas kompor LPG\n\n<strong>KETERANGAN</strong>\n- Unit mesin 100% Baru\n- Garansi servis 1 tahun ( non spare part )\n\n<strong>MENGAPA HARUS ASIANINDO</strong>\n- - SERTIFIKASI TKDN: Diakui Kementrian\n- Perindustrian (Kualitas Standar Nasional).\n- PAKET KOMPLIT: Harga sudah termasuk Spinner Peniris Minyak & Kompor LPG. Tinggal pakai!\n- PENDAMPINGAN AHLI: Takut gak bisa pakai\n- - Kami pandu via Video Call sampai hasil keripik Anda renyah & cantik.\n\nCocok bagi para pemula usaha pembuatan keripik buah ( jeruk, apel, nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43663536813",
         "waMsg": "Halo, saya tertarik dengan Mesin Vacuum Frying 5kg TKDN Kemenperin - Paket Usaha Keripik Buah (Free Spinner & Kompor).",
         "images": [
@@ -1110,9 +1062,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/43663536813_4.webp",
             "images/products/43663536813_5.webp",
             "images/products/43663536813_6.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/43663536813_0.webp"
+        ]
     },
     {
         "id": "43463519136",
@@ -1122,21 +1072,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "100 liter per proses",
-        "price": 22750000,
-        "priceDisplay": "Rp 22.750.000",
+        "price": 24250000,
+        "priceDisplay": "Rp 24.250.000",
         "rating": 5,
         "reviews": 5,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 mesin ekstrak kapasitas 100 liter per proses , mesin yang berfungsi untuk merubah cair menjadi bubuk / serbuk.\n\u2022 KETERANGAN PRODUK:\n\u2022 - Mengeringkan bahan ekstrak dengan cepat dan efisien\n\u2022 - Mengurangi kadar air dalam ekstrak untuk memperpanjang umur simpan\n\u2022 - Mempertahankan kualitas dan kandungan nutrisi dari bahan ekstrak\n\u2022 - Menghasilkan ekstrak yang kering dan mudah disimpan atau diolah lebih lanjut\n\u2022 - Dilengkapi dengan suhu dan waktu pengeringan yang dapat diatur sesuai kebutuhan\n\u2022 - Desain yang kompak dan mudah dioperasikan.\n\u2022 SPESIFIKASI:\n\u2022 - Bahan Full Stainless Steel\n\u2022 - Tabung Double Jacket\n\u2022 - Suhu Terkontrol Otomatis\n\u2022 - Pengaduk otomatis\n\u2022 - free kompor\n\u2022 Nb: sebelum mesin kami kirim sudah kami uji coba ( trial ). jadi tidak ada kendala pada saat tiba di lokasi.",
+        "desc": "mesin ekstrak kapasitas 100 liter per proses , mesin yang berfungsi untuk merubah cair menjadi bubuk / serbuk. \n\n<strong>KETERANGAN PRODUK:</strong>\n- Mengeringkan bahan ekstrak dengan cepat dan efisien\n- Mengurangi kadar air dalam ekstrak untuk memperpanjang umur simpan\n- Mempertahankan kualitas dan kandungan nutrisi dari bahan ekstrak\n- Menghasilkan ekstrak yang kering dan mudah disimpan atau diolah lebih lanjut\n- Dilengkapi dengan suhu dan waktu pengeringan yang dapat diatur sesuai kebutuhan\n- Desain yang kompak dan mudah dioperasikan.\n\n<strong>SPESIFIKASI:</strong>\n- Bahan Full Stainless Steel\n- Tabung Double Jacket\n- Suhu Terkontrol Otomatis\n- Pengaduk otomatis\n- free kompor\n\nNb: sebelum mesin kami kirim sudah kami uji coba ( trial ). jadi tidak ada kendala pada saat tiba di lokasi.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43463519136",
         "waMsg": "Halo, saya tertarik dengan Mesin Ekstraktor Kapasitas 100 Liter CV Asianindo",
         "images": [
             "images/products/43463519136_0.webp",
             "images/products/43463519136_1.webp",
             "images/products/43463519136_2.webp"
-        ],
-        "promo_image": "images/products/43463519136_0.webp"
+        ]
     },
     {
         "id": "43413495705",
@@ -1146,13 +1095,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 25300000,
-        "priceDisplay": "Rp 25.300.000",
+        "price": 26800000,
+        "priceDisplay": "Rp 26.800.000",
         "rating": 5,
         "reviews": 7,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin pirolisis adalah alat yang menggunakan panas tinggi dalam kondisi minim atau tanpa oksigen untuk mengolah limbah organik atau sampah, mengubahnya menjadi produk lain seperti bahan bakar cair, gas, atau produk kimia. Mesin ini berperan penting dalam pengelolaan sampah, terutama plastik, dan dapat menghasilkan produk yang bernilai tambah.\n\u2022 SPESIFIKASI\n\u2022 Bahan full stainless Steel\n\u2022 Dimensi menyesuaikan permintaan\n\u2022 Bahan bakar gas, kayu bakar, oli bekas dll\n\u2022 Di lengkapi safety Valve\n\u2022 CARA KERJA\n\u2022 MESIN PIROLISIS\n\u2022 1. Pemanasan:\n\u2022 Limbah organik atau sampah dimasukkan ke dalam reaktor dan dipanaskan pada suhu tinggi (misalnya, 300-800\u00b0C) tanpa adanya oksigen.\n\u2022 2. Penguraian:\n\u2022 Proses pirolisis menyebabkan bahan organik terurai menjadi molekul yang lebih kecil, menghasilkan gas, minyak, dan residu padat.\n\u2022 3. Pemurnian:\n\u2022 Produk gas dan minyak dapat dipisahkan dan dimurnikan untuk digunakan lebih lanjut, sedangkan residu padat dapat diolah menjadi karbon aktif atau produk lain.",
+        "desc": "<span><span>Mesin pirolisis adalah <span>alat yang menggunakan panas tinggi dalam kondisi minim atau tanpa oksigen untuk mengolah limbah organik atau sampah, mengubahnya menjadi produk lain seperti bahan bakar cair, gas, atau produk kimia</span>. Mesin ini berperan penting dalam pengelolaan sampah, terutama plastik, dan dapat menghasilkan produk yang bernilai tambah. </span></span> <span><span>\n\n<strong>SPESIFIKASI</strong>\n</span></span> <ul><li>Bahan full stainless Steel</li><li>Dimensi menyesuaikan permintaan</li><li>Bahan bakar gas, kayu bakar, oli bekas dll</li><li>Di lengkapi safety Valve  </li></ul> <span><span>\n\n<strong>\n\n<strong>CARA KERJA</strong>\nMESIN PIROLISIS</strong>\n</span></span><ol><li><strong><span><span>1. Pemanasan:</span></span></strong></li><li><span><span>Limbah organik atau sampah dimasukkan ke dalam reaktor dan dipanaskan pada suhu tinggi (misalnya, 300-800°C) tanpa adanya oksigen. </span></span></li><li><strong><span>2. Penguraian:</span></strong></li><li><span><span>Proses pirolisis menyebabkan bahan organik terurai menjadi molekul yang lebih kecil, menghasilkan gas, minyak, dan residu padat. </span></span></li><li><strong><span>3. Pemurnian:</span></strong></li><li><span><span>Produk gas dan minyak dapat dipisahkan dan dimurnikan untuk digunakan lebih lanjut, sedangkan residu padat dapat diolah menjadi karbon aktif atau produk lain. </span></span></li></ol>",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43413495705",
         "waMsg": "Halo, saya tertarik dengan MESIN PIROLOSIS ( PENGUBAH LIMBAH ORGANIK MENJADI BAHAN BAKAR )",
         "images": [
@@ -1161,8 +1110,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/43413495705_2.webp",
             "images/products/43413495705_3.webp",
             "images/products/43413495705_4.webp"
-        ],
-        "promo_image": "images/products/43413495705_0.webp"
+        ]
     },
     {
         "id": "43363542064",
@@ -1172,20 +1120,19 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 13500000,
-        "priceDisplay": "Rp 13.500.000",
+        "price": 15000000,
+        "priceDisplay": "Rp 15.000.000",
         "rating": 5,
         "reviews": 25,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 SPESIFIKASI\n\u2022 - Penggerak Electric Motor 1 HP + Gear Box\n\u2022 - Material Besi Plat Mild Steel\n\u2022 - Rangka Besi UNP",
+        "desc": "<strong>SPESIFIKASI</strong>\n- Penggerak Electric Motor 1 HP + Gear Box\n- Material Besi Plat Mild Steel\n- Rangka Besi UNP",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43363542064",
         "waMsg": "Halo, saya tertarik dengan Mesin Granulator Pupuk 20 Kg Asianindo",
         "images": [
             "images/products/43363542064_0.webp",
             "images/products/43363542064_1.webp"
-        ],
-        "promo_image": "images/products/43363542064_0.webp"
+        ]
     },
     {
         "id": "43363525334",
@@ -1195,13 +1142,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "100 Liter / Proses",
-        "price": 20950000,
-        "priceDisplay": "Rp 20.950.000",
+        "price": 22450000,
+        "priceDisplay": "Rp 22.450.000",
         "rating": 5,
         "reviews": 16,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN EVAPORATOR VACUM\n\u2022 Kegunaan: Untuk mengurangi kadar air/mengentalkan cairan: minyak, VCO, madu, susu,dll.), metode nya dengan cara kandungan air  dipanaskan dan diuapkan, kemudian kandungan air tadi  di keluarkan dengan cara di Vacum.\n\u2022 SPESIFIKASI PRODUK:\n\u2022 - Kapasitas: 100 Liter / Proses *Bahan Stainless Steel *Pemanas heater *Kontrol Suhu Otomatis *Tabung Double Jacket\n\u2022 - Dimensi Total: 150x80x165 cm\n\u2022 - Rpm : 30 rpm\n\u2022 - Listrik :1300 watt, 220V\n\u2022 garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\u2022 NOTE\n\u2022 Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan pribadi  maupun untuk pengadaan di dinas  pemerintahan ( Tender ) info lebih lanjut bisa menghubungi  Admin kami",
+        "desc": "MESIN EVAPORATOR VACUM\n\nKegunaan: Untuk mengurangi kadar air/mengentalkan cairan: minyak, VCO, madu, susu,dll.), metode nya dengan cara kandungan air  dipanaskan dan diuapkan, kemudian kandungan air tadi  di keluarkan dengan cara di Vacum.\n\n<strong>SPESIFIKASI PRODUK:</strong>\n- Kapasitas: 100 Liter / Proses *Bahan Stainless Steel *Pemanas heater *Kontrol Suhu Otomatis *Tabung Double Jacket\n- Dimensi Total: 150x80x165 cm\n- Rpm : 30 rpm\n- Listrik :1300 watt, 220V\n\ngaransi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\n<strong>NOTE</strong>\n Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan pribadi  maupun untuk pengadaan di dinas  pemerintahan ( Tender ) info lebih lanjut bisa menghubungi  Admin kami",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43363525334",
         "waMsg": "Halo, saya tertarik dengan Mesin Evaporator Vacuum 100 liter Listrik Asianindo",
         "images": [
@@ -1210,9 +1157,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/43363525334_2.webp",
             "images/products/43363525334_3.webp",
             "images/products/43363525334_4.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/43363525334_0.webp"
+        ]
     },
     {
         "id": "43362616840",
@@ -1222,21 +1167,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Pasteurisasi",
         "capacitySize": "small",
         "capacity": "25 Liter / proses",
-        "price": 11300000,
-        "priceDisplay": "Rp 11.300.000",
+        "price": 12800000,
+        "priceDisplay": "Rp 12.800.000",
         "rating": 5,
         "reviews": 9,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin pasteurisasi digunakan untuk pasteurisasi produk minuman dan produk cair (misalnya : susu segar, sirup, sari buah, dan lain-lain) sebelum dikemas.\n\u2022 FUNGSI\n\u2022 pasteurisasi ini adalah untuk mensterilkan produk dari bakteri penyebab penyakit pada suhu yang tidak terlalu tinggi, sehingga tidak merusak produk.\n\u2022 SPESIFIKASI\n\u2022 - Kapasitas 25 Liter / proses\n\u2022 - Dimensi 80 cm x 65 cm x 115 cm\n\u2022 - Listrik 200 watt, 220 V\n\u2022 - Kecepatan mixer 140 rpm\n\u2022 - Bahan full stainless steel\n\u2022 - Pemanas  kompor LPG\n\u2022 - Suhu Terkontrol otomatis\n\u2022 - Tabung double jacket (air / minyak)",
+        "desc": "Mesin pasteurisasi digunakan untuk pasteurisasi produk minuman dan produk cair (misalnya : susu segar, sirup, sari buah, dan lain-lain) sebelum dikemas. \n\n<strong>FUNGSI</strong>\npasteurisasi ini adalah untuk mensterilkan produk dari bakteri penyebab penyakit pada suhu yang tidak terlalu tinggi, sehingga tidak merusak produk.\n\n<strong>SPESIFIKASI</strong>\n- Kapasitas 25 Liter / proses\n- Dimensi 80 cm x 65 cm x 115 cm\n- Listrik 200 watt, 220 V\n- Kecepatan mixer 140 rpm\n- Bahan full stainless steel\n- Pemanas  kompor LPG\n- Suhu Terkontrol otomatis\n- Tabung double jacket (air / minyak)",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43362616840",
         "waMsg": "Halo, saya tertarik dengan Mesin Pasteurisasi susu 25 Liter CV Asianindo",
         "images": [
             "images/products/43362616840_0.webp",
             "images/products/43362616840_1.webp",
             "images/products/43362616840_2.webp"
-        ],
-        "promo_image": "images/products/43362616840_0.webp"
+        ]
     },
     {
         "id": "43217136512",
@@ -1246,13 +1190,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "small",
         "capacity": "50kg",
-        "price": 43950000,
-        "priceDisplay": "Rp 43.950.000",
+        "price": 45450000,
+        "priceDisplay": "Rp 45.450.000",
         "rating": 5,
         "reviews": 36,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 SPESIFIKASI\n\u2022 Kapasitas 50kg\n\u2022 Tebal Bahan Drum 5 mm Stainless steel\n\u2022 Body Mild Steel\n\u2022 Rangka Pipa Kotak\n\u2022 Thermo control digital\n\u2022 Blower Cyclone dan Blower cooling bean/pendingin\n\u2022 Burner Tungku 3 baris\n\u2022 KELENGKAPAN\n\u2022 Lampu, Burn, Stik Checker Kopi, Manometer, Selang dan Regulator\n\u2022 - pada saat awal pengoperasian akan dipandu oleh ahlinya dan kami kawal sampai bisa\n\u2022 - garansi mesin 1 tahun ( non sparepart ).",
+        "desc": "<strong>SPESIFIKASI</strong>\n\n· Kapasitas 50kg · Tebal Bahan Drum 5 mm Stainless steel · Body Mild Steel · Rangka Pipa Kotak · Thermo control digital · Blower Cyclone dan Blower cooling bean/pendingin · Burner Tungku 3 baris · \n\n<strong>KELENGKAPAN</strong>\nLampu, Burn, Stik Checker Kopi, Manometer, Selang dan Regulator\n- pada saat awal pengoperasian akan dipandu oleh ahlinya dan kami kawal sampai bisa\n- garansi mesin 1 tahun ( non sparepart ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43217136512",
         "waMsg": "Halo, saya tertarik dengan Mesin Roasting Kopi Kapasitas 50kg CV Asianindo",
         "images": [
@@ -1260,8 +1204,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/43217136512_1.webp",
             "images/products/43217136512_2.webp",
             "images/products/43217136512_3.webp"
-        ],
-        "promo_image": "images/products/43217136512_0.webp"
+        ]
     },
     {
         "id": "43213541900",
@@ -1271,21 +1214,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 9250000,
-        "priceDisplay": "Rp 9.250.000",
+        "price": 10750000,
+        "priceDisplay": "Rp 10.750.000",
         "rating": 5,
         "reviews": 34,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Kristalisasi Gula Semut\n\u2022 Bahan Body Wajan: Terbuat dari Stainless Steel yang tahan lama dan mudah dibersihkan. Rangka Besi UNP: Menjamin kekuatan dan daya tahan mesin. Penggerak Elektromotor 1 HP: Menghasilkan tenaga yang cukup untuk operasional mesin.\n\u2022 Mesin kristalisasi gula semut ini dirancang dengan\n\u2022 SPESIFIKASI\n\u2022 bahan yang jelas. Body wajan menggunakan Stainless Steel, sementara rangka besi UNP menambah kestabilan. Penggeraknya adalah elektromotor 1 HP, memberikan performa yang diinginkan. Informasi ini penting untuk pemahaman lebih lanjut tentang komponen dan\n\u2022 FUNGSI\n\u2022 nya. Pastikan untuk mempertimbangkan\n\u2022 SPESIFIKASI\n\u2022 ini saat membeli.",
+        "desc": "Mesin Kristalisasi Gula Semut\n\nBahan Body Wajan: Terbuat dari Stainless Steel yang tahan lama dan mudah dibersihkan. Rangka Besi UNP: Menjamin kekuatan dan daya tahan mesin. Penggerak Elektromotor 1 HP: Menghasilkan tenaga yang cukup untuk operasional mesin.\n\nMesin kristalisasi gula semut ini dirancang dengan \n\n<strong>SPESIFIKASI</strong>\nbahan yang jelas. Body wajan menggunakan Stainless Steel, sementara rangka besi UNP menambah kestabilan. Penggeraknya adalah elektromotor 1 HP, memberikan performa yang diinginkan. Informasi ini penting untuk pemahaman lebih lanjut tentang komponen dan \n\n<strong>FUNGSI</strong>\nnya. Pastikan untuk mempertimbangkan \n\n<strong>SPESIFIKASI</strong>\nini saat membeli.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43213541900",
         "waMsg": "Halo, saya tertarik dengan Mesin Kristalisasi Gula Semut Asianindo",
         "images": [
             "images/products/43213541900_0.webp",
             "images/products/43213541900_1.webp",
             "images/products/43213541900_2.webp"
-        ],
-        "promo_image": "images/products/43213541900_0.webp"
+        ]
     },
     {
         "id": "43213536608",
@@ -1295,13 +1237,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "small",
         "capacity": "10 kg",
-        "price": 8500000,
-        "priceDisplay": "Rp 8.500.000",
+        "price": 10000000,
+        "priceDisplay": "Rp 10.000.000",
         "rating": 5,
         "reviews": 26,
         "badge": "Terlaris",
         "badgeColor": "bg-[#FFB800] text-black font-bold",
-        "desc": "\u2022 ASIANINDO Mesin Sangrai Kopi Kapasitas 10 kg\n\u2022 - Ideal untuk Usaha Kecil Menengah\n\u2022 - Mesin Sangrai Kopi ASIANINDO dengan kapasitas 10 kg, dirancang untuk meningkatkan kualitas dan efisiensi proses sangrai biji kopi Anda. Tidak hanya untuk kopi, mesin ini juga andal menyangrai biji-bijian lainnya. Dapatkan hasil sangrai yang optimal dengan mesin ini.\n\u2022 - FITUR\n\u2022 Utama: Kapasitas besar hingga 10 kg. Cocok untuk berbagai jenis biji. Meningkatkan kualitas sangrai.\n\u2022 Distributor Resmi: ASIANINDO menawarkan mesin ini untuk memenuhi kebutuhan usaha kecil menengah. Pastikan proses sangrai Anda lebih efisien dan berkualitas dengan mesin ini.",
+        "desc": "ASIANINDO Mesin Sangrai Kopi Kapasitas 10 kg\n- Ideal untuk Usaha Kecil Menengah\n- Mesin Sangrai Kopi ASIANINDO dengan kapasitas 10 kg, dirancang untuk meningkatkan kualitas dan efisiensi proses sangrai biji kopi Anda. Tidak hanya untuk kopi, mesin ini juga andal menyangrai biji-bijian lainnya. Dapatkan hasil sangrai yang optimal dengan mesin ini.\n- <strong>FITUR</strong>\nUtama: Kapasitas besar hingga 10 kg. Cocok untuk berbagai jenis biji. Meningkatkan kualitas sangrai.\n\nDistributor Resmi: ASIANINDO menawarkan mesin ini untuk memenuhi kebutuhan usaha kecil menengah. Pastikan proses sangrai Anda lebih efisien dan berkualitas dengan mesin ini.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43213536608",
         "waMsg": "Halo, saya tertarik dengan Mesin Sangrai Kopi Kapasitas 10 kg Asianindo",
         "images": [
@@ -1310,8 +1252,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/43213536608_2.webp",
             "images/products/43213536608_3.webp",
             "images/products/43213536608_4.webp"
-        ],
-        "promo_image": "images/products/43213536608_0.webp"
+        ]
     },
     {
         "id": "43213529675",
@@ -1321,13 +1262,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 9450000,
-        "priceDisplay": "Rp 9.450.000",
+        "price": 10950000,
+        "priceDisplay": "Rp 10.950.000",
         "rating": 5,
         "reviews": 16,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 SPESIFIKASI\n\u2022 - Bahan\n\u2022 : Stainless Steel",
+        "desc": "<strong>SPESIFIKASI</strong>\n- Bahan\n\n: Stainless Steel",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43213529675",
         "waMsg": "Halo, saya tertarik dengan Mesin Pemarut Cepat Kelapa Asianindo",
         "images": [
@@ -1335,8 +1276,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/43213529675_1.webp",
             "images/products/43213529675_2.webp",
             "images/products/43213529675_3.webp"
-        ],
-        "promo_image": "images/products/43213529675_0.webp"
+        ]
     },
     {
         "id": "43213288582",
@@ -1346,21 +1286,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "50liter",
-        "price": 16500000,
-        "priceDisplay": "Rp 16.500.000",
+        "price": 19000000,
+        "priceDisplay": "Rp 19.000.000",
         "rating": 5,
         "reviews": 11,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 mesin ekstrak kapasitas 50liter pengubah cair menjadi bubuk\n\u2022 KETERANGAN PRODUK:\n\u2022 - Mengeringkan bahan ekstrak dengan cepat dan efisien\n\u2022 - Mengurangi kadar air dalam ekstrak untuk memperpanjang umur simpan\n\u2022 - Mempertahankan kualitas dan kandungan nutrisi dari bahan ekstrak\n\u2022 - Menghasilkan ekstrak yang kering dan mudah disimpan atau diolah lebih lanjut\n\u2022 - Dilengkapi dengan suhu dan waktu pengeringan yang dapat diatur sesuai kebutuhan\n\u2022 - Desain yang simple dan mudah dioperasikan.\n\u2022 SPESIFIKASI:\n\u2022 - Bahan Full Stainless Steel\n\u2022 - Tabung Double Jacket\n\u2022 - Suhu Terkontrol Otomatis\n\u2022 - Pengaduk otomatis\n\u2022 - free kompor, selang gas,regulator\n\u2022 Nb: sebelum mesin kami kirim sudah kami uji coba ( trial ). jadi tidak ada kendala pada saat tiba di lokasi.",
+        "desc": "mesin ekstrak kapasitas 50liter pengubah cair menjadi bubuk\n\n<strong>KETERANGAN PRODUK:</strong>\n- Mengeringkan bahan ekstrak dengan cepat dan efisien\n- Mengurangi kadar air dalam ekstrak untuk memperpanjang umur simpan\n- Mempertahankan kualitas dan kandungan nutrisi dari bahan ekstrak\n- Menghasilkan ekstrak yang kering dan mudah disimpan atau diolah lebih lanjut\n- Dilengkapi dengan suhu dan waktu pengeringan yang dapat diatur sesuai kebutuhan\n- Desain yang simple dan mudah dioperasikan.\n\n<strong>SPESIFIKASI:</strong>\n- Bahan Full Stainless Steel\n- Tabung Double Jacket\n- Suhu Terkontrol Otomatis\n- Pengaduk otomatis\n- free kompor, selang gas,regulator\n\nNb: sebelum mesin kami kirim sudah kami uji coba ( trial ). jadi tidak ada kendala pada saat tiba di lokasi.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43213288582",
         "waMsg": "Halo, saya tertarik dengan Mesin Ekstrak Kapasitas 50liter CV Asianindo",
         "images": [
             "images/products/43213288582_0.webp",
             "images/products/43213288582_1.webp",
             "images/products/43213288582_2.webp"
-        ],
-        "promo_image": "images/products/43213288582_0.webp"
+        ]
     },
     {
         "id": "43063538257",
@@ -1370,20 +1309,19 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "12 loyang",
-        "price": 3750000,
-        "priceDisplay": "Rp 3.750.000",
+        "price": 5250000,
+        "priceDisplay": "Rp 5.250.000",
         "rating": 5,
         "reviews": 41,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Meja Stainless Rak -Deskripsi Produk-\n\u2022 - Meja stainless rak dengan dimensi 92 x 70 x 90 cm. Cocok untuk kebutuhan dapur Anda. Terbuat dari bahan stainless steel yang tahan lama dan mudah dibersihkan. Desainnya memungkinkan penyimpanan 12 loyang ukuran 40 x 60 cm. Ideal untuk memudahkan pengaturan dapur.\n\u2022 - SPESIFIKASI\n\u2022 Lengkap: Dimensi: 92 x 70 x 90 cm Bahan: Stainless steel Kapasitas: 12 loyang Ukuran loyang: 40 x 60 cm\n\u2022 Pastikan ruang dapur Anda cukup luas untuk menampung meja ini. Dengan kapasitas 12 loyang, meja ini sangat efisien untuk memasak dalam jumlah banyak.",
+        "desc": "Meja Stainless Rak -Deskripsi Produk-\n- Meja stainless rak dengan dimensi 92 x 70 x 90 cm. Cocok untuk kebutuhan dapur Anda. Terbuat dari bahan stainless steel yang tahan lama dan mudah dibersihkan. Desainnya memungkinkan penyimpanan 12 loyang ukuran 40 x 60 cm. Ideal untuk memudahkan pengaturan dapur.\n- <strong>SPESIFIKASI</strong>\nLengkap: Dimensi: 92 x 70 x 90 cm Bahan: Stainless steel Kapasitas: 12 loyang Ukuran loyang: 40 x 60 cm\n\nPastikan ruang dapur Anda cukup luas untuk menampung meja ini. Dengan kapasitas 12 loyang, meja ini sangat efisien untuk memasak dalam jumlah banyak.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43063538257",
         "waMsg": "Halo, saya tertarik dengan Meja Stainless Rak 92x70x90 cm Kapasitas 12 Loyang 40x60 cm Asianindo",
         "images": [
             "images/products/43063538257_0.webp",
             "images/products/43063538257_1.webp"
-        ],
-        "promo_image": "images/products/43063538257_0.webp"
+        ]
     },
     {
         "id": "43013536881",
@@ -1393,21 +1331,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 23750000,
-        "priceDisplay": "Rp 23.750.000",
+        "price": 25250000,
+        "priceDisplay": "Rp 25.250.000",
         "rating": 5,
         "reviews": 13,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Sentrifugal VCO berfungsi untuk memutar bahan baku santan kelapa secara stabil pada sebuah poros dengan memanfaatkan gaya sentrifugasi untuk memecah emulsi senyawa yang ada di dalamnya, sehingga menghasilkan minyak kelapa murni dengan proses cepat dan praktis. Setelah proses sentrifugal santan ini selesai, minyak pun sudah dapat dihasilkan , hanya perlu disempurnakan untuk perhitungan kadar airnya\n\u2022 SPESIFIKASI\n\u2022 24L  Bahan stenless Dimensi :  Panjang 100 cm  lebar 80 cm  tinggi 190 cm maximal RPM 1700 Dilengkapi inverter model terbaru Listrik -+ 1200watt Di lengkapi dengan timer.  garansi 6 bulan ( non sparepart )",
+        "desc": "Mesin Sentrifugal VCO berfungsi untuk memutar bahan baku santan kelapa secara stabil pada sebuah poros dengan memanfaatkan gaya sentrifugasi untuk memecah emulsi senyawa yang ada di dalamnya, sehingga menghasilkan minyak kelapa murni dengan proses cepat dan praktis. Setelah proses sentrifugal santan ini selesai, minyak pun sudah dapat dihasilkan , hanya perlu disempurnakan untuk perhitungan kadar airnya   \n\n<strong>SPESIFIKASI</strong>\n  24L  Bahan stenless Dimensi :  Panjang 100 cm  lebar 80 cm  tinggi 190 cm maximal RPM 1700 Dilengkapi inverter model terbaru Listrik -+ 1200watt Di lengkapi dengan timer.  garansi 6 bulan ( non sparepart )",
         "shopeeUrl": "https://shopee.co.id/product/69832393/43013536881",
         "waMsg": "Halo, saya tertarik dengan Mesin Pemisah Cairan (Sentrifugal) Kap.24 liter CV Asianindo",
         "images": [
             "images/products/43013536881_0.webp",
             "images/products/43013536881_1.webp",
             "images/products/43013536881_2.webp"
-        ],
-        "promo_image": "images/products/43013536881_0.webp"
+        ]
     },
     {
         "id": "42968399248",
@@ -1417,20 +1354,19 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 7550000,
-        "priceDisplay": "Rp 7.550.000",
+        "price": 9050000,
+        "priceDisplay": "Rp 9.050.000",
         "rating": 5,
         "reviews": 53,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 mesin presto yang berfungsi untuk melunakkan daging sapi, duri ikan, dan tulang ayam,\n\u2022 serta berfungsi juga sebagai pengawet makanan dengan metode High pressure.\n\u2022 SPESIFIKASI PRODUK:\n\u2022 - Material bahan stainless steel\n\u2022 - Dilengkapi dengan manometer untuk mengukur tekanan\n\u2022 - Safety valve\n\u2022 - Tombol on / off untuk spinner\n\u2022 - Daya listrik 250 watt untuk spinner\n\u2022 - Pemanas kompor gas untuk Mesin presto nya.\n\u2022 KETERANGAN LAIN:\n\u2022 - Garansi 6 bulan free sparepart\n\u2022 - Dipandu oleh ahli nya pada saat penggunaan mesin.\n\u2022 - Melayani kegiatan pengadaan mesin baik dinas maupun pemerintahan.\n\u2022 info lebih lanjut bisa menghubungi Admin kami",
+        "desc": "mesin presto yang berfungsi untuk melunakkan daging sapi, duri ikan, dan tulang ayam,\n\nserta berfungsi juga sebagai pengawet makanan dengan metode High pressure.\n\n<strong>SPESIFIKASI PRODUK:</strong>\n- Material bahan stainless steel\n- Dilengkapi dengan manometer untuk mengukur tekanan\n- Safety valve\n- Tombol on / off untuk spinner\n- Daya listrik 250 watt untuk spinner\n- Pemanas kompor gas untuk Mesin presto nya. \n\n<strong>KETERANGAN LAIN:</strong>\n- Garansi 6 bulan free sparepart\n- Dipandu oleh ahli nya pada saat penggunaan mesin.\n- Melayani kegiatan pengadaan mesin baik dinas maupun pemerintahan.\n\ninfo lebih lanjut bisa menghubungi Admin kami",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42968399248",
         "waMsg": "Halo, saya tertarik dengan Mesin Paket Presto 20 liter dan Spiner Kapasitas 10 kg Asianindo",
         "images": [
             "images/products/42968399248_0.webp",
             "images/products/42968399248_1.webp"
-        ],
-        "promo_image": "images/products/42968399248_0.webp"
+        ]
     },
     {
         "id": "42918402912",
@@ -1440,13 +1376,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "small",
         "capacity": "penepung 300 kg - 500 kg perja",
-        "price": 17550000,
-        "priceDisplay": "Rp 17.550.000",
+        "price": 19050000,
+        "priceDisplay": "Rp 19.050.000",
         "rating": 5,
         "reviews": 38,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Giling kopi, padi, jagung, biji (Penepung)\n\u2022 # paket komplit #\n\u2022 SPESIFIKASI\n\u2022 - Mesin merk DONGHAI / JIANGFA\n\u2022 - Rpm 2600\n\u2022 - Kapasitas penepung 300 kg\n\u2022 - 500 kg perjam\n\u2022 - Kapasitas oli mesin 2,5 liter\n\u2022 - Kapasitas tanki bahan bakar bensin / solar 5,8 liter\n\u2022 - Starting system : engkol putar\n\u2022 - Manual book\n\u2022 - Kunci kunci dan part tersedia\n\u2022 - Garansi 6 bulan\n\u2022 penggunaan mudah dan dipandu oleh ahli nya",
+        "desc": "Mesin Giling kopi, padi, jagung, biji (Penepung)\n\n# paket komplit #\n\n<strong>SPESIFIKASI</strong>\n- Mesin merk DONGHAI / JIANGFA\n- Rpm 2600\n- Kapasitas penepung 300 kg\n- 500 kg perjam\n- Kapasitas oli mesin 2,5 liter\n- Kapasitas tanki bahan bakar bensin / solar 5,8 liter\n- Starting system : engkol putar\n- Manual book\n- Kunci kunci dan part tersedia\n- Garansi 6 bulan\n\npenggunaan mudah dan dipandu oleh ahli nya",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42918402912",
         "waMsg": "Halo, saya tertarik dengan Mesin Penggiling Mesin Diesel biji kopi, beras, kacang, mesin diesel Asianindo",
         "images": [
@@ -1454,8 +1390,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/42918402912_1.webp",
             "images/products/42918402912_2.webp",
             "images/products/42918402912_3.webp"
-        ],
-        "promo_image": "images/products/42918402912_0.webp"
+        ]
     },
     {
         "id": "42863303439",
@@ -1464,14 +1399,14 @@ window.CATALOG_PRODUCTS = [
         "category": "Mesin Makanan",
         "subCategory": "Vacuum Frying",
         "capacitySize": "small",
-        "capacity": "1,5 kg",
-        "price": 12950000,
-        "priceDisplay": "Rp 12.950.000",
+        "capacity": "1",
+        "price": 12450000,
+        "priceDisplay": "Rp 12.450.000",
         "rating": 5,
         "reviews": 52,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 mesin vacuum frying kapasitas 1,5 kg di tambah 2 spinner # mesin yang berfungi untuk membuat segala jenis keripik / snack berbahan dasar buah,sayur, dan umbian MESIN VACUUM FRYING\n\u2022 Mesin ini berfungsi untuk : memproduksi kripik atau camilan  jadi, yang berbahan dasar dari buah\n\u2022 - buahan atau umbi\n\u2022 - umbian. cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim k lokasi sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidakmenimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya.\n\u2022 nb : free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\u2022 NOTE\n\u2022 Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan didinas pemerintahan ( Tender ) info lebih lanjut bisa menghubungi  Admin kami  deskripsi produk :\n\u2022 - Kapasitas 1,5 kg on proses\n\u2022 - Dimensi 90 cm \u00d7 80 cm \u00d7 58 cm\n\u2022 - Tabung D 30 cm \u00d7 P 45 cm\n\u2022 - Sistem vacuum : Water jet 1/2 HP\n\u2022 - Daya listrik 600 watt / 220 volt\n\u2022 - Suhu terkontrol otomatis\n\u2022 - Kebutuhan minyak 15 liter\n\u2022 - Pemanas kompor LPG\n\u2022 KETERANGAN\n\u2022 - Unit mesin 100% Baru\n\u2022 - Garansi servis 1 tahun ( non spare   part )..\n\u2022 Cocok bagi para pemula usaha pembuatan keripik buah ( jeruk, apel, nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
+        "desc": "mesin vacuum frying kapasitas 1,5 kg di tambah 2 spinner # mesin yang berfungi untuk membuat segala jenis keripik / snack berbahan dasar buah,sayur, dan umbian MESIN VACUUM FRYING\n\nMesin ini berfungsi untuk : memproduksi kripik atau camilan  jadi, yang berbahan dasar dari buah\n- buahan atau umbi\n- umbian. cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim k lokasi sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidakmenimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya. \n\nnb : free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\n<strong>NOTE</strong>\n Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan didinas pemerintahan ( Tender ) info lebih lanjut bisa menghubungi  Admin kami  deskripsi produk :\n- Kapasitas 1,5 kg on proses\n- Dimensi 90 cm × 80 cm × 58 cm\n- Tabung D 30 cm × P 45 cm\n- Sistem vacuum : Water jet 1/2 HP\n- Daya listrik 600 watt / 220 volt\n- Suhu terkontrol otomatis\n- Kebutuhan minyak 15 liter\n- Pemanas kompor LPG   \n\n<strong>KETERANGAN</strong>\n- Unit mesin 100% Baru\n- Garansi servis 1 tahun ( non spare   part ).. \n\nCocok bagi para pemula usaha pembuatan keripik buah ( jeruk, apel, nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42863303439",
         "waMsg": "Halo, saya tertarik dengan Vacuum Frying Kapasitas 1,5 kg plus 2 spinner Asianindo Terverifikasi  TKDN",
         "images": [
@@ -1479,9 +1414,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/42863303439_1.webp",
             "images/products/42863303439_2.webp",
             "images/products/42863303439_3.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/42863303439_0.webp"
+        ]
     },
     {
         "id": "42763530009",
@@ -1491,13 +1424,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "100 ltr/jam",
-        "price": 150000000,
-        "priceDisplay": "Rp 150.000.000",
+        "price": 216500000,
+        "priceDisplay": "Rp 216.500.000",
         "rating": 5,
         "reviews": 53,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN STERILISASI UHT\n\u2022 Mesin Sterilisasi UHT merupakan mesin yang memiliki metode untuk menjaga kualitas pangan yang bersifat cair dengan menggunakan pemanasan intensif dalam waktu cepat. Mesin sterilisasi ini, digunakan untuk mensterilisasi minuman antara lain susu, yogurt, teh, sirup, minuman herbal, dan lain-lain.\n\u2022 SPESIFIKASI\n\u2022 - HARGA : Rp.175.000.000\n\u2022 - Kapasitas = 100 ltr/jam\n\u2022 KELENGKAPAN\n\u2022 1.Feed tank 2.UHT unit 3.Aseptic tank 4.Thermal oil 5.Water Boiler 6.Cooling Tower\n\u2022 - \u2060Sistem Sterilisasi = indirect\n\u2022 - \u2060Modul UHT menggunakan sistem pemanas steam sudah termasuk internal boiler dengan pemanas electric heater\n\u2022 - \u2060Media pendingin = cooling water\n\u2022 - \u2060Suhu sterilisasi = 60\n\u2022 - 145*C (bisa disetting)\n\u2022 - \u2060Lama holding sterilisasi = 5\n\u2022 - 10 detik\n\u2022 - \u2060Suhu output produk = 30\n\u2022 - 40*C\n\u2022 - \u2060Type heat exchanger = Shell & Tube HE\n\u2022 - \u2060Sistem control operational = automatic PLC & HMI\n\u2022 - \u2060Material = stainless steel SUS 304",
+        "desc": "MESIN STERILISASI UHT\n\nMesin Sterilisasi UHT merupakan mesin yang memiliki metode untuk menjaga kualitas pangan yang bersifat cair dengan menggunakan pemanasan intensif dalam waktu cepat. Mesin sterilisasi ini, digunakan untuk mensterilisasi minuman antara lain susu, yogurt, teh, sirup, minuman herbal, dan lain-lain.\n\n<strong>SPESIFIKASI</strong>\n- HARGA : Rp.175.000.000\n- Kapasitas = 100 ltr/jam \n\n<strong>KELENGKAPAN</strong>\n1.Feed tank 2.UHT unit 3.Aseptic tank 4.Thermal oil 5.Water Boiler 6.Cooling Tower\n- ⁠Sistem Sterilisasi = indirect\n- ⁠Modul UHT menggunakan sistem pemanas steam sudah termasuk internal boiler dengan pemanas electric heater\n- ⁠Media pendingin = cooling water\n- ⁠Suhu sterilisasi = 60\n- 145*C (bisa disetting)\n- ⁠Lama holding sterilisasi = 5\n- 10 detik\n- ⁠Suhu output produk = 30\n- 40*C\n- ⁠Type heat exchanger = Shell & Tube HE\n- ⁠Sistem control operational = automatic PLC & HMI\n- ⁠Material = stainless steel SUS 304",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42763530009",
         "waMsg": "Halo, saya tertarik dengan Mesin Sterilisasi UHT Kapasitas 100 liter CV Asianindo",
         "images": [
@@ -1505,8 +1438,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/42763530009_1.webp",
             "images/products/42763530009_2.webp",
             "images/products/42763530009_3.webp"
-        ],
-        "promo_image": "images/products/42763530009_0.webp"
+        ]
     },
     {
         "id": "42713518643",
@@ -1516,21 +1448,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "100 liter",
-        "price": 15500000,
-        "priceDisplay": "Rp 15.500.000",
+        "price": 17000000,
+        "priceDisplay": "Rp 17.000.000",
         "rating": 5,
         "reviews": 33,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin yang berfungi untuk mengaduk adonan yang akan dijadikan selai, jenang, dodol ( makanan camilan khas jawa ). supaya proses produksi lebih cepat, mudah dan praktis..\n\u2022 SPESIFIKASI\n\u2022 - Tabung bahan full stainless steel food grade\n\u2022 - Frame full stainless\n\u2022 - Sumber daya pemanas kompor LPG\n\u2022 - Tabung masak Double jacket\n\u2022 - Kapasitas 100 liter\n\u2022 - Mesin penggerak dinamo\n\u2022 - Include kompor mata seribu ( tabung gas belum termasuk ).",
+        "desc": "Mesin yang berfungi untuk mengaduk adonan yang akan dijadikan selai, jenang, dodol ( makanan camilan khas jawa ). supaya proses produksi lebih cepat, mudah dan praktis..\n\n<strong>SPESIFIKASI</strong>\n- Tabung bahan full stainless steel food grade\n- Frame full stainless\n- Sumber daya pemanas kompor LPG\n- Tabung masak Double jacket\n- Kapasitas 100 liter\n- Mesin penggerak dinamo\n- Include kompor mata seribu ( tabung gas belum termasuk ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42713518643",
         "waMsg": "Halo, saya tertarik dengan Mesin Pengaduk Adonan Dodol, Jenang dan Selai Kapasitas 100 liter Asianindo",
         "images": [
             "images/products/42713518643_0.webp",
             "images/products/42713518643_1.webp",
             "images/products/42713518643_2.webp"
-        ],
-        "promo_image": "images/products/42713518643_0.webp"
+        ]
     },
     {
         "id": "42663524193",
@@ -1540,21 +1471,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "1 ton per jam..",
-        "price": 34500000,
-        "priceDisplay": "Rp 34.500.000",
+        "price": 36000000,
+        "priceDisplay": "Rp 36.000.000",
         "rating": 5,
         "reviews": 33,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 mesin penepung kapasitas 1 ton per jam..\n\u2022 bisa di aplikasi kan untuk segala jenis bahan baku , baik untuk membuat tepung, pakan ternak, dll",
+        "desc": "mesin penepung kapasitas 1 ton per jam..\n\nbisa di aplikasi kan untuk segala jenis bahan baku , baik untuk membuat tepung, pakan ternak, dll",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42663524193",
         "waMsg": "Halo, saya tertarik dengan Mesin Hummer mill ( penepung ) kapasitas 1 ton per proses",
         "images": [
             "images/products/42663524193_0.webp",
             "images/products/42663524193_1.webp",
             "images/products/42663524193_2.webp"
-        ],
-        "promo_image": "images/products/42663524193_0.webp"
+        ]
     },
     {
         "id": "42613945644",
@@ -1564,13 +1494,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Pengering / Dryer",
         "capacitySize": "small",
         "capacity": "5 rak / loyang",
-        "price": 6850000,
-        "priceDisplay": "Rp 6.850.000",
+        "price": 8350000,
+        "priceDisplay": "Rp 8.350.000",
         "rating": 5,
         "reviews": 22,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Cocok untuk kebutuhan industri yang membutuhkan pengeringan dalam jumlah banyak. cukup luas untuk berbagai jenis produk\n\u2022 - Kapasitas : 5 rak / loyang\n\u2022 - Dimensi : 70x53x104 cm\n\u2022 - Bahan : Full stainless stell\n\u2022 - Listrik blower: 150 watt , 220 V\n\u2022 - Sumber panas : LPG/heater ( salah satu )",
+        "desc": "Cocok untuk kebutuhan industri yang membutuhkan pengeringan dalam jumlah banyak. cukup luas untuk berbagai jenis produk\n- Kapasitas : 5 rak / loyang\n- Dimensi : 70x53x104 cm\n- Bahan : Full stainless stell\n- Listrik blower: 150 watt , 220 V\n- Sumber panas : LPG/heater ( salah satu )",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42613945644",
         "waMsg": "Halo, saya tertarik dengan Mesin Oven Pengering Kapasitas 5 Rak CV Asianindo",
         "images": [
@@ -1578,8 +1508,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/42613945644_1.webp",
             "images/products/42613945644_2.webp",
             "images/products/42613945644_3.webp"
-        ],
-        "promo_image": "images/products/42613945644_0.webp"
+        ]
     },
     {
         "id": "42613542962",
@@ -1589,13 +1518,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 10500000,
-        "priceDisplay": "Rp 10.500.000",
+        "price": 12000000,
+        "priceDisplay": "Rp 12.000.000",
         "rating": 5,
         "reviews": 26,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 - Deskripsi Produk\n\u2022 - Mesin ini dirancang khusus untuk produksi snack makanan ringan. Dengan\n\u2022 SPESIFIKASI\n\u2022 yang jelas, mesin ini menjadi pilihan tepat untuk kebutuhan Anda.\n\u2022 - SPESIFIKASI MESIN:\n\u2022 - Bahan: Full Stainless Steel. Menjamin ketahanan dan keawetan mesin dalam jangka panjang. Rangka: MS. Memberikan struktur yang kokoh dan tahan lama. Dinamo Motor: Menggunakan teknologi motor dinamo untuk efisiensi operasional.\n\u2022 - Informasi Tambahan\n\u2022 - Pastikan untuk memilih Mesin Extruder Snack Makanan Ringan ini sesuai dengan kebutuhan Anda. Dengan bahan dan komponen yang disebutkan, mesin ini siap mendukung produksi snack Anda.",
+        "desc": "- Deskripsi Produk\n- Mesin ini dirancang khusus untuk produksi snack makanan ringan. Dengan \n\n<strong>SPESIFIKASI</strong>\nyang jelas, mesin ini menjadi pilihan tepat untuk kebutuhan Anda.\n- <strong>SPESIFIKASI MESIN:</strong>\n- Bahan: Full Stainless Steel. Menjamin ketahanan dan keawetan mesin dalam jangka panjang. Rangka: MS. Memberikan struktur yang kokoh dan tahan lama. Dinamo Motor: Menggunakan teknologi motor dinamo untuk efisiensi operasional.\n- Informasi Tambahan\n- Pastikan untuk memilih Mesin Extruder Snack Makanan Ringan ini sesuai dengan kebutuhan Anda. Dengan bahan dan komponen yang disebutkan, mesin ini siap mendukung produksi snack Anda.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42613542962",
         "waMsg": "Halo, saya tertarik dengan Mesin Extruder Snack Makanan Ringan Asianindo",
         "images": [
@@ -1603,8 +1532,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/42613542962_1.webp",
             "images/products/42613542962_2.webp",
             "images/products/42613542962_3.webp"
-        ],
-        "promo_image": "images/products/42613542962_0.webp"
+        ]
     },
     {
         "id": "42513934643",
@@ -1614,13 +1542,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Pengering / Dryer",
         "capacitySize": "medium",
         "capacity": "yang cukup besar",
-        "price": 11750000,
-        "priceDisplay": "Rp 11.750.000",
+        "price": 13250000,
+        "priceDisplay": "Rp 13.250.000",
         "rating": 5,
         "reviews": 14,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Oven ini memiliki kapasitas yang cukup besar, mampu menampung hingga 12 rak atau loyang. Ideal untuk kebutuhan memasak dalam jumlah banyak. Cocok untuk restoran atau pabrik makanan. Dimensi dan Bahan: Dengan dimensi 70x53x180 cm, oven ini mudah ditempatkan di berbagai ruang. Terbuat dari bahan stainless steel, menjamin ketahanan dan keawetan dalam penggunaan jangka panjang.\n\u2022 SPESIFIKASI\n\u2022 Listrik:\n\u2022 - Blower: 150 watt, 220 V\n\u2022 - Heater: 750 watt, 220 V Sistem pendinginan dan pemanasan yang efisien, memastikan proses memasak berjalan optimal. Kompor termasuk dalam sistem ini.",
+        "desc": "Oven ini memiliki kapasitas yang cukup besar, mampu menampung hingga 12 rak atau loyang. Ideal untuk kebutuhan memasak dalam jumlah banyak. Cocok untuk restoran atau pabrik makanan. Dimensi dan Bahan: Dengan dimensi 70x53x180 cm, oven ini mudah ditempatkan di berbagai ruang. Terbuat dari bahan stainless steel, menjamin ketahanan dan keawetan dalam penggunaan jangka panjang. \n\n<strong>SPESIFIKASI</strong>\nListrik:\n- Blower: 150 watt, 220 V\n- Heater: 750 watt, 220 V Sistem pendinginan dan pemanasan yang efisien, memastikan proses memasak berjalan optimal. Kompor termasuk dalam sistem ini.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42513934643",
         "waMsg": "Halo, saya tertarik dengan Mesin Oven Pengering Kapasitas 12 Rak CV Asianindo",
         "images": [
@@ -1628,8 +1556,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/42513934643_1.webp",
             "images/products/42513934643_2.webp",
             "images/products/42513934643_3.webp"
-        ],
-        "promo_image": "images/products/42513934643_0.webp"
+        ]
     },
     {
         "id": "42318411920",
@@ -1639,13 +1566,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Vacuum Frying",
         "capacitySize": "small",
         "capacity": "50 kg",
-        "price": 47950000,
-        "priceDisplay": "Rp 47.950.000",
+        "price": 49450000,
+        "priceDisplay": "Rp 49.450.000",
         "rating": 5,
         "reviews": 23,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN VACUUM FRYING kapasitas 50 kg\n\u2022 Mesin ini berfungsi untuk : memproduksi kripik atau camilan  jadi, yang berbahan dasar dari buah\n\u2022 - buahan atau umbi\n\u2022 - umbian. cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim k lokasi sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidakmenimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya.\n\u2022 nb : free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\u2022 NOTE\n\u2022 Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan didinas pemerintahan ( Tender )\n\u2022 deskripsi produk :\n\u2022 - Kapasitas 50 kg on proses\n\u2022 - Sistem vacuum :3 Water jet 2HP\n\u2022 - Daya listrik 3700 watt / 220 volt\n\u2022 - Suhu terkontrol otomatis\n\u2022 - Kebutuhan minyak 180 liter\n\u2022 - Pemanas 2 kompor LPG\n\u2022 KETERANGAN\n\u2022 - Unit mesin 100% Baru\n\u2022 - Garansi servis 1 tahun ( non spare part )\n\u2022 MENGAPA HARUS ASIANINDO\n\u2022 - - SERTIFIKASI TKDN: Diakui Kementrian\n\u2022 - Perindustrian (Kualitas Standar Nasional).\n\u2022 - PAKET KOMPLIT: Harga sudah termasuk Spinner Peniris Minyak & Kompor LPG. Tinggal pakai!\n\u2022 - PENDAMPINGAN AHLI: Takut gak bisa pakai\n\u2022 - - Kami pandu via Video Call sampai hasil keripik Anda renyah & cantik.",
+        "desc": "MESIN VACUUM FRYING kapasitas 50 kg\n\nMesin ini berfungsi untuk : memproduksi kripik atau camilan  jadi, yang berbahan dasar dari buah\n- buahan atau umbi\n- umbian. cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim k lokasi sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidakmenimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya. \n\nnb : free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\n<strong>NOTE</strong>\n Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan didinas pemerintahan ( Tender )\n\ndeskripsi produk :\n- Kapasitas 50 kg on proses\n- Sistem vacuum :3 Water jet 2HP\n- Daya listrik 3700 watt / 220 volt\n- Suhu terkontrol otomatis\n- Kebutuhan minyak 180 liter\n- Pemanas 2 kompor LPG   \n\n<strong>KETERANGAN</strong>\n- Unit mesin 100% Baru\n- Garansi servis 1 tahun ( non spare part )\n\n<strong>MENGAPA HARUS ASIANINDO</strong>\n- - SERTIFIKASI TKDN: Diakui Kementrian\n- Perindustrian (Kualitas Standar Nasional).\n- PAKET KOMPLIT: Harga sudah termasuk Spinner Peniris Minyak & Kompor LPG. Tinggal pakai!\n- PENDAMPINGAN AHLI: Takut gak bisa pakai\n- - Kami pandu via Video Call sampai hasil keripik Anda renyah & cantik.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42318411920",
         "waMsg": "Halo, saya tertarik dengan Mesin Vacuum Frying 50kg TKDN Kemenperin - Paket Usaha Keripik Buah (Free Spinner & Kompor).",
         "images": [
@@ -1653,25 +1580,23 @@ window.CATALOG_PRODUCTS = [
             "images/products/42318411920_1.webp",
             "images/products/42318411920_2.webp",
             "images/products/42318411920_3.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/42318411920_0.webp"
+        ]
     },
     {
         "id": "42317145853",
-        "name": "Autoclave Sterilizer Kapasitas  Liter",
+        "name": "Autoclave Sterilizer Kapasitas 50 Liter",
         "slug": "42317145853",
         "category": "Mesin Industri",
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "50 liter",
-        "price": 11850000,
-        "priceDisplay": "Rp 11.850.000",
+        "price": 13350000,
+        "priceDisplay": "Rp 13.350.000",
         "rating": 5,
         "reviews": 15,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Autoclave ( Sterilisasi ) mesin yang berfungsi untuk mensteril kan benda-benda logam,stainless, dll untuk kebutuhan rumah sakit atau laboraturium.. bisa di gunakan juga untuk mempresto bahan bahan makanan..\n\u2022 SPESIFIKASI PRODUK:\n\u2022 - Bahan Stainless steel food grade\n\u2022 - Kapasitas 50 liter\n\u2022 - Sudah dilengkapi dengan insulator atau penahan panas\n\u2022 - Dilengkapi dengan pengatur suhu\n\u2022 - Dilengkapi dengan alarm dan lampu indikator apabila suhu yang diinginkan sudah tercapai\n\u2022 - Bahan bakar menggunakan Gas elpiji\n\u2022 - rangka kuat dan tidak mengembung.\n\u2022 # Ada buku untuk panduan penggunaan mesin Autoclave tersebut",
+        "desc": "Autoclave ( Sterilisasi ) mesin yang berfungsi untuk mensteril kan benda-benda logam,stainless, dll untuk kebutuhan rumah sakit atau laboraturium.. bisa di gunakan juga untuk mempresto bahan bahan makanan..\n\n<strong>SPESIFIKASI PRODUK:</strong>\n- Bahan Stainless steel food grade\n- Kapasitas 50 liter\n- Sudah dilengkapi dengan insulator atau penahan panas\n- Dilengkapi dengan pengatur suhu\n- Dilengkapi dengan alarm dan lampu indikator apabila suhu yang diinginkan sudah tercapai\n- Bahan bakar menggunakan Gas elpiji\n- rangka kuat dan tidak mengembung.\n\n# Ada buku untuk panduan penggunaan mesin Autoclave tersebut",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42317145853",
         "waMsg": "Halo, saya tertarik dengan Autoclave Sterilizer Kapasitas  Liter",
         "images": [
@@ -1681,8 +1606,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/42317145853_3.webp",
             "images/products/42317145853_4.webp",
             "images/products/42317145853_5.webp"
-        ],
-        "promo_image": "images/products/42317145853_0.webp"
+        ]
     },
     {
         "id": "42267150732",
@@ -1692,13 +1616,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "small",
         "capacity": "3 kg",
-        "price": 14400000,
-        "priceDisplay": "Rp 14.400.000",
+        "price": 15900000,
+        "priceDisplay": "Rp 15.900.000",
         "rating": 5,
         "reviews": 38,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 mesin roasting kopi kapasitas 3 kg\n\u2022 bagus untuk para pengusaha yang ingin memulai usaha cafe, atau produsen kopi siap saji .. desain elegant dengan dilengkapi sistem otomatisasi membuat produksi lebih cepat dan praktis.\n\u2022 SPESIFIKASI\n\u2022 sebagai berikut :\n\u2022 SPESIFIKASI\n\u2022 - Plat tabung tebal 3mm SS\n\u2022 - Coolingbeen 1,2mm\n\u2022 - Control suhu thermo control otomatis dan thermo digital\n\u2022 - Rangka pipa mild steel\n\u2022 - Kompor tungku 3baris\n\u2022 - KELENGKAPAN\n\u2022 2blower cyclone dan pendingin, selang regulator, alarm, manometer, checker kopi, dan lampu.\n\u2022 - pada saat menggunakan awal akan kami pandu sampai bisa.\n\u2022 # garansi mesin 1 tahun ( non sparepart )\n\u2022 # Happy shopping day #",
+        "desc": "mesin roasting kopi kapasitas 3 kg\n\nbagus untuk para pengusaha yang ingin memulai usaha cafe, atau produsen kopi siap saji .. desain elegant dengan dilengkapi sistem otomatisasi membuat produksi lebih cepat dan praktis.\n\n<strong>SPESIFIKASI</strong>\nsebagai berikut :\n\n<strong>SPESIFIKASI</strong>\n- Plat tabung tebal 3mm SS\n- Coolingbeen 1,2mm\n- Control suhu thermo control otomatis dan thermo digital\n- Rangka pipa mild steel\n- Kompor tungku 3baris\n- <strong>KELENGKAPAN</strong>\n2blower cyclone dan pendingin, selang regulator, alarm, manometer, checker kopi, dan lampu.\n- pada saat menggunakan awal akan kami pandu sampai bisa.\n\n# garansi mesin 1 tahun ( non sparepart )\n\n# Happy shopping day #",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42267150732",
         "waMsg": "Halo, saya tertarik dengan Mesin Roasting Kopi Kapasitas 3 kg Plus Pendingin CV Asianindo",
         "images": [
@@ -1706,8 +1630,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/42267150732_1.webp",
             "images/products/42267150732_2.webp",
             "images/products/42267150732_3.webp"
-        ],
-        "promo_image": "images/products/42267150732_0.webp"
+        ]
     },
     {
         "id": "42263305456",
@@ -1716,14 +1639,14 @@ window.CATALOG_PRODUCTS = [
         "category": "Mesin Makanan",
         "subCategory": "Vacuum Frying",
         "capacitySize": "small",
-        "capacity": "3,5 kg",
-        "price": 15200000,
-        "priceDisplay": "Rp 15.200.000",
+        "capacity": "3",
+        "price": 16700000,
+        "priceDisplay": "Rp 16.700.000",
         "rating": 5,
         "reviews": 53,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN VACUUM FRYING\n\u2022 Mesin Vacuum Frying ini berfungsi untuk : memproduksi kripik atau camilan\n\u2022 jadi, yang berbahan dasar dari buah\n\u2022 - buahan atau umbi\n\u2022 - umbian. Mesin Vacuum Frying ini cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim ke lokasi Mesin Vacuum Frying sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidak menimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan Mesin Vacuum Frying sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya.\n\u2022 nb : Mesin Vacuum Frying free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).\n\u2022 pada saat pengoperasian mesin\n\u2022 akan dipandu oleh ahlinya.\n\u2022 NOTE\n\u2022 Toko kami juga menyediakan semua kebutuhan mesin yang anda\n\u2022 butuhkan, baik untuk kebutuhan\n\u2022 pribadi maupun untuk pengadaan di dinas pemerintahan ( Tender )\n\u2022 SPESIFIKASI MESIN:\n\u2022 Mesin Vacuum Frying :\n\u2022 - Kapasitas 3,5 kg / proses\n\u2022 - Dimensi 120 cm \u00d7 110 cm \u00d7 140 cm\n\u2022 - Sistem vacuum : water jett ( 1 hp )\n\u2022 - Daya listrik 750 watt / 220 volt\n\u2022 - Suhu terkontrol otomatis\n\u2022 - Kebutuhan minyak 35 liter\n\u2022 - Pemanas kompor LPG\n\u2022 MENGAPA HARUS ASIANINDO\n\u2022 - - SERTIFIKASI TKDN: Diakui Kementrian\n\u2022 - Perindustrian (Kualitas Standar Nasional).\n\u2022 - PAKET KOMPLIT: Harga sudah termasuk Spinner Peniris Minyak & Kompor LPG. Tinggal pakai!\n\u2022 - PENDAMPINGAN AHLI: Takut gak bisa pakai\n\u2022 - - Kami pandu via Video Call sampai hasil keripik Anda renyah & cantik.\n\u2022 UNIT MESIN 100% BARUU !!! MESIN VACUUM FRYING",
+        "desc": "MESIN VACUUM FRYING\n\nMesin Vacuum Frying ini berfungsi untuk : memproduksi kripik atau camilan\n\njadi, yang berbahan dasar dari buah\n- buahan atau umbi\n- umbian. Mesin Vacuum Frying ini cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim ke lokasi Mesin Vacuum Frying sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidak menimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan Mesin Vacuum Frying sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya.\n\nnb : Mesin Vacuum Frying free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).\n\npada saat pengoperasian mesin\n\nakan dipandu oleh ahlinya.\n\n<strong>NOTE</strong>\n Toko kami juga menyediakan semua kebutuhan mesin yang anda\n\nbutuhkan, baik untuk kebutuhan\n\npribadi maupun untuk pengadaan di dinas pemerintahan ( Tender )\n\n<strong>SPESIFIKASI MESIN:</strong>\nMesin Vacuum Frying :\n- Kapasitas 3,5 kg / proses\n- Dimensi 120 cm × 110 cm × 140 cm\n- Sistem vacuum : water jett ( 1 hp )\n- Daya listrik 750 watt / 220 volt\n- Suhu terkontrol otomatis\n- Kebutuhan minyak 35 liter\n- Pemanas kompor LPG\n\n<strong>MENGAPA HARUS ASIANINDO</strong>\n- - SERTIFIKASI TKDN: Diakui Kementrian\n- Perindustrian (Kualitas Standar Nasional).\n- PAKET KOMPLIT: Harga sudah termasuk Spinner Peniris Minyak & Kompor LPG. Tinggal pakai!\n- PENDAMPINGAN AHLI: Takut gak bisa pakai\n- - Kami pandu via Video Call sampai hasil keripik Anda renyah & cantik.\n\nUNIT MESIN 100% BARUU !!! MESIN VACUUM FRYING",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42263305456",
         "waMsg": "Halo, saya tertarik dengan Mesin Vacuum Frying 3,5kg TKDN Kemenperin - Paket Usaha Keripik Buah (Free Spinner & Kompor).",
         "images": [
@@ -1732,9 +1655,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/42263305456_2.webp",
             "images/products/42263305456_3.webp",
             "images/products/42263305456_4.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/42263305456_0.webp"
+        ]
     },
     {
         "id": "42078560428",
@@ -1744,21 +1665,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "100 liter/proses",
-        "price": 18800000,
-        "priceDisplay": "Rp 18.800.000",
+        "price": 20300000,
+        "priceDisplay": "Rp 20.300.000",
         "rating": 5,
         "reviews": 49,
         "badge": "Terlaris",
         "badgeColor": "bg-[#FFB800] text-black font-bold",
-        "desc": "\u2022 Peralatan Industri Pengolahan Makanan Mesin retort ini ideal untuk sterilisasi produk makanan dalam kemasan tertutup. Menggunakan suhu tinggi dan tekanan untuk membunuh mikroorganisme berbahaya. Memperpanjang umur simpan produk. Bekerja sesuai Perka BPOM untuk produk steril komersial makanan olahan dalam kemasan non refrigerator. Awet tanpa pendinginan.\n\u2022 - *\n\u2022 - - SPESIFIKASI MESIN:\n\u2022 - Kapasitas: 100 liter/proses\n\u2022 - Material: Full Stainless Steel\n\u2022 - Keranjang Vorporasi Stainless Steel d:3mm\n\u2022 - Burner: LPG Stove\n\u2022 - Pressure Gauge\n\u2022 - Manual Thermo Control\n\u2022 - Safety Valve\n\u2022 - Emergency Valve\n\u2022 - *\n\u2022 - Operasional dengan tekanan 14,5 psi dan suhu 100-110 oC. Dilengkapi Safety Valve dan Emergency Valve untuk keamanan ekstra. Semua komponen dirancang untuk efisiensi dan keandalan. Sesuai standar BPOM untuk kualitas produk makanan.",
+        "desc": "Peralatan Industri Pengolahan Makanan Mesin retort ini ideal untuk sterilisasi produk makanan dalam kemasan tertutup. Menggunakan suhu tinggi dan tekanan untuk membunuh mikroorganisme berbahaya. Memperpanjang umur simpan produk. Bekerja sesuai Perka BPOM untuk produk steril komersial makanan olahan dalam kemasan non refrigerator. Awet tanpa pendinginan.\n- *\n- - <strong>SPESIFIKASI MESIN:</strong>\n- Kapasitas: 100 liter/proses\n- Material: Full Stainless Steel\n- Keranjang Vorporasi Stainless Steel d:3mm\n- Burner: LPG Stove\n- Pressure Gauge\n- Manual Thermo Control\n- Safety Valve\n- Emergency Valve\n- *\n- Operasional dengan tekanan 14,5 psi dan suhu 100-110 oC. Dilengkapi Safety Valve dan Emergency Valve untuk keamanan ekstra. Semua komponen dirancang untuk efisiensi dan keandalan. Sesuai standar BPOM untuk kualitas produk makanan.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42078560428",
         "waMsg": "Halo, saya tertarik dengan Mini Retort Sterilisasi 100 Liter Asianindo",
         "images": [
             "images/products/42078560428_0.webp",
             "images/products/42078560428_1.webp",
             "images/products/42078560428_2.webp"
-        ],
-        "promo_image": "images/products/42078560428_0.webp"
+        ]
     },
     {
         "id": "42067145356",
@@ -1768,13 +1688,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "small",
         "capacity": "10kg",
-        "price": 19300000,
-        "priceDisplay": "Rp 19.300.000",
+        "price": 20800000,
+        "priceDisplay": "Rp 20.800.000",
         "rating": 5,
         "reviews": 33,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 SPESIFIKASI\n\u2022 Kapasitas 10kg\n\u2022 Tebal Bahan Drum 3 mm Stainless steel\n\u2022 Body Mild Steel\n\u2022 Rangka Pipa Kotak\n\u2022 Thermo control digital\n\u2022 Blower Cyclone dan Blower cooling bean/pendingin\n\u2022 Burner Tungku 3 baris\n\u2022 KELENGKAPAN\n\u2022 Lampu, Burn, Stik Checker Kopi, Manometer, Selang dan Regulator\n\u2022 - pada saat awal pengoperasian akan dipandu oleh ahlinya dan kami kawal sampai bisa\n\u2022 - garansi mesin 1 tahun ( non sparepart ).",
+        "desc": "<strong>SPESIFIKASI</strong>\n\n· Kapasitas 10kg · Tebal Bahan Drum 3 mm Stainless steel · Body Mild Steel · Rangka Pipa Kotak · Thermo control digital · Blower Cyclone dan Blower cooling bean/pendingin · Burner Tungku 3 baris · \n\n<strong>KELENGKAPAN</strong>\nLampu, Burn, Stik Checker Kopi, Manometer, Selang dan Regulator\n- pada saat awal pengoperasian akan dipandu oleh ahlinya dan kami kawal sampai bisa\n- garansi mesin 1 tahun ( non sparepart ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42067145356",
         "waMsg": "Halo, saya tertarik dengan Mesin Roasting Kopi Kapasitas 10 kg CV Asianindo",
         "images": [
@@ -1783,8 +1703,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/42067145356_2.webp",
             "images/products/42067145356_3.webp",
             "images/products/42067145356_4.webp"
-        ],
-        "promo_image": "images/products/42067145356_0.webp"
+        ]
     },
     {
         "id": "42063934893",
@@ -1794,13 +1713,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Vacuum Frying",
         "capacitySize": "small",
         "capacity": "25 kg on proses",
-        "price": 27950000,
-        "priceDisplay": "Rp 27.950.000",
+        "price": 29450000,
+        "priceDisplay": "Rp 29.450.000",
         "rating": 5,
         "reviews": 12,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN VACUUM FRYING\n\u2022 Mesin ini berfungsi untuk : memproduksi kripik atau camilan  jadi, yang berbahan dasar dari buah\n\u2022 - buahan atau umbi\n\u2022 - umbian. cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim k lokasi sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidakmenimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya.\n\u2022 nb : free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\u2022 NOTE\n\u2022 Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan didinas pemerintahan ( Tender )\n\u2022 deskripsi produk :\n\u2022 - Kapasitas 25 kg on proses\n\u2022 - Diameter tabung 58 cm , panjang 130 cm\n\u2022 - Sistem vacuum :2 Water jet 2HP\n\u2022 - Daya listrik 2500 watt / 220 volt\n\u2022 - Suhu terkontrol otomatis\n\u2022 - Kebutuhan minyak 90 liter\n\u2022 - Pemanas 2 kompor LPG\n\u2022 KETERANGAN\n\u2022 - Unit mesin 100% Baru\n\u2022 - Garansi servis 1 tahun ( non spare part ).\n\u2022 MENGAPA HARUS ASIANINDO\n\u2022 - - SERTIFIKASI TKDN: Diakui Kementrian\n\u2022 - Perindustrian (Kualitas Standar Nasional).\n\u2022 - PAKET KOMPLIT: Harga sudah termasuk Spinner Peniris Minyak & Kompor LPG. Tinggal pakai!\n\u2022 - PENDAMPINGAN AHLI: Takut gak bisa pakai\n\u2022 - - Kami pandu via Video Call sampai hasil keripik Anda renyah & cantik.\n\u2022 Cocok bagi para pemula usaha pembuatan keripik buah ( jeruk, apel, nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
+        "desc": "MESIN VACUUM FRYING\n\nMesin ini berfungsi untuk : memproduksi kripik atau camilan  jadi, yang berbahan dasar dari buah\n- buahan atau umbi\n- umbian. cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim k lokasi sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidakmenimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya. \n\nnb : free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\n<strong>NOTE</strong>\n Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan didinas pemerintahan ( Tender )\n\ndeskripsi produk :\n- Kapasitas 25 kg on proses\n- Diameter tabung 58 cm , panjang 130 cm\n- Sistem vacuum :2 Water jet 2HP\n- Daya listrik 2500 watt / 220 volt\n- Suhu terkontrol otomatis\n- Kebutuhan minyak 90 liter\n- Pemanas 2 kompor LPG   \n\n<strong>KETERANGAN</strong>\n- Unit mesin 100% Baru\n- Garansi servis 1 tahun ( non spare part ).\n\n<strong>MENGAPA HARUS ASIANINDO</strong>\n- - SERTIFIKASI TKDN: Diakui Kementrian\n- Perindustrian (Kualitas Standar Nasional).\n- PAKET KOMPLIT: Harga sudah termasuk Spinner Peniris Minyak & Kompor LPG. Tinggal pakai!\n- PENDAMPINGAN AHLI: Takut gak bisa pakai\n- - Kami pandu via Video Call sampai hasil keripik Anda renyah & cantik.\n\nCocok bagi para pemula usaha pembuatan keripik buah ( jeruk, apel, nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42063934893",
         "waMsg": "Halo, saya tertarik dengan Mesin Vacuum Frying 25kg TKDN Kemenperin - Paket Usaha Keripik Buah (Free Spinner & Kompor).",
         "images": [
@@ -1809,9 +1728,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/42063934893_2.webp",
             "images/products/42063934893_3.webp",
             "images/products/42063934893_4.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/42063934893_0.webp"
+        ]
     },
     {
         "id": "42017150228",
@@ -1821,13 +1738,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "50 kg.",
-        "price": 11700000,
-        "priceDisplay": "Rp 11.700.000",
+        "price": 13200000,
+        "priceDisplay": "Rp 13.200.000",
         "rating": 5,
         "reviews": 27,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Dough mixer / mesin pengaduk adonan tepung / roti ( multi\n\u2022 FUNGSI\n\u2022 ). dapat digunakan untuk mengaduk adonan mie, donat, kue, cream kocok, telor dll.\n\u2022 SPESIFIKASI\n\u2022 - Power dinamo\n\u2022 - Perangkat dan bak full stainless\n\u2022 - bahan stainless full  ( food grade )\n\u2022 - kapasitas 50 kg.",
+        "desc": "Dough mixer / mesin pengaduk adonan tepung / roti ( multi \n\n<strong>FUNGSI</strong>\n). dapat digunakan untuk mengaduk adonan mie, donat, kue, cream kocok, telor dll.   \n\n<strong>SPESIFIKASI</strong>\n- Power dinamo\n- Perangkat dan bak full stainless\n- bahan stainless full  ( food grade )\n- kapasitas 50 kg.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42017150228",
         "waMsg": "Halo, saya tertarik dengan Mixer Pengaduk Adonan (Dough Mixer) Kapasitas 50 kg Tepung CV Asianindo",
         "images": [
@@ -1835,8 +1752,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/42017150228_1.webp",
             "images/products/42017150228_2.webp",
             "images/products/42017150228_3.webp"
-        ],
-        "promo_image": "images/products/42017150228_0.webp"
+        ]
     },
     {
         "id": "42013728476",
@@ -1846,21 +1762,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 89500000,
-        "priceDisplay": "Rp 89.500.000",
+        "price": 91000000,
+        "priceDisplay": "Rp 91.000.000",
         "rating": 5,
         "reviews": 45,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Vco (Virgin Coconut Oil) atau nama dalam bahasa Indonesia adalah Minyak Kelapa Murni. Dikenal memiliki banyak kandungan alami untuk tubuh dan ramah tanpa efek samping. Minyak ini sekarang menjadi tren di dunia kesehatan dan kecantikan, tak banyak yang membeli minyak VCO untuk kebutuhan tubuh manusia. Dalam pembuatan Minyak VCO banyak melalui proses yang sangat panjang untuk mendapatkan hasil yang sempurnya.\n\u2022 1. Pengupas Sabut Kelapa\n\u2022 2. Pengupas Batok Kelapa\n\u2022 3. Mesin Pemarut Kelapa\n\u2022 4. Mesin Pemeras Santan\n\u2022 5. Pendingi Cepat\n\u2022 6. Pengaduk/ Mixer Minyak\n\u2022 7. Penghangat Cepat\n\u2022 8. Sentrifugal\n\u2022 9. Evaporator Vacuum",
+        "desc": "Vco (Virgin Coconut Oil) atau nama dalam bahasa Indonesia adalah Minyak Kelapa Murni. Dikenal memiliki banyak kandungan alami untuk tubuh dan ramah tanpa efek samping. Minyak ini sekarang menjadi tren di dunia kesehatan dan kecantikan, tak banyak yang membeli minyak VCO untuk kebutuhan tubuh manusia. Dalam pembuatan Minyak VCO banyak melalui proses yang sangat panjang untuk mendapatkan hasil yang sempurnya.\n1. Pengupas Sabut Kelapa\n2. Pengupas Batok Kelapa\n3. Mesin Pemarut Kelapa\n4. Mesin Pemeras Santan\n5. Pendingi Cepat\n6. Pengaduk/ Mixer Minyak\n7. Penghangat Cepat\n8. Sentrifugal\n9. Evaporator Vacuum",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42013728476",
         "waMsg": "Halo, saya tertarik dengan Mesin Pengolahan VCO (Virgin Coconut Oil) Minyak Kelapa",
         "images": [
             "images/products/42013728476_0.webp",
             "images/products/42013728476_1.webp",
             "images/products/42013728476_2.webp"
-        ],
-        "promo_image": "images/products/42013728476_0.webp"
+        ]
     },
     {
         "id": "42013499765",
@@ -1870,13 +1785,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "100 liter per proses",
-        "price": 38500000,
-        "priceDisplay": "Rp 38.500.000",
+        "price": 40000000,
+        "priceDisplay": "Rp 40.000.000",
         "rating": 5,
         "reviews": 30,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 HOMOGENIZER MIXING LIQUID \u2013 MIXER TANK SINGLE JACKET\n\u2022 Mesin ini digunakan untuk mencampur serta mengaduk aneka jenis bahan-bahan berbentuk liquid (cair). Tanki mesin bermodel single jacket serta mesin tidak dilengkapi dengan pemanas. Kontak produk terbuat dari material stainless steel berlabel food grade & pharma grade sehingga aman digunakan untuk bahan makanan maupun bahan kosmetik. Terdapat roda pada rangka yang mempermudah Anda ketika hendak memindahkan mesin.\n\u2022 SPESIFIKASI PRODUK:\n\u2022 - Kapasitas 100 liter per proses\n\u2022 - Material bahan stainless 304\n\u2022 - Frame stainless steel\n\u2022 - Rangka stainless\n\u2022 - Penggerak motor listrik\n\u2022 - (Inverter/speed control mixer)\n\u2022 - Pemanas heater\n\u2022 - Sistem pengaduk\n\u2022 up down.\n\u2022 - Roda tabung (bisa di pindah2)\n\u2022 - Up down daya listrik 200 watt\n\u2022 - Penggerak mixer daya listrik 1500 watt.\n\u2022 KETERANGAN LAIN:\n\u2022 - kami memberikan garansi produk selama 6 bulan free sparepart\n\u2022 - melayani kebutuhan pengadaan instansi ataupun dinas.",
+        "desc": "HOMOGENIZER MIXING LIQUID – MIXER TANK SINGLE JACKET\n\nMesin ini digunakan untuk mencampur serta mengaduk aneka jenis bahan-bahan berbentuk liquid (cair). Tanki mesin bermodel single jacket serta mesin tidak dilengkapi dengan pemanas. Kontak produk terbuat dari material stainless steel berlabel food grade & pharma grade sehingga aman digunakan untuk bahan makanan maupun bahan kosmetik. Terdapat roda pada rangka yang mempermudah Anda ketika hendak memindahkan mesin. \n\n<strong>SPESIFIKASI PRODUK:</strong>\n- Kapasitas 100 liter per proses\n- Material bahan stainless 304\n- Frame stainless steel\n- Rangka stainless\n- Penggerak motor listrik\n- (Inverter/speed control mixer)\n- Pemanas heater\n- Sistem pengaduk\n\nup down.\n- Roda tabung (bisa di pindah2)\n- Up down daya listrik 200 watt\n- Penggerak mixer daya listrik 1500 watt.\n\n<strong>KETERANGAN LAIN:</strong>\n- kami memberikan garansi produk selama 6 bulan free sparepart\n- melayani kebutuhan pengadaan instansi ataupun dinas.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/42013499765",
         "waMsg": "Halo, saya tertarik dengan Mesin Mixing Tank Homogenizer Kapasitas 100 liter Asianindo",
         "images": [
@@ -1884,26 +1799,25 @@ window.CATALOG_PRODUCTS = [
             "images/products/42013499765_1.webp",
             "images/products/42013499765_2.webp",
             "images/products/42013499765_3.webp"
-        ],
-        "promo_image": "images/products/42013499765_0.webp"
+        ]
     },
     {
         "id": "41963939367",
-        "name": "Mesin Vacuum Frying 15kg Free Spinner ASIANINDO | Mesin Keripik Buah & Umbi \u2013 TKDN Terverifikasi",
+        "name": "Mesin Vacuum Frying 15kg Free Spinner ASIANINDO | Mesin Keripik Buah & Umbi – TKDN Terverifikasi",
         "slug": "41963939367",
         "category": "Mesin Makanan",
         "subCategory": "Vacuum Frying",
         "capacitySize": "small",
         "capacity": "15 kg on proses",
-        "price": 20200000,
-        "priceDisplay": "Rp 20.200.000",
+        "price": 21200000,
+        "priceDisplay": "Rp 21.200.000",
         "rating": 5,
         "reviews": 15,
         "badge": "Terlaris",
         "badgeColor": "bg-[#FFB800] text-black font-bold",
-        "desc": "\u2022 MESIN VACUUM FRYING\n\u2022 Mesin ini berfungsi untuk : memproduksi kripik atau camilan  jadi, yang berbahan dasar dari buah\n\u2022 - buahan atau umbi\n\u2022 - umbian. cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim k lokasi sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidakmenimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya.\n\u2022 nb : free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\u2022 NOTE\n\u2022 Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan didinas pemerintahan ( Tender )\n\u2022 deskripsi produk :\n\u2022 - Kapasitas 15 kg on proses\n\u2022 - Sistem vacuum : Water jet 2HP\n\u2022 - Daya listrik 1500 watt / 220 volt\n\u2022 - Suhu terkontrol otomatis\n\u2022 - Kebutuhan minyak 75 liter\n\u2022 - Pemanas kompor LPG\n\u2022 KETERANGAN\n\u2022 - Unit mesin 100% Baru\n\u2022 - Garansi servis 1 tahun ( non spare   part )..\n\u2022 Cocok bagi para pemula usaha pembuatan keripik buah ( jeruk, apel, nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
+        "desc": "MESIN VACUUM FRYING\n\nMesin ini berfungsi untuk : memproduksi kripik atau camilan  jadi, yang berbahan dasar dari buah\n- buahan atau umbi\n- umbian. cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim k lokasi sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidakmenimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya. \n\nnb : free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\n<strong>NOTE</strong>\n Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan didinas pemerintahan ( Tender )\n\ndeskripsi produk :\n- Kapasitas 15 kg on proses\n- Sistem vacuum : Water jet 2HP\n- Daya listrik 1500 watt / 220 volt\n- Suhu terkontrol otomatis\n- Kebutuhan minyak 75 liter\n- Pemanas kompor LPG   \n\n<strong>KETERANGAN</strong>\n- Unit mesin 100% Baru\n- Garansi servis 1 tahun ( non spare   part ).. \n\nCocok bagi para pemula usaha pembuatan keripik buah ( jeruk, apel, nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41963939367",
-        "waMsg": "Halo, saya tertarik dengan Mesin Vacuum Frying 15kg Free Spinner ASIANINDO | Mesin Keripik Buah & Umbi \u2013 TKDN Terverifikasi",
+        "waMsg": "Halo, saya tertarik dengan Mesin Vacuum Frying 15kg Free Spinner ASIANINDO | Mesin Keripik Buah & Umbi – TKDN Terverifikasi",
         "images": [
             "images/products/41963939367_0.webp",
             "images/products/41963939367_1.webp",
@@ -1911,9 +1825,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41963939367_3.webp",
             "images/products/41963939367_4.webp",
             "images/products/41963939367_5.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/41963939367_0.webp"
+        ]
     },
     {
         "id": "41913742277",
@@ -1923,13 +1835,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "200kg / proses",
-        "price": 18950000,
-        "priceDisplay": "Rp 18.950.000",
+        "price": 20450000,
+        "priceDisplay": "Rp 20.450.000",
         "rating": 5,
         "reviews": 32,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Dough mixer / mesin pengaduk adonan tepung / roti ( multi\n\u2022 FUNGSI\n\u2022 ). dapat digunakan untuk mengaduk adonan mie, donat, kue, cream kocok, telor dll.\n\u2022 SPESIFIKASI\n\u2022 - Power : dinamo gearbox\n\u2022 - Rangka unp dan bak full stainless\n\u2022 - bahan stainless full  ( food grade )\n\u2022 - kapasitas 200kg / proses\n\u2022 - pengaduk adonan ( stainless )",
+        "desc": "Dough mixer / mesin pengaduk adonan tepung / roti ( multi \n\n<strong>FUNGSI</strong>\n). dapat digunakan untuk mengaduk adonan mie, donat, kue, cream kocok, telor dll.   \n\n<strong>SPESIFIKASI</strong>\n- Power : dinamo gearbox\n- Rangka unp dan bak full stainless\n- bahan stainless full  ( food grade )\n- kapasitas 200kg / proses\n- pengaduk adonan ( stainless )",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41913742277",
         "waMsg": "Halo, saya tertarik dengan Mixer Pengaduk Adonan (Dough Mixer) Kapasitas 200 kg CV Asianindo",
         "images": [
@@ -1937,8 +1849,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41913742277_1.webp",
             "images/products/41913742277_2.webp",
             "images/products/41913742277_3.webp"
-        ],
-        "promo_image": "images/products/41913742277_0.webp"
+        ]
     },
     {
         "id": "41817150176",
@@ -1948,13 +1859,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "small",
         "capacity": "3kg Spesifikasi M",
-        "price": 13950000,
-        "priceDisplay": "Rp 13.950.000",
+        "price": 15450000,
+        "priceDisplay": "Rp 15.450.000",
         "rating": 5,
         "reviews": 12,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 ASIANINDO Mesin Roasting Kopi Kapasitas 3kg\n\u2022 SPESIFIKASI MESIN:\n\u2022 - Kapasitas mesin mencapai 3kg, ideal untuk produksi kopi dalam jumlah banyak.\n\u2022 - Drum terbuat dari stainless steel tebal 3 mm, kuat dan tahan lama.\n\u2022 - Body menggunakan mild steel, ringan namun kokoh.\n\u2022 - Rangka terbuat dari pipa kotak, memberikan stabilitas ekstra.Kontrol dan Sistem Pengolahan:\n\u2022 - Dilengkapi thermo control digital untuk pengawasan suhu yang akurat.\n\u2022 - FITUR\n\u2022 blower cyclone dan blower cooling bean/pendingin untuk proses roasting optimal.\n\u2022 - Burner tungku 3 baris memastikan distribusi panas yang merata.Keandalan dan Kinerja:Mesin ini dirancang untuk efisiensi dan kinerja tinggi. Dengan\n\u2022 SPESIFIKASI\n\u2022 tersebut, Anda akan mendapatkan hasil roasting kopi yang konsisten dan berkualitas.",
+        "desc": "<h2 style=\"text-align: left;\">ASIANINDO Mesin Roasting Kopi Kapasitas 3kg</h2> <strong>\n\n<strong>SPESIFIKASI MESIN:</strong>\n</strong>\n- Kapasitas mesin mencapai 3kg, ideal untuk produksi kopi dalam jumlah banyak.\n- Drum terbuat dari stainless steel tebal 3 mm, kuat dan tahan lama.\n- Body menggunakan mild steel, ringan namun kokoh.\n- Rangka terbuat dari pipa kotak, memberikan stabilitas ekstra.<h2 style=\"text-align: left;\">Kontrol dan Sistem Pengolahan:</h2>\n- Dilengkapi thermo control digital untuk pengawasan suhu yang akurat.\n- <strong>FITUR</strong>\nblower cyclone dan blower cooling bean/pendingin untuk proses roasting optimal.\n- Burner tungku 3 baris memastikan distribusi panas yang merata.<h2 style=\"text-align: left;\">Keandalan dan Kinerja:</h2>Mesin ini dirancang untuk efisiensi dan kinerja tinggi. Dengan \n\n<strong>SPESIFIKASI</strong>\ntersebut, Anda akan mendapatkan hasil roasting kopi yang konsisten dan berkualitas.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41817150176",
         "waMsg": "Halo, saya tertarik dengan ASIANINDO Mesin Roasting Kopi Kapasitas 3kg Bahan Drum Stainless Steel 3mm Body Mild Steel Rangka Pipa Kotak Kontrol Digital Blower Cyclone dan Cooling Bean",
         "images": [
@@ -1963,8 +1874,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41817150176_2.webp",
             "images/products/41817150176_3.webp",
             "images/products/41817150176_4.webp"
-        ],
-        "promo_image": "images/products/41817150176_0.webp"
+        ]
     },
     {
         "id": "41813297422",
@@ -1980,7 +1890,7 @@ window.CATALOG_PRODUCTS = [
         "reviews": 30,
         "badge": "Terlaris",
         "badgeColor": "bg-[#FFB800] text-black font-bold",
-        "desc": "\u2022 MESIN VACUUM FRYING\n\u2022 Mesin ini berfungsi untuk : memproduksi kripik atau camilan  jadi, yang berbahan dasar dari buah\n\u2022 - buahan atau umbi\n\u2022 - umbian. cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim k lokasi sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidakmenimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya.\n\u2022 nb : free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\u2022 NOTE\n\u2022 Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan didinas pemerintahan ( Tender )\n\u2022 deskripsi produk :\n\u2022 - Kapasitas 15 kg on proses\n\u2022 - Sistem vacuum : 2 Water jet 2HP\n\u2022 - Daya listrik 1500 watt / 220 volt\n\u2022 - Suhu terkontrol otomatis\n\u2022 - Kebutuhan minyak 85 liter\n\u2022 - Pemanas kompor LPG\n\u2022 KETERANGAN\n\u2022 - Unit mesin 100% Baru\n\u2022 - Garansi servis 1 tahun ( non spare part )..\n\u2022 MENGAPA HARUS ASIANINDO\n\u2022 - - SERTIFIKASI TKDN: Diakui Kementrian\n\u2022 - Perindustrian (Kualitas Standar Nasional).\n\u2022 - PAKET KOMPLIT: Harga sudah termasuk Spinner Peniris Minyak & Kompor LPG. Tinggal pakai!\n\u2022 - PENDAMPINGAN AHLI: Takut gak bisa pakai\n\u2022 - - Kami pandu via Video Call sampai hasil keripik Anda renyah & cantik.\n\u2022 Cocok bagi para pemula usaha pembuatan keripik buah ( jeruk, apel, nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
+        "desc": "MESIN VACUUM FRYING\n\nMesin ini berfungsi untuk : memproduksi kripik atau camilan  jadi, yang berbahan dasar dari buah\n- buahan atau umbi\n- umbian. cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim k lokasi sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidakmenimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya. \n\nnb : free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\n<strong>NOTE</strong>\n Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan didinas pemerintahan ( Tender )\n\ndeskripsi produk :\n- Kapasitas 15 kg on proses\n- Sistem vacuum : 2 Water jet 2HP\n- Daya listrik 1500 watt / 220 volt\n- Suhu terkontrol otomatis\n- Kebutuhan minyak 85 liter\n- Pemanas kompor LPG   \n\n<strong>KETERANGAN</strong>\n- Unit mesin 100% Baru\n- Garansi servis 1 tahun ( non spare part ).. \n\n<strong>MENGAPA HARUS ASIANINDO</strong>\n- - SERTIFIKASI TKDN: Diakui Kementrian\n- Perindustrian (Kualitas Standar Nasional).\n- PAKET KOMPLIT: Harga sudah termasuk Spinner Peniris Minyak & Kompor LPG. Tinggal pakai!\n- PENDAMPINGAN AHLI: Takut gak bisa pakai\n- - Kami pandu via Video Call sampai hasil keripik Anda renyah & cantik.\n\nCocok bagi para pemula usaha pembuatan keripik buah ( jeruk, apel, nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41813297422",
         "waMsg": "Halo, saya tertarik dengan Mesin Vacuum Frying 15kg TKDN Kemenperin - Paket Usaha Keripik Buah (Free Spinner & Kompor).",
         "images": [
@@ -1989,9 +1899,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41813297422_2.webp",
             "images/products/41813297422_3.webp",
             "images/products/41813297422_4.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/41813297422_0.webp"
+        ]
     },
     {
         "id": "41667136707",
@@ -2001,21 +1909,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "small",
         "capacity": "15kg",
-        "price": 22200000,
-        "priceDisplay": "Rp 22.200.000",
+        "price": 23700000,
+        "priceDisplay": "Rp 23.700.000",
         "rating": 5,
         "reviews": 8,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 SPESIFIKASI\n\u2022 Kapasitas 15kg\n\u2022 Tebal Bahan Drum 3 mm Stainless steel\n\u2022 Body Mild Steel\n\u2022 Rangka Pipa Kotak\n\u2022 Thermo control digital\n\u2022 Blower Cyclone dan Blower cooling bean/pendingin\n\u2022 Burner Tungku 3 baris\n\u2022 KELENGKAPAN\n\u2022 Lampu, Burn, Stik Checker Kopi, Manometer, Selang dan Regulator\n\u2022 - pada saat awal pengoperasian akan dipandu oleh ahlinya dan kami kawal sampai bisa\n\u2022 - garansi mesin 1 tahun ( non sparepart ).",
+        "desc": "<strong>SPESIFIKASI</strong>\n\n· Kapasitas 15kg · Tebal Bahan Drum 3 mm Stainless steel · Body Mild Steel · Rangka Pipa Kotak · Thermo control digital · Blower Cyclone dan Blower cooling bean/pendingin · Burner Tungku 3 baris · \n\n<strong>KELENGKAPAN</strong>\nLampu, Burn, Stik Checker Kopi, Manometer, Selang dan Regulator\n- pada saat awal pengoperasian akan dipandu oleh ahlinya dan kami kawal sampai bisa\n- garansi mesin 1 tahun ( non sparepart ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41667136707",
         "waMsg": "Halo, saya tertarik dengan Mesin Roasting Kopi Kapasitas 15kg CV Asianindo",
         "images": [
             "images/products/41667136707_0.webp",
             "images/products/41667136707_1.webp",
             "images/products/41667136707_2.webp"
-        ],
-        "promo_image": "images/products/41667136707_0.webp"
+        ]
     },
     {
         "id": "41663499778",
@@ -2025,13 +1932,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "1 Ton",
-        "price": 15750000,
-        "priceDisplay": "Rp 15.750.000",
+        "price": 17250000,
+        "priceDisplay": "Rp 17.250.000",
         "rating": 5,
         "reviews": 52,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Deskripsi Produk: Gantri Crane Kapasitas 1 Ton\n\u2022 - Ganty Crane: Solusi Pengangkutan Anda\n\u2022 - Ganty crane adalah crane overhead yang dirancang untuk kebutuhan pengangkutan. Dilengkapi dengan balok overhead, struktur ini mendukung berbagai operasi.\n\u2022 Dengan kaki berdiri bebas, crane ini dapat bergerak di atas roda, trek, atau sistem rel. Ini memungkinkan mobilitas yang luas untuk jembatan, troli, dan kerekan barang.\n\u2022 Kapasitas crane ini mencapai 1 ton, ideal untuk mengangkut barang dalam jumlah sedang. Pastikan proses pengangkutan Anda efisien dengan Ganty crane ini.\n\u2022 Semua informasi didasarkan pada data produk yang diberikan. Tidak ada tambahan\n\u2022 SPESIFIKASI\n\u2022 atau klaim yang tidak disebutkan.",
+        "desc": "Deskripsi Produk: Gantri Crane Kapasitas 1 Ton\n- Ganty Crane: Solusi Pengangkutan Anda\n- Ganty crane adalah crane overhead yang dirancang untuk kebutuhan pengangkutan. Dilengkapi dengan balok overhead, struktur ini mendukung berbagai operasi.\n\nDengan kaki berdiri bebas, crane ini dapat bergerak di atas roda, trek, atau sistem rel. Ini memungkinkan mobilitas yang luas untuk jembatan, troli, dan kerekan barang.\n\nKapasitas crane ini mencapai 1 ton, ideal untuk mengangkut barang dalam jumlah sedang. Pastikan proses pengangkutan Anda efisien dengan Ganty crane ini.\n\nSemua informasi didasarkan pada data produk yang diberikan. Tidak ada tambahan \n\n<strong>SPESIFIKASI</strong>\natau klaim yang tidak disebutkan.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41663499778",
         "waMsg": "Halo, saya tertarik dengan Gantri Crane Kapasitas 1 Ton Asianindo",
         "images": [
@@ -2040,8 +1947,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41663499778_2.webp",
             "images/products/41663499778_3.webp",
             "images/products/41663499778_4.webp"
-        ],
-        "promo_image": "images/products/41663499778_0.webp"
+        ]
     },
     {
         "id": "41613945800",
@@ -2051,13 +1957,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Pengering / Dryer",
         "capacitySize": "medium",
         "capacity": "besar",
-        "price": 7850000,
-        "priceDisplay": "Rp 7.850.000",
+        "price": 9350000,
+        "priceDisplay": "Rp 9.350.000",
         "rating": 5,
         "reviews": 51,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Oven Pengering 8 Rak \u2728 Ideal untuk Pengeringan Berkualitas \u2728 Oven Pengering 8 rak ini memiliki kapasitas besar, mampu memproses hingga 8 rak atau loyang. Dengan dimensi mesin 75x50x145 cm dan loyang 74x41x4 cm, oven ini sangat efisien untuk penggunaan massal. Bahan full stainless steel menjamin ketahanan dan keawetan. Cocok untuk berbagai kebutuhan pengeringan Anda.\n\u2022 \ud83d\udca1\n\u2022 SPESIFIKASI\n\u2022 Listrik dan Sumber Panas \ud83d\udca1 Oven dilengkapi dengan blower listrik berdaya 150 watt pada tegangan 220V. Sumber panas yang digunakan adalah LPG. Pastikan sumber energi Anda sesuai untuk optimalisasi kinerja oven. Informasi ini penting untuk penggunaan yang efektif dan aman.\n\u2022 \ud83d\udd27 Detail Teknis \ud83d\udd27 Kapasitas: 8 rak / loyang Dimensi mesin: 75x50x145 cm Dimensi loyang: 74x41x4 cm Bahan: Full Stainless Steel Blower: 150 watt, 220V Sumber panas: LPG Semua\n\u2022 SPESIFIKASI\n\u2022 ini dirancang untuk memberikan hasil terbaik dalam pengeringan.",
+        "desc": "Oven Pengering 8 Rak ✨ Ideal untuk Pengeringan Berkualitas ✨ Oven Pengering 8 rak ini memiliki kapasitas besar, mampu memproses hingga 8 rak atau loyang. Dengan dimensi mesin 75x50x145 cm dan loyang 74x41x4 cm, oven ini sangat efisien untuk penggunaan massal. Bahan full stainless steel menjamin ketahanan dan keawetan. Cocok untuk berbagai kebutuhan pengeringan Anda.\n\n💡 \n\n<strong>SPESIFIKASI</strong>\nListrik dan Sumber Panas 💡 Oven dilengkapi dengan blower listrik berdaya 150 watt pada tegangan 220V. Sumber panas yang digunakan adalah LPG. Pastikan sumber energi Anda sesuai untuk optimalisasi kinerja oven. Informasi ini penting untuk penggunaan yang efektif dan aman.\n\n🔧 Detail Teknis 🔧 Kapasitas: 8 rak / loyang Dimensi mesin: 75x50x145 cm Dimensi loyang: 74x41x4 cm Bahan: Full Stainless Steel Blower: 150 watt, 220V Sumber panas: LPG Semua \n\n<strong>SPESIFIKASI</strong>\nini dirancang untuk memberikan hasil terbaik dalam pengeringan.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41613945800",
         "waMsg": "Halo, saya tertarik dengan Mesin Oven Pengering Kapasitas 8 Rak CV Asianindo",
         "images": [
@@ -2066,8 +1972,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41613945800_2.webp",
             "images/products/41613945800_3.webp",
             "images/products/41613945800_4.webp"
-        ],
-        "promo_image": "images/products/41613945800_0.webp"
+        ]
     },
     {
         "id": "41613934632",
@@ -2077,13 +1982,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "10 kg",
-        "price": 4250000,
-        "priceDisplay": "Rp 4.250.000",
+        "price": 5750000,
+        "priceDisplay": "Rp 5.750.000",
         "rating": 5,
         "reviews": 19,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 * Kapasitas : 10 kg\n\u2022 - Bahan Tabung Stainless Steel\n\u2022 - Dimensi : 46x46x85 cm\n\u2022 - Rangka Mill steel\n\u2022 - Keranjang : 2 sap\n\u2022 - Kontrol tekanan\n\u2022 - Safety Valve\n\u2022 - Gratis Kompor LPG",
+        "desc": "* Kapasitas : 10 kg\n- Bahan Tabung Stainless Steel\n- Dimensi : 46x46x85 cm\n- Rangka Mill steel\n- Keranjang : 2 sap\n- Kontrol tekanan\n- Safety Valve\n- Gratis Kompor LPG",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41613934632",
         "waMsg": "Halo, saya tertarik dengan Mesin Presto 10kg CV Asianindo",
         "images": [
@@ -2091,8 +1996,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41613934632_1.webp",
             "images/products/41613934632_2.webp",
             "images/products/41613934632_3.webp"
-        ],
-        "promo_image": "images/products/41613934632_0.webp"
+        ]
     },
     {
         "id": "41325910057",
@@ -2102,21 +2006,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Destilasi",
         "capacitySize": "small",
         "capacity": "250 liter / proses",
-        "price": 55000000,
-        "priceDisplay": "Rp 55.000.000",
+        "price": 56500000,
+        "priceDisplay": "Rp 56.500.000",
         "rating": 5,
         "reviews": 24,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin destilasi merupakan salah satu mesin yang digunakan sebagai pembuat minyak atsiri. Mesin ini bisa mengolah berbagai jenis dedaunan dengan memakai sistim penguapan. Untuk bahan yang dipakai dalam pembuatan dari minyak atsiri yaitu daun cengkeh, daun kayu putih, daun sirih, daun kayu manis, daun cendana, dan berbagai jenis daun lainnya yang bisa mengeluarkan minyak.\n\u2022 SPESIFIKASI\n\u2022 - Kapasitas 250 liter / proses\n\u2022 - Tabung reaktan Stainless Steel 304 Food Grade, 3 mm\n\u2022 - Bahan bakar LPG (bisa dimodifikasi minyak tanah, kayu bakar)\n\u2022 \ufe0f\n\u2022 KEUNGGULAN\n\u2022 - Hasil minyak atsiri murni dan berkualitas tinggi\n\u2022 - Material stainless steel higienis & tahan lama\n\u2022 - Proses efisien dengan sistem penguapan modern\n\u2022 - Cocok untuk industri minyak atsiri, penelitian, hingga produksi herbal alami\n\u2022 Tingkatkan produktivitas dan kualitas hasil destilasi Anda bersama CV Asianindo \u2013 Mesin Hebat, Usaha Kuat!",
+        "desc": "Mesin destilasi merupakan salah satu mesin yang digunakan sebagai pembuat minyak atsiri. Mesin ini bisa mengolah berbagai jenis dedaunan dengan memakai sistim penguapan. Untuk bahan yang dipakai dalam pembuatan dari minyak atsiri yaitu daun cengkeh, daun kayu putih, daun sirih, daun kayu manis, daun cendana, dan berbagai jenis daun lainnya yang bisa mengeluarkan minyak.\n\n<strong>SPESIFIKASI</strong>\n- Kapasitas 250 liter / proses\n- Tabung reaktan Stainless Steel 304 Food Grade, 3 mm\n- Bahan bakar LPG (bisa dimodifikasi minyak tanah, kayu bakar)\n\n️\n\n<strong>KEUNGGULAN</strong>\n- Hasil minyak atsiri murni dan berkualitas tinggi\n- Material stainless steel higienis & tahan lama\n- Proses efisien dengan sistem penguapan modern\n- Cocok untuk industri minyak atsiri, penelitian, hingga produksi herbal alami\n\nTingkatkan produktivitas dan kualitas hasil destilasi Anda bersama CV Asianindo – Mesin Hebat, Usaha Kuat!",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41325910057",
         "waMsg": "Halo, saya tertarik dengan Mesin Destilasi Minyak Nilam Atsiri 250 Liter CV Asianindo",
         "images": [
             "images/products/41325910057_0.webp",
             "images/products/41325910057_1.webp",
             "images/products/41325910057_2.webp"
-        ],
-        "promo_image": "images/products/41325910057_0.webp"
+        ]
     },
     {
         "id": "41317145353",
@@ -2126,13 +2029,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "small",
         "capacity": "1kg",
-        "price": 11700000,
-        "priceDisplay": "Rp 11.700.000",
+        "price": 13200000,
+        "priceDisplay": "Rp 13.200.000",
         "rating": 5,
         "reviews": 18,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 SPESIFIKASI\n\u2022 Kapasitas 1kg\n\u2022 Tebal Bahan Drum 3 mm Stainless steel\n\u2022 Body Mild Steel\n\u2022 Rangka Pipa Kotak\n\u2022 Thermo control digital\n\u2022 Blower Cyclone dan Blower cooling bean/pendingin\n\u2022 Burner Tungku 3 baris\n\u2022 KELENGKAPAN\n\u2022 Lampu, Burn, Stik Checker Kopi, Manometer, Selang dan Regulator",
+        "desc": "<strong>SPESIFIKASI</strong>\n\n·\n\nKapasitas 1kg ·\n\nTebal Bahan Drum 3 mm Stainless steel ·\n\nBody Mild Steel ·\n\nRangka Pipa Kotak ·\n\nThermo control digital ·\n\nBlower Cyclone dan Blower cooling bean/pendingin ·\n\nBurner Tungku 3 baris ·\n\n<strong>KELENGKAPAN</strong>\nLampu, Burn, Stik Checker Kopi, Manometer, Selang dan Regulator",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41317145353",
         "waMsg": "Halo, saya tertarik dengan Mesin Roasting Kopi 1 kg CV Asianindo",
         "images": [
@@ -2141,8 +2044,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41317145353_2.webp",
             "images/products/41317145353_3.webp",
             "images/products/41317145353_4.webp"
-        ],
-        "promo_image": "images/products/41317145353_0.webp"
+        ]
     },
     {
         "id": "41317140624",
@@ -2152,13 +2054,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 13950000,
-        "priceDisplay": "Rp 13.950.000",
+        "price": 15450000,
+        "priceDisplay": "Rp 15.450.000",
         "rating": 5,
         "reviews": 36,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin roasting kopi adalah salah satu rangkaian mesin kopi di bagian hulu, digunakan untuk proses memanggang biji kopi mentah menjadi matang. From fresh green beans, to wonderful roasted beans. Mesin pemanggang kopi merupakan sebuah mesin yang digunakan untuk menyangrai biji kopi agar matang, sehingga siap untuk diproses lebih lanjut. Prinsip kerja mesin ini adalah produk dipanaskan dalam ruang sangrai yang berputar dengan suhu tertentu, sehingga pemanasan bisa merata.\n\u2022 SPESIFIKASI\n\u2022 DRUM CAPACITY: 3kg/batch, Min 500gr, Max 3,5kg\n\u2022 DRUM SPEED: Adjustable, Automatic switch ON when Heating and switch OFF when Cooling\n\u2022 HEAT SOURCE: Gas (LPG / Natural)\n\u2022 HEATING SYSTEM: Indirect",
+        "desc": "Mesin roasting kopi adalah salah satu rangkaian mesin kopi di bagian hulu, digunakan untuk proses memanggang biji kopi mentah menjadi matang. From fresh green beans, to wonderful roasted beans. Mesin pemanggang kopi merupakan sebuah mesin yang digunakan untuk menyangrai biji kopi agar matang, sehingga siap untuk diproses lebih lanjut. Prinsip kerja mesin ini adalah produk dipanaskan dalam ruang sangrai yang berputar dengan suhu tertentu, sehingga pemanasan bisa merata. \n\n<strong>SPESIFIKASI</strong>\n\nDRUM CAPACITY: 3kg/batch, Min 500gr, Max 3,5kg\n\nDRUM SPEED: Adjustable, Automatic switch ON when Heating and switch OFF when Cooling\n\nHEAT SOURCE: Gas (LPG / Natural)\n\nHEATING SYSTEM: Indirect",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41317140624",
         "waMsg": "Halo, saya tertarik dengan ASIANINDO Mesin Roasting Kopi Kapasitas 3kg Drum Adjustable Speed Sumber Panas Gas LPG / Natural Sistem Pemanasan Indirekt",
         "images": [
@@ -2167,8 +2069,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41317140624_2.webp",
             "images/products/41317140624_3.webp",
             "images/products/41317140624_4.webp"
-        ],
-        "promo_image": "images/products/41317140624_0.webp"
+        ]
     },
     {
         "id": "41313960240",
@@ -2178,13 +2079,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Spray Dryer",
         "capacitySize": "small",
         "capacity": "3 Liter Bahan/jam",
-        "price": 40450000,
-        "priceDisplay": "Rp 40.450.000",
+        "price": 41950000,
+        "priceDisplay": "Rp 41.950.000",
         "rating": 5,
         "reviews": 28,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Kapasitas 3 Liter Bahan/jam\n\u2022 Dimensi 85x145x200 cm\n\u2022 Ruang Pengering Stainless steel Food Grade\n\u2022 Material Rangka Full Stainless Steel\n\u2022 Total Daya 15.000 Watt\n\u2022 Air Compressor 2HP/380 V\n\u2022 Heater Elektrik 12.000 Watt\n\u2022 Blower 2pcs, 600 Watt\n\u2022 Cyclone stainless steel Food Grade\n\u2022 1 Buah Tabung Dinding, 1 Buah Pemanas Atas",
+        "desc": "·\n\nKapasitas 3 Liter Bahan/jam ·\n\nDimensi 85x145x200 cm ·\n\nRuang Pengering Stainless steel Food Grade ·\n\nMaterial Rangka Full Stainless Steel ·\n\nTotal Daya 15.000 Watt ·\n\nAir Compressor 2HP/380 V ·\n\nHeater Elektrik 12.000 Watt ·\n\nBlower 2pcs, 600 Watt ·\n\nCyclone stainless steel Food Grade ·\n\n1 Buah Tabung Dinding, 1 Buah Pemanas Atas",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41313960240",
         "waMsg": "Halo, saya tertarik dengan Mesin Spray Dryer 3 Liter Asianindo",
         "images": [
@@ -2193,8 +2094,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41313960240_2.webp",
             "images/products/41313960240_3.webp",
             "images/products/41313960240_4.webp"
-        ],
-        "promo_image": "images/products/41313960240_0.webp"
+        ]
     },
     {
         "id": "41313294609",
@@ -2204,13 +2104,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 15200000,
-        "priceDisplay": "Rp 15.200.000",
+        "price": 16700000,
+        "priceDisplay": "Rp 16.700.000",
         "rating": 5,
         "reviews": 18,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN EVAPORATOR VACUM\n\u2022 Kegunaan: Untuk mengurangi kadar air/mengentalkan cairan:( minyak, VCO, madu, susu,dll.) dengan cara kandungan air  dipanaskan dan diuapkan,kemudian kandungan air tadi  dikeluarkan dengan cara di Vacum.\n\u2022 SPESIFIKASI PRODUK:\n\u2022 *Bahan Stainless Steel *Pemanas Kompor/heater *Kontrol Suhu Otomatis *Listrik 750 watt, 220V *Tabung Double Jacket *Dimensi Total: 80x118x129 cm *Rpm : 30 rpm.\n\u2022 garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\u2022 NOTE\n\u2022 Toko kami juga menyediakan semua kebutuhan mesin yang anda butuhkan, baik untuk kebutuhan pribadi maupun untuk pengadaan di dinas pemerintahan ( Tender )",
+        "desc": "MESIN EVAPORATOR VACUM\n\nKegunaan: Untuk mengurangi kadar air/mengentalkan cairan:( minyak, VCO, madu, susu,dll.) dengan cara kandungan air  dipanaskan dan diuapkan,kemudian kandungan air tadi  dikeluarkan dengan cara di Vacum.\n\n \n\n<strong>SPESIFIKASI PRODUK:</strong>\n\n*Bahan Stainless Steel *Pemanas Kompor/heater *Kontrol Suhu Otomatis *Listrik 750 watt, 220V *Tabung Double Jacket *Dimensi Total: 80x118x129 cm *Rpm : 30 rpm. \n\ngaransi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya. \n\n<strong>NOTE</strong>\n Toko kami juga menyediakan semua kebutuhan mesin yang anda butuhkan, baik untuk kebutuhan pribadi maupun untuk pengadaan di dinas pemerintahan ( Tender )",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41313294609",
         "waMsg": "Halo, saya tertarik dengan Mesin Evaporator Vacuum 25 Liter Asianindo",
         "images": [
@@ -2218,9 +2118,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41313294609_1.webp",
             "images/products/41313294609_2.webp",
             "images/products/41313294609_3.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/41313294609_0.webp"
+        ]
     },
     {
         "id": "41277755477",
@@ -2230,20 +2128,19 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "hingga 300 kg per jam",
-        "price": 10200000,
-        "priceDisplay": "Rp 10.200.000",
+        "price": 11700000,
+        "priceDisplay": "Rp 11.700.000",
         "rating": 5,
         "reviews": 21,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin pemeras santan ini dirancang untuk membantu proses produksi santan menjadi lebih cepat, efisien, dan higienis. Cocok digunakan untuk pelaku usaha pengolahan kelapa, UMKM, hingga industri rumahan yang membutuhkan hasil perasan santan maksimal dengan tenaga kerja yang lebih ringan.\n\u2022 Menggunakan material stainless steel, mesin ini aman untuk bahan pangan, mudah dibersihkan, serta memiliki daya tahan tinggi untuk pemakaian jangka panjang. Dengan kapasitas hingga 300 kg per jam, mesin ini mampu meningkatkan produktivitas usaha secara signifikan dibandingkan metode manual.\n\u2022 SPESIFIKASI PRODUK:\n\u2022 - Kapasitas produksi: \u00b1300 kg/jam\n\u2022 - Bahan mesin: Stainless Steel\n\u2022 - Berat mesin: \u00b190 kg\n\u2022 - Proses pemerasan cepat dan stabil\n\u2022 - Hasil perasan santan lebih optimal\n\u2022 - Desain kokoh dan mudah dioperasikan\n\u2022 Info lebih lanjut & pemesanan: Silakan hubungi admin kami untuk konsultasi kebutuhan mesin sesuai usaha Anda.",
+        "desc": "Mesin pemeras santan ini dirancang untuk membantu proses produksi santan menjadi lebih cepat, efisien, dan higienis. Cocok digunakan untuk pelaku usaha pengolahan kelapa, UMKM, hingga industri rumahan yang membutuhkan hasil perasan santan maksimal dengan tenaga kerja yang lebih ringan.\n\nMenggunakan material stainless steel, mesin ini aman untuk bahan pangan, mudah dibersihkan, serta memiliki daya tahan tinggi untuk pemakaian jangka panjang. Dengan kapasitas hingga 300 kg per jam, mesin ini mampu meningkatkan produktivitas usaha secara signifikan dibandingkan metode manual.\n\n<strong>SPESIFIKASI PRODUK:</strong>\n- Kapasitas produksi: ±300 kg/jam\n- Bahan mesin: Stainless Steel\n- Berat mesin: ±90 kg\n- Proses pemerasan cepat dan stabil\n- Hasil perasan santan lebih optimal\n- Desain kokoh dan mudah dioperasikan\n\nInfo lebih lanjut & pemesanan: Silakan hubungi admin kami untuk konsultasi kebutuhan mesin sesuai usaha Anda.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41277755477",
         "waMsg": "Halo, saya tertarik dengan Mesin Pemeras Santan Kap 300 Kg per jam CV Asianindo",
         "images": [
             "images/products/41277755477_0.webp",
             "images/products/41277755477_1.webp"
-        ],
-        "promo_image": "images/products/41277755477_0.webp"
+        ]
     },
     {
         "id": "41226436960",
@@ -2253,13 +2150,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "20 Kg",
-        "price": 4250000,
-        "priceDisplay": "Rp 4.250.000",
+        "price": 5750000,
+        "priceDisplay": "Rp 5.750.000",
         "rating": 5,
         "reviews": 20,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Ingin hasil gorengan yang lebih renyah, kering, dan tahan lama\n\u2022 - Gunakan Mesin Spinner CV Asianindo, solusi efisien untuk meniriskan minyak dari aneka produk makanan seperti keripik, kerupuk, dan camilan lainnya!\n\u2022 SPESIFIKASI\n\u2022 - Kapasitas: 20 Kg\n\u2022 - Bahan: Full Stainless Steel\n\u2022 - Tinggi Body: 80 cm\n\u2022 - Diameter Tabung: 60 cm\n\u2022 - Daya Listrik: 600 Watt / 220 Volt\n\u2022 KEUNGGULAN\n\u2022 Mengurangi kadar minyak dengan cepat dan efisien Desain kokoh & higienis berbahan stainless steel Hemat waktu, hemat tenaga, dan mudah digunakan Cocok untuk usaha makanan skala UMKM hingga industri\n\u2022 Tingkatkan kualitas produk gorenganmu dengan hasil yang lebih kering, renyah, dan bernilai jual tinggi bersama CV Asianindo \u2013 Mesin Hebat, Usaha Kuat!",
+        "desc": "Ingin hasil gorengan yang lebih renyah, kering, dan tahan lama\n- Gunakan Mesin Spinner CV Asianindo, solusi efisien untuk meniriskan minyak dari aneka produk makanan seperti keripik, kerupuk, dan camilan lainnya!\n\n<strong>SPESIFIKASI</strong>\n- Kapasitas: 20 Kg\n- Bahan: Full Stainless Steel\n- Tinggi Body: 80 cm\n- Diameter Tabung: 60 cm\n- Daya Listrik: 600 Watt / 220 Volt\n\n<strong>KEUNGGULAN</strong>\n Mengurangi kadar minyak dengan cepat dan efisien Desain kokoh & higienis berbahan stainless steel Hemat waktu, hemat tenaga, dan mudah digunakan Cocok untuk usaha makanan skala UMKM hingga industri\n\nTingkatkan kualitas produk gorenganmu dengan hasil yang lebih kering, renyah, dan bernilai jual tinggi bersama CV Asianindo – Mesin Hebat, Usaha Kuat!",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41226436960",
         "waMsg": "Halo, saya tertarik dengan Mesin Spinner Peniris Minyak Kapasitas 20 Kg | Solusi Untuk Usaha Gorengan dan Camilan CV Asianindo",
         "images": [
@@ -2267,8 +2164,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41226436960_1.webp",
             "images/products/41226436960_2.webp",
             "images/products/41226436960_3.webp"
-        ],
-        "promo_image": "images/products/41226436960_0.webp"
+        ]
     },
     {
         "id": "41218411880",
@@ -2278,20 +2174,19 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 34500000,
-        "priceDisplay": "Rp 34.500.000",
+        "price": 36000000,
+        "priceDisplay": "Rp 36.000.000",
         "rating": 5,
         "reviews": 28,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Pengemas Otomatis (Packaging)\n\u2022 Merupakan mesin yang berfungsi untuk mengemas berbagai macam produk secara otomatis. kemasan produk yang menarik akan meningkatkan daya tarik suatu produk pada saat di jual. Kondisi baru dan bergaransi. Ada setelan untuk pengaturan berat kemasan, mulai berat 5 gram, 10 gram, 50 gram, 250 gram, sampai 1.000 gram.\n\u2022 Beberapa contoh kemasan untuk mesin packaging otomatis :\n\u2022 - packing gula pasir\n\u2022 - packing cairan\n\u2022 - pengemas kopi\n\u2022 - pengemas bubuk\n\u2022 - dll\n\u2022 Daya listrik 1800 watt Berat mesin +- 350 kg Material pengemas Al + PE ,OPP + PE, NY + PE , dan bahan kertas pengemas lain.",
+        "desc": "Mesin Pengemas Otomatis (Packaging)\n\nMerupakan mesin yang berfungsi untuk mengemas berbagai macam produk secara otomatis. kemasan produk yang menarik akan meningkatkan daya tarik suatu produk pada saat di jual. Kondisi baru dan bergaransi. Ada setelan untuk pengaturan berat kemasan, mulai berat 5 gram, 10 gram, 50 gram, 250 gram, sampai 1.000 gram.\n\nBeberapa contoh kemasan untuk mesin packaging otomatis :\n- packing gula pasir\n- packing cairan\n- pengemas kopi\n- pengemas bubuk\n- dll\n\nDaya listrik 1800 watt Berat mesin +- 350 kg Material pengemas Al + PE ,OPP + PE, NY + PE , dan bahan kertas pengemas lain.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41218411880",
         "waMsg": "Halo, saya tertarik dengan Mesin Packaging Otomatis Kapasitas 1000 Gram (Pengemas) Asianindo",
         "images": [
             "images/products/41218411880_0.webp",
             "images/products/41218411880_1.webp"
-        ],
-        "promo_image": "images/products/41218411880_0.webp"
+        ]
     },
     {
         "id": "41213736906",
@@ -2301,13 +2196,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Destilasi",
         "capacitySize": "small",
         "capacity": "100 kg / proses",
-        "price": 37500000,
-        "priceDisplay": "Rp 37.500.000",
+        "price": 39000000,
+        "priceDisplay": "Rp 39.000.000",
         "rating": 5,
         "reviews": 23,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin destilasi merupakan salah satu mesin yang digunakan sebagai pengolah minyak atsiri. Mesin ini bisa mengolah berbagai jenis dedaunan dengan memakai sistim penguapan. Untuk bahan yang dipakai dalam pembuatan dari minyak atsiri yaitu daun cengkeh, daun kayu putih, daun sirih, daun kayu manis, daun cendana, dan berbagai jenis daun lainnya yang bisa mengeluarkan minyak.\n\u2022 SPESIFIKASI\n\u2022 - Kapasitas 100 kg / proses\n\u2022 - Tabung reaktan Stainless Steel 304 Food Grade, 3 mm\n\u2022 - Bahan bakar LPG (bisa dimodifikasi minyak tanah, kayu bakar)\n\u2022 - Dimensi Panggung : 180 cm x 180 cm x 100 cm\n\u2022 - Tabung     : \u00d8 80 cm dengan tinggi 202 cm\n\u2022 - Kondensor: \u00d8 50 cm dengan tinggi 173 cm\n\u2022 - Keranjang : \u00d8 86 cm tinggi 122 cm\n\u2022 - Boiler       : \u00d8 75 x 173 cm\n\u2022 - Listrik      : 250 watt",
+        "desc": "Mesin destilasi merupakan salah satu mesin yang digunakan sebagai pengolah minyak atsiri. Mesin ini bisa mengolah berbagai jenis dedaunan dengan memakai sistim penguapan. Untuk bahan yang dipakai dalam pembuatan dari minyak atsiri yaitu daun cengkeh, daun kayu putih, daun sirih, daun kayu manis, daun cendana, dan berbagai jenis daun lainnya yang bisa mengeluarkan minyak. \n\n<strong>SPESIFIKASI</strong>\n- Kapasitas 100 kg / proses\n- Tabung reaktan Stainless Steel 304 Food Grade, 3 mm\n- Bahan bakar LPG (bisa dimodifikasi minyak tanah, kayu bakar)\n- Dimensi Panggung : 180 cm x 180 cm x 100 cm\n- Tabung     : Ø 80 cm dengan tinggi 202 cm\n- Kondensor: Ø 50 cm dengan tinggi 173 cm\n- Keranjang : Ø 86 cm tinggi 122 cm\n- Boiler       : Ø 75 x 173 cm\n- Listrik      : 250 watt",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41213736906",
         "waMsg": "Halo, saya tertarik dengan Mesin Destilasi Minyak Nilam Atsiri 100 Liter CV Asianindo",
         "images": [
@@ -2315,8 +2210,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41213736906_1.webp",
             "images/products/41213736906_2.webp",
             "images/products/41213736906_3.webp"
-        ],
-        "promo_image": "images/products/41213736906_0.webp"
+        ]
     },
     {
         "id": "41213519482",
@@ -2326,13 +2220,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Pengering / Dryer",
         "capacitySize": "small",
         "capacity": "100 kg/proses",
-        "price": 21950000,
-        "priceDisplay": "Rp 21.950.000",
+        "price": 23450000,
+        "priceDisplay": "Rp 23.450.000",
         "rating": 5,
         "reviews": 15,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Dapat digunakan untuk mengeringkan gabah, jagung, kedelai, kopi, cengkeh, kayu manis,  jahe, kunyit, lengkuas, kedelai, kerupuk, kunir, kemiri, rempah-rempah lainnya.\n\u2022 Dilengkapi panel otomatis :\n\u2022 - Dapat men-setting suhu sesuai kebutuhan produk yang akan dikeringkan\n\u2022 - Dapat men-setting waktu yang dibuthkn untuk mengeringkan\n\u2022 SPESIFIKASI\n\u2022 - Panjang 1 Meter\n\u2022 - Bahan Material tabung Stainless\n\u2022 - Diameter : 50 cm\n\u2022 - Rangka\n\u2022 : UNP\n\u2022 - Kapasitas : 100 kg/proses\n\u2022 - Penggerak : motor listrik\n\u2022 Dinamo 1 hp\n\u2022 - Pemanas : Burner\n\u2022 - BBM : Lpg\n\u2022 BAHAN BAKAR PILIHAN:\n\u2022 1. GAS LPG\n\u2022 2. LISTRIK / ELEMENT\n\u2022 Dapat custom / renovasi sesuai dengan kebutuhan / permintaan pembeli. info lebih lanjut bisa menghubungi Admin",
+        "desc": "Dapat digunakan untuk mengeringkan gabah, jagung, kedelai, kopi, cengkeh, kayu manis,  jahe, kunyit, lengkuas, kedelai, kerupuk, kunir, kemiri, rempah-rempah lainnya.\n\nDilengkapi panel otomatis :\n- Dapat men-setting suhu sesuai kebutuhan produk yang akan dikeringkan\n- Dapat men-setting waktu yang dibuthkn untuk mengeringkan\n\n<strong>SPESIFIKASI</strong>\n- Panjang 1 Meter\n- Bahan Material tabung Stainless\n- Diameter : 50 cm\n- Rangka\n\n: UNP\n- Kapasitas : 100 kg/proses\n- Penggerak : motor listrik\n\nDinamo 1 hp\n- Pemanas : Burner\n- BBM : Lpg\n\nBAHAN BAKAR PILIHAN:\n1. GAS LPG\n2. LISTRIK / ELEMENT\n\nDapat custom / renovasi sesuai dengan kebutuhan / permintaan pembeli. info lebih lanjut bisa menghubungi Admin",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41213519482",
         "waMsg": "Halo, saya tertarik dengan Mesin Rotary Dryer Statis 100Kg Pengering Makanan CV Asianindo",
         "images": [
@@ -2340,8 +2234,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41213519482_1.webp",
             "images/products/41213519482_2.webp",
             "images/products/41213519482_3.webp"
-        ],
-        "promo_image": "images/products/41213519482_0.webp"
+        ]
     },
     {
         "id": "41167140499",
@@ -2351,13 +2244,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "small",
         "capacity": "2kg",
-        "price": 13950000,
-        "priceDisplay": "Rp 13.950.000",
+        "price": 15450000,
+        "priceDisplay": "Rp 15.450.000",
         "rating": 5,
         "reviews": 47,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 SPESIFIKASI\n\u2022 Kapasitas 2kg\n\u2022 Tebal Bahan Drum 3 mm Stainless steel\n\u2022 Body Mild Steel\n\u2022 Rangka Pipa Kotak\n\u2022 Thermo control digital\n\u2022 Blower Cyclone dan Blower cooling bean/pendingin\n\u2022 Burner Tungku 3 baris\n\u2022 KELENGKAPAN\n\u2022 Lampu, Burn, Stik Checker Kopi, Manometer, Selang dan Regulator\n\u2022 - pada saat awal pengoperasian akan dipandu oleh ahlinya dan kami kawal sampai bisa\n\u2022 - garansi mesin 1 tahun ( non sparepart ).",
+        "desc": "<strong>SPESIFIKASI</strong>\n\n·\n\nKapasitas 2kg ·\n\nTebal Bahan Drum 3 mm Stainless steel ·\n\nBody Mild Steel ·\n\nRangka Pipa Kotak ·\n\nThermo control digital ·\n\nBlower Cyclone dan Blower cooling bean/pendingin ·\n\nBurner Tungku 3 baris ·\n\n<strong>KELENGKAPAN</strong>\nLampu, Burn, Stik Checker Kopi, Manometer, Selang dan Regulator\n- pada saat awal pengoperasian akan dipandu oleh ahlinya dan kami kawal sampai bisa\n- garansi mesin 1 tahun ( non sparepart ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/41167140499",
         "waMsg": "Halo, saya tertarik dengan Mesin Roasting Kopi Kapasitas 2kg CV Asianindo",
         "images": [
@@ -2366,8 +2259,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/41167140499_2.webp",
             "images/products/41167140499_3.webp",
             "images/products/41167140499_4.webp"
-        ],
-        "promo_image": "images/products/41167140499_0.webp"
+        ]
     },
     {
         "id": "40968406620",
@@ -2377,13 +2269,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 36500000,
-        "priceDisplay": "Rp 36.500.000",
+        "price": 38000000,
+        "priceDisplay": "Rp 38.000.000",
         "rating": 5,
         "reviews": 38,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 mesin sablon plastik 1 warna.\n\u2022 ( bisa request 2 warna, 3 warna, 4 warna, 5 warna ). untuk harga yang tertera adalah untuk harga mesin sablon plastik 1 warna roll to roll.\n\u2022 SPESIFIKASI\n\u2022 - model 1 warna\n\u2022 - mesin penggerak dinamo motor 2 hp\n\u2022 - roller input + out put\n\u2022 - lebar 110 cm\n\u2022 - tinggi 140 cm\n\u2022 - listrik 750 watt 220 volt\n\u2022 - roll pembersih\n\u2022 - roll karet\n\u2022 - bak tinta\n\u2022 - doctor blade pembersih\n\u2022 - inverter pengatur speed\n\u2022 - lebar sablon sampai dengan 30 cm dengan diameter 40 cm.\n\u2022 CATATAN\n\u2022 spek bisa berubah tergantung permintaan pembeli. garansi 1 tahun setelah mesin sampai di lokasi dan dipandu oleh ahli di bidangnya.",
+        "desc": "mesin sablon plastik 1 warna.\n\n( bisa request 2 warna, 3 warna, 4 warna, 5 warna ). untuk harga yang tertera adalah untuk harga mesin sablon plastik 1 warna roll to roll. \n\n<strong>SPESIFIKASI</strong>\n- model 1 warna\n- mesin penggerak dinamo motor 2 hp\n- roller input + out put\n- lebar 110 cm\n- tinggi 140 cm\n- listrik 750 watt 220 volt\n- roll pembersih\n- roll karet\n- bak tinta\n- doctor blade pembersih\n- inverter pengatur speed\n- lebar sablon sampai dengan 30 cm dengan diameter 40 cm.\n\n<strong>CATATAN</strong>\n\nspek bisa berubah tergantung permintaan pembeli. garansi 1 tahun setelah mesin sampai di lokasi dan dipandu oleh ahli di bidangnya.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/40968406620",
         "waMsg": "Halo, saya tertarik dengan Mesin Sablon Plastik 1 Warna Asianindo",
         "images": [
@@ -2393,8 +2285,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/40968406620_3.webp",
             "images/products/40968406620_4.webp",
             "images/products/40968406620_5.webp"
-        ],
-        "promo_image": "images/products/40968406620_0.webp"
+        ]
     },
     {
         "id": "40863524468",
@@ -2404,21 +2295,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "small",
         "capacity": "100 kg",
-        "price": 22750000,
-        "priceDisplay": "Rp 22.750.000",
+        "price": 24250000,
+        "priceDisplay": "Rp 24.250.000",
         "rating": 5,
         "reviews": 6,
         "badge": "Terlaris",
         "badgeColor": "bg-[#FFB800] text-black font-bold",
-        "desc": "\u2022 Mesin Sangrai Kopi Kapasitas 100 kg\n\u2022 Mesin Sangrai Kopi dengan kapasitas 100 kg, ideal untuk usaha Anda.\n\u2022 - Baru 100%: Mesin ini adalah produk baru, siap untuk digunakan.\n\u2022 - Bahan Stainless Steel: Dibuat dari bahan stainless steel, menjamin keawetan dan kebersihan.\n\u2022 - Disertai Buku Panduan: Dapatkan buku panduan gratis untuk memudahkan penggunaan.\n\u2022 Garansi 12 Bulan\n\u2022 Mesin ini dilengkapi dengan garansi 12 bulan. Anda dapat menggunakan mesin ini dengan tenang, tahu bahwa ada dukungan dari CV. Asianindo.\n\u2022 SPESIFIKASI\n\u2022 - Kapasitas: 100 kg\n\u2022 - Bahan: Stainless steel",
+        "desc": "Mesin Sangrai Kopi Kapasitas 100 kg\n\nMesin Sangrai Kopi dengan kapasitas 100 kg, ideal untuk usaha Anda.\n- Baru 100%: Mesin ini adalah produk baru, siap untuk digunakan.\n- Bahan Stainless Steel: Dibuat dari bahan stainless steel, menjamin keawetan dan kebersihan.\n- Disertai Buku Panduan: Dapatkan buku panduan gratis untuk memudahkan penggunaan.\n\nGaransi 12 Bulan\n\nMesin ini dilengkapi dengan garansi 12 bulan. Anda dapat menggunakan mesin ini dengan tenang, tahu bahwa ada dukungan dari CV. Asianindo.\n\n<strong>SPESIFIKASI</strong>\n- Kapasitas: 100 kg\n- Bahan: Stainless steel",
         "shopeeUrl": "https://shopee.co.id/product/69832393/40863524468",
         "waMsg": "Halo, saya tertarik dengan Mesin Sangrai Kopi Kapasitas 100 kg Asianindo",
         "images": [
             "images/products/40863524468_0.webp",
             "images/products/40863524468_1.webp",
             "images/products/40863524468_2.webp"
-        ],
-        "promo_image": "images/products/40863524468_0.webp"
+        ]
     },
     {
         "id": "40813728211",
@@ -2428,21 +2318,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "mesin mencapai 100kg",
-        "price": 12350000,
-        "priceDisplay": "Rp 12.350.000",
+        "price": 13850000,
+        "priceDisplay": "Rp 13.850.000",
         "rating": 5,
         "reviews": 18,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 SPESIFIKASI MESIN:\n\u2022 Kapasitas mesin mencapai 100kg, ideal untuk kebutuhan produksi Anda. Ditenagai oleh Dinamo Motor atau Elektro Motor 2 Hp, memberikan kinerja yang efisien. Bahan utama terbuat dari Stainless Steel, menjamin ketahanan dan keawetan.\n\u2022 Detail Produk:\n\u2022 Saringan mesin juga terbuat dari Stainless Steel, memastikan kualitas hasil penepungan yang optimal. Cocok untuk pengguna yang membutuhkan mesin dengan kapasitas besar dan bahan berkualitas. Pastikan untuk memilih mesin ini untuk kebutuhan produksi Anda. Semua\n\u2022 SPESIFIKASI\n\u2022 sesuai dengan informasi yang diberikan.",
+        "desc": "<strong>SPESIFIKASI MESIN:</strong>\n\nKapasitas mesin mencapai 100kg, ideal untuk kebutuhan produksi Anda. Ditenagai oleh Dinamo Motor atau Elektro Motor 2 Hp, memberikan kinerja yang efisien. Bahan utama terbuat dari Stainless Steel, menjamin ketahanan dan keawetan.\n\nDetail Produk:\n\nSaringan mesin juga terbuat dari Stainless Steel, memastikan kualitas hasil penepungan yang optimal. Cocok untuk pengguna yang membutuhkan mesin dengan kapasitas besar dan bahan berkualitas. Pastikan untuk memilih mesin ini untuk kebutuhan produksi Anda. Semua \n\n<strong>SPESIFIKASI</strong>\nsesuai dengan informasi yang diberikan.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/40813728211",
         "waMsg": "Halo, saya tertarik dengan Mesin Penepung / Diskmill Stainless Kap 100kg Asianindo",
         "images": [
             "images/products/40813728211_0.webp",
             "images/products/40813728211_1.webp",
             "images/products/40813728211_2.webp"
-        ],
-        "promo_image": "images/products/40813728211_0.webp"
+        ]
     },
     {
         "id": "40663543068",
@@ -2452,20 +2341,19 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "25 kg / Jam",
-        "price": 8350000,
-        "priceDisplay": "Rp 8.350.000",
+        "price": 9850000,
+        "priceDisplay": "Rp 9.850.000",
         "rating": 5,
         "reviews": 54,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 SPESIFIKASI\n\u2022 - Kapasitas 25 kg / Jam\n\u2022 - Dinamo Motor\n\u2022 - MaterialTabung Stainless Steel\n\u2022 - Rangka Stainless Steel\n\u2022 - Transmisi Gearbox",
+        "desc": "<strong>SPESIFIKASI</strong>\n- Kapasitas 25 kg / Jam\n- Dinamo Motor\n- MaterialTabung Stainless Steel\n- Rangka Stainless Steel\n- Transmisi Gearbox",
         "shopeeUrl": "https://shopee.co.id/product/69832393/40663543068",
         "waMsg": "Halo, saya tertarik dengan Mesin Pengaduk Bumbu Hexagonal Stainless Kap 25 Kg Asianindo",
         "images": [
             "images/products/40663543068_0.webp",
             "images/products/40663543068_1.webp"
-        ],
-        "promo_image": "images/products/40663543068_0.webp"
+        ]
     },
     {
         "id": "40562477376",
@@ -2474,14 +2362,14 @@ window.CATALOG_PRODUCTS = [
         "category": "Mesin Makanan",
         "subCategory": "Vacuum Frying",
         "capacitySize": "small",
-        "capacity": "1,5 kg",
+        "capacity": "1",
         "price": 11700000,
         "priceDisplay": "Rp 11.700.000",
         "rating": 5,
         "reviews": 21,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN VACUUM FRYING\n\u2022 Mesin ini berfungsi untuk : memproduksi kripik atau camilan  jadi, yang berbahan dasar dari buah\n\u2022 - buahan atau umbi\n\u2022 - umbian. cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim k lokasi sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidakmenimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya.\n\u2022 nb : free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\u2022 NOTE\n\u2022 Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan didinas pemerintahan ( Tender )\n\u2022 deskripsi produk :\n\u2022 - Kapasitas 1,5 kg on proses\n\u2022 - Dimensi 90 cm \u00d7 80 cm \u00d7 58 cm\n\u2022 - Tabung D 30 cm \u00d7 P 45 cm\n\u2022 - Sistem vacuum : Water jet 1/2 HP\n\u2022 - Daya listrik 600 watt / 220 volt\n\u2022 - Suhu terkontrol otomatis\n\u2022 - Kebutuhan minyak 15 liter\n\u2022 - Pemanas kompor LPG\n\u2022 KETERANGAN\n\u2022 - Unit mesin 100% Baru\n\u2022 - Garansi servis 1 tahun ( non spare   part ).\n\u2022 Cocok bagi para pemula usaha pembuatan keripik buah ( jeruk,apel,nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
+        "desc": "MESIN VACUUM FRYING\n\nMesin ini berfungsi untuk : memproduksi kripik atau camilan  jadi, yang berbahan dasar dari buah\n- buahan atau umbi\n- umbian. cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim k lokasi sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidakmenimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya. \n\nnb : free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\n<strong>NOTE</strong>\n Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan didinas pemerintahan ( Tender )\n\ndeskripsi produk :\n- Kapasitas 1,5 kg on proses\n- Dimensi 90 cm × 80 cm × 58 cm\n- Tabung D 30 cm × P 45 cm\n- Sistem vacuum : Water jet 1/2 HP\n- Daya listrik 600 watt / 220 volt\n- Suhu terkontrol otomatis\n- Kebutuhan minyak 15 liter\n- Pemanas kompor LPG   \n\n<strong>KETERANGAN</strong>\n- Unit mesin 100% Baru\n- Garansi servis 1 tahun ( non spare   part ).\n\nCocok bagi para pemula usaha pembuatan keripik buah ( jeruk,apel,nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/40562477376",
         "waMsg": "Halo, saya tertarik dengan Mesin Vacuum Frying 1.5kg Asianindo",
         "images": [
@@ -2489,36 +2377,32 @@ window.CATALOG_PRODUCTS = [
             "images/products/40562477376_1.webp",
             "images/products/40562477376_2.webp",
             "images/products/40562477376_3.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/40562477376_0.webp"
+        ]
     },
     {
         "id": "40367136920",
-        "name": "Vacuum Frying Kapasitas 1,5 kg plus 2 spinner Asianindo | Mesin Keripik Buah & Umbi \u2013 Terverifikasi  TKDN",
+        "name": "Vacuum Frying Kapasitas 1,5 kg plus 2 spinner Asianindo | Mesin Keripik Buah & Umbi – Terverifikasi  TKDN",
         "slug": "40367136920",
         "category": "Mesin Makanan",
         "subCategory": "Vacuum Frying",
         "capacitySize": "small",
-        "capacity": "1,5 kg",
+        "capacity": "1",
         "price": 12950000,
         "priceDisplay": "Rp 12.950.000",
         "rating": 5,
         "reviews": 49,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 mesin vacuum frying kapasitas 1,5 kg di tambah 2 spinner # mesin yang berfungi untuk membuat segala jenis keripik / snack berbahan dasar buah,sayur, dan umbian MESIN VACUUM FRYING\n\u2022 Mesin ini berfungsi untuk : memproduksi kripik atau camilan  jadi, yang berbahan dasar dari buah\n\u2022 - buahan atau umbi\n\u2022 - umbian. cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim k lokasi sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidakmenimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya.\n\u2022 nb : free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\u2022 NOTE\n\u2022 Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan didinas pemerintahan ( Tender ) info lebih lanjut bisa menghubungi  Admin kami  deskripsi produk :\n\u2022 - Kapasitas 1,5 kg on proses\n\u2022 - Dimensi 90 cm \u00d7 80 cm \u00d7 58 cm\n\u2022 - Tabung D 30 cm \u00d7 P 45 cm\n\u2022 - Sistem vacuum : Water jet 1/2 HP\n\u2022 - Daya listrik 600 watt / 220 volt\n\u2022 - Suhu terkontrol otomatis\n\u2022 - Kebutuhan minyak 15 liter\n\u2022 - Pemanas kompor LPG\n\u2022 KETERANGAN\n\u2022 - Unit mesin 100% Baru\n\u2022 - Garansi servis 1 tahun ( non spare   part )..\n\u2022 Cocok bagi para pemula usaha pembuatan keripik buah ( jeruk, apel, nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
+        "desc": "mesin vacuum frying kapasitas 1,5 kg di tambah 2 spinner # mesin yang berfungi untuk membuat segala jenis keripik / snack berbahan dasar buah,sayur, dan umbian MESIN VACUUM FRYING\n\nMesin ini berfungsi untuk : memproduksi kripik atau camilan  jadi, yang berbahan dasar dari buah\n- buahan atau umbi\n- umbian. cocok untuk para pengusaha yang ingin membuat usaha keripik buah nya semakin cepat dan mudah, sebelum dikirim k lokasi sebelumnya sudah kami tes dan uji coba mesin tersebut. sehingga tidakmenimbulkan kendala pada saat digunakan oleh konsumen. cara penggunaan sangat mudah, ada dilengkapi buku panduan dan tutorial dari ahli nya. \n\nnb : free spinner dan kompor. disertai juga buku panduan penggunaan mesin nya. garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\n<strong>NOTE</strong>\n Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan didinas pemerintahan ( Tender ) info lebih lanjut bisa menghubungi  Admin kami  deskripsi produk :\n- Kapasitas 1,5 kg on proses\n- Dimensi 90 cm × 80 cm × 58 cm\n- Tabung D 30 cm × P 45 cm\n- Sistem vacuum : Water jet 1/2 HP\n- Daya listrik 600 watt / 220 volt\n- Suhu terkontrol otomatis\n- Kebutuhan minyak 15 liter\n- Pemanas kompor LPG   \n\n<strong>KETERANGAN</strong>\n- Unit mesin 100% Baru\n- Garansi servis 1 tahun ( non spare   part ).. \n\nCocok bagi para pemula usaha pembuatan keripik buah ( jeruk, apel, nangka, dll ) dan umbi umbian ( kentang, ubi, singkong, dll ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/40367136920",
-        "waMsg": "Halo, saya tertarik dengan Vacuum Frying Kapasitas 1,5 kg plus 2 spinner Asianindo | Mesin Keripik Buah & Umbi \u2013 Terverifikasi  TKDN",
+        "waMsg": "Halo, saya tertarik dengan Vacuum Frying Kapasitas 1,5 kg plus 2 spinner Asianindo | Mesin Keripik Buah & Umbi – Terverifikasi  TKDN",
         "images": [
             "images/products/40367136920_0.webp",
             "images/products/40367136920_1.webp",
             "images/products/40367136920_2.webp",
             "images/products/40367136920_3.webp",
             "images/products/40367136920_4.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/40367136920_0.webp"
+        ]
     },
     {
         "id": "40363526311",
@@ -2528,21 +2412,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Pengering / Dryer",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 28500000,
-        "priceDisplay": "Rp 28.500.000",
+        "price": 30000000,
+        "priceDisplay": "Rp 30.000.000",
         "rating": 5,
         "reviews": 17,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Pengering Karpet",
+        "desc": "Mesin Pengering Karpet",
         "shopeeUrl": "https://shopee.co.id/product/69832393/40363526311",
         "waMsg": "Halo, saya tertarik dengan Mesin Pengering Karpet Kapasitas Continue Asianindo",
         "images": [
             "images/products/40363526311_0.webp",
             "images/products/40363526311_1.webp",
             "images/products/40363526311_2.webp"
-        ],
-        "promo_image": "images/products/40363526311_0.webp"
+        ]
     },
     {
         "id": "40313530489",
@@ -2552,13 +2435,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Pengering / Dryer",
         "capacitySize": "small",
         "capacity": "50 kg/jam",
-        "price": 11450000,
-        "priceDisplay": "Rp 11.450.000",
+        "price": 15450000,
+        "priceDisplay": "Rp 15.450.000",
         "rating": 5,
         "reviews": 32,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Dapat digunakan untuk mengeringkan gabah, jagung, kedelai, kopi, cengkeh, kayu manis, jahe, kunyit, lengkuas, kedelai, kerupuk, kunir, kemiri, rempah-rempah lainnya.\n\u2022 Dilengkapi panel otomatis :\n\u2022 - Dapat men-setting suhu sesuai kebutuhan produk yang akan dikeringkan\n\u2022 - Dapat men-setting waktu yang dibuthkn untuk mengeringkan\n\u2022 SPESIFIKASI\n\u2022 Mesin Rotary Dryer ( OTOMATIS ) Kapasitas 50 kg/jam\t\t \t\t A\tModel\tStandart B\n\u2022 FUNGSI\n\u2022 Pengering serbaguna C\tDimensi Rangka\t125 x 60 x 80 cm D\tMaterial Rangka\tUNP 5 dan plat stenliss steel E\tTransmisi\tPulley dan v belt, GEARBOX F\tPenggerak\tdinamo listrik 0,5 HP G\tKapasitas\t50 kg /JAM H\n\u2022 KELENGKAPAN\n\u2022 Thermocontrol, Selenoid valve, timer, dll I\tharga\t \tKap 50 KG/JAM\tTabung luar D :\n\u2022 45. P : 70 CM\n\u2022 BAHAN BAKAR PILIHAN:\n\u2022 1. GAS LPG\n\u2022 2. LISTRIK / ELEMENT\n\u2022 kami melayani custom / renovasi mesin sesuai permintaan customer",
+        "desc": "Dapat digunakan untuk mengeringkan gabah, jagung, kedelai, kopi, cengkeh, kayu manis, jahe, kunyit, lengkuas, kedelai, kerupuk, kunir, kemiri, rempah-rempah lainnya.\n\nDilengkapi panel otomatis :\n- Dapat men-setting suhu sesuai kebutuhan produk yang akan dikeringkan\n- Dapat men-setting waktu yang dibuthkn untuk mengeringkan \n\n<strong>SPESIFIKASI</strong>\n Mesin Rotary Dryer ( OTOMATIS ) Kapasitas 50 kg/jam\t\t \t\t A\tModel\tStandart B\t\n\n<strong>FUNGSI</strong>\nPengering serbaguna C\tDimensi Rangka\t125 x 60 x 80 cm D\tMaterial Rangka\tUNP 5 dan plat stenliss steel E\tTransmisi\tPulley dan v belt, GEARBOX F\tPenggerak\tdinamo listrik 0,5 HP G\tKapasitas\t50 kg /JAM H\t\n\n<strong>KELENGKAPAN</strong>\nThermocontrol, Selenoid valve, timer, dll I\tharga\t \tKap 50 KG/JAM\tTabung luar D :\n45. P : 70 CM\n\nBAHAN BAKAR PILIHAN:\n1. GAS LPG\n2. LISTRIK / ELEMENT \n\nkami melayani custom / renovasi mesin sesuai permintaan customer",
         "shopeeUrl": "https://shopee.co.id/product/69832393/40313530489",
         "waMsg": "Halo, saya tertarik dengan Mesin Rotary Dryer Statis 50Kg Pengering Makanan (Otomatis) CV Asianindo",
         "images": [
@@ -2566,8 +2449,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/40313530489_1.webp",
             "images/products/40313530489_2.webp",
             "images/products/40313530489_3.webp"
-        ],
-        "promo_image": "images/products/40313530489_0.webp"
+        ]
     },
     {
         "id": "40267145346",
@@ -2577,13 +2459,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "small",
         "capacity": "25kg",
-        "price": 27950000,
-        "priceDisplay": "Rp 27.950.000",
+        "price": 29450000,
+        "priceDisplay": "Rp 29.450.000",
         "rating": 5,
         "reviews": 10,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 SPESIFIKASI\n\u2022 Kapasitas 25kg\n\u2022 Tebal Bahan Drum 3 mm Stainless steel\n\u2022 Body Mild Steel\n\u2022 Rangka Pipa Kotak\n\u2022 Thermo control digital\n\u2022 Blower Cyclone dan Blower cooling bean/pendingin\n\u2022 Burner Tungku 3 baris\n\u2022 KELENGKAPAN\n\u2022 Lampu, Burn, Stik Checker Kopi, Manometer, Selang dan Regulator\n\u2022 - pada saat awal pengoperasian akan dipandu oleh ahlinya dan kami kawal sampai bisa\n\u2022 - garansi mesin 1 tahun ( non sparepart ).",
+        "desc": "<strong>SPESIFIKASI</strong>\n\n· Kapasitas 25kg · Tebal Bahan Drum 3 mm Stainless steel · Body Mild Steel · Rangka Pipa Kotak · Thermo control digital · Blower Cyclone dan Blower cooling bean/pendingin · Burner Tungku 3 baris · \n\n<strong>KELENGKAPAN</strong>\nLampu, Burn, Stik Checker Kopi, Manometer, Selang dan Regulator\n- pada saat awal pengoperasian akan dipandu oleh ahlinya dan kami kawal sampai bisa\n- garansi mesin 1 tahun ( non sparepart ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/40267145346",
         "waMsg": "Halo, saya tertarik dengan Mesin Roasting Kopi Kapasitas 25kg CV Asianindo",
         "images": [
@@ -2591,8 +2473,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/40267145346_1.webp",
             "images/products/40267145346_2.webp",
             "images/products/40267145346_3.webp"
-        ],
-        "promo_image": "images/products/40267145346_0.webp"
+        ]
     },
     {
         "id": "40225142321",
@@ -2602,21 +2483,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Pasteurisasi",
         "capacitySize": "small",
         "capacity": "50 Liter / proses",
-        "price": 12950000,
-        "priceDisplay": "Rp 12.950.000",
+        "price": 14450000,
+        "priceDisplay": "Rp 14.450.000",
         "rating": 5,
         "reviews": 31,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin pasteurisasi digunakan untuk pasteurisasi produk minuman dan produk cair (misalnya : susu segar, sirup, sari buah, dan lain-lain) sebelum dikemas.\n\u2022 FUNGSI\n\u2022 pasteurisasi ini adalah untuk mensterilkan produk dari bakteri penyebab penyakit pada suhu yang tidak terlalu tinggi, sehingga tidak merusak produk.\n\u2022 SPESIFIKASI\n\u2022 - Kapasitas 50 Liter / proses\n\u2022 - Dimensi 100 cm x 75 cm x 150 cm\n\u2022 - Listrik 200 watt, 220 V\n\u2022 - Kecepatan mixer 140 rpm\n\u2022 - Bahan full stainless steel\n\u2022 - Pemanas  kompor LPG\n\u2022 - Suhu Terkontrol otomatis\n\u2022 - Tabung double jacket (air / minyak)",
+        "desc": "Mesin pasteurisasi digunakan untuk pasteurisasi produk minuman dan produk cair (misalnya : susu segar, sirup, sari buah, dan lain-lain) sebelum dikemas. \n\n<strong>FUNGSI</strong>\npasteurisasi ini adalah untuk mensterilkan produk dari bakteri penyebab penyakit pada suhu yang tidak terlalu tinggi, sehingga tidak merusak produk.\n\n<strong>SPESIFIKASI</strong>\n- Kapasitas 50 Liter / proses\n- Dimensi 100 cm x 75 cm x 150 cm\n- Listrik 200 watt, 220 V\n- Kecepatan mixer 140 rpm\n- Bahan full stainless steel\n- Pemanas  kompor LPG\n- Suhu Terkontrol otomatis\n- Tabung double jacket (air / minyak)",
         "shopeeUrl": "https://shopee.co.id/product/69832393/40225142321",
         "waMsg": "Halo, saya tertarik dengan Mesin Pasteurisasi Susu 50 Liter CV Asianindo",
         "images": [
             "images/products/40225142321_0.webp",
             "images/products/40225142321_1.webp",
             "images/products/40225142321_2.webp"
-        ],
-        "promo_image": "images/products/40225142321_0.webp"
+        ]
     },
     {
         "id": "40217150229",
@@ -2626,21 +2506,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "50 liter.",
-        "price": 13750000,
-        "priceDisplay": "Rp 13.750.000",
+        "price": 15250000,
+        "priceDisplay": "Rp 15.250.000",
         "rating": 5,
         "reviews": 49,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Pengaduk Dodol, Jenang, Selai dll.\n\u2022 - Ideal untuk Produksi Camilan Jawa\n\u2022 - Mesin ini dirancang untuk mengaduk adonan menjadi selai, jenang, dan dodol. Proses produksi menjadi lebih cepat, mudah, dan praktis. Cocok untuk kebutuhan industri camilan Anda.\n\u2022 SPESIFIKASI MESIN:\n\u2022 - Tabung bahan full stainless steel (food grade).\n\u2022 - Frame full stainless.\n\u2022 - Sumber daya pemanas kompor LPG.\n\u2022 - Tabung masak Double jacket.\n\u2022 - Kapasitas 50 liter.\n\u2022 - Mesin penggerak dinamo 1/2 HP.\n\u2022 - Gear box 1:50.\n\u2022 - Paket Lengkap Include kompor mata seribu. Tabung gas belum termasuk. Semua komponen dirancang untuk efisiensi dan kinerja optimal dalam mengaduk adonan camilan khas Jawa.",
+        "desc": "Mesin Pengaduk Dodol, Jenang, Selai dll.\n- Ideal untuk Produksi Camilan Jawa\n- Mesin ini dirancang untuk mengaduk adonan menjadi selai, jenang, dan dodol. Proses produksi menjadi lebih cepat, mudah, dan praktis. Cocok untuk kebutuhan industri camilan Anda.\n\n<strong>SPESIFIKASI MESIN:</strong>\n- Tabung bahan full stainless steel (food grade).\n- Frame full stainless.\n- Sumber daya pemanas kompor LPG.\n- Tabung masak Double jacket.\n- Kapasitas 50 liter.\n- Mesin penggerak dinamo 1/2 HP.\n- Gear box 1:50.\n- Paket Lengkap Include kompor mata seribu. Tabung gas belum termasuk. Semua komponen dirancang untuk efisiensi dan kinerja optimal dalam mengaduk adonan camilan khas Jawa.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/40217150229",
         "waMsg": "Halo, saya tertarik dengan Mesin Pengaduk Adonan Dodol, Jenang dan Selai Kapasitas 50 liter Asianindo",
         "images": [
             "images/products/40217150229_0.webp",
             "images/products/40217150229_1.webp",
             "images/products/40217150229_2.webp"
-        ],
-        "promo_image": "images/products/40217150229_0.webp"
+        ]
     },
     {
         "id": "40213950748",
@@ -2650,13 +2529,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Spray Dryer",
         "capacitySize": "small",
         "capacity": "5 Liter Bahan/jam",
-        "price": 53700000,
-        "priceDisplay": "Rp 53.700.000",
+        "price": 55200000,
+        "priceDisplay": "Rp 55.200.000",
         "rating": 5,
         "reviews": 36,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Kapasitas 5 Liter Bahan/jam\n\u2022 Dimensi 100x175x220 cm\n\u2022 Ruang Pengering Stainless steel Food Grade\n\u2022 Material Rangka Full Stainless Steel\n\u2022 Total Daya 15.000 Watt\n\u2022 Air Compressor 3HP\n\u2022 Heater Elektrik 13.000 Watt\n\u2022 Blower 2pcs, 600 Watt\n\u2022 Cyclone stainless steel Food Grade\n\u2022 1 Buah Tabung Dinding, 1 Buah Pemanas Atas",
+        "desc": "·  Kapasitas 5 Liter Bahan/jam ·  Dimensi 100x175x220 cm ·  Ruang Pengering Stainless steel Food Grade ·  Material Rangka Full Stainless Steel ·  Total Daya 15.000 Watt ·  Air Compressor 3HP ·  Heater Elektrik 13.000 Watt ·  Blower 2pcs, 600 Watt ·  Cyclone stainless steel Food Grade ·  1 Buah Tabung Dinding, 1 Buah Pemanas Atas",
         "shopeeUrl": "https://shopee.co.id/product/69832393/40213950748",
         "waMsg": "Halo, saya tertarik dengan Mesin Spray Dryer 5 Liter Asianindo",
         "images": [
@@ -2664,8 +2543,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/40213950748_1.webp",
             "images/products/40213950748_2.webp",
             "images/products/40213950748_3.webp"
-        ],
-        "promo_image": "images/products/40213950748_0.webp"
+        ]
     },
     {
         "id": "40017170910",
@@ -2675,21 +2553,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "25 kg.",
-        "price": 8700000,
-        "priceDisplay": "Rp 8.700.000",
+        "price": 10200000,
+        "priceDisplay": "Rp 10.200.000",
         "rating": 5,
         "reviews": 47,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Dough mixer / mesin pengaduk adonan tepung / roti ( multi\n\u2022 FUNGSI\n\u2022 ). dapat digunakan untuk mengaduk adonan mie, donat, kue, cream kocok, telor dll.\n\u2022 SPESIFIKASI\n\u2022 - Power dinamo 1/2 PK\n\u2022 - Perangkat dan bak full stainless\n\u2022 - Dimensi mesin ( p\u00d7l\u00d7t ) : 64 \u00d7 38 \u00d7 78 cm\n\u2022 - bahan stainless full 304 ( food grade )\n\u2022 - kapasitas 25 kg.",
+        "desc": "Dough mixer / mesin pengaduk adonan tepung / roti ( multi \n\n<strong>FUNGSI</strong>\n). dapat digunakan untuk mengaduk adonan mie, donat, kue, cream kocok, telor dll.   \n\n<strong>SPESIFIKASI</strong>\n- Power dinamo 1/2 PK\n- Perangkat dan bak full stainless\n- Dimensi mesin ( p×l×t ) : 64 × 38 × 78 cm\n- bahan stainless full 304 ( food grade )\n- kapasitas 25 kg.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/40017170910",
         "waMsg": "Halo, saya tertarik dengan Mesin Dough Mixer Pengaduk Adonan Roti/Tepung Kapasitas 25 Kg CV Asianindo",
         "images": [
             "images/products/40017170910_0.webp",
             "images/products/40017170910_1.webp",
             "images/products/40017170910_2.webp"
-        ],
-        "promo_image": "images/products/40017170910_0.webp"
+        ]
     },
     {
         "id": "40013976782",
@@ -2699,13 +2576,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Spray Dryer",
         "capacitySize": "small",
         "capacity": "2 Liter Bahan/jam",
-        "price": 37200000,
-        "priceDisplay": "Rp 37.200.000",
+        "price": 38700000,
+        "priceDisplay": "Rp 38.700.000",
         "rating": 5,
         "reviews": 5,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Kapasitas 2 Liter Bahan/jam\n\u2022 Ruang Pengering Stainless steel Food Grade\n\u2022 Material Rangka Full Stainless Steel\n\u2022 Total Daya 13.000 Watt\n\u2022 Air Compressor 2HP/380 V\n\u2022 Heater Elektrik 12.000 Watt\n\u2022 Blower 2pcs, 600 Watt\n\u2022 Cyclone stainless steel Food Grade\n\u2022 1 Buah Tabung Dinding, 1 Buah Pemanas Atas",
+        "desc": "· Kapasitas 2 Liter Bahan/jam · Ruang Pengering Stainless steel Food Grade · Material Rangka Full Stainless Steel · Total Daya 13.000 Watt · Air Compressor 2HP/380 V · Heater Elektrik 12.000 Watt · Blower 2pcs, 600 Watt · Cyclone stainless steel Food Grade · 1 Buah Tabung Dinding, 1 Buah Pemanas Atas",
         "shopeeUrl": "https://shopee.co.id/product/69832393/40013976782",
         "waMsg": "Halo, saya tertarik dengan Mesin Spray Dryer 2 Liter Asianindo",
         "images": [
@@ -2713,8 +2590,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/40013976782_1.webp",
             "images/products/40013976782_2.webp",
             "images/products/40013976782_3.webp"
-        ],
-        "promo_image": "images/products/40013976782_0.webp"
+        ]
     },
     {
         "id": "29540033787",
@@ -2724,13 +2600,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 8750000,
-        "priceDisplay": "Rp 8.750.000",
+        "price": 10250000,
+        "priceDisplay": "Rp 10.250.000",
         "rating": 5,
         "reviews": 46,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Pengupas Kulit Kopi (Pulper)\n\u2022 - Deskripsi Produk\n\u2022 - Bahan Cover: Terbuat dari Stainless Steel yang tahan lama dan mudah dibersihkan. Rangka: Dibuat dari MS (Mild Steel), memberikan struktur yang kokoh. Motor: Menggunakan Dinamo atau motor bensin untuk operasional mesin.\n\u2022 - SPESIFIKASI\n\u2022 Lengkap\n\u2022 - Mesin pengupas kulit kopi ini memiliki\n\u2022 SPESIFIKASI\n\u2022 yang sederhana namun\n\u2022 FUNGSI\n\u2022 onal. Covernya terbuat dari Stainless Steel, sedangkan rangka menggunakan MS. Motornya bisa berupa Dinamo atau motor bensin, sesuai kebutuhan pengguna.",
+        "desc": "Mesin Pengupas Kulit Kopi (Pulper)\n- Deskripsi Produk\n- Bahan Cover: Terbuat dari Stainless Steel yang tahan lama dan mudah dibersihkan. Rangka: Dibuat dari MS (Mild Steel), memberikan struktur yang kokoh. Motor: Menggunakan Dinamo atau motor bensin untuk operasional mesin.\n- <strong>SPESIFIKASI</strong>\nLengkap\n- Mesin pengupas kulit kopi ini memiliki \n\n<strong>SPESIFIKASI</strong>\nyang sederhana namun \n\n<strong>FUNGSI</strong>\nonal. Covernya terbuat dari Stainless Steel, sedangkan rangka menggunakan MS. Motornya bisa berupa Dinamo atau motor bensin, sesuai kebutuhan pengguna.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/29540033787",
         "waMsg": "Halo, saya tertarik dengan Mesin Pengupas Kulit Kopi (pulper) Asianindo",
         "images": [
@@ -2738,8 +2614,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/29540033787_1.webp",
             "images/products/29540033787_2.webp",
             "images/products/29540033787_3.webp"
-        ],
-        "promo_image": "images/products/29540033787_0.webp"
+        ]
     },
     {
         "id": "29290092225",
@@ -2749,13 +2624,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Destilasi",
         "capacitySize": "small",
         "capacity": "50kg / proses",
-        "price": 25300000,
-        "priceDisplay": "Rp 25.300.000",
+        "price": 26800000,
+        "priceDisplay": "Rp 26.800.000",
         "rating": 5,
         "reviews": 27,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin destilasi merupakan salah satu mesin yang digunakan sebagai pengolah minyak atsiri. Mesin ini bisa mengolah berbagai jenis dedaunan dengan memakai sistim penguapan. Untuk bahan yang dipakai dalam pembuatan dari minyak atsiri yaitu daun cengkeh, daun kayu putih, daun sirih, daun kayu manis, daun cendana, dan berbagai jenis daun lainnya yang bisa mengeluarkan minyak.\n\u2022 SPESIFIKASI\n\u2022 - Kapasitas 50kg / proses\n\u2022 - Tabung reaktan Stainless Steel 304 Food Grade, 3 mm\n\u2022 - Bahan bakar LPG (bisa dimodifikasi minyak tanah, kayu bakar)\n\u2022 - Dimensi Panggung :180 cm x 180 cm x 100 cm\n\u2022 - Tabung : \u00d8 60 cm dengan tinggi 133 cm\n\u2022 - Keranjang : \u00d8 56 cm dengan tinggi 100 cm\n\u2022 - Kondensor : \u00d8 40 cm dengan tinggi 100 cm\n\u2022 - Boiler               : \u00d8 50 x 120 cm\n\u2022 - Listrik              : 250 watt",
+        "desc": "Mesin destilasi merupakan salah satu mesin yang digunakan sebagai pengolah minyak atsiri. Mesin ini bisa mengolah berbagai jenis dedaunan dengan memakai sistim penguapan. Untuk bahan yang dipakai dalam pembuatan dari minyak atsiri yaitu daun cengkeh, daun kayu putih, daun sirih, daun kayu manis, daun cendana, dan berbagai jenis daun lainnya yang bisa mengeluarkan minyak. \n\n<strong>SPESIFIKASI</strong>\n- Kapasitas 50kg / proses\n- Tabung reaktan Stainless Steel 304 Food Grade, 3 mm\n- Bahan bakar LPG (bisa dimodifikasi minyak tanah, kayu bakar)\n- Dimensi Panggung :180 cm x 180 cm x 100 cm\n- Tabung : Ø 60 cm dengan tinggi 133 cm\n- Keranjang : Ø 56 cm dengan tinggi 100 cm\n- Kondensor : Ø 40 cm dengan tinggi 100 cm\n- Boiler               : Ø 50 x 120 cm\n- Listrik              : 250 watt",
         "shopeeUrl": "https://shopee.co.id/product/69832393/29290092225",
         "waMsg": "Halo, saya tertarik dengan Mesin Destilasi Minyak Nilam Atsiri 50 Liter CV Asianindo",
         "images": [
@@ -2763,8 +2638,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/29290092225_1.webp",
             "images/products/29290092225_2.webp",
             "images/products/29290092225_3.webp"
-        ],
-        "promo_image": "images/products/29290092225_0.webp"
+        ]
     },
     {
         "id": "29189786844",
@@ -2774,13 +2648,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Vacuum Frying",
         "capacitySize": "small",
         "capacity": "10 kg ( on proses )",
-        "price": 18400000,
-        "priceDisplay": "Rp 18.400.000",
+        "price": 19900000,
+        "priceDisplay": "Rp 19.900.000",
         "rating": 5,
         "reviews": 18,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN VACUUM FRYING (Kapasitas 10 Kg)\n\u2022 - Bersertifikasi TKDN Kemenperin\n\u2022 Mesin canggih ini berfungsi untuk memproduksi aneka keripik dan camilan dari bahan buah-buahan maupun umbi-umbian dengan cepat, efisien, dan higienis. Sangat ideal untuk Anda yang ingin meningkatkan skala produksi bisnis keripik buah ke level industri menengah-atas.\n\u2022 Mesin sudah melalui serangkaian uji coba ketat sebelum dikirim untuk memastikan performa yang sempurna di lokasi Anda.\n\u2022 \ud83c\udf1f Mengapa Harus Asianindo\n\u2022 -\n\u2022 - SERTIFIKASI TKDN: Diakui oleh Kementerian Perindustrian (Kualitas Standar Nasional).\n\u2022 - PAKET KOMPLIT: Harga sudah termasuk Spinner (Peniris Minyak) & Kompor LPG. Tinggal pakai!\n\u2022 - PENDAMPINGAN AHLI: Takut tidak bisa pakai\n\u2022 - Kami pandu via Video Call sampai hasil keripik Anda renyah & cantik.\n\u2022 Spesifikasi Teknis:\n\u2022 - Kapasitas: 10 kg (on proses)\n\u2022 - Dimensi: 170 cm x 122 cm x 140 cm\n\u2022 - Sistem Vacuum: Water jet\n\u2022 - Daya Listrik: 1200 watt (220 volt)\n\u2022 - Suhu: Terkontrol otomatis secara presisi\n\u2022 - Kebutuhan Minyak: 80 liter\n\u2022 - Pemanas: Kompor LPG\n\u2022 Fasilitas Pembelian:\n\u2022 - Unit mesin 100% BARU.\n\u2022 - GRATIS Spinner dan Kompor LPG.\n\u2022 - Buku panduan dan tutorial lengkap.\n\u2022 - Garansi servis 1 tahun (non-sparepart).\n\u2022 *Catatan: Kami juga melayani pengadaan mesin untuk dinas pemerintahan (Tender).",
+        "desc": "<strong>MESIN VACUUM FRYING (Kapasitas 10 Kg)\n- Bersertifikasi TKDN Kemenperin</strong>\n\nMesin canggih ini berfungsi untuk memproduksi aneka keripik dan camilan dari bahan buah-buahan maupun umbi-umbian dengan cepat, efisien, dan higienis. Sangat ideal untuk Anda yang ingin meningkatkan skala produksi bisnis keripik buah ke level industri menengah-atas.\n\nMesin sudah melalui serangkaian uji coba ketat sebelum dikirim untuk memastikan performa yang sempurna di lokasi Anda.\n\n<strong>🌟 Mengapa Harus Asianindo\n- </strong>\n- <strong>SERTIFIKASI TKDN:</strong> Diakui oleh Kementerian Perindustrian (Kualitas Standar Nasional).\n- <strong>PAKET KOMPLIT:</strong> Harga sudah termasuk Spinner (Peniris Minyak) & Kompor LPG. Tinggal pakai!\n- <strong>PENDAMPINGAN AHLI:</strong> Takut tidak bisa pakai\n- Kami pandu via <em>Video Call</em> sampai hasil keripik Anda renyah & cantik.\n\n<strong>Spesifikasi Teknis:</strong>\n- <strong>Kapasitas:</strong> 10 kg (on proses)\n- <strong>Dimensi:</strong> 170 cm x 122 cm x 140 cm\n- <strong>Sistem Vacuum:</strong> Water jet\n- <strong>Daya Listrik:</strong> 1200 watt (220 volt)\n- <strong>Suhu:</strong> Terkontrol otomatis secara presisi\n- <strong>Kebutuhan Minyak:</strong> 80 liter\n- <strong>Pemanas:</strong> Kompor LPG\n\n<strong>Fasilitas Pembelian:</strong>\n- Unit mesin 100% BARU.\n- <strong>GRATIS</strong> Spinner dan Kompor LPG.\n- Buku panduan dan tutorial lengkap.\n- Garansi servis 1 tahun (non-sparepart).\n\n<em>*Catatan: Kami juga melayani pengadaan mesin untuk dinas pemerintahan (Tender).</em>",
         "shopeeUrl": "https://shopee.co.id/product/69832393/29189786844",
         "waMsg": "Halo, saya tertarik dengan Mesin Vacuum Frying 10kg TKDN Kemenperin - Paket Usaha Keripik Buah (Free Spinner & Kompor).",
         "images": [
@@ -2789,9 +2663,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/29189786844_2.webp",
             "images/products/29189786844_3.webp",
             "images/products/29189786844_4.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/29189786844_0.webp"
+        ]
     },
     {
         "id": "28691026840",
@@ -2801,13 +2673,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Pengering / Dryer",
         "capacitySize": "small",
         "capacity": "30 kg /JAM",
-        "price": 10950000,
-        "priceDisplay": "Rp 10.950.000",
+        "price": 12450000,
+        "priceDisplay": "Rp 12.450.000",
         "rating": 5,
         "reviews": 21,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Dapat digunakan untuk mengeringkan gabah, jagung, kedelai, kopi, cengkeh, kayu manis, jahe, kunyit, lengkuas, kedelai, kerupuk, kunir, kemiri, rempah-rempah lainnya.\n\u2022 Dilengkapi panel otomatis :\n\u2022 - Dapat men-setting suhu sesuai kebutuhan produk yang akan dikeringkan\n\u2022 - Dapat men-setting waktu yang dibuthkn untuk mengeringkan\n\u2022 BAHAN BAKAR PILIHAN:\n\u2022 1. GAS LPG\n\u2022 2. LISTRIK / ELEMENT ( Harga lebih mahal)\n\u2022 Mesin Rotary Dryer Statis ( OTOMATIS )\t\t \t\t A\tModel\tStandart B\n\u2022 FUNGSI\n\u2022 Pengering serbaguna C\tDimensi Rangka\t110 x 50 x 80 cm D\tMaterial Rangka\tUNP 5 dan plat stenliss steel E\tTransmisi\tPulley dan v belt, GEARBOX F\tPenggerak\tdinamo listrik 0,5 HP G\tKapasitas\t30 kg /JAM H\n\u2022 KELENGKAPAN\n\u2022 Thermocontrol, Selenoid valve, timer, dll I\tharga\t \tKap 30 KG/JAM\tTabung luar D :\n\u2022 35. P : 50 CM 10.500.000 \tKap 50 KG/JAM\tTabung luar D :\n\u2022 45. P : 70 CM 14.000.000 \tKap 80 KG/JAM\tTabung luar D :\n\u2022 55. P : 90 CM 17.000.000 \tKap 100 KG/JAM\tTabung luar D :\n\u2022 65. P : 100 CM 20.000.000 \tKAP 150 KG/JAM\tTabung luar D :\n\u2022 75. P : 120 CM 25.000.000 KAP 200 KG/JAM\tTabung luar D :\n\u2022 50. P : 200 CM\n\u2022 KAP 300 KG/JAM\tTabung luar D :\n\u2022 70. P : 300 CM\n\u2022 KAP 500 KG/JAM\tTabung luar D :\n\u2022 70. P : 400 CM",
+        "desc": "Dapat digunakan untuk mengeringkan gabah, jagung, kedelai, kopi, cengkeh, kayu manis, jahe, kunyit, lengkuas, kedelai, kerupuk, kunir, kemiri, rempah-rempah lainnya.\n\nDilengkapi panel otomatis :\n- Dapat men-setting suhu sesuai kebutuhan produk yang akan dikeringkan\n- Dapat men-setting waktu yang dibuthkn untuk mengeringkan\n\nBAHAN BAKAR PILIHAN:\n1. GAS LPG\n2. LISTRIK / ELEMENT ( Harga lebih mahal)\n\nMesin Rotary Dryer Statis ( OTOMATIS )\t\t \t\t A\tModel\tStandart B\t\n\n<strong>FUNGSI</strong>\nPengering serbaguna C\tDimensi Rangka\t110 x 50 x 80 cm D\tMaterial Rangka\tUNP 5 dan plat stenliss steel E\tTransmisi\tPulley dan v belt, GEARBOX F\tPenggerak\tdinamo listrik 0,5 HP G\tKapasitas\t30 kg /JAM H\t\n\n<strong>KELENGKAPAN</strong>\nThermocontrol, Selenoid valve, timer, dll I\tharga\t \tKap 30 KG/JAM\tTabung luar D :\n35. P : 50 CM 10.500.000 \tKap 50 KG/JAM\tTabung luar D :\n45. P : 70 CM 14.000.000 \tKap 80 KG/JAM\tTabung luar D :\n55. P : 90 CM 17.000.000 \tKap 100 KG/JAM\tTabung luar D :\n65. P : 100 CM 20.000.000 \tKAP 150 KG/JAM\tTabung luar D :\n75. P : 120 CM 25.000.000 KAP 200 KG/JAM\tTabung luar D :\n50. P : 200 CM\n\nKAP 300 KG/JAM\tTabung luar D :\n70. P : 300 CM\n\nKAP 500 KG/JAM\tTabung luar D :\n70. P : 400 CM",
         "shopeeUrl": "https://shopee.co.id/product/69832393/28691026840",
         "waMsg": "Halo, saya tertarik dengan Mesin Rotary Dryer 30Kg Pengering Makanan CV Asianindo",
         "images": [
@@ -2815,8 +2687,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/28691026840_1.webp",
             "images/products/28691026840_2.webp",
             "images/products/28691026840_3.webp"
-        ],
-        "promo_image": "images/products/28691026840_0.webp"
+        ]
     },
     {
         "id": "28541372231",
@@ -2826,13 +2697,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 11250000,
-        "priceDisplay": "Rp 11.250.000",
+        "price": 12750000,
+        "priceDisplay": "Rp 12.750.000",
         "rating": 5,
         "reviews": 15,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Pencacah Rumput, Daun, Batang, dll..\n\u2022 SPESIFIKASI\n\u2022 - power 8 pk\n\u2022 - Dimensi 180 cm \u00d7 52 cm \u00d7 87 cm\n\u2022 - efisiensi kerja 2 ton per jam\n\u2022 - berat volume 170 kg\n\u2022 - rangka besi unp\n\u2022 NB : Mesin kondisi baru dan sebelum mesin dikirim sudah kami uji coba ( trial ) sebelumnya.. supaya tidak ada kendala pada saat tiba di lokasi.",
+        "desc": "Mesin Pencacah Rumput, Daun, Batang, dll..\n\n<strong>SPESIFIKASI</strong>\n- power 8 pk\n- Dimensi 180 cm × 52 cm × 87 cm\n- efisiensi kerja 2 ton per jam\n- berat volume 170 kg\n- rangka besi unp\n\nNB : Mesin kondisi baru dan sebelum mesin dikirim sudah kami uji coba ( trial ) sebelumnya.. supaya tidak ada kendala pada saat tiba di lokasi.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/28541372231",
         "waMsg": "Halo, saya tertarik dengan Mesin (Cooper) Pencacah Rumput, Batang, Daun, dll Asianindo",
         "images": [
@@ -2840,8 +2711,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/28541372231_1.webp",
             "images/products/28541372231_2.webp",
             "images/products/28541372231_3.webp"
-        ],
-        "promo_image": "images/products/28541372231_0.webp"
+        ]
     },
     {
         "id": "28293553698",
@@ -2851,13 +2721,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 90000000,
-        "priceDisplay": "Rp 90.000.000",
+        "price": 91500000,
+        "priceDisplay": "Rp 91.500.000",
         "rating": 5,
         "reviews": 6,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN SABLON PLASTIK\n\u2022 Mesin Sablon Plastik 2 Warna.\n\u2022 (bisa request 3 warna, 4 warna, 5 warna ). Untuk harga yang tertera adalah untuk harga mesin sablon plastik 2 warna roll to roll.\n\u2022 SPESIFIKASI\n\u2022 - Bodi Plat ecer/UNP\n\u2022 - As mild steel\n\u2022 - Panjang 250cm x lebar 130cm x tinggi 170cm\n\u2022 - Lebar media max 55cm\n\u2022 - Kecepatan max 50 RPM\n\u2022 - Motor 1,5 HP VS (Variable Speed)\n\u2022 - Blower 2 x 150 watt\n\u2022 - Penekan Roll karet satu titik pakai rante\n\u2022 - Heater\n\u2022 CATATAN\n\u2022 Spek bisa berubah tergantung permintaan pembeli. garansi 1 tahun setelah mesin sampai di lokasi dan dipandu oleh ahli di bidangnya.",
+        "desc": "MESIN SABLON PLASTIK\n\nMesin Sablon Plastik 2 Warna.\n\n(bisa request 3 warna, 4 warna, 5 warna ). Untuk harga yang tertera adalah untuk harga mesin sablon plastik 2 warna roll to roll.\n\n<strong>SPESIFIKASI</strong>\n- Bodi Plat ecer/UNP\n- As mild steel\n- Panjang 250cm x lebar 130cm x tinggi 170cm\n- Lebar media max 55cm\n- Kecepatan max 50 RPM\n- Motor 1,5 HP VS (Variable Speed)\n- Blower 2 x 150 watt\n- Penekan Roll karet satu titik pakai rante\n- Heater\n\n<strong>CATATAN</strong>\n\nSpek bisa berubah tergantung permintaan pembeli. garansi 1 tahun setelah mesin sampai di lokasi dan dipandu oleh ahli di bidangnya.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/28293553698",
         "waMsg": "Halo, saya tertarik dengan 2 Warna Mesin Sablon Plastik (Rotogravure) Asianindo",
         "images": [
@@ -2866,8 +2736,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/28293553698_2.webp",
             "images/products/28293553698_3.webp",
             "images/products/28293553698_4.webp"
-        ],
-        "promo_image": "images/products/28293553698_0.webp"
+        ]
     },
     {
         "id": "27941021888",
@@ -2877,13 +2746,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "small",
         "capacity": "5 kg plus pendingin",
-        "price": 16600000,
-        "priceDisplay": "Rp 16.600.000",
+        "price": 18100000,
+        "priceDisplay": "Rp 18.100.000",
         "rating": 5,
         "reviews": 54,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin roasting kopi kapasitas 5 kg plus pendingin, sudah komplit dengan pendingin dan timer, cocok untuk para pengusaha di bidang coffee maker, atau pun produsen kopi kemasan ..\n\u2022 SPESIFIKASI\n\u2022 - Plat tabung tebal 3mm SS\n\u2022 - Coolingbeen 1,2mm\n\u2022 - Control suhu thermo control otomatis dan thermo digital\n\u2022 - Rangka pipa mild steel\n\u2022 - Kompor tungku 3baris\n\u2022 - KELENGKAPAN\n\u2022 2blower cyclone dan pendingin, selang regulator, alarm, manometer, checker kopi, dan lampu\n\u2022 - pada saat awal pengoperasian akan dipandu oleh ahlinya dan kami kawal sampai bisa\n\u2022 - garansi mesin 1 tahun ( non sparepart ).",
+        "desc": "Mesin roasting kopi kapasitas 5 kg plus pendingin, sudah komplit dengan pendingin dan timer, cocok untuk para pengusaha di bidang coffee maker, atau pun produsen kopi kemasan .. \n\n<strong>SPESIFIKASI</strong>\n- Plat tabung tebal 3mm SS\n- Coolingbeen 1,2mm\n- Control suhu thermo control otomatis dan thermo digital\n- Rangka pipa mild steel\n- Kompor tungku 3baris\n- <strong>KELENGKAPAN</strong>\n2blower cyclone dan pendingin, selang regulator, alarm, manometer, checker kopi, dan lampu\n- pada saat awal pengoperasian akan dipandu oleh ahlinya dan kami kawal sampai bisa\n- garansi mesin 1 tahun ( non sparepart ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/27941021888",
         "waMsg": "Halo, saya tertarik dengan Mesin Roasting kopi kapasitas 5 kg plus pendingin",
         "images": [
@@ -2892,8 +2761,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/27941021888_2.webp",
             "images/products/27941021888_3.webp",
             "images/products/27941021888_4.webp"
-        ],
-        "promo_image": "images/products/27941021888_0.webp"
+        ]
     },
     {
         "id": "27790038389",
@@ -2903,21 +2771,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "25 kg / Jam: Mesin ini mampu m",
-        "price": 5450000,
-        "priceDisplay": "Rp 5.450.000",
+        "price": 6950000,
+        "priceDisplay": "Rp 6.950.000",
         "rating": 5,
         "reviews": 38,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 -\n\u2022 SPESIFIKASI MESIN:\n\u2022 Blender Buah\n\u2022 - Kapasitas 25 kg / Jam: Mesin ini mampu menangani beban hingga 25 kg dalam satu jam. Ideal untuk penggunaan jangka panjang. Dinamo Motor: Menggunakan teknologi dinamo motor yang efisien untuk operasi mesin.\n\u2022 - Material Terbaik\n\u2022 - Tabung Stainless Steel: Dibuat dari stainless steel berkualitas, tahan lama dan mudah dibersihkan. Rangka Stainless Steel: Struktur rangka juga terbuat dari stainless steel, menjamin keawetan dan ketahanan mesin.\n\u2022 - Informasi Tambahan\n\u2022 - Pastikan untuk mempertimbangkan\n\u2022 SPESIFIKASI\n\u2022 ini saat memilih mesin blender buah Anda. Informasi lebih lanjut tidak tersedia. Selamat berbelanja!",
+        "desc": "- \n\n<strong>SPESIFIKASI MESIN:</strong>\nBlender Buah\n- Kapasitas 25 kg / Jam: Mesin ini mampu menangani beban hingga 25 kg dalam satu jam. Ideal untuk penggunaan jangka panjang. Dinamo Motor: Menggunakan teknologi dinamo motor yang efisien untuk operasi mesin.\n- Material Terbaik\n- Tabung Stainless Steel: Dibuat dari stainless steel berkualitas, tahan lama dan mudah dibersihkan. Rangka Stainless Steel: Struktur rangka juga terbuat dari stainless steel, menjamin keawetan dan ketahanan mesin.\n- Informasi Tambahan\n- Pastikan untuk mempertimbangkan \n\n<strong>SPESIFIKASI</strong>\nini saat memilih mesin blender buah Anda. Informasi lebih lanjut tidak tersedia. Selamat berbelanja!",
         "shopeeUrl": "https://shopee.co.id/product/69832393/27790038389",
         "waMsg": "Halo, saya tertarik dengan Mesin Blender Buah (Mixer Buah / Juicer)",
         "images": [
             "images/products/27790038389_0.webp",
             "images/products/27790038389_1.webp",
             "images/products/27790038389_2.webp"
-        ],
-        "promo_image": "images/products/27790038389_0.webp"
+        ]
     },
     {
         "id": "27743196569",
@@ -2927,21 +2794,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Pasteurisasi",
         "capacitySize": "small",
         "capacity": "100 Liter / proses",
-        "price": 16950000,
-        "priceDisplay": "Rp 16.950.000",
+        "price": 18450000,
+        "priceDisplay": "Rp 18.450.000",
         "rating": 5,
         "reviews": 21,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin pasteurisasi digunakan untuk pasteurisasi produk minuman dan produk cair (misalnya : susu segar, sirup, sari buah, dan lain-lain)  sebelum dikemas.\n\u2022 FUNGSI\n\u2022 pasteurisasi ini adalah untuk mensterilkan produk dari bakteri penyebab penyakit pada suhu yang tidak terlalu tinggi, sehingga tidak merusak produk.\n\u2022 SPESIFIKASI\n\u2022 - Kapasitas 100 Liter / proses\n\u2022 - Dimensi 122 cm x 85 cm x 166 cm\n\u2022 - Listrik 450 watt, 220 V\n\u2022 - Kecepatan mixer 340 rpm\n\u2022 - Bahan full stainless steel\n\u2022 - Pemanas  kompor LPG\n\u2022 - Suhu Terkontrol otomatis\n\u2022 - Tabung double jacket (air / minyak)",
+        "desc": "Mesin pasteurisasi digunakan untuk pasteurisasi produk minuman dan produk cair (misalnya : susu segar, sirup, sari buah, dan lain-lain)  sebelum dikemas. \n\n<strong>FUNGSI</strong>\npasteurisasi ini adalah untuk mensterilkan produk dari bakteri penyebab penyakit pada suhu yang tidak terlalu tinggi, sehingga tidak merusak produk.\n\n<strong>SPESIFIKASI</strong>\n- Kapasitas 100 Liter / proses\n- Dimensi 122 cm x 85 cm x 166 cm\n- Listrik 450 watt, 220 V\n- Kecepatan mixer 340 rpm\n- Bahan full stainless steel\n- Pemanas  kompor LPG\n- Suhu Terkontrol otomatis\n- Tabung double jacket (air / minyak)",
         "shopeeUrl": "https://shopee.co.id/product/69832393/27743196569",
         "waMsg": "Halo, saya tertarik dengan Mesin Pasteurisasi Susu 100 Liter CV Asianindo",
         "images": [
             "images/products/27743196569_0.webp",
             "images/products/27743196569_1.webp",
             "images/products/27743196569_2.webp"
-        ],
-        "promo_image": "images/products/27743196569_0.webp"
+        ]
     },
     {
         "id": "27540029194",
@@ -2951,13 +2817,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Roaster Kopi",
         "capacitySize": "medium",
         "capacity": "mesin dapat menangani kopi ker",
-        "price": 7500000,
-        "priceDisplay": "Rp 7.500.000",
+        "price": 9000000,
+        "priceDisplay": "Rp 9.000.000",
         "rating": 5,
         "reviews": 36,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 ASIANINDO Mesin Pengupas Kulit Kopi Kering Huller\n\u2022 SPESIFIKASI MESIN:\n\u2022 - Kapasitas mesin dapat menangani kopi kering antara 50 hingga 100kg. Cocok untuk penggunaan dalam jumlah besar.\n\u2022 - Rangka mesin terbuat dari material UNP, memberikan kekuatan dan ketahanan.\n\u2022 - Ditenagai oleh motor bensin berdaya 5,5Hp, memastikan operasi yang efisien.\n\u2022 -Informasi Tambahan: Mesin ini dirancang untuk memenuhi kebutuhan pengupasan kulit kopi dengan kapasitas yang cukup besar. Dengan\n\u2022 SPESIFIKASI\n\u2022 tersebut, mesin ini menjadi pilihan tepat untuk pengolahan kopi secara massal. Pastikan untuk menggunakan sesuai dengan kapasitas dan daya motor yang diberikan.",
+        "desc": "ASIANINDO Mesin Pengupas Kulit Kopi Kering Huller \n\n<strong>SPESIFIKASI MESIN:</strong>\n- Kapasitas mesin dapat menangani kopi kering antara 50 hingga 100kg. Cocok untuk penggunaan dalam jumlah besar.\n- Rangka mesin terbuat dari material UNP, memberikan kekuatan dan ketahanan.\n- Ditenagai oleh motor bensin berdaya 5,5Hp, memastikan operasi yang efisien.\n\n-Informasi Tambahan: Mesin ini dirancang untuk memenuhi kebutuhan pengupasan kulit kopi dengan kapasitas yang cukup besar. Dengan \n\n<strong>SPESIFIKASI</strong>\ntersebut, mesin ini menjadi pilihan tepat untuk pengolahan kopi secara massal. Pastikan untuk menggunakan sesuai dengan kapasitas dan daya motor yang diberikan.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/27540029194",
         "waMsg": "Halo, saya tertarik dengan Mesin Pengupas Kulit Kopi Kering Huller Kapasitas 50-100kg ASIANINDO",
         "images": [
@@ -2965,8 +2831,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/27540029194_1.webp",
             "images/products/27540029194_2.webp",
             "images/products/27540029194_3.webp"
-        ],
-        "promo_image": "images/products/27540029194_0.webp"
+        ]
     },
     {
         "id": "27441018445",
@@ -2976,20 +2841,19 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "25 liter",
-        "price": 11500000,
-        "priceDisplay": "Rp 11.500.000",
+        "price": 13000000,
+        "priceDisplay": "Rp 13.000.000",
         "rating": 5,
         "reviews": 23,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin yang berfungi untuk mengaduk adonan yang akan dijadikan selai, jenang, dodol ( makanan camilan khas jawa ). supaya proses produksi lebih cepat, mudah dan praktis..\n\u2022 SPESIFIKASI\n\u2022 - Tabung bahan full stainless steel 304 ( food grade )\n\u2022 - Frame full stainless\n\u2022 - Sumber daya pemanas kompor LPG\n\u2022 - Tabung masak Double jacket\n\u2022 - Kapasitas 25 liter\n\u2022 - Mesin penggerak dinamo 1/4 HP\n\u2022 - Include kompor mata seribu ( tabung gas dan selang belum termasuk ).",
+        "desc": "Mesin yang berfungi untuk mengaduk adonan yang akan dijadikan selai, jenang, dodol ( makanan camilan khas jawa ). supaya proses produksi lebih cepat, mudah dan praktis..\n\n<strong>SPESIFIKASI</strong>\n- Tabung bahan full stainless steel 304 ( food grade )\n- Frame full stainless\n- Sumber daya pemanas kompor LPG\n- Tabung masak Double jacket\n- Kapasitas 25 liter\n- Mesin penggerak dinamo 1/4 HP\n- Include kompor mata seribu ( tabung gas dan selang belum termasuk ).",
         "shopeeUrl": "https://shopee.co.id/product/69832393/27441018445",
         "waMsg": "Halo, saya tertarik dengan Mesin Pengaduk Adonan Dodol, Jenang dan Selai Kapasitas 25 liter Asianindo",
         "images": [
             "images/products/27441018445_0.webp",
             "images/products/27441018445_1.webp"
-        ],
-        "promo_image": "images/products/27441018445_0.webp"
+        ]
     },
     {
         "id": "27240096480",
@@ -2999,21 +2863,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "/ jam : 50 kg/jam",
-        "price": 8500000,
-        "priceDisplay": "Rp 8.500.000",
+        "price": 10000000,
+        "priceDisplay": "Rp 10.000.000",
         "rating": 5,
         "reviews": 46,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 SPESIFIKASI\n\u2022 - Kapasitas / jam : 50 kg/jam\n\u2022 - Material : Stainless Steel\n\u2022 - Penggerak : Elektro Motor Dinamo / Motor Bensin (opsi)\n\u2022 - KELENGKAPAN\n\u2022 Disk sarangan.",
+        "desc": "<strong>SPESIFIKASI</strong>\n- Kapasitas / jam : 50 kg/jam\n- Material : Stainless Steel\n- Penggerak : Elektro Motor Dinamo / Motor Bensin (opsi)\n- <strong>KELENGKAPAN</strong>\n Disk sarangan.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/27240096480",
         "waMsg": "Halo, saya tertarik dengan Mesin Penepung / Diskmill Stainless Kap 50kg Asianindo",
         "images": [
             "images/products/27240096480_0.webp",
             "images/products/27240096480_1.webp",
             "images/products/27240096480_2.webp"
-        ],
-        "promo_image": "images/products/27240096480_0.webp"
+        ]
     },
     {
         "id": "27090035060",
@@ -3023,20 +2886,19 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "5 kg - 10 kg",
-        "price": 7500000,
-        "priceDisplay": "Rp 7.500.000",
+        "price": 9000000,
+        "priceDisplay": "Rp 9.000.000",
         "rating": 5,
         "reviews": 34,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Pengupas bawang kapasitas 5 kg\n\u2022 - 10 kg",
+        "desc": "Mesin Pengupas bawang kapasitas 5 kg\n- 10 kg",
         "shopeeUrl": "https://shopee.co.id/product/69832393/27090035060",
         "waMsg": "Halo, saya tertarik dengan Mesin Pengupas Bawang Kapasitas 5 - 10 kg Asianindo",
         "images": [
             "images/products/27090035060_0.webp",
             "images/products/27090035060_1.webp"
-        ],
-        "promo_image": "images/products/27090035060_0.webp"
+        ]
     },
     {
         "id": "26840032696",
@@ -3046,13 +2908,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Pengering / Dryer",
         "capacitySize": "small",
         "capacity": "20 rak / loyang",
-        "price": 15250000,
-        "priceDisplay": "Rp 15.250.000",
+        "price": 16750000,
+        "priceDisplay": "Rp 16.750.000",
         "rating": 5,
         "reviews": 15,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 \u2728\n\u2022 SPESIFIKASI\n\u2022 Oven:\n\u2022 - Kapasitas: 20 rak / loyang\n\u2022 - Dimensi mesin: 105x85x165 cm\n\u2022 - Dimensi Loyang: 74x41x4 cm Ideal untuk kebutuhan pengeringan yang besar. Dengan kapasitas 20 rak, oven ini sangat efisien untuk penggunaan massal. Ukuran loyang 74x41x4 cm memungkinkan Anda untuk memasak berbagai jenis makanan.\n\u2022 \u26a1\n\u2022 SPESIFIKASI\n\u2022 Listrik:\n\u2022 - Blower: 150 watt\n\u2022 - Sumber listrik: 220V Oven ini dilengkapi dengan blower berdaya 150 watt pada tegangan 220 volt. Sumber listriknya adalah 220V, memastikan operasional yang optimal dan hemat energi.\n\u2022 \ud83d\udd27\n\u2022 SPESIFIKASI\n\u2022 Bahan:\n\u2022 - Bahan: plat Dibuat dari bahan plat, oven ini menawarkan struktur yang kokoh. Pastikan untuk memilih sumber panas yang tepat, yaitu LPG, sesuai dengan\n\u2022 SPESIFIKASI\n\u2022 yang diberikan.",
+        "desc": "✨ \n\n<strong>SPESIFIKASI</strong>\nOven:\n- Kapasitas: 20 rak / loyang\n- Dimensi mesin: 105x85x165 cm\n- Dimensi Loyang: 74x41x4 cm Ideal untuk kebutuhan pengeringan yang besar. Dengan kapasitas 20 rak, oven ini sangat efisien untuk penggunaan massal. Ukuran loyang 74x41x4 cm memungkinkan Anda untuk memasak berbagai jenis makanan.\n\n⚡ \n\n<strong>SPESIFIKASI</strong>\nListrik:\n- Blower: 150 watt\n- Sumber listrik: 220V Oven ini dilengkapi dengan blower berdaya 150 watt pada tegangan 220 volt. Sumber listriknya adalah 220V, memastikan operasional yang optimal dan hemat energi.\n\n🔧 \n\n<strong>SPESIFIKASI</strong>\nBahan:\n- Bahan: plat Dibuat dari bahan plat, oven ini menawarkan struktur yang kokoh. Pastikan untuk memilih sumber panas yang tepat, yaitu LPG, sesuai dengan \n\n<strong>SPESIFIKASI</strong>\nyang diberikan.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/26840032696",
         "waMsg": "Halo, saya tertarik dengan Mesin Oven Pengering Kapasitas 20 Rak CV Asianindo",
         "images": [
@@ -3061,8 +2923,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/26840032696_2.webp",
             "images/products/26840032696_3.webp",
             "images/products/26840032696_4.webp"
-        ],
-        "promo_image": "images/products/26840032696_0.webp"
+        ]
     },
     {
         "id": "26790033892",
@@ -3072,13 +2933,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Pengering / Dryer",
         "capacitySize": "small",
         "capacity": "10 rak ini siap memenuhi kebut",
-        "price": 11000000,
-        "priceDisplay": "Rp 11.000.000",
+        "price": 12500000,
+        "priceDisplay": "Rp 12.500.000",
         "rating": 5,
         "reviews": 53,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Oven Pengering 10 Rak: Solusi Pengeringan Makanan Efisien Proses pengeringan bahan makanan jadi lebih cepat dan mudah dengan Oven Pengering 10 Rak ini! Dirancang untuk mengeringkan berbagai jenis bahan, mulai dari cabai, bawang merah, bawang putih, sayuran, buah-buahan, hingga daging dan ikan.\n\u2022 Lupakan metode penjemuran manual yang memakan waktu dan tergantung cuaca. Dengan oven ini, Anda bisa mendapatkan hasil kering yang optimal lebih cepat dan tanpa khawatir musim hujan. Desain 1 pintu dengan kapasitas 10 rak ini siap memenuhi kebutuhan Anda.\n\u2022 SPESIFIKASI\n\u2022 Unggulan:\n\u2022 - Kapasitas Besar: Dilengkapi 10 rak dan 10 loyang berukuran standar, memaksimalkan volume pengeringan Anda.\n\u2022 - Material Berkualitas:Rak: Terbuat dari Aluminium yang ringan dan tahan karat.\n\u2022 - Loyang: Menggunakan Vorporasi Stainless Steel yang aman untuk makanan dan memastikan sirkulasi udara optimal.\n\u2022 - Cover: Dari Plat Stainless Steel untuk tampilan bersih dan durabilitas.\n\u2022 - Sumber Panas Efisien: Menggunakan Kompor LPG sebagai sumber panas utama, dengan blower yang mendistribusikan hawa panas secara menyeluruh.\n\u2022 - Kontrol Suhu Akurat: Dilengkapi Thermometer Analog untuk memantau suhu pengeringan dengan mudah.\n\u2022 - KELENGKAPAN\n\u2022 Lengkap: Sudah termasuk roda untuk mobilitas, kompor, selang, dan regulator, siap pakai!\n\u2022 FITUR\n\u2022 Tambahan:\n\u2022 - Mudah Dibersihkan: Desain yang praktis memudahkan Anda dalam perawatan dan pembersihan.\n\u2022 - Movable: Dilengkapi roda, sehingga mudah dipindahkan sesuai kebutuhan Anda.\n\u2022 - Food Grade Material: Material yang bersentuhan langsung dengan produk adalah Stainless Steel, menjamin keamanan dan kebersihan makanan Anda.\n\u2022 - Finishing Premium: Hadir dengan proses finishing yang lebih baik dan elegan, menambah nilai estetika pada dapur atau tempat usaha Anda.\n\u2022 - Garansi Resmi: Dapatkan garansi resmi selama 1 tahun, memberikan ketenangan pikiran atas investasi Anda.\n\u2022 Ingin proses pengeringan yang lebih cepat, higienis, dan tidak tergantung cuaca\n\u2022 - Oven Pengering 10 Rak ini adalah solusi yang Anda cari!",
+        "desc": "Mesin Oven Pengering 10 Rak: Solusi Pengeringan Makanan Efisien Proses pengeringan bahan makanan jadi lebih cepat dan mudah dengan Oven Pengering 10 Rak ini! Dirancang untuk mengeringkan berbagai jenis bahan, mulai dari cabai, bawang merah, bawang putih, sayuran, buah-buahan, hingga daging dan ikan.\n\nLupakan metode penjemuran manual yang memakan waktu dan tergantung cuaca. Dengan oven ini, Anda bisa mendapatkan hasil kering yang optimal lebih cepat dan tanpa khawatir musim hujan. Desain 1 pintu dengan kapasitas 10 rak ini siap memenuhi kebutuhan Anda.\n\n<strong>SPESIFIKASI</strong>\nUnggulan:\n- Kapasitas Besar: Dilengkapi 10 rak dan 10 loyang berukuran standar, memaksimalkan volume pengeringan Anda.\n- Material Berkualitas:Rak: Terbuat dari Aluminium yang ringan dan tahan karat.\n- Loyang: Menggunakan Vorporasi Stainless Steel yang aman untuk makanan dan memastikan sirkulasi udara optimal.\n- Cover: Dari Plat Stainless Steel untuk tampilan bersih dan durabilitas.\n- Sumber Panas Efisien: Menggunakan Kompor LPG sebagai sumber panas utama, dengan blower yang mendistribusikan hawa panas secara menyeluruh.\n- Kontrol Suhu Akurat: Dilengkapi Thermometer Analog untuk memantau suhu pengeringan dengan mudah.\n- <strong>KELENGKAPAN</strong>\nLengkap: Sudah termasuk roda untuk mobilitas, kompor, selang, dan regulator, siap pakai!\n\n<strong>FITUR</strong>\nTambahan:\n- Mudah Dibersihkan: Desain yang praktis memudahkan Anda dalam perawatan dan pembersihan.\n- Movable: Dilengkapi roda, sehingga mudah dipindahkan sesuai kebutuhan Anda.\n- Food Grade Material: Material yang bersentuhan langsung dengan produk adalah Stainless Steel, menjamin keamanan dan kebersihan makanan Anda.\n- Finishing Premium: Hadir dengan proses finishing yang lebih baik dan elegan, menambah nilai estetika pada dapur atau tempat usaha Anda.\n- Garansi Resmi: Dapatkan garansi resmi selama 1 tahun, memberikan ketenangan pikiran atas investasi Anda.\n\nIngin proses pengeringan yang lebih cepat, higienis, dan tidak tergantung cuaca\n- Oven Pengering 10 Rak ini adalah solusi yang Anda cari!",
         "shopeeUrl": "https://shopee.co.id/product/69832393/26790033892",
         "waMsg": "Halo, saya tertarik dengan Oven Pengering 10 Loyang CV Asianindo: Kapasitas Besar, Kering Sempurna!",
         "images": [
@@ -3086,8 +2947,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/26790033892_1.webp",
             "images/products/26790033892_2.webp",
             "images/products/26790033892_3.webp"
-        ],
-        "promo_image": "images/products/26790033892_0.webp"
+        ]
     },
     {
         "id": "26590146837",
@@ -3097,13 +2957,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Spray Dryer",
         "capacitySize": "small",
         "capacity": "1 Liter Bahan/proses",
-        "price": 29450000,
-        "priceDisplay": "Rp 29.450.000",
+        "price": 30950000,
+        "priceDisplay": "Rp 30.950.000",
         "rating": 5,
         "reviews": 37,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Kapasitas 1 Liter Bahan/proses\n\u2022 Ruang Pengering Stainless steel Food Grade\n\u2022 Material Rangka Full Stainless Steel\n\u2022 Total Daya 9.000 Watt\n\u2022 Air Compressor 2HP/380 V\n\u2022 Heater Elektrik 7.000 Watt\n\u2022 Blower 2pcs, 600 Watt\n\u2022 Cyclone stainless steel Food Grade Sus 304\n\u2022 1 Buah Tabung Dinding,  .\n\u2022 1 Buah Pemanas Atas",
+        "desc": "·  Kapasitas 1 Liter Bahan/proses ·  Ruang Pengering Stainless steel Food Grade ·  Material Rangka Full Stainless Steel ·  Total Daya 9.000 Watt ·  Air Compressor 2HP/380 V ·  Heater Elektrik 7.000 Watt ·  Blower 2pcs, 600 Watt ·  Cyclone stainless steel Food Grade Sus 304 ·  1 Buah Tabung Dinding,  .\n\n1 Buah Pemanas Atas",
         "shopeeUrl": "https://shopee.co.id/product/69832393/26590146837",
         "waMsg": "Halo, saya tertarik dengan Mesin Spray Dryer 1 Liter Asianindo",
         "images": [
@@ -3111,8 +2971,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/26590146837_1.webp",
             "images/products/26590146837_2.webp",
             "images/products/26590146837_3.webp"
-        ],
-        "promo_image": "images/products/26590146837_0.webp"
+        ]
     },
     {
         "id": "26440040633",
@@ -3122,13 +2981,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "150 liter per proses",
-        "price": 53500000,
-        "priceDisplay": "Rp 53.500.000",
+        "price": 55000000,
+        "priceDisplay": "Rp 55.000.000",
         "rating": 5,
         "reviews": 40,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 HOMOGENIZER MIXING LIQUID \u2013 MIXER TANK SINGLE JACKET\n\u2022 Mesin ini digunakan untuk mencampur serta mengaduk aneka jenis bahan-bahan berbentuk liquid (cair). Tanki mesin bermodel single jacket serta mesin tidak dilengkapi dengan pemanas. Kontak produk terbuat dari material stainless steel berlabel food grade & pharma grade sehingga aman digunakan untuk bahan makanan maupun bahan kosmetik. Terdapat roda pada rangka yang mempermudah Anda ketika hendak memindahkan mesin.\n\u2022 SPESIFIKASI PRODUK:\n\u2022 - Kapasitas 150 liter per proses\n\u2022 - Material bahan stainless 316 ketebalan 2 mm\n\u2022 - Frame stainless steel\n\u2022 - Rangka stainless kotak 304\n\u2022 - Penggerak motor listrik\n\u2022 - (Inverter/speed control mixer)\n\u2022 - Pemanas heater\n\u2022 - Sistem pengaduk up down.\n\u2022 - Roda tabung (bisa di pindah2)\n\u2022 - Up down daya listrik 200 watt\n\u2022 - Penggerak mixer daya listrik 1500 watt.\n\u2022 KETERANGAN LAIN:\n\u2022 - kami memberikan garansi produk selama 6 bulan free sparepart\n\u2022 - melayani kebutuhan pengadaan instansi ataupun dinas. ( CV.ASIANINDO )",
+        "desc": "HOMOGENIZER MIXING LIQUID – MIXER TANK SINGLE JACKET\n\nMesin ini digunakan untuk mencampur serta mengaduk aneka jenis bahan-bahan berbentuk liquid (cair). Tanki mesin bermodel single jacket serta mesin tidak dilengkapi dengan pemanas. Kontak produk terbuat dari material stainless steel berlabel food grade & pharma grade sehingga aman digunakan untuk bahan makanan maupun bahan kosmetik. Terdapat roda pada rangka yang mempermudah Anda ketika hendak memindahkan mesin.\n\n<strong>SPESIFIKASI PRODUK:</strong>\n- Kapasitas 150 liter per proses\n- Material bahan stainless 316 ketebalan 2 mm\n- Frame stainless steel\n- Rangka stainless kotak 304\n- Penggerak motor listrik\n- (Inverter/speed control mixer)\n- Pemanas heater\n- Sistem pengaduk up down.\n- Roda tabung (bisa di pindah2)\n- Up down daya listrik 200 watt\n- Penggerak mixer daya listrik 1500 watt.\n\n<strong>KETERANGAN LAIN:</strong>\n- kami memberikan garansi produk selama 6 bulan free sparepart\n- melayani kebutuhan pengadaan instansi ataupun dinas. ( CV.ASIANINDO )",
         "shopeeUrl": "https://shopee.co.id/product/69832393/26440040633",
         "waMsg": "Halo, saya tertarik dengan Mesin Mixing Tank Homogenizer Kapasitas 150 liter Asianindo",
         "images": [
@@ -3137,8 +2996,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/26440040633_2.webp",
             "images/products/26440040633_3.webp",
             "images/products/26440040633_4.webp"
-        ],
-        "promo_image": "images/products/26440040633_0.webp"
+        ]
     },
     {
         "id": "26240029198",
@@ -3148,20 +3006,19 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "medium",
         "capacity": "Sesuai Kebutuhan",
-        "price": 8450000,
-        "priceDisplay": "Rp 8.450.000",
+        "price": 9950000,
+        "priceDisplay": "Rp 9.950.000",
         "rating": 5,
         "reviews": 48,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 SPESIFIKASI\n\u2022 - Bahan Full Stainless Steel\n\u2022 - Rangka Stainless Steel",
+        "desc": "<strong>SPESIFIKASI</strong>\n- Bahan Full Stainless Steel\n- Rangka Stainless Steel",
         "shopeeUrl": "https://shopee.co.id/product/69832393/26240029198",
         "waMsg": "Halo, saya tertarik dengan Mesin Kupas Kentang",
         "images": [
             "images/products/26240029198_0.webp",
             "images/products/26240029198_1.webp"
-        ],
-        "promo_image": "images/products/26240029198_0.webp"
+        ]
     },
     {
         "id": "25796432156",
@@ -3171,21 +3028,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "Tangki: 25 Liter",
-        "price": 6850000,
-        "priceDisplay": "Rp 6.850.000",
+        "price": 8350000,
+        "priceDisplay": "Rp 8.350.000",
         "rating": 5,
         "reviews": 23,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 -\n\u2022 SPESIFIKASI\n\u2022 Produk\n\u2022 Kapasitas Tangki: 25 Liter Konfigurasi: 1 Tangki, dan 2 Keranjang\n\u2022 Ideal untuk kebutuhan memasak Anda yang membutuhkan ruang cukup. Dengan kapasitas 25 liter, deep fryer ini memberikan solusi memasak yang efisien. Terdiri dari 1 tangki utama dan 2 keranjang tambahan, memudahkan penyimpanan dan penggunaan.\n\u2022 - Bahan Tahan Lama Bahan Stainless Steel\n\u2022 Deep fryer ini dibuat dari bahan stainless steel, menjamin ketahanan dan keawetan. Rangka yang terbuat dari stainless steel menambah kekuatan struktur. Pilihan material ini cocok untuk penggunaan jangka panjang tanpa perlu khawatir akan cepat rusak.",
+        "desc": "- \n\n<strong>SPESIFIKASI</strong>\nProduk\n\nKapasitas Tangki: 25 Liter Konfigurasi: 1 Tangki, dan 2 Keranjang\n\nIdeal untuk kebutuhan memasak Anda yang membutuhkan ruang cukup. Dengan kapasitas 25 liter, deep fryer ini memberikan solusi memasak yang efisien. Terdiri dari 1 tangki utama dan 2 keranjang tambahan, memudahkan penyimpanan dan penggunaan.\n- Bahan Tahan Lama Bahan Stainless Steel\n\nDeep fryer ini dibuat dari bahan stainless steel, menjamin ketahanan dan keawetan. Rangka yang terbuat dari stainless steel menambah kekuatan struktur. Pilihan material ini cocok untuk penggunaan jangka panjang tanpa perlu khawatir akan cepat rusak.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/25796432156",
         "waMsg": "Halo, saya tertarik dengan Deep Fryer Kapasitas 25 Liter Bahan Stainless Steel CV Asianindo",
         "images": [
             "images/products/25796432156_0.webp",
             "images/products/25796432156_1.webp",
             "images/products/25796432156_2.webp"
-        ],
-        "promo_image": "images/products/25796432156_0.webp"
+        ]
     },
     {
         "id": "25296476232",
@@ -3195,13 +3051,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "besar hingga 50 kg",
-        "price": 8500000,
-        "priceDisplay": "Rp 8.500.000",
+        "price": 10000000,
+        "priceDisplay": "Rp 10.000.000",
         "rating": 5,
         "reviews": 27,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 -\n\u2022 SPESIFIKASI MESIN:\n\u2022 - Kapasitas besar hingga 50 kg, ideal untuk kebutuhan Anda. Terbuat dari bahan Stainless Steel yang tahan lama dan mudah dibersihkan. Rangka MS menambah kekuatan dan daya tahan mesin.\n\u2022 - FITUR UNGGULAN:\n\u2022 - Dilengkapi kontrol tekanan untuk kinerja optimal. Safety Valve memastikan keamanan penggunaan. Paket gratis kompor LPG, hemat biaya tambahan.\n\u2022 - Informasi Tambahan:\n\u2022 - Pastikan Anda memilih Mesin Presto 50 kg presto untuk kebutuhan Anda. Dengan\n\u2022 SPESIFIKASI\n\u2022 dan\n\u2022 FITUR\n\u2022 yang ditawarkan, mesin ini siap menjadi pilihan tepat. Jangan lupa untuk mendapatkan kompor LPG secara gratis!",
+        "desc": "- \n\n<strong>SPESIFIKASI MESIN:</strong>\n- Kapasitas besar hingga 50 kg, ideal untuk kebutuhan Anda. Terbuat dari bahan Stainless Steel yang tahan lama dan mudah dibersihkan. Rangka MS menambah kekuatan dan daya tahan mesin.\n- <strong>FITUR UNGGULAN:</strong>\n- Dilengkapi kontrol tekanan untuk kinerja optimal. Safety Valve memastikan keamanan penggunaan. Paket gratis kompor LPG, hemat biaya tambahan.\n- Informasi Tambahan:\n- Pastikan Anda memilih Mesin Presto 50 kg presto untuk kebutuhan Anda. Dengan \n\n<strong>SPESIFIKASI</strong>\ndan \n\n<strong>FITUR</strong>\nyang ditawarkan, mesin ini siap menjadi pilihan tepat. Jangan lupa untuk mendapatkan kompor LPG secara gratis!",
         "shopeeUrl": "https://shopee.co.id/product/69832393/25296476232",
         "waMsg": "Halo, saya tertarik dengan Mesin Presto 50 kg Stainless Steel Asianindo",
         "images": [
@@ -3210,8 +3066,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/25296476232_2.webp",
             "images/products/25296476232_3.webp",
             "images/products/25296476232_4.webp"
-        ],
-        "promo_image": "images/products/25296476232_0.webp"
+        ]
     },
     {
         "id": "25288260659",
@@ -3220,14 +3075,14 @@ window.CATALOG_PRODUCTS = [
         "category": "Mesin Makanan",
         "subCategory": "Vacuum Frying",
         "capacitySize": "small",
-        "capacity": "1,5 kg",
+        "capacity": "1",
         "price": 12900000,
         "priceDisplay": "Rp 12.900.000",
         "rating": 5,
         "reviews": 26,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN VACUUM FRYING (Kapasitas 1,5 Kg)\n\u2022 Mesin ini berfungsi untuk memproduksi keripik atau camilan jadi yang berbahan dasar dari buah-buahan (apel, nangka, salak, dll) atau umbi-umbian (kentang, ubi, singkong, dll).\n\u2022 Sangat cocok bagi para pengusaha pemula yang ingin memulai bisnis keripik buah dengan proses yang cepat dan hasil yang maksimal. Mesin ini telah melalui proses Quality Control (uji coba) sebelum dikirim, sehingga dijamin berfungsi optimal tanpa kendala saat digunakan.\n\u2022 \u2705 Keunggulan:\n\u2022 - Penggunaan sangat mudah.\n\u2022 - Dilengkapi buku panduan dan video tutorial.\n\u2022 - Panduan langsung dari ahlinya saat pengoperasian.\n\u2022 - GRATIS Spinner (peniris minyak) dan Kompor LPG.\n\u2022 Spesifikasi Mesin:\n\u2022 - Kapasitas: 1,5 kg (on proses)\n\u2022 - Dimensi Mesin: 90 cm x 80 cm x 58 cm\n\u2022 - Dimensi Tabung: Diameter 30 cm x Panjang 45 cm\n\u2022 - Sistem Vacuum: Water jet 1/2 HP\n\u2022 - Daya Listrik: 600 Watt (220 Volt)\n\u2022 - Kontrol Suhu: Terkontrol otomatis\n\u2022 - Kebutuhan Minyak: 15 liter\n\u2022 - Pemanas: Kompor LPG\n\u2022 Keterangan:\n\u2022 - Unit mesin 100% BARU\n\u2022 - Garansi servis 1 tahun (non-sparepart)",
+        "desc": "<strong>MESIN VACUUM FRYING (Kapasitas 1,5 Kg)</strong>\n\nMesin ini berfungsi untuk memproduksi keripik atau camilan jadi yang berbahan dasar dari buah-buahan (apel, nangka, salak, dll) atau umbi-umbian (kentang, ubi, singkong, dll).\n\nSangat cocok bagi para pengusaha pemula yang ingin memulai bisnis keripik buah dengan proses yang cepat dan hasil yang maksimal. Mesin ini telah melalui proses <em>Quality Control</em> (uji coba) sebelum dikirim, sehingga dijamin berfungsi optimal tanpa kendala saat digunakan.\n\n<strong>✅ Keunggulan:</strong>\n- Penggunaan sangat mudah.\n- Dilengkapi buku panduan dan video tutorial.\n- Panduan langsung dari ahlinya saat pengoperasian.\n- <strong>GRATIS</strong> Spinner (peniris minyak) dan Kompor LPG.\n\n<strong>Spesifikasi Mesin:</strong>\n- <strong>Kapasitas:</strong> 1,5 kg (on proses)\n- <strong>Dimensi Mesin:</strong> 90 cm x 80 cm x 58 cm\n- <strong>Dimensi Tabung:</strong> Diameter 30 cm x Panjang 45 cm\n- <strong>Sistem Vacuum:</strong> Water jet 1/2 HP\n- <strong>Daya Listrik:</strong> 600 Watt (220 Volt)\n- <strong>Kontrol Suhu:</strong> Terkontrol otomatis\n- <strong>Kebutuhan Minyak:</strong> 15 liter\n- <strong>Pemanas:</strong> Kompor LPG\n\n<strong>Keterangan:</strong>\n- Unit mesin 100% BARU\n- Garansi servis 1 tahun (non-sparepart)",
         "shopeeUrl": "https://shopee.co.id/product/69832393/25288260659",
         "waMsg": "Halo, saya tertarik dengan Vacuum Frying kapasitas 1,5 kg",
         "images": [
@@ -3235,9 +3090,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/25288260659_1.webp",
             "images/products/25288260659_2.webp",
             "images/products/25288260659_3.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/25288260659_0.webp"
+        ]
     },
     {
         "id": "24896431731",
@@ -3247,21 +3100,20 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "5 KG",
-        "price": 1500000,
-        "priceDisplay": "Rp 1.500.000",
+        "price": 3200000,
+        "priceDisplay": "Rp 3.200.000",
         "rating": 5,
         "reviews": 10,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Mesin Spinner Peniris Minyak CV Asianindo adalah solusi praktis untuk mengurangi kadar minyak berlebih pada berbagai jenis makanan. Dirancang khusus untuk membantu pelaku usaha makanan agar produk lebih renyah, sehat, dan tahan lama.\n\u2022 SPESIFIKASI MESIN:\n\u2022 - Kapasitas: 5 KG\n\u2022 - Bahan Peniris: Stainless Steel Food Grade\n\u2022 - Tinggi Body: 50 cm\n\u2022 - Diameter Tabung Luar: 39 cm\n\u2022 - Diameter Saringan: 34 cm\n\u2022 - Tinggi Saringan: 22 cm\n\u2022 - Daya Listrik: 135W / 220V\n\u2022 - Dilengkapi Kabel + On/Off + Steker untuk penggunaan mudah\n\u2022 KEUNGGULAN MESIN: Spinner CV Asianindo:\n\u2022 - Sangat mudah dan praktis digunakan\n\u2022 - Mengurangi/minimalkan minyak makanan dengan cepat\n\u2022 - Terbuat dari stainless steel higienis dan mudah dibersihkan\n\u2022 - Desain kokoh dan stabil, aman digunakan\n\u2022 - Hemat waktu dan tenaga dalam proses produksi\n\u2022 Cocok Digunakan Untuk:\n\u2022 - Bawang goreng\n\u2022 - Kerupuk\n\u2022 - Kacang-kacangan\n\u2022 - Aneka camilan goreng lainnya\n\u2022 Dengan Mesin Spinner Peniris Minyak CV Asianindo, hasil makanan menjadi lebih kering, renyah, sehat, dan bernilai jual tinggi. Pilihan tepat untuk UMKM dan industri makanan yang ingin meningkatkan efisiensi dan kualitas produk.",
+        "desc": "Mesin Spinner Peniris Minyak CV Asianindo adalah solusi praktis untuk mengurangi kadar minyak berlebih pada berbagai jenis makanan. Dirancang khusus untuk membantu pelaku usaha makanan agar produk lebih renyah, sehat, dan tahan lama.\n\n<strong>SPESIFIKASI MESIN:</strong>\n- Kapasitas: 5 KG\n- Bahan Peniris: Stainless Steel Food Grade\n- Tinggi Body: 50 cm\n- Diameter Tabung Luar: 39 cm\n- Diameter Saringan: 34 cm\n- Tinggi Saringan: 22 cm\n- Daya Listrik: 135W / 220V\n- Dilengkapi Kabel + On/Off + Steker untuk penggunaan mudah\n\n<strong>KEUNGGULAN MESIN:</strong> Spinner CV Asianindo:\n- Sangat mudah dan praktis digunakan\n- Mengurangi/minimalkan minyak makanan dengan cepat\n- Terbuat dari stainless steel higienis dan mudah dibersihkan\n- Desain kokoh dan stabil, aman digunakan\n- Hemat waktu dan tenaga dalam proses produksi\n\nCocok Digunakan Untuk:\n- Bawang goreng\n- Kerupuk\n- Kacang-kacangan\n- Aneka camilan goreng lainnya\n\nDengan Mesin Spinner Peniris Minyak CV Asianindo, hasil makanan menjadi lebih kering, renyah, sehat, dan bernilai jual tinggi. Pilihan tepat untuk UMKM dan industri makanan yang ingin meningkatkan efisiensi dan kualitas produk.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/24896431731",
         "waMsg": "Halo, saya tertarik dengan Mesin Spinner Kapasitas 5 kg CV Asianindo",
         "images": [
             "images/products/24896431731_0.webp",
             "images/products/24896431731_1.webp",
             "images/products/24896431731_2.webp"
-        ],
-        "promo_image": "images/products/24896431731_0.webp"
+        ]
     },
     {
         "id": "24346436426",
@@ -3271,13 +3123,13 @@ window.CATALOG_PRODUCTS = [
         "subCategory": "Lainnya",
         "capacitySize": "small",
         "capacity": "50 Liter / Proses",
-        "price": 17300000,
-        "priceDisplay": "Rp 17.300.000",
+        "price": 18800000,
+        "priceDisplay": "Rp 18.800.000",
         "rating": 5,
         "reviews": 8,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN EVAPORATOR VACUM\n\u2022 Kegunaan: Untuk mengurangi kadar air/mengentalkan cairan: minyak, VCO, madu, susu,dll.),  dengan cara kandungan air dipanaskan dan diuapkan, kemudiankandungan air tadi  dikeluarkan dengan cara di Vacum.\n\u2022 SPESIFIKASI PRODUK:\n\u2022 - Kapasitas: 50 Liter / Proses *Bahan Stainless Steel *Pemanas Kompor/heater *Kontrol Suhu Otomatis *Tabung Double Jacket\n\u2022 - Dimensi Total: 80x122x144 cm\n\u2022 - Rpm : 30 rpm\n\u2022 - Listrik :750 watt, 220V\n\u2022 garansi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya.\n\u2022 NOTE\n\u2022 Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan didinas pemerintahan ( Tender )",
+        "desc": "MESIN EVAPORATOR VACUM\n\nKegunaan: Untuk mengurangi kadar air/mengentalkan cairan: minyak, VCO, madu, susu,dll.),  dengan cara kandungan air dipanaskan dan diuapkan, kemudiankandungan air tadi  dikeluarkan dengan cara di Vacum. \n\n<strong>SPESIFIKASI PRODUK:</strong>\n- Kapasitas: 50 Liter / Proses *Bahan Stainless Steel *Pemanas Kompor/heater *Kontrol Suhu Otomatis *Tabung Double Jacket\n- Dimensi Total: 80x122x144 cm\n- Rpm : 30 rpm\n- Listrik :750 watt, 220V\n\ngaransi 1 tahun ( non sparepart).  pada saat pengoperasian mesin  akan dipandu oleh ahlinya. \n\n<strong>NOTE</strong>\n Toko kami juga menyediakan semua kebutuhan mesin yang anda  butuhkan, baik untuk kebutuhan  pribadi maupun untuk pengadaan didinas pemerintahan ( Tender )",
         "shopeeUrl": "https://shopee.co.id/product/69832393/24346436426",
         "waMsg": "Halo, saya tertarik dengan Mesin Evaporator Vacuum 50 Liter Asianindo",
         "images": [
@@ -3285,9 +3137,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/24346436426_1.webp",
             "images/products/24346436426_2.webp",
             "images/products/24346436426_3.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/24346436426_0.webp"
+        ]
     },
     {
         "id": "24296416070",
@@ -3303,7 +3153,7 @@ window.CATALOG_PRODUCTS = [
         "reviews": 38,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 MESIN VACUUM FRYING (Kapasitas 5 Kg) + Spinner\n\u2022 Solusi tepat untuk produksi keripik buah-buahan dan umbi-umbian skala menengah. Didesain khusus bagi pengusaha yang membutuhkan produksi keripik berkualitas tinggi dengan cara yang praktis.\n\u2022 Sebelum dikirim, mesin ini telah lolos Quality Control dan pengujian ketat untuk memastikan tidak ada kendala saat pengoperasian.\n\u2022 Paket Hemat Komplit:\n\u2022 - Sudah termasuk Spinner untuk meniriskan minyak hingga kering.\n\u2022 - Pengoperasian mesin sangat mudah dan aman.\n\u2022 - Dilengkapi buku panduan cetak & tutorial langsung dari tim ahli kami.",
+        "desc": "<strong>MESIN VACUUM FRYING (Kapasitas 5 Kg) + Spinner</strong>\n\nSolusi tepat untuk produksi keripik buah-buahan dan umbi-umbian skala menengah. Didesain khusus bagi pengusaha yang membutuhkan produksi keripik berkualitas tinggi dengan cara yang praktis.\n\nSebelum dikirim, mesin ini telah lolos <em>Quality Control</em> dan pengujian ketat untuk memastikan tidak ada kendala saat pengoperasian.\n\n<strong>Paket Hemat Komplit:</strong>\n- Sudah termasuk <strong>Spinner</strong> untuk meniriskan minyak hingga kering.\n- Pengoperasian mesin sangat mudah dan aman.\n- Dilengkapi buku panduan cetak & tutorial langsung dari tim ahli kami.",
         "shopeeUrl": "https://shopee.co.id/product/69832393/24296416070",
         "waMsg": "Halo, saya tertarik dengan mesin vacuum frying kapasitas 5 kg plus spinner (paket komplit hemat)",
         "images": [
@@ -3312,9 +3162,7 @@ window.CATALOG_PRODUCTS = [
             "images/products/24296416070_2.webp",
             "images/products/24296416070_3.webp",
             "images/products/24296416070_4.webp"
-        ],
-        "video": "videos/promo_vacuum_frying.mp4",
-        "promo_image": "images/products/24296416070_0.webp"
+        ]
     },
     {
         "id": "21632473208",
@@ -3330,13 +3178,12 @@ window.CATALOG_PRODUCTS = [
         "reviews": 5,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Halo everyYEAYY\ud83e\udd73 Siapa disini yang suka nyemil tapi mager keluar\n\u2022 - Hayoo, nah disini YEAY snack hadir untuk kalian.\n\u2022 Capcuss di order sekarang yukkk!!\ud83e\udd29\n\u2022 Berat 100gr",
+        "desc": "Halo everyYEAYY🥳 Siapa disini yang suka nyemil tapi mager keluar\n- Hayoo, nah disini YEAY snack hadir untuk kalian.\n\nCapcuss di order sekarang yukkk!!🤩\n\nBerat 100gr",
         "shopeeUrl": "https://shopee.co.id/product/69832393/21632473208",
         "waMsg": "Halo, saya tertarik dengan Makaroni YEAY",
         "images": [
             "images/products/21632473208_0.webp"
-        ],
-        "promo_image": "images/products/21632473208_0.webp"
+        ]
     },
     {
         "id": "20231196559",
@@ -3352,14 +3199,13 @@ window.CATALOG_PRODUCTS = [
         "reviews": 54,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Halo everyYEAYY\ud83e\udd73 Siapa disini yang suka nyemil tapi mager keluar\n\u2022 - Hayoo, nah disini YEAY snack hadir untuk kalian.\n\u2022 Capcuss di order sekarang yukkk!!\ud83e\udd29\n\u2022 Berat 100gr",
+        "desc": "Halo everyYEAYY🥳 Siapa disini yang suka nyemil tapi mager keluar\n- Hayoo, nah disini YEAY snack hadir untuk kalian.\n\nCapcuss di order sekarang yukkk!!🤩\n\nBerat 100gr",
         "shopeeUrl": "https://shopee.co.id/product/69832393/20231196559",
         "waMsg": "Halo, saya tertarik dengan Basreng YEAY",
         "images": [
             "images/products/20231196559_0.webp",
             "images/products/20231196559_1.webp"
-        ],
-        "promo_image": "images/products/20231196559_0.webp"
+        ]
     },
     {
         "id": "16581290900",
@@ -3375,13 +3221,12 @@ window.CATALOG_PRODUCTS = [
         "reviews": 44,
         "badge": "",
         "badgeColor": "",
-        "desc": "\u2022 Halo everyYEAYY\ud83e\udd73 Siapa disini yang suka nyemil tapi mager keluar\n\u2022 - Hayoo, nah disini YEAY snack hadir untuk kalian.\n\u2022 Capcuss di order sekarang yukkk!!\ud83e\udd29\n\u2022 Berat 90gr",
+        "desc": "Halo everyYEAYY🥳 Siapa disini yang suka nyemil tapi mager keluar\n- Hayoo, nah disini YEAY snack hadir untuk kalian.\n\nCapcuss di order sekarang yukkk!!🤩\n\nBerat 90gr",
         "shopeeUrl": "https://shopee.co.id/product/69832393/16581290900",
         "waMsg": "Halo, saya tertarik dengan Kripik Kaca YEAY",
         "images": [
             "images/products/16581290900_0.webp",
             "images/products/16581290900_1.webp"
-        ],
-        "promo_image": "images/products/16581290900_0.webp"
+        ]
     }
 ];

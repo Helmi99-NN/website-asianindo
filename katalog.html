@@ -720,8 +720,8 @@
     <!-- ============================================ -->
     <!-- JAVASCRIPT -->
     <!-- ============================================ -->
-    <script src="default_products.js?v=4"></script>
-    <script src="data/products.js?v=4"></script>
+    <script src="default_products.js?v=5"></script>
+    <script src="data/products.js?v=5"></script>
     <script>
     (function() {
         'use strict';
@@ -800,7 +800,7 @@
         fetchLiveViews();
 
         // Asynchronously load the latest products to bypass CDN cache
-        fetch('data/products.json?v=' + new Date().getTime())
+        fetch('data/products.js?v=5on?v=' + new Date().getTime())
             .then(res => res.json())
             .then(data => {
                 if (data && Array.isArray(data) && data.length > 0) {

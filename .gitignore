@@ -14,3 +14,4 @@ data/*
 !data/products.js
 database/config.php
 video_promo/
+scratch/
