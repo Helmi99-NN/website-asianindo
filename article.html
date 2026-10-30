@@ -892,10 +892,40 @@
         }
 
         // ============================
-        // INIT
+        // INIT & LIVE SYNC WITH CMS
         // ============================
         render();
         observeReveals();
+
+        async function loadLiveProducts() {
+            try {
+                let liveData = null;
+                try {
+                    const resApi = await fetch('admin/api.php?action=get_public_products&_t=' + Date.now(), { cache: 'no-store' });
+                    if (resApi.ok) {
+                        const json = await resApi.json();
+                        if (Array.isArray(json) && json.length > 0) liveData = json;
+                    }
+                } catch(e) {}
+
+                if (!liveData) {
+                    const resJson = await fetch('data/products.json?_t=' + Date.now(), { cache: 'no-store' });
+                    if (resJson.ok) {
+                        const json = await resJson.json();
+                        if (Array.isArray(json) && json.length > 0) liveData = json;
+                    }
+                }
+
+                if (liveData && Array.isArray(liveData) && liveData.length > 0) {
+                    products = liveData;
+                    window.CATALOG_PRODUCTS = liveData;
+                    render();
+                    observeReveals();
+                }
+            } catch (err) {}
+        }
+        loadLiveProducts();
+        window.addEventListener('focus', loadLiveProducts);
 
     })();
     </script>

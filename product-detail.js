@@ -5,13 +5,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let products = window.CATALOG_PRODUCTS || [];
     
-    // Fetch live products to bypass cache
+    // Fetch live products to bypass cache (prioritizing live CMS endpoint)
     try {
-        const res = await fetch('data/products.json?v=' + new Date().getTime());
-        const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
-            products = data;
-            window.CATALOG_PRODUCTS = data; // Update global state for related products
+        let liveData = null;
+        try {
+            const resApi = await fetch('admin/api.php?action=get_public_products&_t=' + Date.now(), { cache: 'no-store' });
+            if (resApi.ok) {
+                const json = await resApi.json();
+                if (Array.isArray(json) && json.length > 0) liveData = json;
+            }
+        } catch(e) {}
+
+        if (!liveData) {
+            const res = await fetch('data/products.json?_t=' + Date.now(), { cache: 'no-store' });
+            if (res.ok) {
+                const json = await res.json();
+                if (Array.isArray(json) && json.length > 0) liveData = json;
+            }
+        }
+
+        if (liveData && Array.isArray(liveData) && liveData.length > 0) {
+            products = liveData;
+            window.CATALOG_PRODUCTS = liveData;
         }
     } catch (err) {
         console.error("Failed to fetch live products", err);
@@ -497,6 +512,50 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
+
+    // Live Auto-Sync: Automatically update prices and details if changed in CMS
+    async function refreshProductDetailLive() {
+        try {
+            let liveData = null;
+            try {
+                const resApi = await fetch('admin/api.php?action=get_public_products&_t=' + Date.now(), { cache: 'no-store' });
+                if (resApi.ok) {
+                    const json = await resApi.json();
+                    if (Array.isArray(json) && json.length > 0) liveData = json;
+                }
+            } catch(e) {}
+
+            if (!liveData) {
+                const res = await fetch('data/products.json?_t=' + Date.now(), { cache: 'no-store' });
+                if (res.ok) {
+                    const json = await res.json();
+                    if (Array.isArray(json) && json.length > 0) liveData = json;
+                }
+            }
+
+            if (liveData && Array.isArray(liveData) && liveData.length > 0) {
+                window.CATALOG_PRODUCTS = liveData;
+                const fresh = liveData.find(p => p.id === productId || p.slug === productId);
+                if (fresh) {
+                    const priceEl = document.getElementById('product-price');
+                    if (priceEl && fresh.priceDisplay && priceEl.innerText !== fresh.priceDisplay) {
+                        priceEl.innerText = fresh.priceDisplay;
+                    }
+                    const nameEl = document.getElementById('product-name');
+                    if (nameEl && fresh.name && nameEl.innerText !== fresh.name) {
+                        nameEl.innerText = fresh.name;
+                    }
+                    const breadcrumbEl = document.getElementById('breadcrumb-product-name');
+                    if (breadcrumbEl && fresh.name && breadcrumbEl.innerText !== fresh.name) {
+                        breadcrumbEl.innerText = fresh.name;
+                    }
+                }
+            }
+        } catch(e) {}
+    }
+
+    window.addEventListener('focus', refreshProductDetailLive);
+    setInterval(refreshProductDetailLive, 20000);
 
 });
 

@@ -13,6 +13,130 @@ $action = $_GET['action'] ?? '';
 // CORS for tracking if needed
 header("Access-Control-Allow-Origin: *");
 
+// Product Data Functions with Auto-Healing
+function healProductImages(&$products) {
+    $healed = false;
+    foreach ($products as &$p) {
+        if (!isset($p['id'])) continue;
+        $id = (string)$p['id'];
+        if (isset($p['images']) && is_array($p['images'])) {
+            foreach ($p['images'] as $idx => $img) {
+                if (is_string($img)) {
+                    $isBrokenMedia = (strpos($img, 'media_6ac') !== false);
+                    $fileMissing = (strpos($img, 'images/media_') === 0 && !file_exists(__DIR__ . '/../' . $img));
+                    if ($isBrokenMedia || $fileMissing) {
+                        $p['images'][$idx] = 'images/products/' . $id . '_' . $idx . '.webp';
+                        $healed = true;
+                    }
+                }
+            }
+        } elseif (!isset($p['images']) || empty($p['images'])) {
+            $p['images'] = ['images/products/' . $id . '_0.webp'];
+            $healed = true;
+        }
+
+        // Video paths set by admin are preserved as-is without forceful override
+
+        // Auto-heal promo_image: default to leftmost cover photo if empty
+        if ((!isset($p['promo_image']) || trim($p['promo_image']) === '') && !empty($p['images']) && is_array($p['images'])) {
+            $p['promo_image'] = $p['images'][0];
+            $healed = true;
+        }
+
+        // Auto-heal capacity: fix truncated capacity values (e.g. '1' -> '1,5 kg', '3' -> '3,5 kg')
+        if (isset($p['capacity'])) {
+            $capTrim = trim($p['capacity']);
+            $pName = $p['name'] ?? '';
+            if ($capTrim === '1' && (stripos($pName, '1,5') !== false || stripos($pName, '1.5') !== false)) {
+                $p['capacity'] = '1,5 kg';
+                $p['capacitySize'] = 'small';
+                $healed = true;
+            } elseif ($capTrim === '3' && (stripos($pName, '3,5') !== false || stripos($pName, '3.5') !== false)) {
+                $p['capacity'] = '3,5 kg';
+                $p['capacitySize'] = 'small';
+                $healed = true;
+            }
+        }
+    }
+    return $healed;
+}
+
+function readData() {
+    global $DATA_JSON;
+    $products = [];
+    if (!file_exists($DATA_JSON)) {
+        $DEFAULT_JSON = __DIR__ . '/../default_products.json';
+        if (file_exists($DEFAULT_JSON)) {
+            $products = json_decode(file_get_contents($DEFAULT_JSON), true) ?? [];
+        }
+    } else {
+        $products = json_decode(file_get_contents($DATA_JSON), true) ?? [];
+    }
+
+    if (!empty($products) && healProductImages($products)) {
+        writeData($products);
+    }
+
+    return $products;
+}
+
+function writeData($data) {
+    global $DATA_JSON, $DATA_JS;
+    $dir = dirname($DATA_JSON);
+    if (!is_dir($dir)) mkdir($dir, 0777, true);
+    $jsonString = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    
+    // 1. Write primary products files
+    file_put_contents($DATA_JSON, $jsonString);
+    file_put_contents($DATA_JS, "window.CATALOG_PRODUCTS = " . $jsonString . ";\n");
+    
+    // 2. Synchronize default_products backup files
+    $DEFAULT_JSON = __DIR__ . '/../default_products.json';
+    $DEFAULT_JS = __DIR__ . '/../default_products.js';
+    file_put_contents($DEFAULT_JSON, $jsonString);
+    file_put_contents($DEFAULT_JS, "window.CATALOG_PRODUCTS = " . $jsonString . ";\n");
+
+    // 3. Write version file for instant client-side change detection
+    $versionFile = __DIR__ . '/../data/products_version.json';
+    file_put_contents($versionFile, json_encode([
+        'version' => time(),
+        'updated_at' => date('Y-m-d H:i:s'),
+        'count' => count($data)
+    ], JSON_PRETTY_PRINT));
+}
+
+
+
+
+// PUBLIC READ - Products Catalog (No-Cache guaranteed)
+if ($action === 'get_public_products' || ($action === 'get_public' && ($_GET['module'] ?? '') === 'products') || $action === 'get_products') {
+    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+    echo json_encode(readData(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+if ($action === 'get_products_version') {
+    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+    $versionFile = __DIR__ . '/../data/products_version.json';
+    if (file_exists($versionFile)) {
+        echo file_get_contents($versionFile);
+    } else {
+        $p = readData();
+        echo json_encode([
+            'version' => time(),
+            'updated_at' => date('Y-m-d H:i:s'),
+            'count' => count($p)
+        ]);
+    }
+    exit;
+}
+
+
+
 // === PUBLIC ROUTES ===
 
 if ($action === 'login') {
@@ -675,87 +799,6 @@ if ($action === 'upload_media') {
     }
     http_response_code(400);
     echo json_encode(['error' => 'Upload failed']);
-    exit;
-}
-
-// Product Data Functions with Auto-Healing
-function healProductImages(&$products) {
-    $healed = false;
-    foreach ($products as &$p) {
-        if (!isset($p['id'])) continue;
-        $id = (string)$p['id'];
-        if (isset($p['images']) && is_array($p['images'])) {
-            foreach ($p['images'] as $idx => $img) {
-                if (is_string($img)) {
-                    $isBrokenMedia = (strpos($img, 'media_6ac') !== false);
-                    $fileMissing = (strpos($img, 'images/media_') === 0 && !file_exists(__DIR__ . '/../' . $img));
-                    if ($isBrokenMedia || $fileMissing) {
-                        $p['images'][$idx] = 'images/products/' . $id . '_' . $idx . '.webp';
-                        $healed = true;
-                    }
-                }
-            }
-        } elseif (!isset($p['images']) || empty($p['images'])) {
-            $p['images'] = ['images/products/' . $id . '_0.webp'];
-            $healed = true;
-        }
-
-        // Video paths set by admin are preserved as-is without forceful override
-
-        // Auto-heal promo_image: default to leftmost cover photo if empty
-        if ((!isset($p['promo_image']) || trim($p['promo_image']) === '') && !empty($p['images']) && is_array($p['images'])) {
-            $p['promo_image'] = $p['images'][0];
-            $healed = true;
-        }
-
-        // Auto-heal capacity: fix truncated capacity values (e.g. '1' -> '1,5 kg', '3' -> '3,5 kg')
-        if (isset($p['capacity'])) {
-            $capTrim = trim($p['capacity']);
-            $pName = $p['name'] ?? '';
-            if ($capTrim === '1' && (stripos($pName, '1,5') !== false || stripos($pName, '1.5') !== false)) {
-                $p['capacity'] = '1,5 kg';
-                $p['capacitySize'] = 'small';
-                $healed = true;
-            } elseif ($capTrim === '3' && (stripos($pName, '3,5') !== false || stripos($pName, '3.5') !== false)) {
-                $p['capacity'] = '3,5 kg';
-                $p['capacitySize'] = 'small';
-                $healed = true;
-            }
-        }
-    }
-    return $healed;
-}
-
-function readData() {
-    global $DATA_JSON;
-    $products = [];
-    if (!file_exists($DATA_JSON)) {
-        $DEFAULT_JSON = __DIR__ . '/../default_products.json';
-        if (file_exists($DEFAULT_JSON)) {
-            $products = json_decode(file_get_contents($DEFAULT_JSON), true) ?? [];
-        }
-    } else {
-        $products = json_decode(file_get_contents($DATA_JSON), true) ?? [];
-    }
-
-    if (!empty($products) && healProductImages($products)) {
-        writeData($products);
-    }
-
-    return $products;
-}
-
-function writeData($data) {
-    global $DATA_JSON, $DATA_JS;
-    $dir = dirname($DATA_JSON);
-    if (!is_dir($dir)) mkdir($dir, 0777, true);
-    $jsonString = json_encode($data, JSON_PRETTY_PRINT);
-    file_put_contents($DATA_JSON, $jsonString);
-    file_put_contents($DATA_JS, "window.CATALOG_PRODUCTS = " . $jsonString . ";");
-}
-
-if ($action === 'get_products') {
-    echo json_encode(readData());
     exit;
 }
 

@@ -977,22 +977,49 @@
         }
 
         // ============================
-        // INIT
+        // LIVE PRODUCTS SYNC WITH CMS
         // ============================
-        fetch('data/products.js?v=5on?v=' + new Date().getTime())
-            .then(res => res.json())
-            .then(data => {
-                if (Array.isArray(data) && data.length > 0) {
-                    products = data;
+        async function loadLiveRelatedProducts() {
+            try {
+                let liveData = null;
+                try {
+                    const resApi = await fetch('admin/api.php?action=get_public_products&_t=' + Date.now(), { cache: 'no-store' });
+                    if (resApi.ok) {
+                        const json = await resApi.json();
+                        if (Array.isArray(json) && json.length > 0) liveData = json;
+                    }
+                } catch(e) {}
+
+                if (!liveData) {
+                    const resJson = await fetch('data/products.json?_t=' + Date.now(), { cache: 'no-store' });
+                    if (resJson.ok) {
+                        const json = await resJson.json();
+                        if (Array.isArray(json) && json.length > 0) liveData = json;
+                    }
                 }
-                render();
-                observeReveals();
-            })
-            .catch(err => {
+
+                if (liveData && Array.isArray(liveData) && liveData.length > 0) {
+                    products = liveData;
+                    window.CATALOG_PRODUCTS = liveData;
+                    render();
+                    observeReveals();
+                }
+            } catch (err) {
                 console.error("Failed to fetch live products", err);
-                render();
-                observeReveals();
-            });
+            }
+        }
+
+        render();
+        observeReveals();
+        loadLiveRelatedProducts();
+
+        window.addEventListener('focus', () => {
+            loadLiveRelatedProducts();
+        });
+
+        setInterval(() => {
+            loadLiveRelatedProducts();
+        }, 20000);
 
     })();
     </script>

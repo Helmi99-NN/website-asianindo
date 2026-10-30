@@ -12,6 +12,8 @@ data/*
 !data/whatsapp_knowledge.json
 !data/products.json
 !data/products.js
+!data/products_version.json
+!data/.htaccess
 database/config.php
 video_promo/
 scratch/

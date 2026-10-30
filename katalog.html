@@ -799,17 +799,58 @@
         }
         fetchLiveViews();
 
-        // Asynchronously load the latest products to bypass CDN cache
-        fetch('data/products.js?v=5on?v=' + new Date().getTime())
-            .then(res => res.json())
-            .then(data => {
-                if (data && Array.isArray(data) && data.length > 0) {
-                    products = data;
-                    window.CATALOG_PRODUCTS = data;
-                    render(); // Re-render with fresh data
+        // ============================
+        // LIVE PRODUCTS SYNC WITH CMS
+        // ============================
+        async function loadLiveProducts() {
+            try {
+                let liveData = null;
+                // 1. Prioritize live CMS API endpoint (guaranteed fresh from server filesystem)
+                try {
+                    const resApi = await fetch('admin/api.php?action=get_public_products&_t=' + Date.now(), { cache: 'no-store' });
+                    if (resApi.ok) {
+                        const json = await resApi.json();
+                        if (Array.isArray(json) && json.length > 0) liveData = json;
+                    }
+                } catch(e) {}
+
+                // 2. Fallback to direct static JSON with anti-cache timestamp
+                if (!liveData) {
+                    const resJson = await fetch('data/products.json?_t=' + Date.now(), { cache: 'no-store' });
+                    if (resJson.ok) {
+                        const json = await resJson.json();
+                        if (Array.isArray(json) && json.length > 0) liveData = json;
+                    }
                 }
-            })
-            .catch(err => console.error("Failed to fetch live products", err));
+
+                if (liveData && Array.isArray(liveData) && liveData.length > 0) {
+                    products = liveData.map(p => {
+                        if (p && Array.isArray(p.images) && p.images.length > 0) {
+                            p.images = p.images.map((img, idx) => sanitizeProductImage(img, p.id, idx));
+                        } else if (p && (!p.images || p.images.length === 0)) {
+                            p.images = [`images/products/${p.id}_0.webp`];
+                        }
+                        return p;
+                    });
+                    window.CATALOG_PRODUCTS = products;
+                    render(); // Re-render instantly with latest CMS products
+                }
+            } catch (err) {
+                console.error("Failed to fetch live products", err);
+            }
+        }
+
+        loadLiveProducts();
+
+        // Auto re-sync when tab gains focus so CMS edits show instantly without any manual reload
+        window.addEventListener('focus', () => {
+            loadLiveProducts();
+        });
+
+        // Periodic background poll (every 20s) so if the tab is left open, it updates automatically
+        setInterval(() => {
+            loadLiveProducts();
+        }, 20000);
 
         const ITEMS_PER_PAGE = 12;
         let currentPage = 1;

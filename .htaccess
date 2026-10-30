@@ -1,0 +1,14 @@
+# CV Asianindo - Server Header Configuration
+<IfModule mod_headers.c>
+    # Disable caching for product data so CMS updates reflect immediately without hard reload
+    <FilesMatch "^(products\.json|products\.js|default_products\.json|default_products\.js|products_version\.json)$">
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+
+    # Disable caching for HTML files so changes to scripts or tags apply immediately
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+</IfModule>

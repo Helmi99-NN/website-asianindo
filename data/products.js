@@ -22,7 +22,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/57953083490_2.webp",
             "images/products/57953083490_3.webp",
             "images/products/57953083490_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/57953083490_0.webp"
     },
     {
         "id": "56751958827",
@@ -46,7 +47,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/56751958827_1.webp",
             "images/products/56751958827_2.webp",
             "images/products/56751958827_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/56751958827_0.webp"
     },
     {
         "id": "56602739295",
@@ -67,7 +69,8 @@ window.CATALOG_PRODUCTS = [
         "waMsg": "Halo, saya tertarik dengan Retort Sterilisasi 500 Liter Pengawet Olahan Makanan & Bumbu Tanpa Bahan Pengawet | CV Asianindo",
         "images": [
             "images/products/56602739295_0.webp"
-        ]
+        ],
+        "promo_image": "images/products/56602739295_0.webp"
     },
     {
         "id": "56552981517",
@@ -90,7 +93,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/56552981517_0.webp",
             "images/products/56552981517_1.webp",
             "images/products/56552981517_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/56552981517_0.webp"
     },
     {
         "id": "56301311142",
@@ -113,7 +117,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/56301311142_0.webp",
             "images/products/56301311142_1.webp",
             "images/products/56301311142_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/56301311142_0.webp"
     },
     {
         "id": "56102990950",
@@ -135,7 +140,8 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/56102990950_0.webp",
             "images/products/56102990950_1.webp"
-        ]
+        ],
+        "promo_image": "images/products/56102990950_0.webp"
     },
     {
         "id": "56002865707",
@@ -159,7 +165,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/56002865707_1.webp",
             "images/products/56002865707_2.webp",
             "images/products/56002865707_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/56002865707_0.webp"
     },
     {
         "id": "54652750018",
@@ -180,7 +187,8 @@ window.CATALOG_PRODUCTS = [
         "waMsg": "Halo, saya tertarik dengan Retort Sterilisasi 200 Liter Pengawet Olahan Makanan & Bumbu Tanpa Bahan Pengawet | CV Asianindo",
         "images": [
             "images/products/54652750018_0.webp"
-        ]
+        ],
+        "promo_image": "images/products/54652750018_0.webp"
     },
     {
         "id": "53753791084",
@@ -203,7 +211,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/53753791084_0.webp",
             "images/products/53753791084_1.webp",
             "images/products/53753791084_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/53753791084_0.webp"
     },
     {
         "id": "53655297862",
@@ -228,7 +237,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/53655297862_2.webp",
             "images/products/53655297862_3.webp",
             "images/products/53655297862_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/53655297862_0.webp"
     },
     {
         "id": "53601958931",
@@ -252,7 +262,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/53601958931_1.webp",
             "images/products/53601958931_2.webp",
             "images/products/53601958931_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/53601958931_0.webp"
     },
     {
         "id": "53552860864",
@@ -276,7 +287,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/53552860864_1.webp",
             "images/products/53552860864_2.webp",
             "images/products/53552860864_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/53552860864_0.webp"
     },
     {
         "id": "50455293845",
@@ -301,7 +313,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/50455293845_2.webp",
             "images/products/50455293845_3.webp",
             "images/products/50455293845_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/50455293845_0.webp"
     },
     {
         "id": "50052816753",
@@ -327,7 +340,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/50052816753_3.webp",
             "images/products/50052816753_4.webp",
             "images/products/50052816753_5.webp"
-        ]
+        ],
+        "promo_image": "images/products/50052816753_0.webp"
     },
     {
         "id": "50005306338",
@@ -352,7 +366,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/50005306338_2.webp",
             "images/products/50005306338_3.webp",
             "images/products/50005306338_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/50005306338_0.webp"
     },
     {
         "id": "50003108008",
@@ -376,7 +391,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/50003108008_1.webp",
             "images/products/50003108008_2.webp",
             "images/products/50003108008_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/50003108008_0.webp"
     },
     {
         "id": "49902759187",
@@ -397,7 +413,8 @@ window.CATALOG_PRODUCTS = [
         "waMsg": "Halo, saya tertarik dengan Retort Sterilisasi 100 Liter Pengawet Olahan Makanan & Bumbu Tanpa Bahan Pengawet | CV Asianindo",
         "images": [
             "images/products/49902759187_0.webp"
-        ]
+        ],
+        "promo_image": "images/products/49902759187_0.webp"
     },
     {
         "id": "49702828188",
@@ -419,7 +436,8 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/49702828188_0.webp",
             "images/products/49702828188_1.webp"
-        ]
+        ],
+        "promo_image": "images/products/49702828188_0.webp"
     },
     {
         "id": "49552834007",
@@ -444,7 +462,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/49552834007_2.webp",
             "images/products/49552834007_3.webp",
             "images/products/49552834007_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/49552834007_0.webp"
     },
     {
         "id": "49305322858",
@@ -469,7 +488,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/49305322858_2.webp",
             "images/products/49305322858_3.webp",
             "images/products/49305322858_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/49305322858_0.webp"
     },
     {
         "id": "48657037646",
@@ -491,7 +511,8 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/48657037646_0.webp",
             "images/products/48657037646_1.webp"
-        ]
+        ],
+        "promo_image": "images/products/48657037646_0.webp"
     },
     {
         "id": "48454144421",
@@ -515,7 +536,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/48454144421_1.webp",
             "images/products/48454144421_2.webp",
             "images/products/48454144421_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/48454144421_0.webp"
     },
     {
         "id": "47702734686",
@@ -536,7 +558,8 @@ window.CATALOG_PRODUCTS = [
         "waMsg": "Halo, saya tertarik dengan Packing Kayu - Tambahan Perlindungan Ekstra untuk Pengiriman Aman",
         "images": [
             "images/products/47702734686_0.webp"
-        ]
+        ],
+        "promo_image": "images/products/47702734686_0.webp"
     },
     {
         "id": "47162044891",
@@ -557,7 +580,8 @@ window.CATALOG_PRODUCTS = [
         "waMsg": "Halo, saya tertarik dengan Karet Mesin Vacuum Frying",
         "images": [
             "images/products/47162044891_0.webp"
-        ]
+        ],
+        "promo_image": "images/products/47162044891_0.webp"
     },
     {
         "id": "47152827894",
@@ -583,7 +607,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/47152827894_3.webp",
             "images/products/47152827894_4.webp",
             "images/products/47152827894_5.webp"
-        ]
+        ],
+        "promo_image": "images/products/47152827894_0.webp"
     },
     {
         "id": "46652866176",
@@ -606,7 +631,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/46652866176_0.webp",
             "images/products/46652866176_1.webp",
             "images/products/46652866176_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/46652866176_0.webp"
     },
     {
         "id": "46502823202",
@@ -628,7 +654,8 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/46502823202_0.webp",
             "images/products/46502823202_1.webp"
-        ]
+        ],
+        "promo_image": "images/products/46502823202_0.webp"
     },
     {
         "id": "45605810742",
@@ -651,7 +678,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/45605810742_0.webp",
             "images/products/45605810742_1.webp",
             "images/products/45605810742_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/45605810742_0.webp"
     },
     {
         "id": "45602828086",
@@ -673,7 +701,8 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/45602828086_0.webp",
             "images/products/45602828086_1.webp"
-        ]
+        ],
+        "promo_image": "images/products/45602828086_0.webp"
     },
     {
         "id": "45353113473",
@@ -697,7 +726,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/45353113473_1.webp",
             "images/products/45353113473_2.webp",
             "images/products/45353113473_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/45353113473_0.webp"
     },
     {
         "id": "45203005945",
@@ -719,7 +749,8 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/45203005945_0.webp",
             "images/products/45203005945_1.webp"
-        ]
+        ],
+        "promo_image": "images/products/45203005945_0.webp"
     },
     {
         "id": "45200352018",
@@ -742,7 +773,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/45200352018_0.webp",
             "images/products/45200352018_1.webp",
             "images/products/45200352018_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/45200352018_0.webp"
     },
     {
         "id": "44800722742",
@@ -767,7 +799,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/44800722742_2.webp",
             "images/products/44800722742_3.webp",
             "images/products/44800722742_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/44800722742_0.webp"
     },
     {
         "id": "44755313720",
@@ -792,7 +825,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/44755313720_2.webp",
             "images/products/44755313720_3.webp",
             "images/products/44755313720_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/44755313720_0.webp"
     },
     {
         "id": "44463491612",
@@ -819,7 +853,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/44463491612_4.webp",
             "images/products/44463491612_5.webp",
             "images/products/44463491612_6.webp"
-        ]
+        ],
+        "promo_image": "images/products/44463491612_0.webp"
     },
     {
         "id": "44417140614",
@@ -843,7 +878,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/44417140614_1.webp",
             "images/products/44417140614_2.webp",
             "images/products/44417140614_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/44417140614_0.webp"
     },
     {
         "id": "44413733167",
@@ -866,7 +902,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/44413733167_0.webp",
             "images/products/44413733167_1.webp",
             "images/products/44413733167_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/44413733167_0.webp"
     },
     {
         "id": "44163526171",
@@ -890,7 +927,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/44163526171_1.webp",
             "images/products/44163526171_2.webp",
             "images/products/44163526171_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/44163526171_0.webp"
     },
     {
         "id": "44117136952",
@@ -899,7 +937,7 @@ window.CATALOG_PRODUCTS = [
         "category": "Mesin Makanan",
         "subCategory": "Vacuum Frying",
         "capacitySize": "small",
-        "capacity": "1",
+        "capacity": "1,5 kg",
         "price": 14450000,
         "priceDisplay": "Rp 14.450.000",
         "rating": 5,
@@ -915,7 +953,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/44117136952_2.webp",
             "images/products/44117136952_3.webp",
             "images/products/44117136952_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/44117136952_0.webp"
     },
     {
         "id": "43963305789",
@@ -940,7 +979,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/43963305789_2.webp",
             "images/products/43963305789_3.webp",
             "images/products/43963305789_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/43963305789_0.webp"
     },
     {
         "id": "43917145224",
@@ -964,7 +1004,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/43917145224_1.webp",
             "images/products/43917145224_2.webp",
             "images/products/43917145224_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/43917145224_0.webp"
     },
     {
         "id": "43863487649",
@@ -987,7 +1028,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/43863487649_0.webp",
             "images/products/43863487649_1.webp",
             "images/products/43863487649_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/43863487649_0.webp"
     },
     {
         "id": "43813944097",
@@ -1010,7 +1052,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/43813944097_0.webp",
             "images/products/43813944097_1.webp",
             "images/products/43813944097_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/43813944097_0.webp"
     },
     {
         "id": "43663950850",
@@ -1035,7 +1078,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/43663950850_2.webp",
             "images/products/43663950850_3.webp",
             "images/products/43663950850_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/43663950850_0.webp"
     },
     {
         "id": "43663536813",
@@ -1062,7 +1106,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/43663536813_4.webp",
             "images/products/43663536813_5.webp",
             "images/products/43663536813_6.webp"
-        ]
+        ],
+        "promo_image": "images/products/43663536813_0.webp"
     },
     {
         "id": "43463519136",
@@ -1085,7 +1130,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/43463519136_0.webp",
             "images/products/43463519136_1.webp",
             "images/products/43463519136_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/43463519136_0.webp"
     },
     {
         "id": "43413495705",
@@ -1110,7 +1156,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/43413495705_2.webp",
             "images/products/43413495705_3.webp",
             "images/products/43413495705_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/43413495705_0.webp"
     },
     {
         "id": "43363542064",
@@ -1132,7 +1179,8 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/43363542064_0.webp",
             "images/products/43363542064_1.webp"
-        ]
+        ],
+        "promo_image": "images/products/43363542064_0.webp"
     },
     {
         "id": "43363525334",
@@ -1157,7 +1205,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/43363525334_2.webp",
             "images/products/43363525334_3.webp",
             "images/products/43363525334_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/43363525334_0.webp"
     },
     {
         "id": "43362616840",
@@ -1180,7 +1229,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/43362616840_0.webp",
             "images/products/43362616840_1.webp",
             "images/products/43362616840_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/43362616840_0.webp"
     },
     {
         "id": "43217136512",
@@ -1204,7 +1254,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/43217136512_1.webp",
             "images/products/43217136512_2.webp",
             "images/products/43217136512_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/43217136512_0.webp"
     },
     {
         "id": "43213541900",
@@ -1227,7 +1278,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/43213541900_0.webp",
             "images/products/43213541900_1.webp",
             "images/products/43213541900_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/43213541900_0.webp"
     },
     {
         "id": "43213536608",
@@ -1252,7 +1304,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/43213536608_2.webp",
             "images/products/43213536608_3.webp",
             "images/products/43213536608_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/43213536608_0.webp"
     },
     {
         "id": "43213529675",
@@ -1276,7 +1329,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/43213529675_1.webp",
             "images/products/43213529675_2.webp",
             "images/products/43213529675_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/43213529675_0.webp"
     },
     {
         "id": "43213288582",
@@ -1299,7 +1353,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/43213288582_0.webp",
             "images/products/43213288582_1.webp",
             "images/products/43213288582_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/43213288582_0.webp"
     },
     {
         "id": "43063538257",
@@ -1321,7 +1376,8 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/43063538257_0.webp",
             "images/products/43063538257_1.webp"
-        ]
+        ],
+        "promo_image": "images/products/43063538257_0.webp"
     },
     {
         "id": "43013536881",
@@ -1344,7 +1400,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/43013536881_0.webp",
             "images/products/43013536881_1.webp",
             "images/products/43013536881_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/43013536881_0.webp"
     },
     {
         "id": "42968399248",
@@ -1366,7 +1423,8 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/42968399248_0.webp",
             "images/products/42968399248_1.webp"
-        ]
+        ],
+        "promo_image": "images/products/42968399248_0.webp"
     },
     {
         "id": "42918402912",
@@ -1390,7 +1448,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42918402912_1.webp",
             "images/products/42918402912_2.webp",
             "images/products/42918402912_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/42918402912_0.webp"
     },
     {
         "id": "42863303439",
@@ -1399,7 +1458,7 @@ window.CATALOG_PRODUCTS = [
         "category": "Mesin Makanan",
         "subCategory": "Vacuum Frying",
         "capacitySize": "small",
-        "capacity": "1",
+        "capacity": "1,5 kg",
         "price": 12450000,
         "priceDisplay": "Rp 12.450.000",
         "rating": 5,
@@ -1414,7 +1473,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42863303439_1.webp",
             "images/products/42863303439_2.webp",
             "images/products/42863303439_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/42863303439_0.webp"
     },
     {
         "id": "42763530009",
@@ -1438,7 +1498,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42763530009_1.webp",
             "images/products/42763530009_2.webp",
             "images/products/42763530009_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/42763530009_0.webp"
     },
     {
         "id": "42713518643",
@@ -1461,7 +1522,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42713518643_0.webp",
             "images/products/42713518643_1.webp",
             "images/products/42713518643_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/42713518643_0.webp"
     },
     {
         "id": "42663524193",
@@ -1484,7 +1546,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42663524193_0.webp",
             "images/products/42663524193_1.webp",
             "images/products/42663524193_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/42663524193_0.webp"
     },
     {
         "id": "42613945644",
@@ -1508,7 +1571,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42613945644_1.webp",
             "images/products/42613945644_2.webp",
             "images/products/42613945644_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/42613945644_0.webp"
     },
     {
         "id": "42613542962",
@@ -1532,7 +1596,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42613542962_1.webp",
             "images/products/42613542962_2.webp",
             "images/products/42613542962_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/42613542962_0.webp"
     },
     {
         "id": "42513934643",
@@ -1556,7 +1621,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42513934643_1.webp",
             "images/products/42513934643_2.webp",
             "images/products/42513934643_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/42513934643_0.webp"
     },
     {
         "id": "42318411920",
@@ -1580,7 +1646,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42318411920_1.webp",
             "images/products/42318411920_2.webp",
             "images/products/42318411920_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/42318411920_0.webp"
     },
     {
         "id": "42317145853",
@@ -1606,7 +1673,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42317145853_3.webp",
             "images/products/42317145853_4.webp",
             "images/products/42317145853_5.webp"
-        ]
+        ],
+        "promo_image": "images/products/42317145853_0.webp"
     },
     {
         "id": "42267150732",
@@ -1630,7 +1698,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42267150732_1.webp",
             "images/products/42267150732_2.webp",
             "images/products/42267150732_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/42267150732_0.webp"
     },
     {
         "id": "42263305456",
@@ -1639,7 +1708,7 @@ window.CATALOG_PRODUCTS = [
         "category": "Mesin Makanan",
         "subCategory": "Vacuum Frying",
         "capacitySize": "small",
-        "capacity": "3",
+        "capacity": "3,5 kg",
         "price": 16700000,
         "priceDisplay": "Rp 16.700.000",
         "rating": 5,
@@ -1655,7 +1724,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42263305456_2.webp",
             "images/products/42263305456_3.webp",
             "images/products/42263305456_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/42263305456_0.webp"
     },
     {
         "id": "42078560428",
@@ -1678,7 +1748,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42078560428_0.webp",
             "images/products/42078560428_1.webp",
             "images/products/42078560428_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/42078560428_0.webp"
     },
     {
         "id": "42067145356",
@@ -1703,7 +1774,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42067145356_2.webp",
             "images/products/42067145356_3.webp",
             "images/products/42067145356_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/42067145356_0.webp"
     },
     {
         "id": "42063934893",
@@ -1728,7 +1800,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42063934893_2.webp",
             "images/products/42063934893_3.webp",
             "images/products/42063934893_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/42063934893_0.webp"
     },
     {
         "id": "42017150228",
@@ -1752,7 +1825,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42017150228_1.webp",
             "images/products/42017150228_2.webp",
             "images/products/42017150228_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/42017150228_0.webp"
     },
     {
         "id": "42013728476",
@@ -1775,7 +1849,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42013728476_0.webp",
             "images/products/42013728476_1.webp",
             "images/products/42013728476_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/42013728476_0.webp"
     },
     {
         "id": "42013499765",
@@ -1799,7 +1874,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/42013499765_1.webp",
             "images/products/42013499765_2.webp",
             "images/products/42013499765_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/42013499765_0.webp"
     },
     {
         "id": "41963939367",
@@ -1825,7 +1901,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/41963939367_3.webp",
             "images/products/41963939367_4.webp",
             "images/products/41963939367_5.webp"
-        ]
+        ],
+        "promo_image": "images/products/41963939367_0.webp"
     },
     {
         "id": "41913742277",
@@ -1849,7 +1926,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/41913742277_1.webp",
             "images/products/41913742277_2.webp",
             "images/products/41913742277_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/41913742277_0.webp"
     },
     {
         "id": "41817150176",
@@ -1874,7 +1952,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/41817150176_2.webp",
             "images/products/41817150176_3.webp",
             "images/products/41817150176_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/41817150176_0.webp"
     },
     {
         "id": "41813297422",
@@ -1899,7 +1978,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/41813297422_2.webp",
             "images/products/41813297422_3.webp",
             "images/products/41813297422_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/41813297422_0.webp"
     },
     {
         "id": "41667136707",
@@ -1922,7 +2002,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/41667136707_0.webp",
             "images/products/41667136707_1.webp",
             "images/products/41667136707_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/41667136707_0.webp"
     },
     {
         "id": "41663499778",
@@ -1947,7 +2028,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/41663499778_2.webp",
             "images/products/41663499778_3.webp",
             "images/products/41663499778_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/41663499778_0.webp"
     },
     {
         "id": "41613945800",
@@ -1972,7 +2054,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/41613945800_2.webp",
             "images/products/41613945800_3.webp",
             "images/products/41613945800_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/41613945800_0.webp"
     },
     {
         "id": "41613934632",
@@ -1996,7 +2079,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/41613934632_1.webp",
             "images/products/41613934632_2.webp",
             "images/products/41613934632_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/41613934632_0.webp"
     },
     {
         "id": "41325910057",
@@ -2019,7 +2103,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/41325910057_0.webp",
             "images/products/41325910057_1.webp",
             "images/products/41325910057_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/41325910057_0.webp"
     },
     {
         "id": "41317145353",
@@ -2044,7 +2129,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/41317145353_2.webp",
             "images/products/41317145353_3.webp",
             "images/products/41317145353_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/41317145353_0.webp"
     },
     {
         "id": "41317140624",
@@ -2069,7 +2155,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/41317140624_2.webp",
             "images/products/41317140624_3.webp",
             "images/products/41317140624_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/41317140624_0.webp"
     },
     {
         "id": "41313960240",
@@ -2094,7 +2181,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/41313960240_2.webp",
             "images/products/41313960240_3.webp",
             "images/products/41313960240_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/41313960240_0.webp"
     },
     {
         "id": "41313294609",
@@ -2118,7 +2206,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/41313294609_1.webp",
             "images/products/41313294609_2.webp",
             "images/products/41313294609_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/41313294609_0.webp"
     },
     {
         "id": "41277755477",
@@ -2140,7 +2229,8 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/41277755477_0.webp",
             "images/products/41277755477_1.webp"
-        ]
+        ],
+        "promo_image": "images/products/41277755477_0.webp"
     },
     {
         "id": "41226436960",
@@ -2164,7 +2254,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/41226436960_1.webp",
             "images/products/41226436960_2.webp",
             "images/products/41226436960_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/41226436960_0.webp"
     },
     {
         "id": "41218411880",
@@ -2186,7 +2277,8 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/41218411880_0.webp",
             "images/products/41218411880_1.webp"
-        ]
+        ],
+        "promo_image": "images/products/41218411880_0.webp"
     },
     {
         "id": "41213736906",
@@ -2210,7 +2302,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/41213736906_1.webp",
             "images/products/41213736906_2.webp",
             "images/products/41213736906_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/41213736906_0.webp"
     },
     {
         "id": "41213519482",
@@ -2234,7 +2327,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/41213519482_1.webp",
             "images/products/41213519482_2.webp",
             "images/products/41213519482_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/41213519482_0.webp"
     },
     {
         "id": "41167140499",
@@ -2259,7 +2353,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/41167140499_2.webp",
             "images/products/41167140499_3.webp",
             "images/products/41167140499_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/41167140499_0.webp"
     },
     {
         "id": "40968406620",
@@ -2285,7 +2380,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/40968406620_3.webp",
             "images/products/40968406620_4.webp",
             "images/products/40968406620_5.webp"
-        ]
+        ],
+        "promo_image": "images/products/40968406620_0.webp"
     },
     {
         "id": "40863524468",
@@ -2308,7 +2404,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/40863524468_0.webp",
             "images/products/40863524468_1.webp",
             "images/products/40863524468_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/40863524468_0.webp"
     },
     {
         "id": "40813728211",
@@ -2331,7 +2428,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/40813728211_0.webp",
             "images/products/40813728211_1.webp",
             "images/products/40813728211_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/40813728211_0.webp"
     },
     {
         "id": "40663543068",
@@ -2353,7 +2451,8 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/40663543068_0.webp",
             "images/products/40663543068_1.webp"
-        ]
+        ],
+        "promo_image": "images/products/40663543068_0.webp"
     },
     {
         "id": "40562477376",
@@ -2362,7 +2461,7 @@ window.CATALOG_PRODUCTS = [
         "category": "Mesin Makanan",
         "subCategory": "Vacuum Frying",
         "capacitySize": "small",
-        "capacity": "1",
+        "capacity": "1,5 kg",
         "price": 11700000,
         "priceDisplay": "Rp 11.700.000",
         "rating": 5,
@@ -2377,7 +2476,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/40562477376_1.webp",
             "images/products/40562477376_2.webp",
             "images/products/40562477376_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/40562477376_0.webp"
     },
     {
         "id": "40367136920",
@@ -2386,7 +2486,7 @@ window.CATALOG_PRODUCTS = [
         "category": "Mesin Makanan",
         "subCategory": "Vacuum Frying",
         "capacitySize": "small",
-        "capacity": "1",
+        "capacity": "1,5 kg",
         "price": 12950000,
         "priceDisplay": "Rp 12.950.000",
         "rating": 5,
@@ -2402,7 +2502,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/40367136920_2.webp",
             "images/products/40367136920_3.webp",
             "images/products/40367136920_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/40367136920_0.webp"
     },
     {
         "id": "40363526311",
@@ -2425,7 +2526,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/40363526311_0.webp",
             "images/products/40363526311_1.webp",
             "images/products/40363526311_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/40363526311_0.webp"
     },
     {
         "id": "40313530489",
@@ -2449,7 +2551,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/40313530489_1.webp",
             "images/products/40313530489_2.webp",
             "images/products/40313530489_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/40313530489_0.webp"
     },
     {
         "id": "40267145346",
@@ -2473,7 +2576,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/40267145346_1.webp",
             "images/products/40267145346_2.webp",
             "images/products/40267145346_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/40267145346_0.webp"
     },
     {
         "id": "40225142321",
@@ -2496,7 +2600,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/40225142321_0.webp",
             "images/products/40225142321_1.webp",
             "images/products/40225142321_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/40225142321_0.webp"
     },
     {
         "id": "40217150229",
@@ -2519,7 +2624,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/40217150229_0.webp",
             "images/products/40217150229_1.webp",
             "images/products/40217150229_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/40217150229_0.webp"
     },
     {
         "id": "40213950748",
@@ -2543,7 +2649,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/40213950748_1.webp",
             "images/products/40213950748_2.webp",
             "images/products/40213950748_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/40213950748_0.webp"
     },
     {
         "id": "40017170910",
@@ -2566,7 +2673,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/40017170910_0.webp",
             "images/products/40017170910_1.webp",
             "images/products/40017170910_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/40017170910_0.webp"
     },
     {
         "id": "40013976782",
@@ -2590,7 +2698,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/40013976782_1.webp",
             "images/products/40013976782_2.webp",
             "images/products/40013976782_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/40013976782_0.webp"
     },
     {
         "id": "29540033787",
@@ -2614,7 +2723,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/29540033787_1.webp",
             "images/products/29540033787_2.webp",
             "images/products/29540033787_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/29540033787_0.webp"
     },
     {
         "id": "29290092225",
@@ -2638,7 +2748,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/29290092225_1.webp",
             "images/products/29290092225_2.webp",
             "images/products/29290092225_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/29290092225_0.webp"
     },
     {
         "id": "29189786844",
@@ -2663,7 +2774,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/29189786844_2.webp",
             "images/products/29189786844_3.webp",
             "images/products/29189786844_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/29189786844_0.webp"
     },
     {
         "id": "28691026840",
@@ -2687,7 +2799,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/28691026840_1.webp",
             "images/products/28691026840_2.webp",
             "images/products/28691026840_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/28691026840_0.webp"
     },
     {
         "id": "28541372231",
@@ -2711,7 +2824,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/28541372231_1.webp",
             "images/products/28541372231_2.webp",
             "images/products/28541372231_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/28541372231_0.webp"
     },
     {
         "id": "28293553698",
@@ -2736,7 +2850,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/28293553698_2.webp",
             "images/products/28293553698_3.webp",
             "images/products/28293553698_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/28293553698_0.webp"
     },
     {
         "id": "27941021888",
@@ -2761,7 +2876,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/27941021888_2.webp",
             "images/products/27941021888_3.webp",
             "images/products/27941021888_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/27941021888_0.webp"
     },
     {
         "id": "27790038389",
@@ -2784,7 +2900,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/27790038389_0.webp",
             "images/products/27790038389_1.webp",
             "images/products/27790038389_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/27790038389_0.webp"
     },
     {
         "id": "27743196569",
@@ -2807,7 +2924,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/27743196569_0.webp",
             "images/products/27743196569_1.webp",
             "images/products/27743196569_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/27743196569_0.webp"
     },
     {
         "id": "27540029194",
@@ -2831,7 +2949,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/27540029194_1.webp",
             "images/products/27540029194_2.webp",
             "images/products/27540029194_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/27540029194_0.webp"
     },
     {
         "id": "27441018445",
@@ -2853,7 +2972,8 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/27441018445_0.webp",
             "images/products/27441018445_1.webp"
-        ]
+        ],
+        "promo_image": "images/products/27441018445_0.webp"
     },
     {
         "id": "27240096480",
@@ -2876,7 +2996,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/27240096480_0.webp",
             "images/products/27240096480_1.webp",
             "images/products/27240096480_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/27240096480_0.webp"
     },
     {
         "id": "27090035060",
@@ -2898,7 +3019,8 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/27090035060_0.webp",
             "images/products/27090035060_1.webp"
-        ]
+        ],
+        "promo_image": "images/products/27090035060_0.webp"
     },
     {
         "id": "26840032696",
@@ -2923,7 +3045,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/26840032696_2.webp",
             "images/products/26840032696_3.webp",
             "images/products/26840032696_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/26840032696_0.webp"
     },
     {
         "id": "26790033892",
@@ -2947,7 +3070,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/26790033892_1.webp",
             "images/products/26790033892_2.webp",
             "images/products/26790033892_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/26790033892_0.webp"
     },
     {
         "id": "26590146837",
@@ -2971,7 +3095,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/26590146837_1.webp",
             "images/products/26590146837_2.webp",
             "images/products/26590146837_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/26590146837_0.webp"
     },
     {
         "id": "26440040633",
@@ -2996,7 +3121,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/26440040633_2.webp",
             "images/products/26440040633_3.webp",
             "images/products/26440040633_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/26440040633_0.webp"
     },
     {
         "id": "26240029198",
@@ -3018,7 +3144,8 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/26240029198_0.webp",
             "images/products/26240029198_1.webp"
-        ]
+        ],
+        "promo_image": "images/products/26240029198_0.webp"
     },
     {
         "id": "25796432156",
@@ -3041,7 +3168,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/25796432156_0.webp",
             "images/products/25796432156_1.webp",
             "images/products/25796432156_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/25796432156_0.webp"
     },
     {
         "id": "25296476232",
@@ -3066,7 +3194,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/25296476232_2.webp",
             "images/products/25296476232_3.webp",
             "images/products/25296476232_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/25296476232_0.webp"
     },
     {
         "id": "25288260659",
@@ -3075,7 +3204,7 @@ window.CATALOG_PRODUCTS = [
         "category": "Mesin Makanan",
         "subCategory": "Vacuum Frying",
         "capacitySize": "small",
-        "capacity": "1",
+        "capacity": "1,5 kg",
         "price": 12900000,
         "priceDisplay": "Rp 12.900.000",
         "rating": 5,
@@ -3090,7 +3219,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/25288260659_1.webp",
             "images/products/25288260659_2.webp",
             "images/products/25288260659_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/25288260659_0.webp"
     },
     {
         "id": "24896431731",
@@ -3113,7 +3243,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/24896431731_0.webp",
             "images/products/24896431731_1.webp",
             "images/products/24896431731_2.webp"
-        ]
+        ],
+        "promo_image": "images/products/24896431731_0.webp"
     },
     {
         "id": "24346436426",
@@ -3137,7 +3268,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/24346436426_1.webp",
             "images/products/24346436426_2.webp",
             "images/products/24346436426_3.webp"
-        ]
+        ],
+        "promo_image": "images/products/24346436426_0.webp"
     },
     {
         "id": "24296416070",
@@ -3162,7 +3294,8 @@ window.CATALOG_PRODUCTS = [
             "images/products/24296416070_2.webp",
             "images/products/24296416070_3.webp",
             "images/products/24296416070_4.webp"
-        ]
+        ],
+        "promo_image": "images/products/24296416070_0.webp"
     },
     {
         "id": "21632473208",
@@ -3183,7 +3316,8 @@ window.CATALOG_PRODUCTS = [
         "waMsg": "Halo, saya tertarik dengan Makaroni YEAY",
         "images": [
             "images/products/21632473208_0.webp"
-        ]
+        ],
+        "promo_image": "images/products/21632473208_0.webp"
     },
     {
         "id": "20231196559",
@@ -3205,7 +3339,8 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/20231196559_0.webp",
             "images/products/20231196559_1.webp"
-        ]
+        ],
+        "promo_image": "images/products/20231196559_0.webp"
     },
     {
         "id": "16581290900",
@@ -3227,6 +3362,7 @@ window.CATALOG_PRODUCTS = [
         "images": [
             "images/products/16581290900_0.webp",
             "images/products/16581290900_1.webp"
-        ]
+        ],
+        "promo_image": "images/products/16581290900_0.webp"
     }
 ];
