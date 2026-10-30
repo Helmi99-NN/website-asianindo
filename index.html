@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png" />
@@ -1369,8 +1369,7 @@
         });
     </script>
     <script src="frontend.js?v=3"></script>
-    <script src="default_products.js?v=5"></script>
-    <script src="data/products.js?v=5"></script>
+    <!-- static product scripts REMOVED — products loaded exclusively via live API fetch -->
     <script src="auth-header.js?v=20260827_2"></script>
     <script>
     // Live synchronization with CMS for Featured Products on Homepage
@@ -1382,15 +1381,15 @@
                     const resApi = await fetch('admin/api.php?action=get_public_products&_t=' + Date.now(), { cache: 'no-store' });
                     if (resApi.ok) {
                         const json = await resApi.json();
-                        if (Array.isArray(json) && json.length > 0) liveData = json;
+                        if (Array.isArray(json)) liveData = json;
                     }
                 } catch(e) {}
 
-                if (!liveData) {
+                if (liveData === null) {
                     const resJson = await fetch('data/products.json?_t=' + Date.now(), { cache: 'no-store' });
                     if (resJson.ok) {
                         const json = await resJson.json();
-                        if (Array.isArray(json) && json.length > 0) liveData = json;
+                        if (Array.isArray(json)) liveData = json;
                     }
                 }
 

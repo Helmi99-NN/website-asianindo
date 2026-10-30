@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png" />
@@ -629,7 +629,17 @@
                 <div class="lg:col-span-9 flex flex-col gap-6" id="product-area">
 
                     <!-- Product Grid -->
-                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5" id="product-grid">
+                    <!-- Loading skeleton shown while products are fetching from CMS API -->
+                    <div id="loading-skeleton" class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
+                        <div class="rounded-2xl bg-surface-container-low animate-pulse overflow-hidden"><div class="aspect-square bg-surface-container-high"></div><div class="p-4 flex flex-col gap-3"><div class="h-4 bg-surface-container-high rounded-lg w-3/4"></div><div class="h-3 bg-surface-container-high rounded-lg w-1/2"></div><div class="h-8 bg-surface-container-high rounded-xl mt-2"></div></div></div>
+                        <div class="rounded-2xl bg-surface-container-low animate-pulse overflow-hidden"><div class="aspect-square bg-surface-container-high"></div><div class="p-4 flex flex-col gap-3"><div class="h-4 bg-surface-container-high rounded-lg w-3/4"></div><div class="h-3 bg-surface-container-high rounded-lg w-1/2"></div><div class="h-8 bg-surface-container-high rounded-xl mt-2"></div></div></div>
+                        <div class="rounded-2xl bg-surface-container-low animate-pulse overflow-hidden"><div class="aspect-square bg-surface-container-high"></div><div class="p-4 flex flex-col gap-3"><div class="h-4 bg-surface-container-high rounded-lg w-3/4"></div><div class="h-3 bg-surface-container-high rounded-lg w-1/2"></div><div class="h-8 bg-surface-container-high rounded-xl mt-2"></div></div></div>
+                        <div class="rounded-2xl bg-surface-container-low animate-pulse overflow-hidden"><div class="aspect-square bg-surface-container-high"></div><div class="p-4 flex flex-col gap-3"><div class="h-4 bg-surface-container-high rounded-lg w-3/4"></div><div class="h-3 bg-surface-container-high rounded-lg w-1/2"></div><div class="h-8 bg-surface-container-high rounded-xl mt-2"></div></div></div>
+                        <div class="rounded-2xl bg-surface-container-low animate-pulse overflow-hidden"><div class="aspect-square bg-surface-container-high"></div><div class="p-4 flex flex-col gap-3"><div class="h-4 bg-surface-container-high rounded-lg w-3/4"></div><div class="h-3 bg-surface-container-high rounded-lg w-1/2"></div><div class="h-8 bg-surface-container-high rounded-xl mt-2"></div></div></div>
+                        <div class="rounded-2xl bg-surface-container-low animate-pulse overflow-hidden"><div class="aspect-square bg-surface-container-high"></div><div class="p-4 flex flex-col gap-3"><div class="h-4 bg-surface-container-high rounded-lg w-3/4"></div><div class="h-3 bg-surface-container-high rounded-lg w-1/2"></div><div class="h-8 bg-surface-container-high rounded-xl mt-2"></div></div></div>
+                    </div>
+
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 hidden" id="product-grid">
                         <!-- Products rendered by JS -->
                     </div>
 
@@ -720,8 +730,8 @@
     <!-- ============================================ -->
     <!-- JAVASCRIPT -->
     <!-- ============================================ -->
-    <script src="default_products.js?v=5"></script>
-    <script src="data/products.js?v=5"></script>
+    <!-- NOTE: static product script tags REMOVED to prevent CDN/browser cache showing deleted products -->
+    <!-- Products are loaded exclusively via live API fetch below (no stale cache possible) -->
     <script>
     (function() {
         'use strict';
@@ -738,14 +748,8 @@
             return trimmed;
         }
 
-        let products = (window.CATALOG_PRODUCTS || []).map(p => {
-            if (p && Array.isArray(p.images) && p.images.length > 0) {
-                p.images = p.images.map((img, idx) => sanitizeProductImage(img, p.id, idx));
-            } else if (p && (!p.images || p.images.length === 0)) {
-                p.images = [`images/products/${p.id}_0.webp`];
-            }
-            return p;
-        });
+        // Products always start empty — loaded fresh from CMS API (eliminates CDN/browser cache issue)
+        let products = [];
         let productViews = {};
 
         // Load local views from localStorage
@@ -810,20 +814,21 @@
                     const resApi = await fetch('admin/api.php?action=get_public_products&_t=' + Date.now(), { cache: 'no-store' });
                     if (resApi.ok) {
                         const json = await resApi.json();
-                        if (Array.isArray(json) && json.length > 0) liveData = json;
+                        if (Array.isArray(json)) liveData = json; // Accept empty array — deleted products must disappear
                     }
                 } catch(e) {}
 
-                // 2. Fallback to direct static JSON with anti-cache timestamp
-                if (!liveData) {
+                // 2. Fallback to direct static JSON with anti-cache timestamp (only if API completely failed)
+                if (liveData === null) {
                     const resJson = await fetch('data/products.json?_t=' + Date.now(), { cache: 'no-store' });
                     if (resJson.ok) {
                         const json = await resJson.json();
-                        if (Array.isArray(json) && json.length > 0) liveData = json;
+                        if (Array.isArray(json)) liveData = json; // Accept empty array — deleted products must disappear
                     }
                 }
 
-                if (liveData && Array.isArray(liveData) && liveData.length > 0) {
+                // Only update if we got a valid response (null = all fetches failed, [] = valid empty catalog)
+                if (liveData !== null && Array.isArray(liveData)) {
                     products = liveData.map(p => {
                         if (p && Array.isArray(p.images) && p.images.length > 0) {
                             p.images = p.images.map((img, idx) => sanitizeProductImage(img, p.id, idx));
@@ -1256,6 +1261,10 @@
             const emptyState = document.getElementById('empty-state');
             const pagination = document.getElementById('pagination');
             const countNum = document.getElementById('count-num');
+
+            // Hide loading skeleton once products have been fetched from CMS API
+            const skeleton = document.getElementById('loading-skeleton');
+            if (skeleton) skeleton.style.display = 'none';
 
             countNum.textContent = filtered.length;
 
