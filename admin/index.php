@@ -451,9 +451,15 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
     <!-- Active Selection Floating Bar (Shopee Style) -->
     <div x-show="selectedProductIds.length > 0" x-cloak class="mb-4 bg-gradient-to-r from-emerald-50 via-orange-50 to-purple-50 border border-emerald-200 rounded-xl p-3 px-4 flex flex-wrap items-center justify-between gap-3 shadow-xs">
-        <div class="flex items-center gap-2.5">
+        <div class="flex items-center gap-2.5 flex-wrap">
             <span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold" x-text="selectedProductIds.length"></span>
-            <span class="text-sm font-semibold text-gray-700">Produk terpilih untuk aksi massal</span>
+            <span class="text-sm font-semibold text-gray-700">Produk terpilih</span>
+            <template x-if="getSelectedCapacitiesSummary()">
+                <span class="text-xs bg-purple-100 text-purple-800 font-bold px-2.5 py-1 rounded-lg border border-purple-200 flex items-center gap-1.5">
+                    <i class="fas fa-list-ol text-purple-600"></i>
+                    <span x-text="getSelectedCapacitiesSummary()"></span>
+                </span>
+            </template>
         </div>
         <div class="flex flex-wrap items-center gap-2">
             <button @click="openBulkMediaWithSelected()" class="text-xs bg-[#EE4D2D] hover:bg-[#d73211] text-white font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors shadow-xs">
@@ -494,7 +500,15 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         <td class="p-3"><img :src="p.images && p.images.length > 0 ? (p.images[0].startsWith('http') || p.images[0].startsWith('data:') ? p.images[0] : '../'+p.images[0]) : ''" class="w-14 h-14 object-cover rounded-lg border" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2256%22 height=%2256%22><rect fill=%22%23eee%22 width=%2256%22 height=%2256%22/><text x=%2228%22 y=%2232%22 text-anchor=%22middle%22 fill=%22%23aaa%22 font-size=%2212%22>No img</text></svg>'"></td>
                         <td class="p-3">
                             <div class="font-medium text-sm text-gray-900" x-text="p.name"></div>
-                            <div class="text-[11px] text-gray-400 font-mono mt-0.5">ID: <span x-text="p.id"></span></div>
+                            <div class="flex items-center gap-2 mt-1 flex-wrap">
+                                <span class="text-[11px] text-gray-400 font-mono">ID: <span x-text="p.id"></span></span>
+                                <template x-if="getProductCapacityLabel(p) && getProductCapacityLabel(p) !== '-'">
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-purple-100 text-purple-800 border border-purple-200 shadow-2xs">
+                                        <i class="fas fa-weight-hanging text-[9px] text-purple-600"></i>
+                                        <span x-text="'Kapasitas ' + getProductCapacityLabel(p)"></span>
+                                    </span>
+                                </template>
+                            </div>
                         </td>
                         <td class="p-3 text-sm text-gray-500" x-text="p.category"></td>
                         <td class="p-3 text-sm text-right font-semibold text-gray-900" x-text="'Rp '+Number(p.price).toLocaleString('id-ID')"></td>
@@ -1593,6 +1607,9 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                             <p class="text-[11px] text-gray-400 mt-1">ID: <span class="font-mono text-gray-600" x-text="p.id"></span></p>
                             <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
                                 <span class="text-[10px] bg-purple-50 text-purple-700 px-2 py-0.5 rounded font-medium" x-text="p.category"></span>
+                                <template x-if="getProductCapacityLabel(p) && getProductCapacityLabel(p) !== '-'">
+                                    <span class="text-[10px] bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded font-bold" x-text="'Kapasitas ' + getProductCapacityLabel(p)"></span>
+                                </template>
                                 <span class="text-[11px] font-bold text-primary" x-text="p.priceDisplay"></span>
                             </div>
 

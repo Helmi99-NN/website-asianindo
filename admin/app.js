@@ -980,12 +980,147 @@ function adminApp() {
             if (this.productCategoryFilter) {
                 list = list.filter(p => p.category === this.productCategoryFilter);
             }
-            if (this.searchQuery) {
-                let q = this.searchQuery.toLowerCase();
+            const isSearching = !!(this.searchQuery && this.searchQuery.trim());
+            if (isSearching) {
+                let q = this.searchQuery.toLowerCase().trim();
                 list = list.filter(p => (p.name || '').toLowerCase().includes(q) || String(p.id || '').toLowerCase().includes(q));
             }
-            return list;
+            // Otomatis urutkan dari kapasitas terkecil di atas ke bawah ke yang besar
+            return this.sortProductsByCapacity(list, isSearching);
         },
+        // ==================== CAPACITY PARSER & AUTO-IDENTIFICATION ====================
+        parseProductCapacity(p) {
+            if (!p) return { val: 999999, label: '-' };
+            const name = (p.name || '').trim();
+            const cap = (p.capacity || '').trim();
+            const str = name + ' ' + cap;
+
+            // Aksesoris / sparepart murah (< 1.5jt) ditaruh paling akhir
+            const isAccessory = (p.price && p.price < 1500000) && /\b(karet|seal|sparepart|onderdil|baut|selang|pisau)\b/i.test(name);
+            if (isAccessory) {
+                return { val: 9999999, label: 'Aksesoris' };
+            }
+
+            // 1. Desimal dengan unit: "1,5 kg", "1.5 kg", "3,5 kg", "0.5 kg", dll
+            const decRegex = /(\d+[.,]\d+)\s*(kg|kilo|liter|ltr|\bl\b|ton\b|rak|loyang)/i;
+            let m = str.match(decRegex);
+            if (m) {
+                let n = parseFloat(m[1].replace(',', '.'));
+                let unit = m[2].toLowerCase();
+                if (unit === 'ton') n *= 1000;
+                return { val: n, label: m[1].replace('.', ',') + ' ' + (unit === 'ton' ? 'Ton' : unit) };
+            }
+
+            // 2. Satuan Ton
+            const tonRegex = /(\d+[.,]?\d*)\s*ton\b/i;
+            m = str.match(tonRegex);
+            if (m) {
+                let n = parseFloat(m[1].replace(',', '.'));
+                return { val: n * 1000, label: n + ' Ton' };
+            }
+
+            // 3. Bilangan bulat + satuan (tangkap juga tanpa spasi seperti "Kapasitas1 kg" atau "20kg")
+            const unitRegex = /(\d+)\s*(kg|kilo|liter|ltr|rak|loyang|butir|\bl\b|\bgr\b|\bgram\b)/i;
+            m = str.match(unitRegex);
+            if (m) {
+                let n = parseInt(m[1], 10);
+                let unit = m[2].toLowerCase();
+                if (unit === 'gr' || unit === 'gram') n = n / 1000;
+                return { val: n, label: n + ' ' + unit };
+            }
+
+            // 4. Kata "kapasitas [angka]" atau "kap [angka]"
+            const capWordRegex = /(?:kapasitas|kap\.?)\s*[:=]?\s*(\d+[.,]?\d*)/i;
+            m = str.match(capWordRegex);
+            if (m) {
+                let n = parseFloat(m[1].replace(',', '.'));
+                return { val: n, label: n + ' kg' };
+            }
+
+            // 5. Cek field capacity jika hanya berisi angka
+            const capNumRegex = /(\d+[.,]?\d*)/;
+            m = cap.match(capNumRegex);
+            if (m && parseFloat(m[1]) > 0) {
+                let n = parseFloat(m[1].replace(',', '.'));
+                return { val: n, label: n + ' kg' };
+            }
+
+            if (cap && /sesuai kebutuhan/i.test(cap + ' ' + name)) {
+                return { val: 888888, label: 'Sesuai Kebutuhan' };
+            }
+
+            if (p.capacitySize === 'small') return { val: 10, label: 'Kecil' };
+            if (p.capacitySize === 'medium') return { val: 50, label: 'Sedang' };
+            if (p.capacitySize === 'large') return { val: 100, label: 'Besar' };
+
+            return { val: 777777, label: cap || '-' };
+        },
+
+        getProductCapacityLabel(p) {
+            const parsed = this.parseProductCapacity(p);
+            return parsed ? parsed.label : '-';
+        },
+
+        cleanBaseMachineName(name) {
+            if (!name) return '';
+            return name
+                .replace(/^ASIANINDO\s+/i, '')
+                .replace(/\s*CV Asianindo/gi, '')
+                .replace(/\s*TKDN.*$/gi, '')
+                .replace(/\s*Terverifikasi.*$/gi, '')
+                .replace(/\s*-\s*Paket.*$/gi, '')
+                .replace(/\s*Kapasitas\s*\d+.*$/gi, '')
+                .replace(/\s*kapasitas\s*\d+.*$/gi, '')
+                .replace(/\s*Kapasitas\d+.*$/gi, '')
+                .replace(/\s*\d+\s*(?:kg|kilo|liter|ltr|rak|loyang|ton).*$/gi, '')
+                .replace(/\s*plus\s+pendingin.*$/gi, '')
+                .replace(/\s*plus\s+spinner.*$/gi, '')
+                .trim().toLowerCase();
+        },
+
+        sortProductsByCapacity(list, isSearching = false) {
+            if (!Array.isArray(list)) return [];
+            return list.slice().sort((a, b) => {
+                const ca = this.parseProductCapacity(a);
+                const cb = this.parseProductCapacity(b);
+
+                if (isSearching) {
+                    // Ketika mencari varian mesin (cth: "roasting kopi", "vacuum frying"),
+                    // urutkan dari kapasitas terkecil ke terbesar!
+                    if (ca.val !== cb.val) return ca.val - cb.val;
+                    const pa = parseFloat(a.price) || 0;
+                    const pb = parseFloat(b.price) || 0;
+                    if (pa !== pb) return pa - pb;
+                    return (a.name || '').localeCompare(b.name || '');
+                } else {
+                    // Tampilan umum: kelompokkan mesin sejenis, lalu urutkan kapasitas terkecil ke terbesar
+                    const baseA = this.cleanBaseMachineName(a.name);
+                    const baseB = this.cleanBaseMachineName(b.name);
+                    if (baseA !== baseB) {
+                        return baseA.localeCompare(baseB);
+                    }
+                    if (ca.val !== cb.val) return ca.val - cb.val;
+                    const pa = parseFloat(a.price) || 0;
+                    const pb = parseFloat(b.price) || 0;
+                    return pa - pb;
+                }
+            });
+        },
+
+        getSelectedCapacitiesSummary() {
+            if (!this.selectedProductIds || this.selectedProductIds.length === 0) return '';
+            const prods = Array.isArray(this.products) ? this.products : [];
+            const selected = prods.filter(p => this.selectedProductIds.includes(p.id));
+            if (selected.length === 0) return '';
+            const sortedSelected = this.sortProductsByCapacity(selected, true);
+            const caps = sortedSelected
+                .map(p => this.getProductCapacityLabel(p))
+                .filter(c => c && c !== '-' && c !== 'Aksesoris');
+            const uniqueCaps = Array.from(new Set(caps));
+            if (uniqueCaps.length === 0) return '';
+            return 'Kapasitas terpilih: ' + uniqueCaps.join(', ');
+        },
+
 
         toggleSelectAll(checked) {
             let visibleProducts = this.filteredProducts();
@@ -2203,7 +2338,8 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
             if (this.bulkMediaFilterCategory) {
                 list = list.filter(item => item.category === this.bulkMediaFilterCategory);
             }
-            if (this.bulkMediaSearch) {
+            const isSearching = !!(this.bulkMediaSearch && this.bulkMediaSearch.trim());
+            if (isSearching) {
                 const q = this.bulkMediaSearch.toLowerCase().trim();
                 list = list.filter(item => item.name.toLowerCase().includes(q) || item.id.toLowerCase().includes(q));
             }
@@ -2214,7 +2350,8 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
             } else if (this.bulkMediaStatusFilter === 'novideo') {
                 list = list.filter(item => !item.video);
             }
-            return list;
+            // Otomatis urutkan dari kapasitas terkecil ke terbesar
+            return this.sortProductsByCapacity(list, isSearching);
         },
 
         paginatedBulkMediaItems() {
