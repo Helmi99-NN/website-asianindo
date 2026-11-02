@@ -61,6 +61,7 @@ function adminApp() {
         videoPreviewSrc: '',
         videoPreviewTitle: '',
         videoPreviewUrl: '',
+        videoPreviewParsed: null,
 
         // ==================== KNOWLEDGE Q&A & WHATSAPP CHAT STATES ====================
         qaQuery: '',
@@ -2551,6 +2552,97 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
             if (item) item.video = '';
         },
 
+        
+        parseVideoSource(rawUrl) {
+            if (!rawUrl || typeof rawUrl !== 'string') return null;
+            const str = rawUrl.trim();
+            if (!str) return null;
+
+            // 1. YouTube Video or Shorts
+            const ytMatch = str.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+            if (ytMatch && ytMatch[1]) {
+                const ytId = ytMatch[1];
+                return {
+                    type: 'youtube',
+                    id: ytId,
+                    raw: str,
+                    embedUrl: 'https://www.youtube-nocookie.com/embed/' + ytId + '?autoplay=1&rel=0&playsinline=1',
+                    badge: 'YouTube',
+                    icon: 'fab fa-youtube',
+                    color: 'text-red-600 bg-red-50 border-red-200'
+                };
+            }
+
+            // 2. Instagram Reels or Post
+            const igMatch = str.match(/instagram\.com\/(?:reel|p)\/([a-zA-Z0-9_-]+)/i);
+            if (igMatch && igMatch[1]) {
+                const igCode = igMatch[1];
+                return {
+                    type: 'instagram',
+                    id: igCode,
+                    raw: str,
+                    embedUrl: 'https://www.instagram.com/reel/' + igCode + '/embed/?captioned=0',
+                    badge: 'Instagram Reel',
+                    icon: 'fab fa-instagram',
+                    color: 'text-pink-600 bg-pink-50 border-pink-200'
+                };
+            }
+
+            // 3. Direct Video file (MP4, WebM, etc.)
+            const isDirect = /\.(mp4|webm|mov|mkv)(\?.*)?$/i.test(str) || str.indexOf('videos/') !== -1;
+            if (isDirect || str.startsWith('http') || str.startsWith('blob:') || str.startsWith('data:') || str.startsWith('../') || str.startsWith('videos/')) {
+                let s = str;
+                if (!s.startsWith('http') && !s.startsWith('blob:') && !s.startsWith('data:') && !s.startsWith('../')) {
+                    s = '../' + s;
+                }
+                return {
+                    type: 'direct',
+                    id: str,
+                    raw: str,
+                    embedUrl: s,
+                    badge: 'File MP4',
+                    icon: 'fas fa-file-video',
+                    color: 'text-blue-600 bg-blue-50 border-blue-200'
+                };
+            }
+
+            return null;
+        },
+
+        promptVideoUrl(productId) {
+            const item = this.bulkMediaItems.find(p => String(p.id) === String(productId));
+            if (!item) return;
+
+            const current = item.video || '';
+            const input = prompt(
+                "Masukkan Link Video Produk (Hemat Storage Server 0 MB):\n\n" +
+                "• Instagram Reels / Post (cth: https://www.instagram.com/reel/Cxxxxxx/)\n" +
+                "• YouTube Video / Shorts (cth: https://youtu.be/xxxxxx atau https://www.youtube.com/shorts/xxxxxx)\n" +
+                "• Atau link URL file video eksternal\n\n" +
+                "Kosongkan teks dan klik OK untuk menghapus video.",
+                current
+            );
+
+            if (input === null) return; // Dibatalkan
+
+            const trimmed = input.trim();
+            if (!trimmed) {
+                item.video = '';
+                item._modified = true;
+                return;
+            }
+
+            const parsed = this.parseVideoSource(trimmed);
+            if (!parsed) {
+                alert("Format link tidak dikenali! Harap gunakan link resmi Instagram (Reel/Post), YouTube (Video/Shorts), atau URL video langsung.");
+                return;
+            }
+
+            item.video = trimmed;
+            item._modified = true;
+            alert("Link " + parsed.badge + " berhasil dipasang!\n\nVideo ini TIDAK memakan storage website sama sekali. Jangan lupa klik tombol 'Simpan Perubahan Foto & Video' di atas.");
+        },
+
         openVideoPreview(product) {
             if (!product) return;
             let videoPath = product.video || (typeof product === 'string' ? product : '');
@@ -2559,28 +2651,27 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
                 return;
             }
 
-            let src = videoPath;
-            if (!src.startsWith('http') && !src.startsWith('blob:') && !src.startsWith('data:') && !src.startsWith('../')) {
-                src = '../' + src;
-            }
-
-            this.videoPreviewSrc = src;
+            const parsed = this.parseVideoSource(videoPath);
+            this.videoPreviewParsed = parsed;
+            this.videoPreviewSrc = parsed ? parsed.embedUrl : videoPath;
             this.videoPreviewTitle = product.name || product.title || 'Video Produk';
             this.showVideoModal = true;
 
-            this.$nextTick(() => {
-                const vid = document.getElementById('admin-preview-video-player');
-                if (vid) {
-                    vid.load();
-                    const playPromise = vid.play();
-                    if (playPromise !== undefined) {
-                        playPromise.catch(() => {
-                            vid.muted = true;
-                            vid.play().catch(e => console.warn('Admin preview autoplay error:', e));
-                        });
+            if (!parsed || parsed.type === 'direct') {
+                this.$nextTick(() => {
+                    const vid = document.getElementById('admin-preview-video-player');
+                    if (vid) {
+                        vid.load();
+                        const playPromise = vid.play();
+                        if (playPromise !== undefined) {
+                            playPromise.catch(() => {
+                                vid.muted = true;
+                                vid.play().catch(e => console.warn('Admin preview autoplay error:', e));
+                            });
+                        }
                     }
-                }
-            });
+                });
+            }
         },
 
         closeVideoPreview() {
@@ -2588,9 +2679,11 @@ Dokumen resmi telah dicetak dan diverifikasi oleh Direktur CV Asianindo. Terima 
             if (vid) {
                 vid.pause();
                 vid.currentTime = 0;
+                vid.src = '';
             }
             this.showVideoModal = false;
             this.videoPreviewSrc = '';
+            this.videoPreviewParsed = null;
             this.videoPreviewTitle = '';
         },
 

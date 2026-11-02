@@ -674,12 +674,30 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                         <span>Pilih dari Galeri Media</span>
                     </button>
                 </div>
-                <!-- Manual Path / URL Input -->
-                <div class="mt-2.5">
-                    <div class="flex items-center gap-2">
-                        <span class="text-[11px] text-gray-500 whitespace-nowrap">Atau Path/URL:</span>
-                        <input type="text" x-model="productForm.existing_video" placeholder="videos/video_xxx.mp4 atau https://..." class="form-input !py-1 text-xs font-mono">
+                <!-- Link Video Sosmed (Instagram Reels / YouTube / MP4) -->
+                <div class="mt-3 p-3 bg-gradient-to-r from-pink-50/40 via-purple-50/40 to-blue-50/40 rounded-xl border border-purple-200/60 shadow-2xs">
+                    <div class="flex items-center justify-between mb-1.5 flex-wrap gap-1">
+                        <span class="text-xs font-bold text-gray-800 flex items-center gap-1.5">
+                            <i class="fas fa-link text-primary"></i> Link Video Sosmed (Hemat Storage 0 MB):
+                        </span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="inline-flex items-center gap-1 text-[10px] font-bold text-pink-700 bg-pink-100 px-2 py-0.5 rounded-full border border-pink-300">
+                                <i class="fab fa-instagram text-pink-600"></i> IG Reel / Post
+                            </span>
+                            <span class="inline-flex items-center gap-1 text-[10px] font-bold text-red-700 bg-red-100 px-2 py-0.5 rounded-full border border-red-300">
+                                <i class="fab fa-youtube text-red-600"></i> YouTube / Shorts
+                            </span>
+                        </div>
                     </div>
+                    <div class="flex items-center gap-2">
+                        <input type="text" x-model="productForm.existing_video" placeholder="Paste link Instagram Reel (https://www.instagram.com/reel/...) atau YouTube (https://youtu.be/...)" class="form-input !py-1.5 text-xs font-mono w-full bg-white">
+                        <template x-if="productForm.existing_video && parseVideoSource(productForm.existing_video)">
+                            <button type="button" @click="openVideoPreview({ name: productForm.name || 'Preview Video', video: productForm.existing_video })" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shrink-0 flex items-center gap-1 shadow-xs transition-colors cursor-pointer">
+                                <i class="fas fa-play text-[10px]"></i> Test Putar
+                            </button>
+                        </template>
+                    </div>
+                    <p class="text-[10px] text-gray-500 mt-1.5">Cukup paste link video dari Instagram atau YouTube. Video dapat langsung diputar di website tanpa menghabiskan kuota storage server Anda.</p>
                 </div>
             </div>
         </div>
@@ -1818,10 +1836,13 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                                 <button type="button" @click="openVideoPreview(p)" class="w-6 h-6 bg-emerald-500 hover:bg-emerald-600 text-white rounded flex items-center justify-center text-[10px] shadow-xs transition-colors" title="Putar & Cek Video">
                                                     <i class="fas fa-play ml-0.5"></i>
                                                 </button>
-                                                <label class="w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded flex items-center justify-center text-[10px] cursor-pointer shadow-xs transition-colors" title="Ganti video (upload file)">
-                                                    <i class="fas fa-sync-alt"></i>
+                                                <label class="w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded flex items-center justify-center text-[10px] cursor-pointer shadow-xs transition-colors" title="Ganti video (upload file MP4)">
+                                                    <i class="fas fa-upload"></i>
                                                     <input type="file" accept="video/mp4,video/*" @change="uploadVideoForProduct(p.id, $event)" class="hidden">
                                                 </label>
+                                                <button type="button" @click="promptVideoUrl(p.id)" class="w-6 h-6 bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600 hover:opacity-90 text-white rounded flex items-center justify-center text-[10px] shadow-xs transition-opacity" title="Pasang Link Video (Instagram Reels / YouTube / Shorts - Hemat Storage 0 MB)">
+                                                    <i class="fas fa-link"></i>
+                                                </button>
                                                 <button type="button" @click="openMediaPicker(p.id, 'video')" class="w-6 h-6 bg-amber-500 hover:bg-amber-600 text-white rounded flex items-center justify-center text-[10px] shadow-xs transition-colors" title="Pilih dari Galeri Media">
                                                     <i class="fas fa-photo-video"></i>
                                                 </button>
@@ -1844,14 +1865,17 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                         <template x-if="p.video">
                                             <p class="font-mono text-[10px] text-gray-700 truncate max-w-[200px]" :title="p.video" x-text="p.video"></p>
                                         </template>
-                                        <div class="flex items-center gap-2 pt-0.5 flex-wrap">
+                                        <div class="flex items-center gap-1.5 pt-0.5 flex-wrap">
                                             <template x-if="p.video">
                                                 <button type="button" @click="openVideoPreview(p)" class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-100/80 hover:bg-emerald-200 px-2 py-0.5 rounded transition-colors border border-emerald-300/60 shadow-2xs">
-                                                    <i class="fas fa-play text-[9px] text-emerald-600"></i> Putar Video
+                                                    <i class="fas fa-play text-[9px] text-emerald-600"></i> Putar
                                                 </button>
                                             </template>
+                                            <button type="button" @click="promptVideoUrl(p.id)" class="inline-flex items-center gap-1 text-[10px] font-bold text-pink-700 hover:text-pink-800 bg-pink-50 hover:bg-pink-100 px-2 py-0.5 rounded transition-colors border border-pink-200 shadow-2xs cursor-pointer" title="Pasang Link Video Instagram Reels atau YouTube">
+                                                <i class="fab fa-instagram text-pink-600 text-[10px]"></i> Link IG / YT
+                                            </button>
                                             <button type="button" @click="openMediaPicker(p.id, 'video')" class="text-[10px] text-primary hover:underline font-semibold">
-                                                <i class="fas fa-photo-video text-[9px]"></i> Dari Galeri Media
+                                                <i class="fas fa-photo-video text-[9px]"></i> Galeri
                                             </button>
                                             <template x-if="p.video">
                                                 <button type="button" @click="removeVideoForProduct(p.id)" class="text-[10px] text-red-600 hover:underline font-semibold">
@@ -1859,6 +1883,14 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                                 </button>
                                             </template>
                                         </div>
+                                        <template x-if="p.video && parseVideoSource(p.video)">
+                                            <div class="pt-0.5">
+                                                <span class="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded border shadow-2xs" :class="parseVideoSource(p.video).color">
+                                                    <i :class="parseVideoSource(p.video).icon"></i>
+                                                    <span x-text="parseVideoSource(p.video).badge + ' (0 MB Storage)'"></span>
+                                                </span>
+                                            </div>
+                                        </template>
                                         <template x-if="!p.video">
                                             <p class="text-[10px] text-gray-400">Video tampil di galeri utama katalog.</p>
                                         </template>
@@ -4055,17 +4087,29 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
         </div>
 
         <!-- Video Player Container -->
-        <div class="bg-black p-3 sm:p-5 flex items-center justify-center">
-            <div class="w-full max-h-[65vh] flex items-center justify-center rounded-xl overflow-hidden bg-black/90">
-                <video id="admin-preview-video-player" 
-                       :src="videoPreviewSrc" 
-                       controls 
-                       autoplay 
-                       playsinline 
-                       class="max-w-full max-h-[65vh] rounded-lg shadow-lg">
-                    Browser Anda tidak mendukung pemutar video HTML5.
-                </video>
-            </div>
+        <div class="bg-black p-3 sm:p-5 flex items-center justify-center min-h-[360px]">
+            <template x-if="videoPreviewParsed && videoPreviewParsed.type === 'youtube'">
+                <div class="w-full aspect-video max-h-[65vh] flex items-center justify-center">
+                    <iframe :src="videoPreviewParsed.embedUrl" class="w-full h-full rounded-xl border-0 shadow-lg" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </template>
+            <template x-if="videoPreviewParsed && videoPreviewParsed.type === 'instagram'">
+                <div class="w-full flex items-center justify-center py-2">
+                    <iframe :src="videoPreviewParsed.embedUrl" class="w-full max-w-[420px] h-[520px] rounded-xl border-0 bg-white shadow-2xl" scrolling="no" allowtransparency="true"></iframe>
+                </div>
+            </template>
+            <template x-if="!videoPreviewParsed || videoPreviewParsed.type === 'direct'">
+                <div class="w-full max-h-[65vh] flex items-center justify-center rounded-xl overflow-hidden bg-black/90">
+                    <video id="admin-preview-video-player" 
+                           :src="videoPreviewSrc" 
+                           controls 
+                           autoplay 
+                           playsinline 
+                           class="max-w-full max-h-[65vh] rounded-lg shadow-lg">
+                        Browser Anda tidak mendukung pemutar video HTML5.
+                    </video>
+                </div>
+            </template>
         </div>
 
         <!-- Footer -->

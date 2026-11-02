@@ -1643,7 +1643,7 @@
                 </button>
             </div>
             <!-- Video Player -->
-            <div class="relative bg-black flex items-center justify-center aspect-video sm:aspect-[16/10] overflow-hidden">
+            <div id="catalog-video-container" class="relative bg-black flex items-center justify-center min-h-[300px] sm:min-h-[420px] aspect-video sm:aspect-[16/10] overflow-hidden">
                 <video id="catalog-modal-player" class="w-full h-full object-contain" controls playsinline preload="auto"></video>
             </div>
             <!-- Modal Footer Actions -->
@@ -1668,13 +1668,13 @@
     <script>
         window.openCatalogVideoModal = function(videoSrc, title, productId) {
             const modal = document.getElementById('catalog-video-modal');
-            const player = document.getElementById('catalog-modal-player');
+            const container = document.getElementById('catalog-video-container');
             const titleEl = document.getElementById('catalog-modal-title');
             const detailBtn = document.getElementById('catalog-modal-detail-btn');
             const waBtn = document.getElementById('catalog-modal-wa-btn');
-            if (!modal || !player) return;
+            if (!modal || !container) return;
 
-            let finalSrc = videoSrc || 'videos/promo_vacuum_frying.mp4';
+            let finalSrc = (videoSrc && String(videoSrc).trim() !== '') ? String(videoSrc).trim() : 'videos/promo_vacuum_frying.mp4';
             if (finalSrc.includes('video_6ac') || finalSrc.includes('media_6ac')) {
                 finalSrc = 'videos/promo_vacuum_frying.mp4';
             }
@@ -1688,30 +1688,42 @@
                 waBtn.href = `https://wa.me/6285335850517?text=${encodeURIComponent(waText)}`;
             }
 
-            player.src = finalSrc;
-            player.load();
+            // Universal Video Parser (YouTube / Instagram / Direct MP4)
+            const parsed = window.parseVideoSource ? window.parseVideoSource(finalSrc) : null;
+
+            if (parsed && parsed.type === 'youtube') {
+                container.innerHTML = `<iframe src="${parsed.embedUrl}" class="w-full h-full aspect-video border-0 shadow-lg" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            } else if (parsed && parsed.type === 'instagram') {
+                container.innerHTML = `<div class="w-full h-full flex items-center justify-center p-2"><iframe src="${parsed.embedUrl}" class="w-full max-w-[400px] h-[520px] rounded-xl border-0 shadow-2xl bg-white" scrolling="no" allowtransparency="true"></iframe></div>`;
+            } else {
+                container.innerHTML = `<video id="catalog-modal-player" class="w-full h-full object-contain" controls autoplay playsinline preload="auto" src="${finalSrc}"></video>`;
+                const player = document.getElementById('catalog-modal-player');
+                if (player) {
+                    player.play().catch(() => {
+                        player.muted = true;
+                        player.play().catch(e => console.warn('Catalog video autoplay error:', e));
+                    });
+                }
+            }
 
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             document.body.style.overflow = 'hidden';
-
-            const playPromise = player.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(() => {
-                    player.muted = true;
-                    player.play().catch(e => console.warn('Catalog video autoplay error:', e));
-                });
-            }
         };
 
         window.closeCatalogVideoModal = function() {
             const modal = document.getElementById('catalog-video-modal');
-            const player = document.getElementById('catalog-modal-player');
-            if (!modal || !player) return;
+            const container = document.getElementById('catalog-video-container');
+            if (!modal) return;
 
-            player.pause();
-            player.currentTime = 0;
-            player.src = '';
+            if (container) {
+                const player = document.getElementById('catalog-modal-player');
+                if (player) {
+                    player.pause();
+                    player.currentTime = 0;
+                }
+                container.innerHTML = '';
+            }
 
             modal.classList.add('hidden');
             modal.classList.remove('flex');

@@ -98,10 +98,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Build unified media items array: Video is always index 0 if available!
     const mediaItems = [];
     if (validVideo) {
+        const parsedV = window.parseVideoSource ? window.parseVideoSource(validVideo) : null;
+        let posterImg = product.images[0] || '';
+        if ((!posterImg || posterImg.includes('placeholder')) && parsedV && parsedV.thumbnail) {
+            posterImg = parsedV.thumbnail;
+        }
         mediaItems.push({
             type: 'video',
             src: validVideo,
-            poster: product.images[0] || 'images/placeholder.webp'
+            poster: posterImg || 'images/placeholder.webp',
+            parsed: parsedV
         });
     }
     (product.images || []).forEach(img => {
@@ -113,6 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const mainImg = document.getElementById('product-image');
     const mainVideo = document.getElementById('product-video');
+    const videoEmbedContainer = document.getElementById('product-video-embed');
     const prevBtn = document.getElementById('gallery-prev');
     const nextBtn = document.getElementById('gallery-next');
     const thumbContainer = document.getElementById('product-thumbnails');
@@ -207,18 +214,44 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (currentItem.type === 'video') {
             // Show video player
             if (mainImg) mainImg.classList.add('hidden');
-            if (mainVideo) {
-                mainVideo.classList.remove('hidden');
-                if (mainVideo.src !== currentItem.src && !mainVideo.src.endsWith(currentItem.src)) {
-                    mainVideo.src = currentItem.src;
-                }
-                if (currentItem.poster) mainVideo.poster = currentItem.poster;
+            const parsed = currentItem.parsed || (window.parseVideoSource ? window.parseVideoSource(currentItem.src) : null);
 
-                // Play video immediately upon opening
-                playProductVideo(isUserClick);
+            if (parsed && (parsed.type === 'youtube' || parsed.type === 'instagram')) {
+                if (mainVideo) {
+                    mainVideo.pause();
+                    mainVideo.classList.add('hidden');
+                    hideUnmuteBtn();
+                }
+                if (videoEmbedContainer) {
+                    videoEmbedContainer.classList.remove('hidden');
+                    if (parsed.type === 'youtube') {
+                        videoEmbedContainer.innerHTML = `<iframe src="${parsed.embedUrl}" class="w-full h-full border-0 shadow-lg" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                    } else if (parsed.type === 'instagram') {
+                        videoEmbedContainer.innerHTML = `<div class="w-full h-full flex items-center justify-center p-2"><iframe src="${parsed.embedUrl}" class="w-full max-w-[380px] h-[520px] rounded-xl border-0 shadow-2xl bg-white" scrolling="no" allowtransparency="true"></iframe></div>`;
+                    }
+                }
+            } else {
+                if (videoEmbedContainer) {
+                    videoEmbedContainer.classList.add('hidden');
+                    videoEmbedContainer.innerHTML = '';
+                }
+                if (mainVideo) {
+                    mainVideo.classList.remove('hidden');
+                    if (mainVideo.src !== currentItem.src && !mainVideo.src.endsWith(currentItem.src)) {
+                        mainVideo.src = currentItem.src;
+                    }
+                    if (currentItem.poster) mainVideo.poster = currentItem.poster;
+
+                    // Play video immediately upon opening
+                    playProductVideo(isUserClick);
+                }
             }
         } else {
             // Show photo image
+            if (videoEmbedContainer) {
+                videoEmbedContainer.classList.add('hidden');
+                videoEmbedContainer.innerHTML = '';
+            }
             if (mainVideo) {
                 mainVideo.pause();
                 mainVideo.classList.add('hidden');
@@ -265,7 +298,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <img src="${item.poster}" alt="Thumbnail Video" class="w-full h-full object-cover opacity-80 group-hover/vthumb:opacity-95 transition-opacity">
                         <div class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white pointer-events-none">
                             <span class="material-symbols-outlined text-2xl drop-shadow text-white" style="font-variation-settings: 'FILL' 1;">play_circle</span>
-                            <span class="text-[9px] font-bold tracking-wider uppercase mt-[-2px] bg-red-600 text-white px-1.5 py-0.5 rounded-full shadow-sm leading-none">Video</span>
+                            <span class="text-[9px] font-bold tracking-wider uppercase mt-[-2px] text-white px-1.5 py-0.5 rounded-full shadow-sm leading-none" :class="item.parsed && item.parsed.type === 'instagram' ? 'bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600' : (item.parsed && item.parsed.type === 'youtube' ? 'bg-red-600' : 'bg-blue-600')">${item.parsed ? (item.parsed.type === 'instagram' ? 'IG Reel' : (item.parsed.type === 'youtube' ? 'YouTube' : 'Video')) : 'Video'}</span>
                         </div>
                     </div>
                 `;

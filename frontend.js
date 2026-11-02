@@ -7,6 +7,52 @@
 
     const API_BASE = '/admin/api.php';
 
+    // ======================== UNIVERSAL VIDEO PARSER (INSTAGRAM / YOUTUBE / DIRECT) ========================
+    window.parseVideoSource = function(rawUrl) {
+        if (!rawUrl || typeof rawUrl !== 'string') return null;
+        var str = rawUrl.trim();
+        if (!str) return null;
+
+        // 1. YouTube Video or Shorts
+        var ytMatch = str.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+        if (ytMatch && ytMatch[1]) {
+            var ytId = ytMatch[1];
+            return {
+                type: 'youtube',
+                id: ytId,
+                raw: str,
+                embedUrl: 'https://www.youtube-nocookie.com/embed/' + ytId + '?autoplay=1&rel=0&playsinline=1',
+                thumbnail: 'https://img.youtube.com/vi/' + ytId + '/hqdefault.jpg'
+            };
+        }
+
+        // 2. Instagram Reels or Post
+        var igMatch = str.match(/instagram\.com\/(?:reel|p)\/([a-zA-Z0-9_-]+)/i);
+        if (igMatch && igMatch[1]) {
+            var igCode = igMatch[1];
+            return {
+                type: 'instagram',
+                id: igCode,
+                raw: str,
+                embedUrl: 'https://www.instagram.com/reel/' + igCode + '/embed/?captioned=0',
+                thumbnail: 'https://www.instagram.com/p/' + igCode + '/media/?size=l'
+            };
+        }
+
+        // 3. Direct Video file (MP4, WebM, etc.)
+        var isDirect = /\.(mp4|webm|mov|mkv)(\?.*)?$/i.test(str) || str.indexOf('videos/') !== -1;
+        if (isDirect || str.indexOf('http://') === 0 || str.indexOf('https://') === 0 || str.indexOf('videos/') === 0) {
+            return {
+                type: 'direct',
+                id: str,
+                raw: str,
+                embedUrl: str,
+                thumbnail: ''
+            };
+        }
+
+        return null;
+    };
     // ======================== ANALYTICS TRACKING ========================
     function trackEvent(eventName, productId) {
         fetch(API_BASE + '?action=track_event', {
