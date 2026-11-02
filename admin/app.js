@@ -1630,18 +1630,47 @@ function adminApp() {
         },
 
         openEditProduct(p) {
+            // Prioritas: Ambil data termutakhir dari bulkMediaItems jika sedang diedit di Edit Foto Massal
+            const bulkItem = Array.isArray(this.bulkMediaItems) ? this.bulkMediaItems.find(x => String(x.id) === String(p.id)) : null;
             const latest = (Array.isArray(this.products) ? this.products.find(x => String(x.id) === String(p.id)) : null) || p;
+            
             this.editingId = latest.id;
             let specs = [];
             if (latest.specs) { for (let k in latest.specs) specs.push({key: k, val: latest.specs[k]}); }
             if (!specs.length) specs.push({key: '', val: ''});
             let rawDesc = latest.description || latest.desc || '';
+
+            // Sinkronisasi data media: Gambar, Promo, dan Video otomatis sinkron antara Foto Massal dan Form Produk
+            const currentImages = (bulkItem && bulkItem.images && bulkItem.images.length) 
+                ? [...bulkItem.images] 
+                : (latest.images && latest.images.length ? [...latest.images] : (latest.image ? [latest.image] : []));
+            const currentVideo = (bulkItem && bulkItem.video !== undefined) 
+                ? bulkItem.video 
+                : (latest.video || '');
+            const currentPromo = (bulkItem && bulkItem.promo_image !== undefined) 
+                ? bulkItem.promo_image 
+                : (latest.promo_image || '');
+
             this.productForm = {
-                id: latest.id, name: latest.name, category: latest.category || 'Mesin Industri', subCategory: latest.subCategory || '',
-                price: latest.price, priceRange: latest.priceRange || '', description: this.cleanDesc(rawDesc),
+                id: latest.id, 
+                name: latest.name, 
+                category: latest.category || 'Mesin Industri', 
+                subCategory: latest.subCategory || '',
+                price: latest.price, 
+                priceRange: latest.priceRange || '', 
+                description: this.cleanDesc(rawDesc),
                 features: (latest.features && latest.features.length) ? [...latest.features] : [''],
-                specs: specs, images: latest.images && latest.images.length ? [...latest.images] : (latest.image ? [latest.image] : []), existing_video: latest.video || '',
-                meta_title: latest.meta_title || '', meta_description: latest.meta_description || '', slug: latest.slug || ''
+                specs: specs, 
+                images: currentImages, 
+                existing_video: currentVideo,
+                existing_promo_image: currentPromo,
+                capacity: latest.capacity || '',
+                capacitySize: latest.capacitySize || '',
+                rating: latest.rating || 5,
+                reviews: latest.reviews || 0,
+                meta_title: latest.meta_title || '', 
+                meta_description: latest.meta_description || '', 
+                slug: latest.slug || ''
             };
             this.resetMedia();
             this.changeView('product_form');

@@ -1813,87 +1813,125 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
                                 </div>
                             </div>
 
-                            <!-- Video Produk -->
-                            <div class="bg-gray-50/60 p-3 rounded-xl border border-gray-200/80">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-bold text-xs text-gray-700">Video Produk</span>
-                                    <span class="text-[10px] text-gray-400">Maks 30MB</span>
+                            <!-- Video Produk (Koneksi Sosmed Instagram / YouTube / MP4) -->
+                            <div class="bg-gray-50/80 p-3 rounded-xl border border-gray-200/90 flex flex-col justify-between">
+                                <div class="flex items-center justify-between mb-2 flex-wrap gap-1">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="font-bold text-xs text-gray-800 flex items-center gap-1">
+                                            <i class="fas fa-video text-blue-600 text-xs"></i> Video Produk
+                                        </span>
+                                        <span class="text-[9px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded-full border border-emerald-300">Hemat Storage 0 MB</span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-[9px] font-semibold text-pink-600 bg-pink-50 px-1.5 py-0.5 rounded border border-pink-200" title="Dukung Instagram Reel"><i class="fab fa-instagram"></i> IG Reel</span>
+                                        <span class="text-[9px] font-semibold text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-200" title="Dukung YouTube / Shorts"><i class="fab fa-youtube"></i> YouTube</span>
+                                    </div>
                                 </div>
-                                <div class="flex items-center gap-3">
-                                    <!-- Video Thumbnail or Upload Box -->
-                                    <template x-if="p.video">
-                                        <div class="w-20 h-16 sm:w-24 sm:h-18 relative rounded-lg border border-gray-300 overflow-hidden bg-black flex items-center justify-center group flex-shrink-0 cursor-pointer shadow-xs" @click="openVideoPreview(p)" title="Klik untuk memutar video">
-                                            <video :src="p.video.startsWith('http') ? p.video : ('../' + p.video)" class="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity pointer-events-none"></video>
-                                            <!-- Center Play Icon -->
-                                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none group-hover:scale-110 transition-transform">
-                                                <div class="w-7 h-7 rounded-full bg-white/40 backdrop-blur-xs flex items-center justify-center text-white shadow-sm border border-white/60">
-                                                    <i class="fas fa-play text-[10px] ml-0.5"></i>
-                                                </div>
+
+                                <!-- Main Video Input & Thumbnail Row -->
+                                <div class="flex items-start gap-3">
+                                    <!-- Thumbnail / Status Box -->
+                                    <div class="w-20 h-16 sm:w-24 sm:h-20 relative rounded-lg border border-gray-300 overflow-hidden bg-gray-900 flex items-center justify-center flex-shrink-0 shadow-2xs group cursor-pointer"
+                                         @click="p.video ? openVideoPreview(p) : promptVideoUrl(p.id)"
+                                         :title="p.video ? 'Klik untuk memutar video' : 'Klik untuk memasang link video'">
+                                        
+                                        <!-- Case 1: Video is Instagram -->
+                                        <template x-if="p.video && parseVideoSource(p.video) && parseVideoSource(p.video).type === 'instagram'">
+                                            <div class="w-full h-full bg-gradient-to-tr from-amber-500 via-pink-600 to-purple-700 flex flex-col items-center justify-center text-white p-1 text-center">
+                                                <i class="fab fa-instagram text-xl mb-0.5 drop-shadow"></i>
+                                                <span class="text-[8px] font-black uppercase tracking-wider bg-black/40 px-1.5 py-0.5 rounded-full">IG Reel</span>
                                             </div>
-                                            <span class="absolute bottom-1 right-1 bg-black/80 text-white text-[9px] px-1 rounded font-mono z-10">MP4</span>
-                                            <!-- Hover Actions Overlay -->
-                                            <div class="absolute inset-0 bg-black/75 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 z-20" @click.stop>
-                                                <button type="button" @click="openVideoPreview(p)" class="w-6 h-6 bg-emerald-500 hover:bg-emerald-600 text-white rounded flex items-center justify-center text-[10px] shadow-xs transition-colors" title="Putar & Cek Video">
-                                                    <i class="fas fa-play ml-0.5"></i>
+                                        </template>
+
+                                        <!-- Case 2: Video is YouTube -->
+                                        <template x-if="p.video && parseVideoSource(p.video) && parseVideoSource(p.video).type === 'youtube'">
+                                            <div class="w-full h-full bg-slate-900 flex flex-col items-center justify-center text-white p-1 text-center relative">
+                                                <img :src="parseVideoSource(p.video).thumbnail" class="absolute inset-0 w-full h-full object-cover opacity-70" onerror="this.style.display='none'">
+                                                <i class="fab fa-youtube text-2xl text-red-600 relative z-10 drop-shadow"></i>
+                                                <span class="text-[8px] font-black uppercase tracking-wider bg-black/70 px-1.5 py-0.5 rounded-full relative z-10 mt-0.5">YouTube</span>
+                                            </div>
+                                        </template>
+
+                                        <!-- Case 3: Video is Direct MP4 file -->
+                                        <template x-if="p.video && (!parseVideoSource(p.video) || parseVideoSource(p.video).type === 'direct')">
+                                            <div class="w-full h-full relative flex items-center justify-center bg-black">
+                                                <video :src="p.video.startsWith('http') ? p.video : ('../' + p.video)" class="w-full h-full object-cover opacity-70 pointer-events-none"></video>
+                                                <div class="absolute inset-0 flex items-center justify-center">
+                                                    <div class="w-6 h-6 rounded-full bg-white/40 flex items-center justify-center text-white">
+                                                        <i class="fas fa-play text-[9px] ml-0.5"></i>
+                                                    </div>
+                                                </div>
+                                                <span class="absolute bottom-1 right-1 bg-black/80 text-white text-[8px] px-1 rounded font-mono">MP4</span>
+                                            </div>
+                                        </template>
+
+                                        <!-- Case 4: No Video yet -->
+                                        <template x-if="!p.video">
+                                            <div class="w-full h-full bg-white border-2 border-dashed border-gray-300 hover:border-pink-400 flex flex-col items-center justify-center text-gray-400 hover:text-pink-600 transition-colors">
+                                                <i class="fas fa-video text-xs mb-1"></i>
+                                                <span class="text-[9px] font-bold">+ Video</span>
+                                            </div>
+                                        </template>
+                                    </div>
+
+                                    <!-- Inputs and Controls Column -->
+                                    <div class="flex-grow min-w-0 space-y-1.5">
+                                        <!-- Direct Input Field for Video Link -->
+                                        <div class="relative">
+                                            <input type="text" 
+                                                   x-model="p.video" 
+                                                   placeholder="Paste link Instagram Reel atau YouTube..." 
+                                                   class="w-full text-xs font-mono rounded-lg border-gray-300 focus:ring-primary focus:border-primary pl-7 pr-7 py-1.5 bg-white shadow-2xs placeholder-gray-400"
+                                                   :title="p.video || 'Paste link Instagram atau YouTube di sini'">
+                                            <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                                                <i class="fas fa-link text-[10px]"></i>
+                                            </span>
+                                            <template x-if="p.video">
+                                                <button type="button" @click="p.video = ''" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-600 p-0.5 transition-colors cursor-pointer" title="Hapus video">
+                                                    <i class="fas fa-times text-xs"></i>
                                                 </button>
-                                                <label class="w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded flex items-center justify-center text-[10px] cursor-pointer shadow-xs transition-colors" title="Ganti video (upload file MP4)">
-                                                    <i class="fas fa-upload"></i>
+                                            </template>
+                                        </div>
+
+                                        <!-- Action buttons row -->
+                                        <div class="flex items-center justify-between gap-1 flex-wrap">
+                                            <div class="flex items-center gap-1.5 flex-wrap">
+                                                <!-- Putar / Test Button -->
+                                                <template x-if="p.video">
+                                                    <button type="button" @click="openVideoPreview(p)" class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-100/90 hover:bg-emerald-200 px-2 py-0.5 rounded transition-colors border border-emerald-300 shadow-2xs cursor-pointer">
+                                                        <i class="fas fa-play text-[8px] text-emerald-600"></i> Putar Video
+                                                    </button>
+                                                </template>
+                                                <!-- Type Badge -->
+                                                <template x-if="p.video && parseVideoSource(p.video)">
+                                                    <span class="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded border shadow-2xs" :class="parseVideoSource(p.video).color">
+                                                        <i :class="parseVideoSource(p.video).icon"></i>
+                                                        <span x-text="parseVideoSource(p.video).badge"></span>
+                                                    </span>
+                                                </template>
+                                            </div>
+
+                                            <div class="flex items-center gap-1">
+                                                <!-- Upload MP4 option -->
+                                                <label class="inline-flex items-center gap-1 text-[10px] text-gray-600 hover:text-blue-600 hover:bg-blue-50 px-1.5 py-0.5 rounded border border-gray-200 cursor-pointer transition-colors" title="Upload file MP4 dari komputer">
+                                                    <i class="fas fa-upload text-[9px] text-blue-500"></i> MP4
                                                     <input type="file" accept="video/mp4,video/*" @change="uploadVideoForProduct(p.id, $event)" class="hidden">
                                                 </label>
-                                                <button type="button" @click="promptVideoUrl(p.id)" class="w-6 h-6 bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600 hover:opacity-90 text-white rounded flex items-center justify-center text-[10px] shadow-xs transition-opacity" title="Pasang Link Video (Instagram Reels / YouTube / Shorts - Hemat Storage 0 MB)">
-                                                    <i class="fas fa-link"></i>
-                                                </button>
-                                                <button type="button" @click="openMediaPicker(p.id, 'video')" class="w-6 h-6 bg-amber-500 hover:bg-amber-600 text-white rounded flex items-center justify-center text-[10px] shadow-xs transition-colors" title="Pilih dari Galeri Media">
-                                                    <i class="fas fa-photo-video"></i>
-                                                </button>
-                                                <button type="button" @click="removeVideoForProduct(p.id)" class="w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded flex items-center justify-center text-[10px] shadow-xs transition-colors" title="Hapus video">
-                                                    <i class="fas fa-trash"></i>
+                                                <!-- Pick from gallery -->
+                                                <button type="button" @click="openMediaPicker(p.id, 'video')" class="inline-flex items-center gap-1 text-[10px] text-gray-600 hover:text-amber-600 hover:bg-amber-50 px-1.5 py-0.5 rounded border border-gray-200 transition-colors cursor-pointer" title="Pilih video dari Galeri Media CMS">
+                                                    <i class="fas fa-photo-video text-[9px] text-amber-500"></i> Galeri
                                                 </button>
                                             </div>
                                         </div>
-                                    </template>
-                                    <template x-if="!p.video">
-                                        <div class="w-20 h-16 sm:w-24 sm:h-18 rounded-lg border-2 border-dashed border-gray-300 hover:border-blue-400 bg-white transition-all flex flex-col items-center justify-center relative cursor-pointer text-center flex-shrink-0 group">
-                                            <i class="fas fa-video text-gray-400 group-hover:text-blue-500 mb-0.5 text-xs"></i>
-                                            <span class="text-[9px] font-bold text-gray-500 group-hover:text-blue-600">Video MP4</span>
-                                            <input type="file" accept="video/mp4,video/*" @change="uploadVideoForProduct(p.id, $event)" class="absolute inset-0 opacity-0 cursor-pointer" title="Upload video produk">
-                                        </div>
-                                    </template>
-
-                                    <!-- Guide notes & Quick Play / Pick Button -->
-                                    <div class="text-[11px] text-gray-500 leading-tight space-y-1 min-w-0">
-                                        <template x-if="p.video">
-                                            <p class="font-mono text-[10px] text-gray-700 truncate max-w-[200px]" :title="p.video" x-text="p.video"></p>
-                                        </template>
-                                        <div class="flex items-center gap-1.5 pt-0.5 flex-wrap">
-                                            <template x-if="p.video">
-                                                <button type="button" @click="openVideoPreview(p)" class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-100/80 hover:bg-emerald-200 px-2 py-0.5 rounded transition-colors border border-emerald-300/60 shadow-2xs">
-                                                    <i class="fas fa-play text-[9px] text-emerald-600"></i> Putar
-                                                </button>
+                                        
+                                        <p class="text-[10px] text-gray-400 truncate">
+                                            <template x-if="!p.video">
+                                                <span>Ketik/paste link Reel IG atau YouTube untuk hemat kapasitas server.</span>
                                             </template>
-                                            <button type="button" @click="promptVideoUrl(p.id)" class="inline-flex items-center gap-1 text-[10px] font-bold text-pink-700 hover:text-pink-800 bg-pink-50 hover:bg-pink-100 px-2 py-0.5 rounded transition-colors border border-pink-200 shadow-2xs cursor-pointer" title="Pasang Link Video Instagram Reels atau YouTube">
-                                                <i class="fab fa-instagram text-pink-600 text-[10px]"></i> Link IG / YT
-                                            </button>
-                                            <button type="button" @click="openMediaPicker(p.id, 'video')" class="text-[10px] text-primary hover:underline font-semibold">
-                                                <i class="fas fa-photo-video text-[9px]"></i> Galeri
-                                            </button>
                                             <template x-if="p.video">
-                                                <button type="button" @click="removeVideoForProduct(p.id)" class="text-[10px] text-red-600 hover:underline font-semibold">
-                                                    Hapus
-                                                </button>
+                                                <span class="font-mono text-gray-600" x-text="p.video"></span>
                                             </template>
-                                        </div>
-                                        <template x-if="p.video && parseVideoSource(p.video)">
-                                            <div class="pt-0.5">
-                                                <span class="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded border shadow-2xs" :class="parseVideoSource(p.video).color">
-                                                    <i :class="parseVideoSource(p.video).icon"></i>
-                                                    <span x-text="parseVideoSource(p.video).badge + ' (0 MB Storage)'"></span>
-                                                </span>
-                                            </div>
-                                        </template>
-                                        <template x-if="!p.video">
-                                            <p class="text-[10px] text-gray-400">Video tampil di galeri utama katalog.</p>
-                                        </template>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
