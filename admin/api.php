@@ -64,17 +64,19 @@ function healProductImages(&$products) {
 function readData() {
     global $DATA_JSON;
     $products = [];
-    if (!file_exists($DATA_JSON)) {
+
+    // CMS adalah satu-satunya sumber kebenaran.
+    if (file_exists($DATA_JSON)) {
+        $products = json_decode(file_get_contents($DATA_JSON), true) ?? [];
+    } else {
+        // Inisialisasi awal server jika data/products.json belum pernah dibuat
         $DEFAULT_JSON = __DIR__ . '/../default_products.json';
         if (file_exists($DEFAULT_JSON)) {
             $products = json_decode(file_get_contents($DEFAULT_JSON), true) ?? [];
+            if (!empty($products)) {
+                writeData($products);
+            }
         }
-    } else {
-        $products = json_decode(file_get_contents($DATA_JSON), true) ?? [];
-    }
-
-    if (!empty($products) && healProductImages($products)) {
-        writeData($products);
     }
 
     return $products;
@@ -84,25 +86,26 @@ function writeData($data) {
     global $DATA_JSON, $DATA_JS;
     $dir = dirname($DATA_JSON);
     if (!is_dir($dir)) mkdir($dir, 0777, true);
+
+    // Auto-heal gambar rusak sebelum simpan
+    healProductImages($data);
+
     $jsonString = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     
-    // 1. Write primary products files
+    // 1. Write primary products files (SATU-SATUNYA sumber kebenaran)
     file_put_contents($DATA_JSON, $jsonString);
     file_put_contents($DATA_JS, "window.CATALOG_PRODUCTS = " . $jsonString . ";\n");
-    
-    // 2. Synchronize default_products backup files
-    $DEFAULT_JSON = __DIR__ . '/../default_products.json';
-    $DEFAULT_JS = __DIR__ . '/../default_products.js';
-    file_put_contents($DEFAULT_JSON, $jsonString);
-    file_put_contents($DEFAULT_JS, "window.CATALOG_PRODUCTS = " . $jsonString . ";\n");
 
-    // 3. Write version file for instant client-side change detection
+    // 2. Write version file for instant client-side change detection
     $versionFile = __DIR__ . '/../data/products_version.json';
     file_put_contents($versionFile, json_encode([
         'version' => time(),
         'updated_at' => date('Y-m-d H:i:s'),
         'count' => count($data)
     ], JSON_PRETTY_PRINT));
+
+    // CATATAN: default_products.json/js TIDAK lagi ditulis di sini.
+    // File tersebut hanya backup awal dan tidak boleh menjadi sumber data aktif.
 }
 
 
